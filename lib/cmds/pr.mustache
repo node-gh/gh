@@ -1,0 +1,14 @@
+{{repository}}
+{{#branches}}
+    {{name}} ({{total}})
+    {{#pulls}}
+        [{{number}}] {{{title}}} {{login}} ({{created_at}} ago)
+        {{#detailed}}
+        {{{html_url}}}
+        {{#body}}
+        > {{{body}}}
+        {{/body}}
+
+        {{/detailed}}
+    {{/pulls}}
+{{/branches}}
