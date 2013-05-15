@@ -25,6 +25,7 @@
         "cli-prompt": "0.1.0",
         "moment ": "2.0.0",
         "mustache ": "0.7.2",
+        "git-wrapper": "0.1.0",
         "github": "0.1.8",
         "nopt": "2.1.1"
     },
