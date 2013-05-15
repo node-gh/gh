@@ -9,17 +9,21 @@
 * @author Eduardo Lundgren <eduardolundgren@gmail.com>
 */
 
-var fs = require('fs'),
+var async = require('async'),
+    fs = require('fs'),
     nopt = require('nopt'),
     base = require('../lib/base'),
-    logger,
-    parsed,
-    remain,
-    options,
+    git = require('../lib/git'),
+    commandFilePath,
     commandImpl,
-    commandFilePath;
+    logger,
+    operations,
+    options,
+    parsed,
+    remain;
 
 logger = base.logger;
+operations = [];
 parsed = nopt(process.argv),
 remain = parsed.argv.remain;
 
@@ -31,11 +35,17 @@ commandFilePath = __dirname + '/../lib/cmds/' + remain[0] + '.js';
 
 if (fs.existsSync(commandFilePath)) {
     commandImpl = require(commandFilePath).Impl;
-    options = nopt(
-        commandImpl.COMMAND_DETAILS.options,
-        commandImpl.COMMAND_DETAILS.shorthands, process.argv, 2);
 
-    new commandImpl().run(options);
+    options = nopt(
+        commandImpl.DETAILS.options,
+        commandImpl.DETAILS.shorthands, process.argv, 2);
+
+    operations.push(git.getRepositoryName);
+    operations.push(git.getCurrentBranch);
+
+    async.parallel(operations, function(err, results) {
+        new commandImpl().run(options, results[0], results[1]);
+    });
 }
 else {
     logger.oops('command not found');
