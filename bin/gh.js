@@ -44,7 +44,7 @@ if (fs.existsSync(commandFilePath)) {
     operations.push(git.getCurrentBranch);
 
     async.parallel(operations, function(err, results) {
-        new commandImpl().run(options, results[0], results[1]);
+        new commandImpl(options, results[0], results[1]).run();
     });
 }
 else {
