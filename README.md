@@ -5,7 +5,7 @@ Github command line tools helps you improve using git and github from the termin
 
 ## Usage
 
-	gh  [command] [payload] [--flags]
+    gh  [command] [payload] [--flags]
 
 
 ## Available commands
@@ -16,75 +16,77 @@ Github command line tools helps you improve using git and github from the termin
 
 * List open pulls requests for the current branch.
 
-	```
-gh pr --list [-l]
-	```
+    ```
+gh pr --list
+    ```
 
 * List open pulls requests for all branches.
 
-	```
-gh pr --list [-l] --all [-a]
-	```
+    ```
+gh pr --list --all
+    ```
 
 * List open pulls requests for a branch.
 
-	```
-gh pr --list [-l] --branch [-b] master
-	```
+    ```
+gh pr --list --branch master
+    ```
 
 #### Fecthing
 
 * Fech pull request and checkout into a new branch.
 
-	```
-gh pr --pull [-p] 1 --fetch [-f] [-b new_branch]
-	```
-	
+    ```
+gh pr --pull 1 --fetch --branch new_branch
+    ```
+
 * Fech pull request, rebasing or merging, into a branch. When `--branch` is not specified uses the current branch.
 
-	```
-gh pr --pull [-p] 1 --fetch [-f] --rebase [-r] [-b master]
-	```
-	```
-gh pr --pull [-p] 1 --fetch [-f] --merge [-m] [-b master]
-	```
+    ```
+gh pr --pull 1 --fetch --rebase [--branch master]
+    ```
+    ```
+gh pr --pull 1 --fetch --merge [--branch master]
+    ```
 
-* Fetch all open pull requests.
+* Fetch all open pull requests. (TODO)
 
-	```
+    ```
 gh pr --fetch-all [-?]
-	```
+    ```
 
 #### Commenting
-	
+
 * Comment in a pull request.
 
-	```
-gh pr --pull [p] 1 --comment [-c] "Merged, thank you!".
-	```	
-	
+    ```
+gh pr --pull 1 --comment "Merged, thank you!".
+    ```
+
 #### Forwarding
 
-* Forward a pull request to another reviewer.
+* Forward a pull request to another reviewer. (TODO)
 
-	```
-gh pr --pull [-p] 1 --fwd [-?] username
-	```
-	
+    ```
+gh pr --pull 1 --fwd username
+    ```
+
 #### Open and close
 
 * Close a pull request.
 
-	```
-gh pr --pull [-p] 1 --open [-o]
-	```
+    ```
+gh pr --pull 1 --open
+    ```
 
-	```
-gh pr --pull [-p] 1 --close [-c]
-	```
+    ```
+gh pr --pull 1 --close
+    ```
 
 #### Submiting
 
-	```
-gh pr --submit [-s] --user eduardo
-	```
+* Submit a pull request. (TODO)
+
+    ```
+gh pr --submit --user eduardolundgren
+    ```
