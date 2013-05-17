@@ -17,7 +17,7 @@
         "git", "github", "external", "commands", "helpers"
     ],
     "bin": {
-        "gh": "lib/index.js"
+        "gh": "bin/gh.js"
     },
     "dependencies": {
         "async": "0.2.7",
