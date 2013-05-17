@@ -42,8 +42,9 @@ if (fs.existsSync(commandFilePath)) {
 
     operations.push(git.getRepositoryName);
     operations.push(git.getCurrentBranch);
+    operations.push(base.login);
 
-    async.parallel(operations, function(err, results) {
+    async.series(operations, function(err, results) {
         new commandImpl(options, results[0], results[1]).run();
     });
 }
