@@ -1,0 +1,10 @@
+{
+    "github": {
+        "user": "",
+        "token": ""
+    },
+    "replace": {
+    },
+    "branchname": "pull-{{number}}",
+    "defaultbranch": "master"
+}
