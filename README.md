@@ -9,7 +9,7 @@ Github command line tools helps you improve using Git and Github from the termin
 
 ## Install
 
-	npm install -g gh
+    npm install -g gh
 
 ## Available commands
 
@@ -57,6 +57,21 @@ gh pr --pull 1 --fetch --merge [--branch master]
     ```
 gh pr --fetch-all [-?]
     ```
+
+#### Merging or rebasing
+
+* Merge or rebase pull request into a branch.
+
+    ```
+gh pr --merge [--pull 1] [--branch master]
+    ```
+
+    ```
+gh pr --rebase [--pull 1] [--branch master]
+    ```
+
+* Omitting `--pull` will try to guess the pull number from branch name e.g. `pull-1` results in `--pull 1`.
+* Omitting `--branch` will merge or rebase into `config.defaultbranch`.
 
 #### Commenting
 
