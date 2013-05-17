@@ -85,8 +85,8 @@ gh pr --pull 1 --close
 
 #### Submiting
 
-* Submit a pull request. (TODO)
+* Submit a pull request.
 
     ```
-gh pr --submit --user eduardolundgren
+gh pr --submit eduardolundgren
     ```
