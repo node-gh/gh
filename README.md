@@ -1,12 +1,15 @@
 node-gh
 =======
 
-Github command line tools helps you improve using git and github from the terminal.
+Github command line tools helps you improve using Git and Github from the terminal.
 
 ## Usage
 
     gh  [command] [payload] [--flags]
 
+## Install
+
+	npm install -g gh
 
 ## Available commands
 
@@ -32,9 +35,9 @@ gh pr --list --all
 gh pr --list --branch master
     ```
 
-#### Fecthing
+#### Fetching
 
-* Fech pull request and checkout into a new branch.
+* Fetch pull request and checkout into a new branch.
 
     ```
 gh pr --pull 1 --fetch --branch new_branch
@@ -49,7 +52,7 @@ gh pr --pull 1 --fetch --rebase [--branch master]
 gh pr --pull 1 --fetch --merge [--branch master]
     ```
 
-* Fetch all open pull requests. (TODO)
+* Fetch all open pull requests. *(TODO)*
 
     ```
 gh pr --fetch-all [-?]
@@ -65,7 +68,7 @@ gh pr --pull 1 --comment "Merged, thank you!".
 
 #### Forwarding
 
-* Forward a pull request to another reviewer. (TODO)
+* Forward a pull request to another reviewer. *(TODO)*
 
     ```
 gh pr --pull 1 --fwd username
