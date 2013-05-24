@@ -108,3 +108,17 @@ gh pr --pull 1 --close
     ```
 gh pr --submit eduardolundgren
     ```
+
+### Notification
+
+* Display the latest activities on the current repository.
+
+    ```
+gh nt --latest
+    ```
+
+* Watch for any activity on the current repository. *(TODO)*
+
+    ```
+gh nt --watch
+    ```
