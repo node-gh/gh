@@ -1,7 +1,8 @@
-node-gh
-=======
+# node-gh
 
 Github command line tools helps you improve using Git and Github from the terminal.
+
+![Class Octocat](http://cl.ly/image/2x1Z2j3K2X3d/class-octocat.jpg)
 
 ## Usage
 
