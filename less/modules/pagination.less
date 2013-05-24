@@ -1,0 +1,403 @@
+//
+// Pagination
+// --------------------------------------------------
+
+.pagination {
+  position: relative;
+
+  ul {
+    background: @pagination-color;
+    color: @inverse;
+    vertical-align: top;
+    .border-radius(6px);
+    .box-shadow(none);
+
+    @media (max-width: 480px) {
+      & {
+        height: 41px;
+        padding: 0 55px 0 52px;
+        overflow: auto;
+        white-space: nowrap;
+        .border-radius(6px);
+      }
+    }
+
+    li {
+      display: inline-block;
+      margin-right: -3px;
+      vertical-align: top;
+
+      // Pseudos and states
+      &.active {
+        > a, > span {
+          background-color: @firm;
+          color: @inverse;
+        }
+        &.previous,
+        &.next {
+          > a, > span {
+            margin: 0;
+
+            &, &:hover, &:focus {
+              background-color: @firm;
+              color: @inverse;
+            }
+          }
+        }
+      }
+      &:first-child {
+        > a, > span {
+          .border-radius(6px 0 0 6px);
+        }
+        &.previous + li {
+          > a, > span {
+            border-left-width: 0;
+          }
+        }
+        > a, > span {
+          border-left: none;
+        }
+      }
+      &:last-child {
+        margin-right: 0;
+
+        > a, > span {
+          &, &:hover, &:focus {
+            .border-radius(0 6px 6px 0);
+          }
+        }
+      }
+      &.previous,
+      &.next {
+        > a, > span {
+          border-right: 2px solid mix(@pagination-color, white, 66%);
+          font-size: @base-font-size * 1.142; /* 16px */
+          min-width: auto;
+          padding: 12px 17px;
+        }
+      }
+      &.next {
+        > a, > span {
+          border-right: none;
+        }
+      }
+
+      @media (max-width: 480px) {
+        &.next,
+        &.previous {
+          background-color: @pagination-color;
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 10;
+          .border-radius(0 6px 6px 0);
+        }
+        &.previous {
+          left: 0;
+          right: auto;
+          .border-radius(6px 0 0 6px);
+        }
+      }
+
+      // Link
+      > a, > span {
+        background: transparent;
+        border: none;
+        border-left: 2px solid mix(@pagination-color, white, 66%);
+        color: @inverse;
+        line-height: 16px;
+        min-height: 17px;
+        min-width: 19px;
+        outline: none;
+        padding: 12px 10px;
+        text-align: center;
+        .transition(0.2s ease-out);
+
+        &:hover, :focus {
+          background-color: @firm;
+        }
+        &:active {
+          background-color: @firm;
+          color: @inverse
+        }
+      }
+    }
+  }
+
+  // Navigation buttons
+  > .btn {
+    &.previous,
+    &.next {
+      margin-right: 8px;
+      font-size: @base-font-size;
+      padding-left: 23px;
+      padding-right: 23px;
+      [class*="fui-"] {
+        font-size: @icon-normal;
+        margin-left: -2px;
+        margin-top: -2px;
+      }
+    }
+
+    &.next {
+      margin-left: 8px;
+      margin-right: 0;
+      [class*="fui-"] {
+        margin-right: -2px;
+        margin-left: 4px;
+      }
+    }
+  }
+
+  // RWD
+  // --------------------------------------
+  @media (max-width: 480px) {
+    & {
+      > .btn {
+        display: block;
+        margin: 0;
+        width: 50%;
+        &:first-child {
+          border-bottom: 2px solid mix(@pagination-color, white, 80%);
+          .border-radius(6px 0 0);
+          .box-sizing;
+          &.btn-primary { border-bottom-color: mix(@firm, white, 80%) }
+          &.btn-danger  { border-bottom-color: mix(@danger, white, 80%) }
+          &.btn-warning { border-bottom-color: mix(@warning, white, 80%) }
+          &.btn-success { border-bottom-color: mix(@success, white, 80%) }
+          &.btn-info    { border-bottom-color: mix(@info, white, 80%) }
+          &.btn-inverse { border-bottom-color: mix(@base, white, 80%) }
+          > [class*="fui"] { margin-left: -20px }
+        }
+        & + ul {
+          padding: 0;
+          text-align: center;
+          .border-radius(0 0 6px 6px);
+        }
+        & + ul + .btn {
+          border-bottom: 2px solid mix(@pagination-color, white, 80%);
+          position: absolute;
+          right: 0;
+          top: 0;
+          .border-radius(0 6px 0 0);
+          .box-sizing;
+          &.btn-primary { border-bottom-color: mix(@firm, white, 80%) }
+          &.btn-danger  { border-bottom-color: mix(@danger, white, 80%) }
+          &.btn-warning { border-bottom-color: mix(@warning, white, 80%) }
+          &.btn-success { border-bottom-color: mix(@success, white, 80%) }
+          &.btn-info    { border-bottom-color: mix(@info, white, 80%) }
+          &.btn-inverse { border-bottom-color: mix(@base, white, 80%) }
+          > [class*="fui"] { margin-right: -20px }
+        }
+      }
+
+      ul {
+        display: block;
+        > li {
+          > a {
+            .border-radius(0);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Alternate Colors
+// --------------------------------------------------
+.pagination-danger  { .swap-pagination-color(@danger, @button-danger-hover, @button-danger-active) }
+.pagination-success { .swap-pagination-color(@success, @button-success-hover, @button-success-active) }
+.pagination-warning { .swap-pagination-color(@warning, @button-warning-hover, @button-warning-active) }
+.pagination-info    { .swap-pagination-color(@info, @button-info-hover, @button-info-active) }
+.pagination-inverse { .swap-pagination-color(@base, @button-inverse-hover, @button-inverse-active) }
+
+// Ultra minimal pagination
+// --------------------------------------------------
+.pagination-minimal {
+  ul {
+    > li {
+      &:first-child {
+        .border-radius(6px 0 0 6px);
+        &.previous + li {
+          > a, > span {
+            border-left-width: 5px;
+          }
+        }
+      }
+      &:last-child {
+        .border-radius(0 6px 6px 0);
+      }
+      &.previous,
+      &.next {
+        > a, > span {
+          background: transparent;
+          border: none;
+          border-right: 2px solid mix(@pagination-color, white, 66%);
+          font-size: @base-font-size * 1.142; /* 16px */
+          margin: 0 9px 0 0;
+          padding: 12px 17px;
+          .border-radius(6px 0 0 6px);
+          .box-shadow(~"none !important");
+
+          &, &:hover, &:focus {
+            border-color: mix(@pagination-color, white, 66%) !important;
+          }
+
+          @media (max-width: 480px) {
+            & {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+      &.next {
+        margin-left: 9px;
+
+        > a, > span {
+          border-left: 2px solid mix(@pagination-color, white, 66%);
+          border-right: none;
+          margin: 0;
+          .border-radius(0 6px 6px 0);
+        }
+      }
+      &.active {
+        > a, > span {
+          background-color: @inverse;
+          border-color: @inverse;
+          border-width: 2px !important;
+          color: @pagination-color;
+          margin: 10px 5px 9px;
+
+          &:hover, &:focus {
+            background-color: @inverse;
+            border-color: @inverse;
+            color: @pagination-color;
+            .box-shadow(none);
+          }
+        }
+        &.previous,
+        &.next {
+          border-color: mix(@pagination-color, white, 66%);
+        }
+        &.previous {
+          margin-right: 6px;
+        }
+      }
+
+      // Link
+      > a, > span {
+        background: @inverse;
+        border: 5px solid @pagination-color;
+        color: @inverse;
+        line-height: 16px;
+        margin: 7px 2px 6px;
+        min-width: auto;
+        padding: 0 4px;
+        .border-radius(50px);
+        .transition(~"background 0.2s ease-out, border-color 0s ease-out, color 0.2s ease-out");
+
+        &:hover, :focus {
+          background-color: @firm;
+          border-color: @firm;
+          color: @inverse;
+          .transition(~"background 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out");
+        }
+        &:active {
+          background-color: mix(@firm, black, 85%);
+          border-color: mix(@firm, black, 85%);
+        }
+      }
+    }
+  }
+}
+
+// Text only pagination (no graphics)
+// -------------------------------------------------- 
+.pagination-plain {
+  font-size: @base-font-size * 1.142;
+  font-weight: 700;
+  list-style-type: none;
+  margin: 0 0 20px;
+  padding: 0;
+
+  > li {
+    display: inline;
+
+    &.previous {
+      padding-right: 23px;
+    }
+    &.next {
+      padding-left: 20px;
+    }
+    &.active {
+      > a {
+        color: mix(@lightgray, white, 66%);
+      }
+    }
+    > a {
+      padding: 0 5px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    & {
+      height: 50px;
+      overflow: hidden;
+      text-align: center;
+      > li {
+        &.previous {
+          display: block;
+          margin-bottom: 10px;
+          text-align: left;
+          width: 50%;
+        }
+        &.next {
+          float: right;
+          margin-top: -50px;
+          text-align: right;
+          width: 50%;
+        }
+      }
+    }
+  }
+}
+
+// Pagination dropdown
+// --------------------------------------------------
+.pagination-dropdown {
+  ul {
+    min-width: 67px;
+    left: 50%;
+    margin-left: -34px;
+
+    li {
+      display: block;
+      margin-right: 0;
+
+      &:first-child {
+        > a, > span {
+          .border-radius(6px 6px 0 0);
+        }
+      }
+      &:last-child {
+        > a, > span {
+          .border-radius(0 0 6px 6px);
+        }
+      }
+      > a, > span {
+        border-left: none;
+        display: block;
+        float: none;
+        padding: 8px 10px 7px;
+        text-align: center;
+      }
+    }
+  }
+
+  &.dropup {
+      .dropdown-arrow {
+        border-top-color: @pagination-color;
+      }
+  }
+}
+

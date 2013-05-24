@@ -1,0 +1,122 @@
+.fork-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
+
+/* ==========================================================================
+   Headline
+   ========================================================================== */
+
+.headline {
+  padding: 50px 0 80px;
+  text-align: center;
+}
+
+.logo-container {
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #5dcaf3;
+}
+
+.logo-container .logo {
+  background: url(../images/class-octocat.jpg) center 0 no-repeat;
+  background-size: 350px 350px;
+  height: 350px;
+  margin: 0 auto 26px;
+  overflow: hidden;
+  text-indent: -9999em;
+  width: 350px;
+}
+
+.logo-container small {
+  color: rgba(52, 73, 94, 0.30000000000000004);
+  display: block;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+/* ==========================================================================
+   Content
+   ========================================================================== */
+
+.content {
+  width: 100%;
+  padding: 70px 0;
+}
+
+.content h2 {
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+/* Demo
+   ========================================================================== */
+
+.demo {
+  background: #ebedef;
+}
+
+iframe {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Install
+   ========================================================================== */
+
+.install {
+  background: #3498DB;
+}
+
+.install h2 {
+  color: #226491;
+}
+
+/* Pull Request
+   ========================================================================== */
+
+.pull-request {
+  background: #2ECC71;
+}
+
+.pull-request h2,
+.pull-request p {
+  color: #1e874b;
+}
+
+/* Notifications
+   ========================================================================== */
+
+.notifications {
+  background: #e74c3c;
+}
+
+.notifications h2,
+.notifications p {
+  color: #983228;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.bottom-menu {
+  background: #fff;
+}
+
+.bottom-menu p {
+  text-align: center;
+  float: none;
+  font-size: 18.004px;
+  line-height: 1.722169;
+}
+
+.bottom-menu a,
+.bottom-menu a:hover {
+  color: #5dcaf3;
+}

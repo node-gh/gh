@@ -1,0 +1,78 @@
+//
+// Breadcrumbs
+// --------------------------------------------------
+
+.breadcrumb {
+  background-color: mix(@base, white, 6%);
+  font-size: @base-font-size * 1.071;
+  font-weight: 700;
+  padding: 13px 20px;
+  .border-radius(6px);
+
+  > li {
+    position: relative;
+    text-shadow: none;
+
+    &:after {
+      color: @lightgray;
+      content: "\e002";
+      display: inline-block;
+      font-family: 'Flat-UI-Icons';
+      font-size: @base-font-size * .7;
+      margin: -4px 9px 0 13px;
+      vertical-align: middle;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+  .active {
+    color: @lightgray;
+    cursor: default;
+
+    &:after {
+      display: none;
+    }
+    > a {
+      color: inherit;
+      cursor: inherit;
+    }
+  }
+}
+
+// Plain text breadcrumb
+.breadcrumb-text {
+  color: @lightgray;
+  margin-bottom: 20px;
+
+  .caption {
+    font-weight: 700;
+    margin: 0 0 3px;
+    font-size: @base-font-size * 1.286;
+
+    &:after {
+      content: "\e02c";
+      display: inline-block;
+      font-family: 'Flat-UI-Icons';
+      font-weight: normal;
+      font-variant: normal;
+      margin-left: 5px;
+      text-transform: none;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+
+  p {
+    font-size: @base-font-size * 1.714; /* 24px */
+    font-weight: 700;
+    margin-bottom: 20px;
+
+    a {
+      &:after {
+        color: @lightgray;
+        content: "/";
+        font-weight: 300;
+        margin: 0 4px 0 9px;
+      }
+    }
+  }
+}
+

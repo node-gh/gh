@@ -1,0 +1,58 @@
+//
+// Popover
+// --------------------------------------------------
+
+.popover {
+  background-color: mix(@base, white, 9%);
+  border: none;
+  padding: 0;
+  .box-shadow(none);
+
+  &.right .arrow {
+    border-right-color: mix(@base, white, 9%);
+    left: -9px;
+    margin-top: -9px;
+  }
+  &.left .arrow {
+    border-left-color: mix(@base, white, 9%);
+    right: -9px;
+    margin-top: -9px;
+  }
+  &.bottom .arrow {
+    border-bottom-color: mix(@base, white, 9%);
+    margin-right: -9px;
+    top: -9px;
+  }
+  &.top .arrow {
+    border-top-color: mix(@base, white, 9%);
+    bottom: -9px;
+    margin-left: -9px;
+  }
+  .arrow {
+    border-width: 9px;
+    
+    &:after {
+      display: none;
+    }
+  }
+}
+
+// Popover Title
+.popover-title {
+  background-color: mix(@base, white, 33%);
+  color: @inverse;
+  font-size: @base-font-size * 1.071;
+  font-weight: 700;
+  padding: 10px 20px 11px;
+}
+
+// Popover Content
+.popover-content {
+  padding: 9px 20px 1px;
+  
+  p {
+    font-size: @base-font-size;
+    line-height: @base-line-height;
+  }
+}
+
