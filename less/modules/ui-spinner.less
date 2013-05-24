@@ -1,0 +1,117 @@
+// Spinner
+// --------------------------------------------------
+
+// Spinner Input
+.spinner {
+  width: 43px;
+  border-right-width: 0 !important;
+  font-weight: bold;
+  font-size: 20px !important;
+}
+
+// Spinner Wrapper
+.ui-spinner {
+  .inline-block();
+  overflow: hidden;
+  padding: 0 37px 0 0;
+  position: relative;
+  vertical-align: middle;
+
+  .row-fluid & {
+    input {
+      .box-sizing();
+    }
+  }
+
+  @media (max-width: 767px) {
+    & { display: block; }
+  }
+
+  .ui-button-text {
+    display: block;
+    line-height: normal;
+  }
+
+  input {
+    color: @gray;
+    .border-radius(6px 0 0 6px);
+    text-align: center;
+    text-indent: 0;
+
+    @media (max-width: 767px) {
+      & {
+        margin-top: 0;
+      }
+    }
+  }
+
+  // Focus State
+  &.focus {
+    input {
+      color: @firm;
+      border-color: @firm;
+    }
+    .ui-spinner-button {
+      background-color: @firm;
+
+      &:hover {
+        background-color: mix(@firm, black, 85%)
+      }
+    }
+    .ui-spinner-up {
+      border-bottom-color: mix(@firm, black, 85%);
+    }
+  }
+}
+
+// Spinner Buttons
+.ui-spinner-button {
+  cursor: default;
+  display: block;
+  font-size: 0.5em;
+  line-height: 19px;
+  height: 19px;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: 37px;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+  background-color: @lightgray;
+  outline: none;
+
+  &:hover {
+    background-color: mix(@lightgray, white, 70%);
+    color: mix(@firm, white, 10%);
+  }
+
+  // Icon
+  span {
+    font-size: 0;
+    
+    &:before {
+      content: "\e001";
+      font-family: "Flat-UI-Icons";
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+}
+.ui-spinner-up {
+  border-bottom: 2px solid mix(@lightgray, white, 70%);
+  top: 0;
+  .border-radius(0 6px 0 0);
+}
+.ui-spinner-down {
+  bottom: 0;
+  height: 20px;
+  .border-radius(0 0 6px 0);
+  
+  span:before {
+    content: "\e005";
+  }
+}

@@ -1,0 +1,318 @@
+// For demo purposes only
+.demo-headline {
+  color: @firm;
+  font-size: 142px !important;
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 50px;
+  padding: 40px 0;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+// Panels delimiter
+.demo-row {
+  margin: 0 auto;
+  padding: 0 20px 50px;
+  width: 900px;
+  .clearfix();
+
+  &.typography-row {
+    .demo-content {
+      position: relative;
+      float: none;
+      margin-left: 20px;
+      width: auto;
+      padding-left: 265px;
+    }
+    .header-note,
+    .text-note {
+      display: block;
+      width: 260px;
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      font-size: 13px;
+      line-height: 13px;
+      color: mix(desaturate(@base, 25%), white, 34%);
+      font-weight: 400;
+    }
+    .text-note {
+      bottom: auto;
+      top: 10px;
+    }
+  }
+  &.menu-row {
+    padding: 50px 20px 0;
+  }
+}
+
+.demo-col {
+  float: left;
+  margin: 0 20px;
+  width: 270px;
+}
+
+.demo-content {
+  float: left;
+  margin-left: 20px;
+  width: 580px;
+
+  &.demo-content-article {
+    font-size: @base-font-size * 1.285;
+    p { margin-bottom: 20px }
+
+    ul {
+      list-style-type: none;
+      margin-left: 0;
+    }
+
+    li {
+      line-height: @base-font-size * 1.285 * 1.5;
+      padding: 0 0 5px;
+    }
+  }
+}
+
+.demo-content-wide {
+  clear: both;
+  margin: 0 20px;
+}
+
+.demo-title {
+  float: left;
+  margin: -10px 20px 10px;
+  width: 240px;
+  font-size: 24.5px;
+  line-height: 40px;
+
+  h1, h2, h3, h4 {
+    margin-top: 0;
+  }
+  h1, h2, h3 {
+    line-height: 40px !important;
+  }
+  h3 {
+    font-size: 24.5px !important;
+  }
+  small {
+    color: mix(desaturate(@base, 25%), white, 34%);
+    font-size: 13px;
+    font-weight: 400;
+  }
+}
+
+.demo-buttons .btn,
+.demo-inputs .control-group {
+  margin-bottom: 20px;
+}
+
+.demo-navigation {
+  .demo-title {
+    margin-top: 10px;
+  }
+}
+
+.demo-pager {
+  margin-top: -10px;
+}
+
+.demo-tooltips {
+  height: 100px;
+  // Needed just for the demo. Don't use it in producion ;)
+
+  .tooltip {
+    left: -8px !important;
+    position: relative !important;
+    top: -8px !important;
+  }
+  .tooltip-inner {
+    max-width: 100%;
+    width: auto;
+  }
+}
+
+.demo-popovers {
+  .popover {
+    display: block;
+    margin: 0 13px 0 -3px;
+    position: relative;
+    width: auto;
+  }
+}
+
+.demo-social-buttons {
+  .btn {
+    clear: left;
+    float: left;
+    margin-bottom: 17px;
+  }
+}
+
+.demo-headings {
+  margin-bottom: 12px;
+}
+
+.demo-tiles {
+  margin-bottom: 46px;
+}
+
+.demo-icons {
+  font-size: 32px;
+  margin-left: -15px;
+
+  > span {
+    display: inline-block;
+    margin: 0 0 32px 35px;
+    width: 32px;
+  }
+
+  @media (max-width: 480px) {
+    & {
+      > span {
+        margin-left: 16px;
+        margin-right: 16px;
+      }
+    }
+  }
+}
+
+.demo-icons-tooltip {
+  bottom: 0;
+  color: mix(@base, white, 30%);
+  font-size: 12px;
+  left: 100%;
+  margin-left: 0 !important;
+  position: absolute;
+  width: 80px;
+}
+
+.demo-inline {
+  display: inline-block;
+}
+
+// Inputs of the same width (just for the demo purpose)
+#appendedInputButton-01 { width: 188px }
+#appendedInputButton-02 { width: 197px }
+#appendedInputButton-04 { width: 211px }
+#datepicker-01          { width: 223px }
+#prependedInput-01,
+#prependedInput-02,
+#prependedInput-03,
+#prependedInput-04      { width: 212px }
+#appendedInputButton-03 { width: 162px }
+
+// Search inupts
+#search-query-1  { width: 215px }
+#search-query-2,
+#search-query-5  { width: 211px }
+#search-query-3  { width: 216px }
+#search-query-4,
+#search-query-7  { width: 219px }
+#search-query-6  { width: 214px }
+#search-query-8,
+#search-query-9  { width: 226px }
+.demo-col {
+  .ui-spinner    { max-width: 221px }
+}
+
+
+// Illustration Icons
+// --------------------------------------------------
+.demo-illustrations {
+  margin-top: 40px;
+
+  .demo-content-wide {
+    margin: 0 0 0 -66px;
+    padding-top: 20px;
+
+    > div {
+      float: left;
+      width: 100px;
+      height: 100px;
+      margin: 0 0 80px 87px;
+      text-align: center;
+    }
+  }
+  img {
+    display: inline-block;
+    max-height: 100px;
+    max-width: 100px;
+    vertical-align: baseline;
+  }
+}
+
+// Dialog with form inside
+.demo-dialog {
+  input.flat {
+    width: 286px;
+  }
+  @media (max-width: 1023px) {
+    & {
+      input.flat {
+        width: 200px;
+      }
+    }
+  }
+  @media (max-width: 767px) {
+    & {
+      input.flat {
+        width: 100%;
+      }
+    }
+  }
+}
+
+//
+// Responsive: Landscape phone to desktop/tablet
+// --------------------------------------------------
+@media (max-width: 767px) {
+
+  .hide-on-tablets {
+    display: none;
+  }
+
+  .demo-row {
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: auto;
+  }
+  .demo-col,
+  .demo-content,
+  .demo-content-wide,
+  .demo-title {
+    float: none;
+    margin: 0 0 18px !important;
+    padding: 0 !important;
+    width: auto;
+  }
+  .demo-headline {
+    font-size: @base-font-size * 4.643 !important;
+    text-align: left;
+  }
+
+  .demo-inline { display: block; }
+
+  .demo-navigation {
+    .btn-toolbar {
+      margin: 0;
+    }
+
+    .pager,
+    .mll.pvm {
+      display: block;
+      margin: 0 0 20px;
+      padding: 0;
+    }
+  }
+  .typography-row {
+    .header-note,
+    .text-note {
+      position: static !important;
+      margin: 0 0 10px;
+    }
+  }
+}
+
