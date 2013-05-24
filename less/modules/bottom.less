@@ -1,0 +1,107 @@
+//
+// Bottom Menus
+// --------------------------------------------------
+
+.bottom-menu {
+  background: mix(@base, white, 10%);
+  color: mix(@base, white, 35%);
+  padding: 40px 0;
+
+  .brand {
+    font-size: @base-font-size * 1.714; /* 24px */
+    margin-bottom: -6px;
+    margin-top: -8px;
+  }
+  .title {
+    font-size: @base-font-size;
+    font-weight: 700;
+    margin-top: 0;
+  }
+  a {
+    color: inherit;
+
+    .active &,
+    &:hover,
+    &:focus {
+      color: @firm;
+    }
+  }
+  .label,
+  .badge {
+    vertical-align: middle;
+  }
+}
+
+// Bottom menu icons font
+.bottom-icons {
+  font-size: @base-font-size * 1.142; /* 16px */
+}
+
+// Dark skin
+.bottom-menu-inverse {
+  background-color: @base;
+  color: mix(@base, white, 75%);
+}
+
+// Large size
+.bottom-menu-large {
+  padding-bottom: 52px;
+  padding-top: 52px;
+
+  .brand {
+    margin-top: -2px;
+  }
+
+  .bottom-links {
+    li {
+      float: none;
+      margin-right: 0;
+    }
+  }
+}
+
+// LINKS LIST
+// ----------------------
+
+.bottom-links,
+.bottom-icons {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: block;
+    float: left;
+    margin: 0 18px 0 0;
+  }
+}
+
+//
+// Responsive: Landscape phone to desktop/tablet
+// --------------------------------------------------
+@media (max-width: 767px) {
+  .bottom-menu {
+    margin-left: -@rwd-container-space;
+    margin-right: -@rwd-container-space;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .brand,
+    .bottom-links {
+      margin-bottom: 30px;
+    }
+
+    .bottom-links {
+      li {
+        float: none;
+        margin-bottom: 2px;
+      }
+    }
+
+    [class*="span"]:last-child {
+      .bottom-links {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

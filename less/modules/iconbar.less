@@ -1,0 +1,150 @@
+//
+// Icon Bar
+// --------------------------------------------------
+// Use as a sidebar navigation with icons only.
+
+.iconbar {
+  background-color: @iconbar-background;
+  border-radius: 6px;
+  float: left;
+  margin: 0 20px 20px 0;
+
+  > ul {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      margin: 0;
+      padding: 0;
+
+      &.active {
+        > a {
+          color: @firm;
+        }
+      }
+
+      &:first-child {
+        > a {
+          padding-top: 32px;
+        }
+      }
+
+      > a {
+        color: @inverse;
+        display: block;
+        font-size: @base-font-size * 1.714;
+        padding: 8px 30px 32px;
+        position: relative;
+        text-decoration: none;
+        &:hover, &:focus {
+          color: @firm;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    &,
+    &.iconbar-horizontal {
+      > ul {
+        > li,
+        > li.active {
+          > a {
+            display: inline-block;
+            padding: 25px;
+          }
+        }
+      }
+    }
+    & {
+      .iconbar-unread {
+        right: 15px;
+        top: 13px;
+      }
+    }
+    &.iconbar-horizontal {
+      height: 70px;
+      overflow: auto;
+      width: 100%;
+      white-space: nowrap;
+      > ul {
+        > li {
+          float: none;
+          display: inline;
+        }
+      }
+      .iconbar-unread {
+        right: 15px;
+      }
+    }
+  }
+}
+
+// Stick to a screen side
+[class*="iconbar-stick-"] {
+  border-radius: 0;
+  margin: 0;
+  position: fixed;
+  z-index: 1001;
+
+  > ul { margin: 0; }
+}
+
+.iconbar-stick-left {
+  bottom: 0;
+  left: 0;
+  top: 0;
+}
+
+// Unread icon
+.iconbar-unread {
+  background-color: mix(@info, black, 80%);
+  border-radius: 50%;
+  color: @inverse;
+  font-family: @base-font-family;
+  font-size: @base-font-size * .857;
+  font-weight: 500;
+  line-height: @base-font-size * 1.357;
+  min-width: 14px;
+  padding: 0 2px;
+  position: absolute;
+  right: 20px;
+  text-align: center;
+  top: -2px;
+  -webkit-font-smoothing: auto;
+}
+
+// Alternate Colors
+// --------------------------------------------------
+.iconbar-success { .swap-iconbar-color(@success) }
+.iconbar-danger  { .swap-iconbar-color(@danger) }
+.iconbar-warning { .swap-iconbar-color(@warning) }
+.iconbar-info    { .swap-iconbar-color(@info) }
+
+// Horizontal layout
+// --------------------------------------------------
+.iconbar-horizontal {
+  clear: both;
+  float: left;
+
+  > ul {
+    > li {
+      float: left;
+      &:first-child {
+        > a {
+          padding: 25px 32px 25px;
+        }
+      }
+
+      > a {
+        padding: 25px 32px 25px 8px;
+      }
+    }
+  }
+  .iconbar-unread {
+    right: 23px;
+    top: 13px;
+  }
+}

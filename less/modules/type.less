@@ -1,0 +1,146 @@
+// Typography
+// --------------------------------------------------
+
+body {
+  color: @base;
+  font-family: @base-font-family;
+  font-size: @base-font-size;
+  line-height: @base-line-height;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: @base-font-family;
+  font-size: @base-font-size;
+}
+
+a {
+  color: @link-color;
+  text-decoration: none;
+  .transition(0.25s);
+  &:hover {
+    color: @link-hover-color;
+    text-decoration: none;
+  }
+}
+
+// Heading sizes
+h1, .h1 { font-size: @h1 /* 64px */ }
+h2, .h2 { font-size: @h2 /* 52px */ }
+h3, .h3 { font-size: @h3 /* 40px */ }
+h4, .h4 { font-size: @h4 /* 29px */ }
+h5, .h5 { font-size: @h5 /* 28px */ }
+h6, .h6 { font-size: @h6 /* 24px */ }
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  line-height: 1.2em;
+}
+
+// H1—H6 specific styling
+h1 {
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+h3 {
+  font-weight: 700;
+  margin-bottom: 4px;
+  margin-top: 2px;
+}
+
+h4 {
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+h5 {
+  font-weight: 500;
+}
+
+h6 {
+  font-weight: normal;
+}
+
+// Paragraph
+p {
+  font-size: @base-font-size * 1.286; /* 18px */
+  line-height: @base-line-height * 1.399; /* 31px */
+}
+
+.lead {
+  font-size: @base-font-size * 2; /* 28px */
+  line-height: @base-line-height * 1.1895; /* 41px */
+  font-weight: 300;
+}
+
+small {
+  font-size: 84%; /* 15px */
+  line-height: @base-line-height * 1.666; /* 31px */
+}
+
+// Blockquote
+blockquote {
+  position: relative;
+  border-left: none;
+  padding-left: 19px;
+  
+  p {
+    font-size: @base-font-size * 1.429;
+    line-height: @base-line-height * 1.259;
+    font-weight: normal;
+    margin-bottom: .4em;
+  }
+  small {
+    font-size: @base-font-size * 1.286;
+    line-height: @base-line-height * 1.399;
+    font-style: italic;
+    color: @base;
+    
+    &:before {
+      content: "";
+    }
+  }
+  &:before {
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    background-color: #ebedee;
+    content: "";
+    .border-radius(2px);
+  }
+}
+
+.img-rounded {
+  .border-radius(5px);
+}
+
+.img-comment {
+  font-size: @base-font-size * 1.071;
+  line-height: @base-line-height;
+  font-style: italic;
+  margin: 24px 0;
+}
+
+// Text colors
+.text-primary { .swap-text-color(@firm) }
+.text-success { .swap-text-color(@success) }
+.text-danger  { .swap-text-color(@danger) }
+.text-warning { .swap-text-color(@warning) }
+.text-info    { .swap-text-color(@info) }
+.text-inverse { .swap-text-color(@inverse) }
+.muted        { .swap-text-color(@lightgray) }
+

@@ -1,0 +1,165 @@
+//
+// Tables
+// --------------------------------------------------
+
+.table {
+  font-size: @base-font-size * 1.142;
+  
+  // Cells
+  th,
+  td {
+    padding: 8px 25px;
+    border-top: 2px solid @table-border;
+  }
+  th {
+    color: mix(@base, white, 85%);
+    padding-bottom: 14px;
+  }
+  i[class*="fui-"] {
+    vertical-align: baseline;
+    font-size: 20px;
+  }
+  .checkbox,
+  .radio {
+    margin-bottom: 0;
+    margin-left: -9px;
+
+    &.no-label {
+      padding-left: 0;
+    }
+  }
+  .selected-row {
+    > td {
+      background-color: mix(@firm, white, 5.5%)
+    }
+  }
+  img { vertical-align: top; }
+}
+
+// Bordered table
+.table-bordered {
+  border: 2px solid @table-border;
+  border-left: 0;
+  font-size: @base-font-size;
+  .border-radius(6px);
+
+  th,
+  td {
+    border-left: 2px solid @table-border;
+  }
+
+  th { padding-bottom: 8px }
+}
+
+// Stripped
+.table-striped {
+  tbody {
+    > tr {
+      &:nth-child(even),
+      &.selected-row {
+        > td,
+        > th {
+          background-color: @table-bg-active;
+        }
+      }
+      &:nth-child(odd) {
+        > td,
+        > th {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+// Hovered table
+.table-hover {
+  tbody {
+    tr:hover > td,
+    tr:hover > th {
+      background-color: @table-bg-active;
+    }
+  }
+}
+
+// Table backgrounds
+.table tbody tr {
+  &.success > td {
+    background-color: @table-success;
+    border-color: mix(@success, white, 20%);
+  }
+  &.error > td,
+  &.danger > td {
+    background-color: @table-danger;
+    border-color: mix(@danger, white, 20%);
+  }
+  &.warning > td {
+    background-color: @table-warning;
+    border-color: mix(@warning, white, 33%);
+  }
+  &.info > td {
+    background-color: @table-info;
+    border-color: mix(@info, white, 20%);
+  }
+}
+
+// Hover states for .table-hover
+.table-hover tbody tr {
+  &.success:hover > td {
+    background-color: darken(@table-success, 2%);
+  }
+  &.error:hover > td,
+  &.danger:hover > td {
+    background-color: darken(@table-danger, 1%);
+  }
+  &.warning:hover > td {
+    background-color: darken(@table-warning, 2%);
+  }
+  &.info:hover > td {
+    background-color: darken(@table-info, 1%);
+  }
+}
+
+// RWD
+.rwd-table {
+  font-size: @base-font-size * 1.142;
+  display: none;
+  width: 100%;
+
+  tr {
+    &.even {
+      td {
+        background-color: mix(@base, white, 3%);
+      }
+    }
+
+    td {
+      border-bottom: 2px solid mix(@lightgray, white, 15%);
+    }
+  }
+
+  td {
+    padding: 5px 0;
+    width: 62%;
+    &:first-child {
+      padding-right: 5%;
+      width: 33%;
+    }
+  }
+
+  .checkbox,
+  .radio {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .table {
+    display: none;
+  }
+
+  .rwd-table {
+    display: block;
+  }
+}
+
