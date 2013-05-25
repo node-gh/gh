@@ -1,13 +1,19 @@
 {
     "name": "gh",
     "description": "Github command line tools helps you improve using git and github from the terminal.",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "author": {
         "name": "Eduardo Lundgren",
-        "email": "eduardo.lundgren@liferay.com",
+        "email": "eduardolundgren@gmail.com",
         "web": "http://www.eduardo.io",
         "twitter": "eduardolundgren"
     },
+    "contributors": [{
+        "name": "Zeno Rocha",
+        "email": "zno.rocha@gmail.com",
+        "web": "http://zenorocha.com",
+        "twitter": "zenorocha"
+    }],
     "license": "BSD",
     "repository": {
         "type": "git",
