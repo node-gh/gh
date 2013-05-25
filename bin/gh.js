@@ -24,7 +24,7 @@ var async = require('async'),
 
 logger = base.logger;
 operations = [];
-parsed = nopt(process.argv),
+parsed = nopt(process.argv);
 remain = parsed.argv.remain;
 
 if (!remain.length) {
