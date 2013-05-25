@@ -133,6 +133,7 @@ gh nt --watch
 ## History
 
 * **v0.0.7** May 24, 2013
+    * Add Travis continous integration with JSHint
 	* Create a new website under gh-pages branch
 	* Update dependency version: git-wrapper@0.1.1
 	* Add Hello World and Notification tasks
