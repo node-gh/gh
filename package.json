@@ -25,6 +25,9 @@
     "bin": {
         "gh": "bin/gh.js"
     },
+    "scripts": {
+        "test": "jshint lib/ bin/"
+    },
     "dependencies": {
         "async": "0.2.7",
         "cli-color": "0.2.2",
