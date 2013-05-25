@@ -2,7 +2,7 @@
 
 Github command line tools helps you improve using Git and Github from the terminal.
 
-![Class Octocat](http://cl.ly/image/2x1Z2j3K2X3d/class-octocat.jpg)
+![Class Octocat](http://eduardolundgren.github.io/node-gh/images/class-octocat.jpg)
 
 ## Usage
 
@@ -118,8 +118,41 @@ gh pr --submit eduardolundgren
 gh nt --latest
     ```
 
-* Watch for any activity on the current repository. *(TODO)*
+* Watch for any activity on the current repository.
 
     ```
 gh nt --watch
     ```
+
+## Team
+
+[![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/)
+--- | ---
+[Eduardo Lundgren](https://github.com/eduardolundgren/) | [Zeno Rocha](https://github.com/zenorocha/)
+
+## History
+
+* **v0.0.7** May 24, 2013
+	* Create a new website under gh-pages branch
+	* Update dependency version: git-wrapper@0.1.1
+	* Add Hello World and Notification tasks
+* **v0.0.6** May 17, 2013
+	* Add hability to merge or rebase pull request
+	* Add base.getUser and git.merge helpers
+* **v0.0.5** May 16, 2013
+	* Add login to be invoked by default in series
+* **v0.0.4** May 16, 2013
+	* Create ~/.gh.json if needed
+* **v0.0.3** May 16, 2013
+	* Merge user ~/.gh.json with default .gh.json
+	* Add default .gh.json
+	* Fix bin path
+* **v0.0.2** May 16, 2013
+	* Add fetch, open/close, comment
+	* Use moment humanize utility
+* **v0.0.1** May 14, 2013
+	* Initial commit
+
+## License
+
+[BSD License](https://github.com/eduardolundgren/node-gh/blob/master/README.md)
