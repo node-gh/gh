@@ -1,4 +1,4 @@
-# node-gh
+# node-gh [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh)
 
 Github command line tools helps you improve using Git and Github from the terminal.
 
