@@ -118,6 +118,26 @@ gh nt --latest
 gh nt --watch
     ```
 
+* Display/Watch the latest activities a certain repository.
+
+    ```
+gh nt --latest --user eduardolundgren --repo node-gh
+    ```
+
+### Issues
+
+* List all issues on the current repository.
+
+    ```
+gh is --list
+    ```
+
+* List all issues on a certain repository.
+
+    ```
+gh is --list --user eduardolundgren --repo node-gh
+    ```
+
 ## Team
 
 [![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/)
@@ -126,6 +146,8 @@ gh nt --watch
 
 ## History
 
+* **v0.0.8** May 25, 2013
+    * Add Issues task
 * **v0.0.7** May 24, 2013
     * Add pull request forward command
     * Add Travis continous integration with JSHint
