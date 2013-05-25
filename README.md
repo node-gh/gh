@@ -53,12 +53,6 @@ gh pr --pull 1 --fetch --rebase [--branch master]
 gh pr --pull 1 --fetch --merge [--branch master]
     ```
 
-* Fetch all open pull requests. *(TODO)*
-
-    ```
-gh pr --fetch-all [-?]
-    ```
-
 #### Merging or rebasing
 
 * Merge or rebase pull request into a branch.
@@ -84,7 +78,7 @@ gh pr --pull 1 --comment "Merged, thank you!".
 
 #### Forwarding
 
-* Forward a pull request to another reviewer. *(TODO)*
+* Forward a pull request to another reviewer.
 
     ```
 gh pr --pull 1 --fwd username
@@ -133,26 +127,27 @@ gh nt --watch
 ## History
 
 * **v0.0.7** May 24, 2013
+    * Add pull request forward command
     * Add Travis continous integration with JSHint
-	* Create a new website under gh-pages branch
-	* Update dependency version: git-wrapper@0.1.1
-	* Add Hello World and Notification tasks
+    * Create a new website under gh-pages branch
+    * Update dependency version: git-wrapper@0.1.1
+    * Add Hello World and Notification tasks
 * **v0.0.6** May 17, 2013
-	* Add hability to merge or rebase pull request
-	* Add base.getUser and git.merge helpers
+    * Add hability to merge or rebase pull request
+    * Add base.getUser and git.merge helpers
 * **v0.0.5** May 16, 2013
-	* Add login to be invoked by default in series
+    * Add login to be invoked by default in series
 * **v0.0.4** May 16, 2013
-	* Create ~/.gh.json if needed
+    * Create ~/.gh.json if needed
 * **v0.0.3** May 16, 2013
-	* Merge user ~/.gh.json with default .gh.json
-	* Add default .gh.json
-	* Fix bin path
+    * Merge user ~/.gh.json with default .gh.json
+    * Add default .gh.json
+    * Fix bin path
 * **v0.0.2** May 16, 2013
-	* Add fetch, open/close, comment
-	* Use moment humanize utility
+    * Add fetch, open/close, comment
+    * Use moment humanize utility
 * **v0.0.1** May 14, 2013
-	* Initial commit
+    * Initial commit
 
 ## License
 
