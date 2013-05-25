@@ -30,6 +30,11 @@
         "github": "0.1.8",
         "nopt": "2.1.1"
     },
-    "engines": { "node": "*" },
+    "devDependencies": {
+        "jshint": "2.1.2"
+    },
+    "engines": {
+        "node": ">=0.8"
+    },
     "preferGlobal": "true"
 }
