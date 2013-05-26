@@ -70,10 +70,10 @@ gh pr --rebase [--pull 1] [--branch master]
 
 #### Commenting
 
-* Comment in a pull request.
+* Add a message in a pull request.
 
     ```
-gh pr --pull 1 --comment "Merged, thank you!".
+gh pr --pull 1 --message "Merged, thank you!".
     ```
 
 #### Forwarding
@@ -166,7 +166,7 @@ gh is --list --user eduardolundgren --repo node-gh
     * Add default .gh.json
     * Fix bin path
 * **v0.0.2** May 16, 2013
-    * Add fetch, open/close, comment
+    * Add fetch, open/close, message
     * Use moment humanize utility
 * **v0.0.1** May 14, 2013
     * Initial commit
