@@ -73,7 +73,7 @@ gh pr --rebase [--pull 1] [--branch master]
 * Add a message in a pull request.
 
     ```
-gh pr --pull 1 --message "Merged, thank you!".
+gh pr --pull 1 --message "Merged, thank you!"
     ```
 
 #### Forwarding
