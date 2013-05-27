@@ -1,5 +1,5 @@
 .fork-ribbon {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   border: 0;
@@ -87,6 +87,18 @@ iframe {
 .pull-request h2,
 .pull-request p {
   color: #1e874b;
+}
+
+/* Issues
+   ========================================================================== */
+
+.issues {
+  background: #f1c40f;
+}
+
+.issues h2,
+.issues p {
+  color: #9f810a;
 }
 
 /* Notifications
