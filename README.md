@@ -144,6 +144,12 @@ gh nt --latest --user eduardolundgren --repo node-gh
 gh is --list
     ```
 
+* List all issues from all repositories.
+
+    ```
+gh is --list --all
+    ```
+
 * List all issues on a certain repository.
 
     ```
