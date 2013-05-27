@@ -1,14 +1,14 @@
-{{repo}}
-{{#branches}}
- {{name}} ({{total}})
- {{#pulls}}
-   {{number}} {{{title}}} {{login}} ({{created_at}})
-   {{#detailed}}
-   {{{html_url}}}
-   {{#body}}
-   > {{{body}}}
-   {{/body}}
+{{prefix}} {{{yellowBright "➜ " user "/" repo}}}
+{{#each branches}}
+{{prefix}}   {{name}} ({{total}})
+{{#each pulls}}
+{{prefix}}    {{{greenBright "#" number}}} {{{title}}} {{{magentaBright "@" head.user.login}}} ({{date created_at}})
+{{#if ../../detailed}}
+{{prefix}}    {{{blueBright html_url}}}
+{{#if body}}
+{{prefix}}    > {{{body}}}
+{{/if}}
+{{/if}}
+{{/each}}
 
-   {{/detailed}}
- {{/pulls}}
-{{/branches}}
+{{/each}}
