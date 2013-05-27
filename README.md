@@ -162,6 +162,10 @@ gh is --list --user eduardolundgren --repo node-gh
 --- | ---
 [Eduardo Lundgren](https://github.com/eduardolundgren/) | [Zeno Rocha](https://github.com/zenorocha/)
 
+## Contributing
+
+Contribute new commands to this project by copying and editing the content of [Hello World](https://github.com/eduardolundgren/node-gh/blob/master/lib/cmds/hello.js) example.
+
 ## History
 
 * **v0.1.1** May 27, 2013
