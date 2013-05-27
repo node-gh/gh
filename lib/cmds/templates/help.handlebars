@@ -1,6 +1,10 @@
 {{prefix}} Syntax: {{{magentaBright "gh"}}} [{{{cyanBright "command"}}}] [{{{greenBright "--flags"}}}]
 
 {{prefix}} List of available commands:
+
 {{#each commands}}
-{{prefix}}   {{{cyanBright name}}} [ {{#each flags}} {{{greenBright "--" this}}} {{/each}} ] ➜  {{{description}}}
+{{prefix}} {{{cyanBright name}}} ➜  {{{description}}}
+{{#each flags}}
+{{prefix}}    {{{greenBright "--" option ", -" shorthand}} {{{redBright type}}}
+{{/each}}
 {{/each}}
