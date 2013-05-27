@@ -1,0 +1,3 @@
+{{#unless options.merge}}{{#unless options.rebase}}{{prefix}} [info] Fetching pull request {{greenBright "#" options.pull}} into branch {{options.pullBranch}}{{/unless}}{{/unless}}
+{{#if options.rebase}}{{prefix}} [info] Fetching pull request {{greenBright "#" options.pull}} and rebasing into branch {{currentBranch}}{{/if}}
+{{#if options.merge}}{{prefix}} [info] Fetching pull request {{greenBright "#" options.pull}} and merging into branch {{currentBranch}}{{/if}}
