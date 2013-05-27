@@ -1,0 +1,6 @@
+{{#unless watch}}
+{{prefix}} {{{yellowBright "➜ " user "/" repo}}}
+{{/unless}}
+{{#each events}}
+{{prefix}}   {{{magentaBright "@" actor.login}}} {{{txt}}} {{cyanBright ../repo}} {{#if ../latest}} ({{date created_at}}){{/if}}
+{{/each}}
