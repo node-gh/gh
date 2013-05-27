@@ -10,25 +10,26 @@
 */
 
 var async = require('async'),
-    fs = require('fs'),
-    nopt = require('nopt'),
     base = require('../lib/base'),
+    fs = require('fs'),
     git = require('../lib/git'),
+    help = require('../lib/cmds/help').Impl.prototype,
+    logger = require('../lib/logger'),
+    nopt = require('nopt'),
     commandFilePath,
     commandImpl,
-    logger,
     operations,
     options,
     parsed,
     remain;
 
-logger = base.logger;
 operations = [];
 parsed = nopt(process.argv);
 remain = parsed.argv.remain;
 
 if (!remain.length) {
-    logger.oops('usage: gh [command] [payload] [--flags]');
+    help.run();
+    process.exit(0);
 }
 
 commandFilePath = __dirname + '/../lib/cmds/' + remain[0] + '.js';
@@ -49,5 +50,5 @@ if (fs.existsSync(commandFilePath)) {
     });
 }
 else {
-    logger.oops('command not found');
+    logger.error('Command not found');
 }

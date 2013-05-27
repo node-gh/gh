@@ -1,6 +1,6 @@
 # node-gh [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh)
 
-Github command line tools helps you improve using Git and Github from the terminal.
+All the power of GitHub in your terminal.
 
 ![Class Octocat](http://eduardolundgren.github.io/node-gh/images/class-octocat.jpg)
 
@@ -12,7 +12,15 @@ Github command line tools helps you improve using Git and Github from the termin
 
     npm install -g gh
 
+## Dependencies
+
+In order to sucessfully run this project you must have [NodeJS](http://nodejs.org/download/) installed.
+
 ## Available commands
+
+```
+gh help
+```
 
 ### Pull requests
 
@@ -103,8 +111,9 @@ gh pr --pull 1 --close
     ```
 gh pr --submit eduardolundgren
     ```
+---
 
-### Notification
+### Notifications
 
 * Display the latest activities on the current repository.
 
@@ -123,6 +132,8 @@ gh nt --watch
     ```
 gh nt --latest --user eduardolundgren --repo node-gh
     ```
+
+---
 
 ### Issues
 
