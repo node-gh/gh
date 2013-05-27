@@ -49,16 +49,16 @@ gh pr --list --branch master
 * Fetch pull request and checkout into a new branch.
 
     ```
-gh pr --pull 1 --fetch --branch new_branch
+gh pr --pull 1 --fetch
     ```
 
-* Fech pull request, rebasing or merging, into a branch. When `--branch` is not specified uses the current branch.
+* Fech pull request rebasing or merging into the current branch.
 
     ```
-gh pr --pull 1 --fetch --rebase [--branch master]
+gh pr --pull 1 --fetch --rebase
     ```
     ```
-gh pr --pull 1 --fetch --merge [--branch master]
+gh pr --pull 1 --fetch --merge
     ```
 
 #### Merging or rebasing
