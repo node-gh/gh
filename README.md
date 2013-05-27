@@ -146,7 +146,12 @@ gh is --list --user eduardolundgren --repo node-gh
 
 ## History
 
-* **v0.0.8** May 25, 2013
+* **v0.1.0** May 27, 2013
+	* Allow log handlebars template from string
+	* Move apply replacements logic to logger
+    * Use handlebars templates instead of strings
+    * Refactoring template integration with logger
+    * Rename pull request `--comment` to `--message`
     * Add Issues task
 * **v0.0.7** May 24, 2013
     * Add pull request forward command
