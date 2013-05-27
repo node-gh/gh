@@ -111,6 +111,7 @@ gh pr --pull 1 --close
     ```
 gh pr --submit eduardolundgren
     ```
+
 ---
 
 ### Notifications
@@ -157,19 +158,21 @@ gh is --list --user eduardolundgren --repo node-gh
 
 ## History
 
-* **v0.1.0** May 27, 2013
+* **v0.1.1** May 27, 2013
+    * Add **Help** task
+* **v0.1.0** May 26, 2013
 	* Allow log handlebars template from string
 	* Move apply replacements logic to logger
     * Use handlebars templates instead of strings
     * Refactoring template integration with logger
     * Rename pull request `--comment` to `--message`
-    * Add Issues task
+    * Add **Issues** task
 * **v0.0.7** May 24, 2013
     * Add pull request forward command
     * Add Travis continous integration with JSHint
     * Create a new website under gh-pages branch
     * Update dependency version: git-wrapper@0.1.1
-    * Add Hello World and Notification tasks
+    * Add **Hello World** and **Notification** tasks
 * **v0.0.6** May 17, 2013
     * Add hability to merge or rebase pull request
     * Add base.getUser and git.merge helpers
