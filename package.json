@@ -1,7 +1,7 @@
 {
     "name": "gh",
     "description": "Github command line tools helps you improve using git and github from the terminal.",
-    "version": "0.0.7",
+    "version": "0.1.0",
     "author": {
         "name": "Eduardo Lundgren",
         "email": "eduardolundgren@gmail.com",
