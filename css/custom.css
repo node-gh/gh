@@ -100,7 +100,8 @@ iframe {
 }
 
 .pull-request h2,
-.pull-request p {
+.pull-request p,
+.pull-request a {
   color: #1e874b;
 }
 
@@ -112,7 +113,8 @@ iframe {
 }
 
 .issues h2,
-.issues p {
+.issues p,
+.issues a {
   color: #9f810a;
 }
 
@@ -124,6 +126,7 @@ iframe {
 }
 
 .notifications h2,
+.notifications a,
 .notifications p {
   color: #983228;
 }
