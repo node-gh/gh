@@ -138,6 +138,24 @@ gh nt --latest --user eduardolundgren --repo node-gh
 
 ### Issues
 
+* Create a new issue on the current repository.
+
+    ```
+gh is --new --title 'Node GH rocks!' --message '**Markdown** support'
+    ```
+
+* Create a new issue on a certain repository.
+
+    ```
+gh is --new --title 'Node GH rocks!' --message '**Markdown** support' --user eduardolundgren --repo node-gh
+    ```
+
+* Create a new issue with labels.
+
+    ```
+gh is --new --title 'Node GH rocks!' --label bug,question,test
+    ```
+
 * Comment on an issue of the current repository.
 
     ```
@@ -181,6 +199,7 @@ Contribute new commands to this project by copying and editing the content of [H
 ## History
 
 * **v0.1.2** May 28, 2013
+    * Add the hability to create an Issue
     * Add the hability to comment on an Issue
     * Rename pull request `--comment` to `--message`
     * Rename pull request `--pull` to `--number`
