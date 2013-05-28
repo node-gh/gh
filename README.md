@@ -138,6 +138,18 @@ gh nt --latest --user eduardolundgren --repo node-gh
 
 ### Issues
 
+* Comment on an issue of the current repository.
+
+    ```
+gh is --number 1 --comment 'Node GH rocks!'
+    ```
+
+* Comment on an issue of a certain repository.
+
+    ```
+gh is --number 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
+    ```
+
 * List all issues on the current repository.
 
     ```
@@ -169,6 +181,7 @@ Contribute new commands to this project by copying and editing the content of [H
 ## History
 
 * **v0.1.2** May 28, 2013
+    * Add the hability to comment on an Issue
     * Rename pull request `--comment` to `--message`
     * Rename pull request `--pull` to `--number`
 * **v0.1.1** May 27, 2013
