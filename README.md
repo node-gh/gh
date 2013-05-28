@@ -22,9 +22,9 @@ In order to sucessfully run this project you must have [NodeJS](http://nodejs.or
 gh help
 ```
 
-### Pull requests
+## Pull requests
 
-#### Listing
+### 1. Listing
 
 * List open pulls requests for the current branch.
 
@@ -44,7 +44,7 @@ gh pr --list --all
 gh pr --list --branch master
     ```
 
-#### Fetching
+### 2. Fetching
 
 * Fetch pull request and checkout into a new branch.
 
@@ -61,7 +61,7 @@ gh pr --number 1 --fetch --rebase
 gh pr --number 1 --fetch --merge
     ```
 
-#### Merging or rebasing
+### 3. Merging or rebasing
 
 * Merge or rebase pull request into a branch.
 
@@ -76,7 +76,7 @@ gh pr --rebase [--number 1] [--branch master]
 * Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`.
 * Omitting `--branch` will merge or rebase into `config.defaultbranch`.
 
-#### Commenting
+### 4. Commenting
 
 * Comment on a pull request.
 
@@ -84,7 +84,7 @@ gh pr --rebase [--number 1] [--branch master]
 gh pr --number 1 --comment "Merged, thank you!"
     ```
 
-#### Forwarding
+### 5. Forwarding
 
 * Forward a pull request to another reviewer.
 
@@ -92,7 +92,7 @@ gh pr --number 1 --comment "Merged, thank you!"
 gh pr --number 1 --fwd username
     ```
 
-#### Open and close
+### 6. Open and close
 
 * Close a pull request.
 
@@ -104,7 +104,7 @@ gh pr --number 1 --open
 gh pr --number 1 --close
     ```
 
-#### Submiting
+### 7. Submiting
 
 * Submit a pull request.
 
@@ -112,9 +112,7 @@ gh pr --number 1 --close
 gh pr --submit eduardolundgren
     ```
 
----
-
-### Notifications
+## Notifications
 
 * Display the latest activities on the current repository.
 
@@ -134,9 +132,20 @@ gh nt --watch
 gh nt --latest --user eduardolundgren --repo node-gh
     ```
 
----
+## Issues
 
-### Issues
+### 1. Creating
+
+Option            | Usage        | Type
+---               | ---          | ---
+`--new`, `-N`     | **Required** | `Boolean`
+`--title`, `-t`   | **Required** | `String`
+`--label`, `-L`   | *Optional*   | `String`
+`--message`, `-m` | *Optional*   | `String`
+`--repo`, `-r`    | *Optional*   | `String`
+`--user`, `-u`    | *Optional*   | `String`
+
+#### Examples
 
 * Create a new issue on the current repository.
 
@@ -156,6 +165,17 @@ gh is --new --title 'Node GH rocks!' --message '**Markdown** support' --user edu
 gh is --new --title 'Node GH rocks!' --label bug,question,test
     ```
 
+### 2. Commenting
+
+Option            | Usage        | Type
+---               | ---          | ---
+`--comment`, `-c` | **Required** | `String`
+`--number`, `-n`  | **Required** | `Number`
+`--repo`, `-r`    | *Optional*   | `String`
+`--user`, `-u`    | *Optional*   | `String`
+
+#### Examples
+
 * Comment on an issue of the current repository.
 
     ```
@@ -167,6 +187,17 @@ gh is --number 1 --comment 'Node GH rocks!'
     ```
 gh is --number 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
     ```
+
+### 3. Listing
+
+Option            | Usage        | Type
+---               | ---          | ---
+`--list`, `-l`    | **Required** | `Boolean`
+`--all`, `-a`     | *Optional*   | `String`
+`--repo`, `-r`    | *Optional*   | `String`
+`--user`, `-u`    | *Optional*   | `String`
+
+#### Examples
 
 * List all issues on the current repository.
 
