@@ -6,7 +6,7 @@ All the power of GitHub in your terminal.
 
 ## Usage
 
-    gh  [command] [payload] [--flags]
+    gh  [command] [--flags]
 
 ## Install
 
