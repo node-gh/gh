@@ -76,9 +76,12 @@
 }
 
 iframe {
-  width: 100%;
+  width: 706px;
+  height: 406px;
   border-radius: 4px;
   overflow: hidden;
+  display: block;
+  margin: 0 auto;
 }
 
 /* Install
