@@ -114,11 +114,37 @@ gh pr --submit eduardolundgren
 
 ## Notifications
 
+### 1. Latest
+
+Option           | Usage        | Type
+---              | ---          | ---
+`--latest`, `-l` | **Required** | `Boolean`
+`--repo`, `-r`   | *Optional*   | `String`
+`--user`, `-s`   | *Optional*   | `String`
+
+#### Examples
+
 * Display the latest activities on the current repository.
 
     ```
 gh nt --latest
     ```
+
+* Display the latest activities on a certain repository.
+
+    ```
+gh nt --latest --user eduardolundgren --repo node-gh
+    ```
+
+### 2. Watch
+
+Option           | Usage        | Type
+---              | ---          | ---
+`--watch`, `-w`  | **Required** | `Boolean`
+`--repo`, `-r`   | *Optional*   | `String`
+`--user`, `-s`   | *Optional*   | `String`
+
+#### Examples
 
 * Watch for any activity on the current repository.
 
@@ -126,10 +152,10 @@ gh nt --latest
 gh nt --watch
     ```
 
-* Display/Watch the latest activities a certain repository.
+* Watch for any activity on a certain repository.
 
     ```
-gh nt --latest --user eduardolundgren --repo node-gh
+gh nt --watch --user eduardolundgren --repo node-gh
     ```
 
 ## Issues
