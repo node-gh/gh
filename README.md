@@ -49,16 +49,16 @@ gh pr --list --branch master
 * Fetch pull request and checkout into a new branch.
 
     ```
-gh pr --pull 1 --fetch
+gh pr --number 1 --fetch
     ```
 
 * Fech pull request rebasing or merging into the current branch.
 
     ```
-gh pr --pull 1 --fetch --rebase
+gh pr --number 1 --fetch --rebase
     ```
     ```
-gh pr --pull 1 --fetch --merge
+gh pr --number 1 --fetch --merge
     ```
 
 #### Merging or rebasing
@@ -66,22 +66,22 @@ gh pr --pull 1 --fetch --merge
 * Merge or rebase pull request into a branch.
 
     ```
-gh pr --merge [--pull 1] [--branch master]
+gh pr --merge [--number 1] [--branch master]
     ```
 
     ```
-gh pr --rebase [--pull 1] [--branch master]
+gh pr --rebase [--number 1] [--branch master]
     ```
 
-* Omitting `--pull` will try to guess the pull number from branch name e.g. `pull-1` results in `--pull 1`.
+* Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`.
 * Omitting `--branch` will merge or rebase into `config.defaultbranch`.
 
 #### Commenting
 
-* Add a message in a pull request.
+* Comment on a pull request.
 
     ```
-gh pr --pull 1 --message "Merged, thank you!"
+gh pr --number 1 --comment "Merged, thank you!"
     ```
 
 #### Forwarding
@@ -89,7 +89,7 @@ gh pr --pull 1 --message "Merged, thank you!"
 * Forward a pull request to another reviewer.
 
     ```
-gh pr --pull 1 --fwd username
+gh pr --number 1 --fwd username
     ```
 
 #### Open and close
@@ -97,11 +97,11 @@ gh pr --pull 1 --fwd username
 * Close a pull request.
 
     ```
-gh pr --pull 1 --open
+gh pr --number 1 --open
     ```
 
     ```
-gh pr --pull 1 --close
+gh pr --number 1 --close
     ```
 
 #### Submiting
@@ -168,6 +168,9 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v0.1.2** May 28, 2013
+    * Rename pull request `--comment` to `--message`
+    * Rename pull request `--pull` to `--number`
 * **v0.1.1** May 27, 2013
     * Add **Help** task
     * Standardize logs
