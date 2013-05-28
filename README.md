@@ -170,6 +170,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 * **v0.1.1** May 27, 2013
     * Add **Help** task
+    * Standardize logs
+    * Bug fixes
 * **v0.1.0** May 26, 2013
 	* Allow log handlebars template from string
 	* Move apply replacements logic to logger
