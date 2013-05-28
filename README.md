@@ -1,8 +1,8 @@
 # node-gh [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh)
 
-All the power of GitHub in your terminal.
-
 ![Class Octocat](http://eduardolundgren.github.io/node-gh/images/class-octocat.jpg)
+
+> All the power of GitHub in your terminal.
 
 ## Usage
 
@@ -24,7 +24,17 @@ gh help
 
 ## Pull requests
 
-### 1. Listing
+### 1. List
+
+Option           | Usage        | Type
+---              | ---          | ---
+`--list`, `-l`   | **Required** | `Boolean`
+`--all`, `-a`    | *Optional*   | `Boolean`
+`--branch`, `-b` | *Optional*   | `String`
+`--repo`, `-r`   | *Optional*   | `String`
+`--user`, `-s`   | *Optional*   | `String`
+
+#### Examples
 
 * List open pulls requests for the current branch.
 
@@ -44,9 +54,20 @@ gh pr --list --all
 gh pr --list --branch master
     ```
 
-### 2. Fetching
+### 2. Fetch
 
-* Fetch pull request and checkout into a new branch.
+Option           | Usage        | Type
+---              | ---          | ---
+`--fetch`, `-f`  | **Required** | `Boolean`
+`--number`, `-n` | **Required** | `Number`
+`--merge`, `-M`  | *Optional*   | `Boolean`
+`--rebase`, `-R` | *Optional*   | `Boolean`
+`--repo`, `-r`   | *Optional*   | `String`
+`--user`, `-s`   | *Optional*   | `String`
+
+#### Examples
+
+* Fetch pull request and checkout into a new branch `pull-1`.
 
     ```
 gh pr --number 1 --fetch
@@ -61,7 +82,20 @@ gh pr --number 1 --fetch --rebase
 gh pr --number 1 --fetch --merge
     ```
 
-### 3. Merging or rebasing
+### 3. Merge or rebase
+
+Option           | Usage        | Type
+---              | ---          | ---
+`--merge`, `-M`  | **Required** | `Boolean`
+`--rebase`, `-R` | **Required** | `Boolean`
+`--number`, `-n` | *Optional*   | `Number`
+`--branch`, `-b` | *Optional*   | `String`
+`--repo`, `-r`   | *Optional*   | `String`
+`--user`, `-s`   | *Optional*   | `String`
+
+Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`. Omitting `--branch` will merge or rebase into `config.defaultbranch`.
+
+#### Examples
 
 * Merge or rebase pull request into a branch.
 
@@ -73,10 +107,16 @@ gh pr --merge [--number 1] [--branch master]
 gh pr --rebase [--number 1] [--branch master]
     ```
 
-* Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`.
-* Omitting `--branch` will merge or rebase into `config.defaultbranch`.
+### 4. Comment
 
-### 4. Commenting
+Option           | Usage        | Type
+---              | ---          | ---
+`--comment`, `-c`| **Required** | `String`
+`--number`, `-n` | **Required** | `Number`
+`--repo`, `-r`   | *Optional*   | `String`
+`--user`, `-s`   | *Optional*   | `String`
+
+#### Examples
 
 * Comment on a pull request.
 
@@ -84,7 +124,14 @@ gh pr --rebase [--number 1] [--branch master]
 gh pr --number 1 --comment "Merged, thank you!"
     ```
 
-### 5. Forwarding
+### 5. Forward
+
+Option           | Usage        | Type
+---              | ---          | ---
+`--fwd`          | **Required** | `String`
+`--number`, `-n` | **Required** | `Number`
+
+#### Examples
 
 * Forward a pull request to another reviewer.
 
@@ -92,24 +139,54 @@ gh pr --number 1 --comment "Merged, thank you!"
 gh pr --number 1 --fwd username
     ```
 
-### 6. Open and close
+### 6. Open or close
 
-* Close a pull request.
+Option           | Usage        | Type
+---              | ---          | ---
+`--open`, `-o`   | **Required** | `Boolean`
+`--close`, `-C`  | **Required** | `Boolean`
+`--number`, `-n` | **Required** | `Number`
+`--repo`, `-r`   | *Optional*   | `String`
+`--user`, `-s`   | *Optional*   | `String`
+
+#### Examples
+
+* Open a pull request.
 
     ```
 gh pr --number 1 --open
     ```
+* Close a pull request.
 
     ```
 gh pr --number 1 --close
     ```
 
-### 7. Submiting
+* Open or close a pull request that you've sent to someone.
 
-* Submit a pull request.
+    ```
+gh pr --number 1 --close --user eduardolundgren
+    ```
+
+### 7. Submit
+
+Option           | Usage        | Type
+---              | ---          | ---
+`--submit`, `-s` | **Required** | `String`
+`--branch`, `-b` | *Optional*   | `String`
+
+#### Examples
+
+* Submit a pull request using the current branch.
 
     ```
 gh pr --submit eduardolundgren
+    ```
+
+* Submit a pull request using the current branch to dev branch.
+
+    ```
+gh pr --submit eduardolundgren --branch dev
     ```
 
 ## Notifications
@@ -160,7 +237,7 @@ gh nt --watch --user eduardolundgren --repo node-gh
 
 ## Issues
 
-### 1. Creating
+### 1. Create
 
 Option            | Usage        | Type
 ---               | ---          | ---
@@ -191,7 +268,7 @@ gh is --new --title 'Node GH rocks!' --message '**Markdown** support' --user edu
 gh is --new --title 'Node GH rocks!' --label bug,question,test
     ```
 
-### 2. Commenting
+### 2. Comment
 
 Option            | Usage        | Type
 ---               | ---          | ---
@@ -214,7 +291,7 @@ gh is --number 1 --comment 'Node GH rocks!'
 gh is --number 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
     ```
 
-### 3. Listing
+### 3. List
 
 Option            | Usage        | Type
 ---               | ---          | ---
