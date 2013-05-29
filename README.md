@@ -332,11 +332,15 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
-* **v0.1.2** May 28, 2013
+* **v0.1.4** May 28, 2013
     * Add the hability to create an Issue
     * Add the hability to comment on an Issue
     * Rename pull request `--comment` to `--message`
     * Rename pull request `--pull` to `--number`
+* **v0.1.3** May 28, 2013
+	* Remove mustache dependency
+* **v0.1.2** May 28, 2013
+	* Removing wrong number on submit
 * **v0.1.1** May 27, 2013
     * Add **Help** task
     * Standardize logs
