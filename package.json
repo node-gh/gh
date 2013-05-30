@@ -33,6 +33,7 @@
         "cli-color": "0.2.2",
         "cli-log": "0.0.7",
         "cli-prompt": "0.1.0",
+        "commander": "1.1.1",
         "moment ": "2.0.0",
         "handlebars ": "1.0.11",
         "git-wrapper": "0.1.1",
