@@ -174,13 +174,16 @@ Option           | Usage        | Type
 ---              | ---          | ---
 `--submit`, `-s` | **Required** | `String`
 `--branch`, `-b` | *Optional*   | `String`
+`--title`, `-t`  | *Optional*   | `String`
+
+Omitting `--title` will submit a pull request using current branch name as title.
 
 #### Examples
 
 * Submit a pull request using the current branch.
 
     ```
-gh pr --submit eduardolundgren
+gh pr --submit eduardolundgren --title 'Fix #32'
     ```
 
 * Submit a pull request using the current branch to dev branch.
@@ -332,6 +335,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v0.1.5** May 29, 2013
+    * Add the hability to specify a title on 'gh pr --submit'
 * **v0.1.4** May 28, 2013
     * Add the hability to create an Issue
     * Add the hability to comment on an Issue
