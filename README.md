@@ -335,8 +335,10 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
-* **v0.1.5** May 29, 2013
+* **v0.1.6** May 29, 2013
     * Add the hability to specify a title on 'gh pr --submit'
+* **v0.1.5** May 29, 2013
+    * Fix pull request integrity check
 * **v0.1.4** May 28, 2013
     * Add the hability to create an Issue
     * Add the hability to comment on an Issue
