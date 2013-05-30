@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 /*
-* Copyright 2013 Eduardo Lundgren, All Rights Reserved.
-*
-* Code licensed under the BSD License:
-* https://github.com/eduardolundgren/blob/master/LICENSE.md
-*
-* @author Eduardo Lundgren <eduardolundgren@gmail.com>
-*/
+ * Copyright 2013 Eduardo Lundgren, All Rights Reserved.
+ *
+ * Code licensed under the BSD License:
+ * https://github.com/eduardolundgren/blob/master/LICENSE.md
+ *
+ * @author Eduardo Lundgren <eduardolundgren@gmail.com>
+ */
 
 var async = require('async'),
     base = require('../lib/base'),
