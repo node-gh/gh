@@ -5,7 +5,7 @@
 {{#each commands}}
 {{../prefix}}    {{{magentaBright "➜  " name}}} {{{description}}}
 {{#each flags}}
-{{../../prefix}}          {{{greenBright "--" option ", -" shorthand}}  {{#if type}}({{type}}){{/if}}
+{{../../prefix}}          {{#if shorthand}}{{{greenBright "-" shorthand ", "}}{{/if}}{{{greenBright "--" option}}  {{#if type}}({{type}}){{/if}}
 {{/each}}
 {{../prefix}}
 {{/each}}

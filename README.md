@@ -28,11 +28,11 @@ gh help
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--list`, `-l`   | **Required** | `Boolean`
-`--all`, `-a`    | *Optional*   | `Boolean`
-`--branch`, `-b` | *Optional*   | `String`
-`--repo`, `-r`   | *Optional*   | `String`
-`--user`, `-s`   | *Optional*   | `String`
+`-l`, `--list`   | **Required** | `Boolean`
+`-a`, `--all`    | *Optional*   | `Boolean`
+`-b`, `--branch` | *Optional*   | `String`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -58,12 +58,12 @@ gh pr --list --branch master
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--fetch`, `-f`  | **Required** | `Boolean`
-`--number`, `-n` | **Required** | `Number`
-`--merge`, `-M`  | *Optional*   | `Boolean`
-`--rebase`, `-R` | *Optional*   | `Boolean`
-`--repo`, `-r`   | *Optional*   | `String`
-`--user`, `-s`   | *Optional*   | `String`
+`-f`, `--fetch`  | **Required** | `Boolean`
+`-n`, `--number` | **Required** | `Number`
+`-M`, `--merge`  | *Optional*   | `Boolean`
+`-R`, `--rebase` | *Optional*   | `Boolean`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -86,12 +86,12 @@ gh pr --number 1 --fetch --merge
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--merge`, `-M`  | **Required** | `Boolean`
-`--rebase`, `-R` | **Required** | `Boolean`
-`--number`, `-n` | *Optional*   | `Number`
-`--branch`, `-b` | *Optional*   | `String`
-`--repo`, `-r`   | *Optional*   | `String`
-`--user`, `-s`   | *Optional*   | `String`
+`-M`, `--merge`  | **Required** | `Boolean`
+`-R`, `--rebase` | **Required** | `Boolean`
+`-n`, `--number` | *Optional*   | `Number`
+`-b`, `--branch` | *Optional*   | `String`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
 
 Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`. Omitting `--branch` will merge or rebase into `config.defaultbranch`.
 
@@ -111,10 +111,10 @@ gh pr --rebase [--number 1] [--branch master]
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--comment`, `-c`| **Required** | `String`
-`--number`, `-n` | **Required** | `Number`
-`--repo`, `-r`   | *Optional*   | `String`
-`--user`, `-s`   | *Optional*   | `String`
+`-c`, `--comment`| **Required** | `String`
+`-n`, `--number` | **Required** | `Number`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -129,7 +129,7 @@ gh pr --number 1 --comment "Merged, thank you!"
 Option           | Usage        | Type
 ---              | ---          | ---
 `--fwd`          | **Required** | `String`
-`--number`, `-n` | **Required** | `Number`
+`-n`, `--number` | **Required** | `Number`
 
 #### Examples
 
@@ -143,11 +143,11 @@ gh pr --number 1 --fwd username
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--open`, `-o`   | **Required** | `Boolean`
-`--close`, `-C`  | **Required** | `Boolean`
-`--number`, `-n` | **Required** | `Number`
-`--repo`, `-r`   | *Optional*   | `String`
-`--user`, `-s`   | *Optional*   | `String`
+`-o`, `--open`   | **Required** | `Boolean`
+`-C`, `--close`  | **Required** | `Boolean`
+`-n`, `--number` | **Required** | `Number`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -172,9 +172,9 @@ gh pr --number 1 --close --user eduardolundgren
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--submit`, `-s` | **Required** | `String`
-`--branch`, `-b` | *Optional*   | `String`
-`--title`, `-t`  | *Optional*   | `String`
+`-s`, `--submit` | **Required** | `String`
+`-b`, `--branch` | *Optional*   | `String`
+`-t`, `--title`  | *Optional*   | `String`
 
 Omitting `--title` will submit a pull request using current branch name as title.
 
@@ -198,9 +198,9 @@ gh pr --submit eduardolundgren --branch dev
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--latest`, `-l` | **Required** | `Boolean`
-`--repo`, `-r`   | *Optional*   | `String`
-`--user`, `-s`   | *Optional*   | `String`
+`-l`, `--latest` | **Required** | `Boolean`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -220,9 +220,9 @@ gh nt --latest --user eduardolundgren --repo node-gh
 
 Option           | Usage        | Type
 ---              | ---          | ---
-`--watch`, `-w`  | **Required** | `Boolean`
-`--repo`, `-r`   | *Optional*   | `String`
-`--user`, `-s`   | *Optional*   | `String`
+`-w`, `--watch`  | **Required** | `Boolean`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -244,12 +244,12 @@ gh nt --watch --user eduardolundgren --repo node-gh
 
 Option            | Usage        | Type
 ---               | ---          | ---
-`--new`, `-N`     | **Required** | `Boolean`
-`--title`, `-t`   | **Required** | `String`
-`--label`, `-L`   | *Optional*   | `String`
-`--message`, `-m` | *Optional*   | `String`
-`--repo`, `-r`    | *Optional*   | `String`
-`--user`, `-u`    | *Optional*   | `String`
+`-N`, `--new`     | **Required** | `Boolean`
+`-t`, `--title`   | **Required** | `String`
+`-L`, `--label`   | *Optional*   | `String`
+`-m`, `--message` | *Optional*   | `String`
+`-r`, `--repo`    | *Optional*   | `String`
+`-u`, `--user`    | *Optional*   | `String`
 
 #### Examples
 
@@ -275,10 +275,10 @@ gh is --new --title 'Node GH rocks!' --label bug,question,test
 
 Option            | Usage        | Type
 ---               | ---          | ---
-`--comment`, `-c` | **Required** | `String`
-`--number`, `-n`  | **Required** | `Number`
-`--repo`, `-r`    | *Optional*   | `String`
-`--user`, `-u`    | *Optional*   | `String`
+`-c`, `--comment` | **Required** | `String`
+`-n`, `--number`  | **Required** | `Number`
+`-r`, `--repo`    | *Optional*   | `String`
+`-u`, `--user`    | *Optional*   | `String`
 
 #### Examples
 
@@ -298,10 +298,10 @@ gh is --number 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-g
 
 Option            | Usage        | Type
 ---               | ---          | ---
-`--list`, `-l`    | **Required** | `Boolean`
-`--all`, `-a`     | *Optional*   | `String`
-`--repo`, `-r`    | *Optional*   | `String`
-`--user`, `-u`    | *Optional*   | `String`
+`-l`, `--list`    | **Required** | `Boolean`
+`-a`, `--all`     | *Optional*   | `String`
+`-r`, `--repo`    | *Optional*   | `String`
+`-u`, `--user`    | *Optional*   | `String`
 
 #### Examples
 
