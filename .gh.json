@@ -7,5 +7,7 @@
 
     "github_user": "",
 
+    "preview_pull_request_in_browser": true,
+
     "replace": {}
 }
