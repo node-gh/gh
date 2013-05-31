@@ -337,6 +337,7 @@ Contribute new commands to this project by copying and editing the content of [H
 
 * **v0.1.8** May 30, 2013
 
+    * Open issue in browser
     * Open pull request url on the browser after sending it
 
 * **v0.1.7** May 30, 2013
