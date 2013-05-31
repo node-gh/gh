@@ -1,10 +1,11 @@
 {
-    "github": {
-        "user": "",
-        "token": ""
-    },
-    "replace": {
-    },
-    "branchname": "pull-{{number}}",
-    "defaultbranch": "master"
+    "branch_name": "pull-{{number}}",
+
+    "default_branch": "master",
+
+    "github_token": "",
+
+    "github_user": "",
+
+    "replace": {}
 }

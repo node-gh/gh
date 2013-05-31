@@ -93,7 +93,7 @@ Option           | Usage        | Type
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
-Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`. Omitting `--branch` will merge or rebase into `config.defaultbranch`.
+Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`. Omitting `--branch` will merge or rebase into `config.default_branch`.
 
 #### Examples
 
