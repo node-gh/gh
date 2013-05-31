@@ -41,6 +41,8 @@ if (fs.existsSync(commandFilePath)) {
         commandImpl.DETAILS.options,
         commandImpl.DETAILS.shorthands, process.argv, 2);
 
+    options.number = options.number || parseInt(remain[1], 0);
+
     operations.push(git.getRepositoryName);
     operations.push(git.getCurrentBranch);
     operations.push(base.login);
