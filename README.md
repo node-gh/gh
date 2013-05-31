@@ -10,7 +10,7 @@
 
 ## Install
 
-    npm install -g gh
+    [sudo] npm install -g gh
 
 ## Dependencies
 
