@@ -335,8 +335,10 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
-* **v0.1.6** May 30, 2013
+* **v0.1.7** May 30, 2013
     * Add hability to set number without `--number` flag
+
+* **v0.1.6** May 30, 2013
     * Add the hability to specify a title on `gh pr --submit`
     * Add password mask on authentication
     * Bug fixes
