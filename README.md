@@ -338,6 +338,7 @@ Contribute new commands to this project by copying and editing the content of [H
 * **v0.1.11** May 30, 2013
 
     * Fixed error when running command outside of a Git repo
+    * Improve log for listing open and closed pull requests trough --state flag
 
 * **v0.1.10** May 30, 2013
 
