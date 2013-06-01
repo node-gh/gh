@@ -335,6 +335,10 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v0.1.11** May 30, 2013
+
+    * Fixed error when running command outside of a Git repo
+
 * **v0.1.10** May 30, 2013
 
     * Cross platform process.env.HOME
