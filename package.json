@@ -1,7 +1,8 @@
 {
     "name": "gh",
-    "description": "Github command line tools helps you improve using git and github from the terminal.",
+    "description": "GitHub command line tools.",
     "version": "0.1.10",
+    "homepage": "http://nodegh.io",
     "author": {
         "name": "Eduardo Lundgren",
         "email": "eduardolundgren@gmail.com",
@@ -18,6 +19,9 @@
     "repository": {
         "type": "git",
         "url": "git@github.com:eduardolundgren/node-gh.git"
+    },
+    "bugs": {
+        "url": "https://github.com/eduardolundgren/node-gh/issues"
     },
     "keywords": [
         "git", "github", "external", "commands", "helpers"
