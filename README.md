@@ -335,6 +335,10 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v0.1.10** May 30, 2013
+
+    * Cross platform process.env.HOME
+
 * **v0.1.8** May 30, 2013
 
     * Open issue in browser
