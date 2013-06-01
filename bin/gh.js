@@ -41,15 +41,18 @@ if (fs.existsSync(commandFilePath)) {
         commandImpl.DETAILS.options,
         commandImpl.DETAILS.shorthands, process.argv, 2);
 
-    options.number = options.number || parseInt(remain[1], 0);
-
     operations.push(git.getRepositoryName);
     operations.push(git.getCurrentBranch);
     operations.push(base.checkVersion);
     operations.push(base.login);
 
     async.series(operations, function(err, results) {
-        new commandImpl(options, results[0], results[1]).run();
+        options.user = options.user || base.getUser();
+        options.number = options.number || parseInt(remain[1], 10);
+        options.repo = options.repo || results[0];
+        options.currentBranch = options.currentBranch || results[1];
+
+        new commandImpl(options).run();
     });
 }
 else {
