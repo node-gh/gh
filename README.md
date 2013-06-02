@@ -338,6 +338,7 @@ Option            | Usage        | Type
 `-l`, `--list`    | **Required** | `Boolean`
 `-a`, `--all`     | *Optional*   | `Boolean`
 `-d`, `--detailed`| *Optional*   | `Boolean`
+`-L`, `--label`   | *Optional*   | `String`
 `-r`, `--repo`    | *Optional*   | `String`
 `-S`, `--state`   | *Optional*   | [`open`, `closed`]
 `-u`, `--user`    | *Optional*   | `String`
@@ -366,6 +367,12 @@ gh is --list --detailed
 
     ```
 gh is --list --state closed
+    ```
+
+* List issues that contains labels `todo` and `bug`.
+
+    ```
+gh is --list --label todo,bug
     ```
 
 * List all issues on a certain repository.
