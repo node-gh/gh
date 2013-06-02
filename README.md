@@ -32,6 +32,7 @@ Option           | Usage        | Type
 `-a`, `--all`    | *Optional*   | `Boolean`
 `-b`, `--branch` | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
+`-S`, `--state`  | *Optional*   | [`open`, 'closed']
 `-s`, `--user`   | *Optional*   | `String`
 
 #### Examples
