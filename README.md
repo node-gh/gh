@@ -26,14 +26,15 @@ gh help
 
 ### 1. List
 
-Option           | Usage        | Type
----              | ---          | ---
-`-l`, `--list`   | **Required** | `Boolean`
-`-a`, `--all`    | *Optional*   | `Boolean`
-`-b`, `--branch` | *Optional*   | `String`
-`-r`, `--repo`   | *Optional*   | `String`
-`-S`, `--state`  | *Optional*   | [`open`, `closed`]
-`-s`, `--user`   | *Optional*   | `String`
+Option            | Usage        | Type
+---               | ---          | ---
+`-l`, `--list`    | **Required** | `Boolean`
+`-a`, `--all`     | *Optional*   | `Boolean`
+`-d`, `--detailed`| *Optional*   | `Boolean`
+`-b`, `--branch`  | *Optional*   | `String`
+`-r`, `--repo`    | *Optional*   | `String`
+`-S`, `--state`   | *Optional*   | [`open`, `closed`]
+`-s`, `--user`    | *Optional*   | `String`
 
 #### Examples
 
@@ -47,6 +48,12 @@ gh pr --list
 
     ```
 gh pr --list --all
+    ```
+
+* List open pulls requests with link and content.
+
+    ```
+gh pr --list --detailed
     ```
 
 * List open pulls requests for a branch.
@@ -329,7 +336,8 @@ gh pr --number 1 --close --user eduardolundgren
 Option            | Usage        | Type
 ---               | ---          | ---
 `-l`, `--list`    | **Required** | `Boolean`
-`-a`, `--all`     | *Optional*   | `String`
+`-a`, `--all`     | *Optional*   | `Boolean`
+`-d`, `--detailed`| *Optional*   | `Boolean`
 `-r`, `--repo`    | *Optional*   | `String`
 `-u`, `--user`    | *Optional*   | `String`
 
@@ -345,6 +353,12 @@ gh is --list
 
     ```
 gh is --list --all
+    ```
+
+* List issues with link and content.
+
+    ```
+gh is --list --detailed
     ```
 
 * List all issues on a certain repository.
