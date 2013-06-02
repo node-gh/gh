@@ -295,7 +295,36 @@ gh is --number 1 --comment 'Node GH rocks!'
 gh is --number 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
     ```
 
-### 3. List
+### 3. Open or close
+
+Option           | Usage        | Type
+---              | ---          | ---
+`-o`, `--open`   | **Required** | `Boolean`
+`-C`, `--close`  | **Required** | `Boolean`
+`-n`, `--number` | **Required** | `Number`
+`-r`, `--repo`   | *Optional*   | `String`
+`-s`, `--user`   | *Optional*   | `String`
+
+#### Examples
+
+* Open an issue.
+
+    ```
+gh is 1 --open
+    ```
+* Close an issue.
+
+    ```
+gh pr 1 --close
+    ```
+
+* Open or close an issue that you've sent to someone.
+
+    ```
+gh pr --number 1 --close --user eduardolundgren
+    ```
+
+### 4. List
 
 Option            | Usage        | Type
 ---               | ---          | ---
@@ -336,6 +365,10 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v0.1.12** June 2, 2013
+
+    * Add the hability to open/close an Issue
+
 * **v0.1.11** May 30, 2013
 
     * Fixed error when running command outside of a Git repo
@@ -351,55 +384,83 @@ Contribute new commands to this project by copying and editing the content of [H
     * Open pull request url on the browser after sending it
 
 * **v0.1.7** May 30, 2013
+
     * Add hability to set number without `--number` flag
 
 * **v0.1.6** May 30, 2013
+
     * Add the hability to specify a title on `gh pr --submit`
     * Add password mask on authentication
     * Bug fixes
+
 * **v0.1.5** May 29, 2013
+
     * Fix pull request integrity check
+
 * **v0.1.4** May 28, 2013
+
     * Add the hability to create an Issue
     * Add the hability to comment on an Issue
     * Rename pull request `--comment` to `--message`
     * Rename pull request `--pull` to `--number`
+
 * **v0.1.3** May 28, 2013
+
 	* Remove mustache dependency
+
 * **v0.1.2** May 28, 2013
+
 	* Removing wrong number on submit
+
 * **v0.1.1** May 27, 2013
+
     * Add **Help** task
     * Standardize logs
     * Bug fixes
+
 * **v0.1.0** May 26, 2013
+
 	* Allow log handlebars template from string
 	* Move apply replacements logic to logger
     * Use handlebars templates instead of strings
     * Refactoring template integration with logger
     * Rename pull request `--comment` to `--message`
     * Add **Issues** task
+
 * **v0.0.7** May 24, 2013
+
     * Add pull request forward command
     * Add Travis continous integration with JSHint
     * Create a new website under gh-pages branch
     * Update dependency version: git-wrapper@0.1.1
     * Add **Hello World** and **Notification** tasks
+
 * **v0.0.6** May 17, 2013
+
     * Add hability to merge or rebase pull request
     * Add base.getUser and git.merge helpers
+
 * **v0.0.5** May 16, 2013
+
     * Add login to be invoked by default in series
+
 * **v0.0.4** May 16, 2013
+
     * Create ~/.gh.json if needed
+
 * **v0.0.3** May 16, 2013
+
     * Merge user ~/.gh.json with default .gh.json
     * Add default .gh.json
     * Fix bin path
+
 * **v0.0.2** May 16, 2013
+
     * Add fetch, open/close, message
     * Use moment humanize utility
+
 * **v0.0.1** May 14, 2013
+
     * Initial commit
 
 ## License
