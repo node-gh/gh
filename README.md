@@ -339,6 +339,7 @@ Option            | Usage        | Type
 `-a`, `--all`     | *Optional*   | `Boolean`
 `-d`, `--detailed`| *Optional*   | `Boolean`
 `-r`, `--repo`    | *Optional*   | `String`
+`-S`, `--state`   | *Optional*   | [`open`, `closed`]
 `-u`, `--user`    | *Optional*   | `String`
 
 #### Examples
@@ -359,6 +360,12 @@ gh is --list --all
 
     ```
 gh is --list --detailed
+    ```
+
+* List only closed issues on the current repository.
+
+    ```
+gh is --list --state closed
     ```
 
 * List all issues on a certain repository.
