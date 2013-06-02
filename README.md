@@ -393,11 +393,11 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
-* **v0.1.12** June 2, 2013
+* **v0.1.11** June 2, 2013
+    * Add `--label`, `--state` and `--detailed` flags on listing Issues
     * Add the hability to open/close an Issue
-* **v0.1.11** May 30, 2013
     * Fixed error when running command outside of a Git repo
-    * Improve log for listing open and closed pull requests trough --state flag
+    * Improve log for listing open and closed pull requests trough `--state` flag
 * **v0.1.10** May 30, 2013
     * Cross platform process.env.HOME
 * **v0.1.8** May 30, 2013
