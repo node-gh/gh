@@ -403,6 +403,10 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v0.1.13** June 3, 2013
+
+    * Fixed error using wrong branch name when submitting a pull request
+
 * **v0.1.12** June 3, 2013
     * Enable fetch PRs from private repos
 * **v0.1.11** June 2, 2013
