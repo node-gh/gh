@@ -78,16 +78,16 @@ Option           | Usage        | Type
 * Fetch pull request and checkout into a new branch `pull-1`.
 
     ```
-gh pr --number 1 --fetch
+gh pr 1 --fetch
     ```
 
 * Fech pull request rebasing or merging into the current branch.
 
     ```
-gh pr --number 1 --fetch --rebase
+gh pr 1 --fetch --rebase
     ```
     ```
-gh pr --number 1 --fetch --merge
+gh pr 1 --fetch --merge
     ```
 
 ### 3. Merge or rebase
@@ -108,11 +108,21 @@ Omitting `--number` will try to guess the pull number from branch name e.g. `pul
 * Merge or rebase pull request into a branch.
 
     ```
-gh pr --merge [--number 1] [--branch master]
+gh pr 1 --merge
     ```
 
     ```
-gh pr --rebase [--number 1] [--branch master]
+gh pr 1 --rebase
+    ```
+
+* Merge or rebase pull request into branch `dev`.
+
+    ```
+gh pr 1 --rebase --branch dev
+    ```
+
+    ```
+gh pr 1 --merge --branch dev
     ```
 
 ### 4. Comment
@@ -129,7 +139,7 @@ Option           | Usage        | Type
 * Comment on a pull request.
 
     ```
-gh pr --number 1 --comment "Merged, thank you!"
+gh pr 1 --comment "Merged, thank you!"
     ```
 
 ### 5. Forward
@@ -144,7 +154,7 @@ Option           | Usage        | Type
 * Forward a pull request to another reviewer.
 
     ```
-gh pr --number 1 --fwd username
+gh pr 1 --fwd username
     ```
 
 ### 6. Open or close
@@ -162,18 +172,18 @@ Option           | Usage        | Type
 * Open a pull request.
 
     ```
-gh pr --number 1 --open
+gh pr 1 --open
     ```
 * Close a pull request.
 
     ```
-gh pr --number 1 --close
+gh pr 1 --close
     ```
 
 * Open or close a pull request that you've sent to someone.
 
     ```
-gh pr --number 1 --close --user eduardolundgren
+gh pr 1 --close --user eduardolundgren
     ```
 
 ### 7. Submit
@@ -293,13 +303,13 @@ Option            | Usage        | Type
 * Comment on an issue of the current repository.
 
     ```
-gh is --number 1 --comment 'Node GH rocks!'
+gh is 1 --comment 'Node GH rocks!'
     ```
 
 * Comment on an issue of a certain repository.
 
     ```
-gh is --number 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
+gh is 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
     ```
 
 ### 3. Open or close
@@ -317,18 +327,18 @@ Option           | Usage        | Type
 * Open an issue.
 
     ```
-gh is --number 1 --open
+gh is 1 --open
     ```
 * Close an issue.
 
     ```
-gh pr --number 1 --close
+gh pr 1 --close
     ```
 
 * Open or close an issue that you've sent to someone.
 
     ```
-gh pr --number 1 --close --user eduardolundgren
+gh pr 1 --close --user eduardolundgren
     ```
 
 ### 4. List
