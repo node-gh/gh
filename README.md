@@ -403,6 +403,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v0.1.12** June 3, 2013
+    * Enable fetch PRs from private repos
 * **v0.1.11** June 2, 2013
     * Add `--label`, `--state` and `--detailed` flags on listing Issues
     * Add the hability to open/close an Issue
