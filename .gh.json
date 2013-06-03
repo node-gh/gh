@@ -1,6 +1,4 @@
 {
-    "branch_name": "pull-{{number}}",
-
     "default_branch": "master",
 
     "github_token": "",
@@ -10,6 +8,8 @@
     "open_issue_in_browser": true,
 
     "open_pull_request_in_browser": true,
+
+    "pull_branch_name_prefix": "pull-",
 
     "replace": {}
 }
