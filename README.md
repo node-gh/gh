@@ -6,7 +6,7 @@
 
 ## Usage
 
-    gh  [command] [--flags]
+    gh  [command] [payload] [--flags]
 
 ## Install
 
@@ -22,7 +22,15 @@ In order to sucessfully run this project you must have [NodeJS](http://nodejs.or
 gh help
 ```
 
-## Pull requests
+> **Alias:** `gh ?`
+
+## Pull request
+
+```
+gh pull-request
+```
+
+> **Alias:** `gh pr`
 
 ### 1. List
 
@@ -41,7 +49,7 @@ Option            | Usage        | Type
 * List open pulls requests for the current branch.
 
     ```
-gh pr --list
+gh pr
     ```
 
 * List open pulls requests for all branches.
@@ -78,7 +86,7 @@ Option           | Usage        | Type
 * Fetch pull request and checkout into a new branch `pull-1`.
 
     ```
-gh pr 1 --fetch
+gh pr 1
     ```
 
 * Fech pull request rebasing or merging into the current branch.
@@ -212,6 +220,13 @@ gh pr --submit eduardolundgren --branch dev
 
 ## Notifications
 
+```
+gh notifications
+```
+
+> **Alias:** `gh nt`
+
+
 ### 1. Latest
 
 Option           | Usage        | Type
@@ -225,7 +240,7 @@ Option           | Usage        | Type
 * Display the latest activities on the current repository.
 
     ```
-gh nt --latest
+gh nt
     ```
 
 * Display the latest activities on a certain repository.
@@ -256,7 +271,13 @@ gh nt --watch
 gh nt --watch --user eduardolundgren --repo node-gh
     ```
 
-## Issues
+## Issue
+
+```
+gh issue
+```
+
+> **Alias:** `gh is`
 
 ### 1. Create
 
@@ -274,13 +295,13 @@ Option            | Usage        | Type
 * Create a new issue on the current repository.
 
     ```
-gh is --new --title 'Node GH rocks!' --message '**Markdown** support'
+gh is 'Node GH rocks!' 'Body with **Markdown** support'
     ```
 
 * Create a new issue on a certain repository.
 
     ```
-gh is --new --title 'Node GH rocks!' --message '**Markdown** support' --user eduardolundgren --repo node-gh
+gh is --new --title 'Node GH rocks!' --message 'Body with **Markdown** support' --user eduardolundgren --repo node-gh
     ```
 
 * Create a new issue with labels.
@@ -358,7 +379,7 @@ Option            | Usage        | Type
 * List all issues on the current repository.
 
     ```
-gh is --list
+gh is
     ```
 
 * List all issues from all repositories.
