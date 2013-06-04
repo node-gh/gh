@@ -1,8 +1,22 @@
-# node-gh [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh)
+# Node GH [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh)
 
 ![Class Octocat](http://eduardolundgren.github.io/node-gh/images/class-octocat.jpg)
 
 > All the power of GitHub in your terminal.
+
+## Table of contents
+
+* [Usage](https://github.com/eduardolundgren/node-gh#usage)
+* [Install](https://github.com/eduardolundgren/node-gh#install)
+* [Dependencies](https://github.com/eduardolundgren/node-gh#dependencies)
+* [Available commands](https://github.com/eduardolundgren/node-gh#available-commands)
+	* [Pull requests](https://github.com/eduardolundgren/node-gh#pull-requests)
+	* [Notifications](https://github.com/eduardolundgren/node-gh#notifications)
+	* [Issues](https://github.com/eduardolundgren/node-gh#issues)
+* [Team](https://github.com/eduardolundgren/node-gh#team)
+* [Contributing](https://github.com/eduardolundgren/node-gh#contributing)
+* [History](https://github.com/eduardolundgren/node-gh#history)
+* [License](https://github.com/eduardolundgren/node-gh#license)
 
 ## Usage
 
@@ -24,7 +38,7 @@ gh help
 
 > **Alias:** `gh ?`
 
-## Pull request
+## Pull requests
 
 ```
 gh pull-request
@@ -271,7 +285,7 @@ gh nt --watch
 gh nt --watch --user eduardolundgren --repo node-gh
     ```
 
-## Issue
+## Issues
 
 ```
 gh issue
