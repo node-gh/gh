@@ -9,6 +9,7 @@
  * @author Eduardo Lundgren <eduardolundgren@gmail.com>
  */
 
+// -- Requires -----------------------------------------------------------------
 var async = require('async'),
     base = require('../lib/base'),
     fs = require('fs'),
@@ -16,15 +17,19 @@ var async = require('async'),
     help = require('../lib/cmds/help').Impl.prototype,
     logger = require('../lib/logger'),
     nopt = require('nopt'),
-    commandFilePath,
-    commandImpl,
+    path = require('path'),
+    command,
+    commandDir,
+    commandFiles,
+    commandPath,
     cooked,
     operations,
     options,
     parsed,
-    remain,
-    payload;
+    payload,
+    remain;
 
+// -- Init ---------------------------------------------------------------------
 operations = [];
 parsed = nopt(process.argv);
 remain = parsed.argv.remain;
@@ -34,14 +39,33 @@ if (!remain.length) {
     process.exit(0);
 }
 
-commandFilePath = __dirname + '/../lib/cmds/' + remain[0] + '.js';
+commandDir = path.join(__dirname, '..', 'lib', 'cmds');
+commandPath = path.join(commandDir, remain[0] + '.js');
 
-if (fs.existsSync(commandFilePath)) {
-    commandImpl = require(commandFilePath).Impl;
+// -- Find command -------------------------------------------------------------
+if (fs.existsSync(commandPath)) {
+    command = require(commandPath).Impl;
+}
+else {
+    commandFiles = base.find(commandDir, /\.js$/i);
+    commandFiles.every(function(file) {
+        commandPath = path.join(commandDir, file);
+        command = require(commandPath).Impl;
 
+        if (command.DETAILS.alias === remain[0]) {
+            return false;
+        }
+
+        command = null;
+        return true;
+    });
+}
+
+// -- Run command --------------------------------------------------------------
+if (command) {
     options = nopt(
-        commandImpl.DETAILS.options,
-        commandImpl.DETAILS.shorthands, process.argv, 2);
+        command.DETAILS.options,
+        command.DETAILS.shorthands, process.argv, 2);
 
     cooked = options.argv.cooked;
 
@@ -55,13 +79,13 @@ if (fs.existsSync(commandFilePath)) {
         options.repo = options.repo || results[2];
         options.currentBranch = options.currentBranch || results[3];
 
-        if ((remain.length === cooked.length) && commandImpl.DETAILS.payload) {
+        if ((remain.length === cooked.length) && command.DETAILS.payload) {
             payload = options.argv.cooked.concat();
             payload.shift();
-            commandImpl.DETAILS.payload(payload, options);
+            command.DETAILS.payload(payload, options);
         }
 
-        new commandImpl(options).run();
+        new command(options).run();
     });
 }
 else {
