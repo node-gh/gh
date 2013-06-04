@@ -1,6 +1,6 @@
 # Node GH [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh)
 
-![Class Octocat](http://eduardolundgren.github.io/node-gh/images/class-octocat.jpg)
+![Class Octocat](http://nodegh.io/images/class-octocat.jpg)
 
 > All the power of GitHub in your terminal.
 
@@ -9,6 +9,7 @@
 * [Usage](https://github.com/eduardolundgren/node-gh#usage)
 * [Install](https://github.com/eduardolundgren/node-gh#install)
 * [Dependencies](https://github.com/eduardolundgren/node-gh#dependencies)
+* [Demonstration](https://github.com/eduardolundgren/node-gh#demonstration)
 * [Available commands](https://github.com/eduardolundgren/node-gh#available-commands)
 	* [Pull requests](https://github.com/eduardolundgren/node-gh#pull-requests)
 	* [Notifications](https://github.com/eduardolundgren/node-gh#notifications)
@@ -20,7 +21,7 @@
 
 ## Usage
 
-    gh  [command] [payload] [--flags]
+    gh [command] [payload] [--flags]
 
 ## Install
 
@@ -29,6 +30,10 @@
 ## Dependencies
 
 In order to sucessfully run this project you must have [NodeJS](http://nodejs.org/download/) installed.
+
+## Demonstration
+
+[![Demo](http://nodegh.io/images/nodegh-demo.jpg)](http://ascii.io/a/3306/)
 
 ## Available commands
 
