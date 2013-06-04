@@ -18,10 +18,12 @@ var async = require('async'),
     nopt = require('nopt'),
     commandFilePath,
     commandImpl,
+    cooked,
     operations,
     options,
     parsed,
-    remain;
+    remain,
+    payload;
 
 operations = [];
 parsed = nopt(process.argv);
@@ -41,6 +43,8 @@ if (fs.existsSync(commandFilePath)) {
         commandImpl.DETAILS.options,
         commandImpl.DETAILS.shorthands, process.argv, 2);
 
+    cooked = options.argv.cooked;
+
     operations.push(base.login);
     operations.push(base.checkVersion);
     operations.push(git.getRepositoryName);
@@ -48,9 +52,14 @@ if (fs.existsSync(commandFilePath)) {
 
     async.series(operations, function(err, results) {
         options.user = options.user || base.getUser();
-        options.number = options.number || parseInt(remain[1], 10);
-        options.repo = options.repo || results[0];
-        options.currentBranch = options.currentBranch || results[1];
+        options.repo = options.repo || results[2];
+        options.currentBranch = options.currentBranch || results[3];
+
+        if ((remain.length === cooked.length) && commandImpl.DETAILS.payload) {
+            payload = options.argv.cooked.concat();
+            payload.shift();
+            commandImpl.DETAILS.payload(payload, options);
+        }
 
         new commandImpl(options).run();
     });
