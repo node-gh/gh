@@ -36,8 +36,6 @@ In order to sucessfully run this project you must have [NodeJS](http://nodejs.or
 gh help
 ```
 
-> **Alias:** `gh ?`
-
 ## Pull requests
 
 ```
