@@ -95,7 +95,8 @@ iframe {
   background: #3498DB;
 }
 
-.install h2 {
+.install h2,
+.install a {
   color: #226491;
 }
 
