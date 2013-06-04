@@ -41,10 +41,10 @@ if (fs.existsSync(commandFilePath)) {
         commandImpl.DETAILS.options,
         commandImpl.DETAILS.shorthands, process.argv, 2);
 
+    operations.push(base.login);
+    operations.push(base.checkVersion);
     operations.push(git.getRepositoryName);
     operations.push(git.getCurrentBranch);
-    operations.push(base.checkVersion);
-    operations.push(base.login);
 
     async.series(operations, function(err, results) {
         options.user = options.user || base.getUser();
