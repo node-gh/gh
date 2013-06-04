@@ -436,10 +436,11 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.0.0** June 4, 2013
+    * Rename commands and add shortcut for them
+    * Add default action for commands when no flags is passed
 * **v0.1.13** June 3, 2013
-
     * Fixed error using wrong branch name when submitting a pull request
-
 * **v0.1.12** June 3, 2013
     * Enable fetch PRs from private repos
 * **v0.1.11** June 2, 2013
