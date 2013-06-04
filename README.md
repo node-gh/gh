@@ -217,6 +217,7 @@ Option           | Usage        | Type
 ---              | ---          | ---
 `-s`, `--submit` | **Required** | `String`
 `-b`, `--branch` | *Optional*   | `String`
+`-r`, `--repo`   | *Optional*   | `String`
 `-t`, `--title`  | *Optional*   | `String`
 
 Omitting `--title` will submit a pull request using current branch name as title.
