@@ -3,7 +3,7 @@
 {{prefix}} List of available commands:
 {{prefix}}
 {{#each commands}}
-{{../prefix}}    {{{magentaBright "➜  " name}}} {{{description}}}
+{{../prefix}}    {{{magentaBright "➜  "}}}{{#if alias}}{{{magentaBright alias ", "}}}{{/if}}{{{magentaBright name}}} {{{description}}}
 {{#each flags}}
 {{../../prefix}}          {{#if shorthand}}{{{greenBright "-" shorthand ", "}}{{/if}}{{{greenBright "--" option}}  {{#if type}}({{type}}){{/if}}
 {{/each}}
