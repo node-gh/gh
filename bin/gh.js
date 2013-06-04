@@ -78,6 +78,7 @@ if (command) {
         options.user = options.user || base.getUser();
         options.repo = options.repo || results[2];
         options.currentBranch = options.currentBranch || results[3];
+        options.number = options.number || parseInt(remain[1], 10);
 
         if ((remain.length === cooked.length) && command.DETAILS.payload) {
             payload = options.argv.cooked.concat();
