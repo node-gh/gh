@@ -449,6 +449,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.1.0** June 5, 2013
+    * Add `--milestone` filter flag on listing issues
 * **v1.0.0** June 4, 2013
     * Rename commands and add shortcut for them
     * Add default action for commands when no flags is passed
@@ -457,7 +459,7 @@ Contribute new commands to this project by copying and editing the content of [H
 * **v0.1.12** June 3, 2013
     * Enable fetch PRs from private repos
 * **v0.1.11** June 2, 2013
-    * Add `--label`, `--state` and `--detailed` flags on listing Issues
+    * Add `--label`, `--state` and `--detailed` flags on listing issues
     * Add the hability to open/close an Issue
     * Fixed error when running command outside of a Git repo
     * Improve log for listing open and closed pull requests trough `--state` flag
