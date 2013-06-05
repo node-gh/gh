@@ -382,15 +382,16 @@ gh pr 1 --close --user eduardolundgren
 
 ### 4. List
 
-Option            | Usage        | Type
----               | ---          | ---
-`-l`, `--list`    | **Required** | `Boolean`
-`-a`, `--all`     | *Optional*   | `Boolean`
-`-d`, `--detailed`| *Optional*   | `Boolean`
-`-L`, `--label`   | *Optional*   | `String`
-`-r`, `--repo`    | *Optional*   | `String`
-`-S`, `--state`   | *Optional*   | [`open`, `closed`]
-`-u`, `--user`    | *Optional*   | `String`
+Option             | Usage        | Type
+---                | ---          | ---
+`-l`, `--list`     | **Required** | `Boolean`
+`-a`, `--all`      | *Optional*   | `Boolean`
+`-d`, `--detailed` | *Optional*   | `Boolean`
+`-L`, `--label`    | *Optional*   | `String`
+`-M`, `--milestone`| *Optional*   | `Number`
+`-r`, `--repo`     | *Optional*   | `String`
+`-S`, `--state`    | *Optional*   | [`open`, `closed`]
+`-u`, `--user`     | *Optional*   | `String`
 
 #### Examples
 
@@ -416,6 +417,12 @@ gh is --list --detailed
 
     ```
 gh is --list --state closed
+    ```
+
+* List issues filtered by milestone.
+
+    ```
+gh is --list --milestone 1
     ```
 
 * List issues that contains labels `todo` and `bug`.
