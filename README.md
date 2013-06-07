@@ -11,9 +11,10 @@
 * [Dependencies](https://github.com/eduardolundgren/node-gh#dependencies)
 * [Demonstration](https://github.com/eduardolundgren/node-gh#demonstration)
 * [Available commands](https://github.com/eduardolundgren/node-gh#available-commands)
-	* [Pull requests](https://github.com/eduardolundgren/node-gh#pull-requests)
-	* [Notifications](https://github.com/eduardolundgren/node-gh#notifications)
-	* [Issues](https://github.com/eduardolundgren/node-gh#issues)
+    * [Pull requests](https://github.com/eduardolundgren/node-gh#pull-requests)
+    * [Notifications](https://github.com/eduardolundgren/node-gh#notifications)
+    * [Issues](https://github.com/eduardolundgren/node-gh#issues)
+    * [User](https://github.com/eduardolundgren/node-gh#user)
 * [Team](https://github.com/eduardolundgren/node-gh#team)
 * [Contributing](https://github.com/eduardolundgren/node-gh#contributing)
 * [History](https://github.com/eduardolundgren/node-gh#history)
@@ -437,6 +438,35 @@ gh is --list --label todo,bug
 gh is --list --user eduardolundgren --repo node-gh
     ```
 
+## User
+
+```
+gh user
+```
+
+> **Alias:** `gh us`
+
+### 1. Login/Logout
+
+Option            | Usage        | Type
+---               | ---          | ---
+`-l`, `--login`   | **Required** | `Boolean`
+`-L`, `--logout`  | **Required** | `Boolean`
+
+#### Examples
+
+* Login.
+
+    ```
+gh user --login
+    ```
+
+* Logout.
+
+    ```
+gh user --logout
+    ```
+
 ## Team
 
 [![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/)
@@ -484,16 +514,16 @@ Contribute new commands to this project by copying and editing the content of [H
     * Rename pull request `--comment` to `--message`
     * Rename pull request `--pull` to `--number`
 * **v0.1.3** May 28, 2013
-	* Remove mustache dependency
+    * Remove mustache dependency
 * **v0.1.2** May 28, 2013
-	* Removing wrong number on submit
+    * Removing wrong number on submit
 * **v0.1.1** May 27, 2013
     * Add **Help** task
     * Standardize logs
     * Bug fixes
 * **v0.1.0** May 26, 2013
-	* Allow log handlebars template from string
-	* Move apply replacements logic to logger
+  * Allow log handlebars template from string
+  * Move apply replacements logic to logger
     * Use handlebars templates instead of strings
     * Refactoring template integration with logger
     * Rename pull request `--comment` to `--message`
