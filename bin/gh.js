@@ -90,6 +90,10 @@ if (command) {
         options.user = options.user || results[3];
         options.repo = options.repo || results[4];
 
+        if (options.all) {
+            options.user = base.getUser();
+        }
+
         if ((remain.length === cooked.length) && command.DETAILS.payload) {
             payload = options.argv.cooked.concat();
             payload.shift();
