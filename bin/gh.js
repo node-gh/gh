@@ -68,6 +68,7 @@ if (command) {
         command.DETAILS.shorthands, process.argv, 2);
 
     cooked = options.argv.cooked;
+    remain = options.argv.remain;
 
     operations.push(base.login);
     operations.push(base.checkVersion);
