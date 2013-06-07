@@ -455,19 +455,21 @@ Option            | Usage        | Type
 
 #### Examples
 
-* Login.
+* Login or show current logged in GitHub user.
 
     ```
 gh user --login
     ```
 
-* Logout.
+* Logout current GitHub account.
 
     ```
 gh user --logout
     ```
 
 ## Team
+
+Node GH is maintained by these guys and some awesome [contributors](https://github.com/eduardolundgren/node-gh/graphs/contributors).
 
 [![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/)
 --- | ---
@@ -479,6 +481,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.2.0** June 7, 2013
+    * Add hability to login with a different GitHub user with `gh user`.
 * **v1.1.1** June 6, 2013
     * Bug fixes
 * **v1.1.0** June 5, 2013
