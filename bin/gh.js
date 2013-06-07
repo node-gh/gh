@@ -87,11 +87,13 @@ if (command) {
 
     async.series(operations, function(err, results) {
         options.currentBranch = options.currentBranch || results[2];
-        options.user = options.user || results[3];
         options.repo = options.repo || results[4];
 
         if (options.all) {
-            options.user = base.getUser();
+            options.user = options.user || base.getUser();
+        }
+        else {
+            options.user = options.user || results[3];
         }
 
         if ((remain.length === cooked.length) && command.DETAILS.payload) {
