@@ -449,6 +449,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.1.1** June 6, 2013
+    * Bug fixes
 * **v1.1.0** June 5, 2013
     * Add `--milestone` filter flag on listing issues
 * **v1.0.0** June 4, 2013
