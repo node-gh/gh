@@ -22,6 +22,7 @@ var async = require('async'),
     commandDir,
     commandFiles,
     commandPath,
+    config,
     cooked,
     operations,
     options,
@@ -30,6 +31,7 @@ var async = require('async'),
     remain;
 
 // -- Init ---------------------------------------------------------------------
+config = base.getGlobalConfig();
 operations = [];
 parsed = nopt(process.argv);
 remain = parsed.argv.remain;
@@ -70,16 +72,23 @@ if (command) {
     cooked = options.argv.cooked;
     remain = options.argv.remain;
 
+    options.number = options.number || parseInt(remain[1], 10);
+    options.remote = options.remote || config.default_remote;
+
     operations.push(base.login);
     operations.push(base.checkVersion);
-    operations.push(git.getRepositoryName);
     operations.push(git.getCurrentBranch);
+    operations.push(function(callback) {
+        git.getUser(options.remote, callback);
+    });
+    operations.push(function(callback) {
+        git.getRepo(options.remote, callback);
+    });
 
     async.series(operations, function(err, results) {
-        options.user = options.user || base.getUser();
-        options.repo = options.repo || results[2];
-        options.currentBranch = options.currentBranch || results[3];
-        options.number = options.number || parseInt(remain[1], 10);
+        options.currentBranch = options.currentBranch || results[2];
+        options.user = options.user || results[3];
+        options.repo = options.repo || results[4];
 
         if ((remain.length === cooked.length) && command.DETAILS.payload) {
             payload = options.argv.cooked.concat();
