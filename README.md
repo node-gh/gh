@@ -15,6 +15,7 @@
     * [Notifications](https://github.com/eduardolundgren/node-gh#notifications)
     * [Issues](https://github.com/eduardolundgren/node-gh#issues)
     * [User](https://github.com/eduardolundgren/node-gh#user)
+    * [Alias](https://github.com/eduardolundgren/node-gh#alias)
 * [Team](https://github.com/eduardolundgren/node-gh#team)
 * [Contributing](https://github.com/eduardolundgren/node-gh#contributing)
 * [History](https://github.com/eduardolundgren/node-gh#history)
@@ -58,6 +59,7 @@ Option            | Usage        | Type
 `-a`, `--all`     | *Optional*   | `Boolean`
 `-d`, `--detailed`| *Optional*   | `Boolean`
 `-b`, `--branch`  | *Optional*   | `String`
+`--remote`        | *Optional*   | `String`
 `-r`, `--repo`    | *Optional*   | `String`
 `-S`, `--state`   | *Optional*   | [`open`, `closed`]
 `-s`, `--user`    | *Optional*   | `String`
@@ -96,6 +98,7 @@ Option           | Usage        | Type
 `-n`, `--number` | **Required** | `Number`
 `-M`, `--merge`  | *Optional*   | `Boolean`
 `-R`, `--rebase` | *Optional*   | `Boolean`
+`--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
@@ -124,6 +127,7 @@ Option           | Usage        | Type
 `-R`, `--rebase` | **Required** | `Boolean`
 `-n`, `--number` | *Optional*   | `Number`
 `-b`, `--branch` | *Optional*   | `String`
+`--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
@@ -157,6 +161,7 @@ Option           | Usage        | Type
 ---              | ---          | ---
 `-c`, `--comment`| **Required** | `String`
 `-n`, `--number` | **Required** | `Number`
+`--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
@@ -190,6 +195,7 @@ Option           | Usage        | Type
 `-o`, `--open`   | **Required** | `Boolean`
 `-C`, `--close`  | **Required** | `Boolean`
 `-n`, `--number` | **Required** | `Number`
+`--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
@@ -251,6 +257,7 @@ gh notifications
 Option           | Usage        | Type
 ---              | ---          | ---
 `-l`, `--latest` | **Required** | `Boolean`
+`--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
@@ -273,6 +280,7 @@ gh nt --latest --user eduardolundgren --repo node-gh
 Option           | Usage        | Type
 ---              | ---          | ---
 `-w`, `--watch`  | **Required** | `Boolean`
+`--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
@@ -306,6 +314,7 @@ Option            | Usage        | Type
 `-t`, `--title`   | **Required** | `String`
 `-L`, `--label`   | *Optional*   | `String`
 `-m`, `--message` | *Optional*   | `String`
+`--remote`        | *Optional*   | `String`
 `-r`, `--repo`    | *Optional*   | `String`
 `-u`, `--user`    | *Optional*   | `String`
 
@@ -335,6 +344,7 @@ Option            | Usage        | Type
 ---               | ---          | ---
 `-c`, `--comment` | **Required** | `String`
 `-n`, `--number`  | **Required** | `Number`
+`--remote`        | *Optional*   | `String`
 `-r`, `--repo`    | *Optional*   | `String`
 `-u`, `--user`    | *Optional*   | `String`
 
@@ -359,6 +369,7 @@ Option           | Usage        | Type
 `-o`, `--open`   | **Required** | `Boolean`
 `-C`, `--close`  | **Required** | `Boolean`
 `-n`, `--number` | **Required** | `Number`
+`--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
 `-s`, `--user`   | *Optional*   | `String`
 
@@ -390,6 +401,7 @@ Option             | Usage        | Type
 `-d`, `--detailed` | *Optional*   | `Boolean`
 `-L`, `--label`    | *Optional*   | `String`
 `-M`, `--milestone`| *Optional*   | `Number`
+`--remote`         | *Optional*   | `String`
 `-r`, `--repo`     | *Optional*   | `String`
 `-S`, `--state`    | *Optional*   | [`open`, `closed`]
 `-u`, `--user`     | *Optional*   | `String`
@@ -467,6 +479,43 @@ gh user --login
 gh user --logout
     ```
 
+## Alias
+
+```
+gh alias
+```
+
+> **Alias:** `gh al`
+
+### 1. Add
+
+Option            | Usage        | Type
+---               | ---          | ---
+`-a`, `--add`     | **Required** | `String`
+`-u`, `--user`    | **Required** | `String`
+
+#### Examples
+
+* Create alias for username.
+
+    ```
+gh alias --add zeno --user zenorocha
+    ```
+
+### 2. Remove
+
+Option            | Usage        | Type
+---               | ---          | ---
+`-r`, `--remove`  | **Required** | `String`
+
+#### Examples
+
+* Remove alias.
+
+    ```
+gh alias --remove zeno
+    ```
+
 ## Team
 
 Node GH is maintained by these guys and some awesome [contributors](https://github.com/eduardolundgren/node-gh/graphs/contributors).
@@ -482,7 +531,10 @@ Contribute new commands to this project by copying and editing the content of [H
 ## History
 
 * **v1.2.0** June 7, 2013
-    * Add hability to login with a different GitHub user with `gh user`.
+    * Add ability to create alias for users
+    * Add ability to list all issues/pull requests from a certain user
+    * Use git remote values instead of logged user and current repo
+    * Add ability to login with a different GitHub user with `gh user`
 * **v1.1.1** June 6, 2013
     * Bug fixes
 * **v1.1.0** June 5, 2013
@@ -496,7 +548,7 @@ Contribute new commands to this project by copying and editing the content of [H
     * Enable fetch PRs from private repos
 * **v0.1.11** June 2, 2013
     * Add `--label`, `--state` and `--detailed` flags on listing issues
-    * Add the hability to open/close an Issue
+    * Add ability to open/close an Issue
     * Fixed error when running command outside of a Git repo
     * Improve log for listing open and closed pull requests trough `--state` flag
 * **v0.1.10** May 30, 2013
@@ -505,16 +557,16 @@ Contribute new commands to this project by copying and editing the content of [H
     * Open issue in browser
     * Open pull request url on the browser after sending it
 * **v0.1.7** May 30, 2013
-    * Add hability to set number without `--number` flag
+    * Add ability to set number without `--number` flag
 * **v0.1.6** May 30, 2013
-    * Add the hability to specify a title on `gh pr --submit`
+    * Add ability to specify a title on `gh pr --submit`
     * Add password mask on authentication
     * Bug fixes
 * **v0.1.5** May 29, 2013
     * Fix pull request integrity check
 * **v0.1.4** May 28, 2013
-    * Add the hability to create an Issue
-    * Add the hability to comment on an Issue
+    * Add ability to create an Issue
+    * Add ability to comment on an Issue
     * Rename pull request `--comment` to `--message`
     * Rename pull request `--pull` to `--number`
 * **v0.1.3** May 28, 2013
@@ -539,7 +591,7 @@ Contribute new commands to this project by copying and editing the content of [H
     * Update dependency version: git-wrapper@0.1.1
     * Add **Hello World** and **Notification** tasks
 * **v0.0.6** May 17, 2013
-    * Add hability to merge or rebase pull request
+    * Add ability to merge or rebase pull request
     * Add base.getUser and git.merge helpers
 * **v0.0.5** May 16, 2013
     * Add login to be invoked by default in series
