@@ -1,6 +1,8 @@
 {
     "default_branch": "master",
 
+    "default_remote": "origin",
+
     "github_token": "",
 
     "github_user": "",
