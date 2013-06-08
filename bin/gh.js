@@ -27,7 +27,6 @@ var async = require('async'),
     operations,
     options,
     parsed,
-    payload,
     remain;
 
 // -- Init ---------------------------------------------------------------------
@@ -63,6 +62,34 @@ else {
     });
 }
 
+// -- Utils --------------------------------------------------------------------
+function expandAlias(options) {
+    options.user = config.alias[options.user] || options.user;
+}
+
+function invokePayload(options, command, cooked, remain) {
+    var payload;
+
+    if ((remain.length === cooked.length) && command.DETAILS.payload) {
+        payload = cooked.concat();
+        payload.shift();
+        command.DETAILS.payload(payload, options);
+    }
+}
+
+function normalizeUser(options, paramUser, remoteUser, loggedUser) {
+    options.paramUser = paramUser;
+    options.remoteUser = remoteUser;
+    options.loggedUser = loggedUser;
+
+    if (options.all) {
+        options.user = options.paramUser || options.loggedUser;
+    }
+    else {
+        options.user = options.paramUser || options.remoteUser;
+    }
+}
+
 // -- Run command --------------------------------------------------------------
 if (command) {
     options = nopt(
@@ -75,32 +102,27 @@ if (command) {
     options.number = options.number || parseInt(remain[1], 10);
     options.remote = options.remote || config.default_remote;
 
-    operations.push(base.login);
-    operations.push(base.checkVersion);
-    operations.push(git.getCurrentBranch);
     operations.push(function(callback) {
         git.getUser(options.remote, callback);
     });
+
     operations.push(function(callback) {
         git.getRepo(options.remote, callback);
     });
 
+    operations.push(git.getCurrentBranch);
+    operations.push(base.login);
+    operations.push(base.checkVersion);
+
     async.series(operations, function(err, results) {
+        options.repo = options.repo || results[1];
         options.currentBranch = options.currentBranch || results[2];
-        options.repo = options.repo || results[4];
 
-        if (options.all) {
-            options.user = options.user || base.getUser();
-        }
-        else {
-            options.user = options.user || results[3];
-        }
+        normalizeUser(options, options.user, results[0], base.getUser());
 
-        if ((remain.length === cooked.length) && command.DETAILS.payload) {
-            payload = options.argv.cooked.concat();
-            payload.shift();
-            command.DETAILS.payload(payload, options);
-        }
+        expandAlias(options);
+
+        invokePayload(options, command, cooked, remain);
 
         new command(options).run();
     });
