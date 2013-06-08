@@ -14,10 +14,11 @@ var async = require('async'),
     base = require('../lib/base'),
     fs = require('fs'),
     git = require('../lib/git'),
-    help = require('../lib/cmds/help').Impl.prototype,
     logger = require('../lib/logger'),
     nopt = require('nopt'),
     path = require('path'),
+    Help = require('../lib/cmds/help').Impl,
+    User = require('../lib/cmds/user').Impl,
     command,
     commandDir,
     commandFiles,
@@ -36,7 +37,7 @@ parsed = nopt(process.argv);
 remain = parsed.argv.remain;
 
 if (!remain.length) {
-    help.run();
+    new Help().run();
     process.exit(0);
 }
 
@@ -113,8 +114,8 @@ if (command) {
     });
 
     operations.push(git.getCurrentBranch);
-    operations.push(base.login);
     operations.push(base.checkVersion);
+    operations.push(User.login);
 
     async.series(operations, function(err, results) {
         options.repo = options.repo || results[1];
