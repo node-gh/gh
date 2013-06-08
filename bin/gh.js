@@ -14,28 +14,30 @@ var async = require('async'),
     base = require('../lib/base'),
     fs = require('fs'),
     git = require('../lib/git'),
-    help = require('../lib/cmds/help').Impl.prototype,
     logger = require('../lib/logger'),
     nopt = require('nopt'),
     path = require('path'),
+    Help = require('../lib/cmds/help').Impl,
+    User = require('../lib/cmds/user').Impl,
     command,
     commandDir,
     commandFiles,
     commandPath,
+    config,
     cooked,
     operations,
     options,
     parsed,
-    payload,
     remain;
 
 // -- Init ---------------------------------------------------------------------
+config = base.getGlobalConfig();
 operations = [];
 parsed = nopt(process.argv);
 remain = parsed.argv.remain;
 
 if (!remain.length) {
-    help.run();
+    new Help().run();
     process.exit(0);
 }
 
@@ -61,6 +63,36 @@ else {
     });
 }
 
+// -- Utils --------------------------------------------------------------------
+function expandAlias(options) {
+    if (config.alias) {
+        options.user = config.alias[options.user] || options.user;
+    }
+}
+
+function invokePayload(options, command, cooked, remain) {
+    var payload;
+
+    if ((remain.length === cooked.length) && command.DETAILS.payload) {
+        payload = cooked.concat();
+        payload.shift();
+        command.DETAILS.payload(payload, options);
+    }
+}
+
+function normalizeUser(options, paramUser, remoteUser, loggedUser) {
+    options.paramUser = paramUser;
+    options.remoteUser = remoteUser;
+    options.loggedUser = loggedUser;
+
+    if (options.all) {
+        options.user = options.paramUser || options.loggedUser;
+    }
+    else {
+        options.user = options.paramUser || options.remoteUser;
+    }
+}
+
 // -- Run command --------------------------------------------------------------
 if (command) {
     options = nopt(
@@ -70,22 +102,30 @@ if (command) {
     cooked = options.argv.cooked;
     remain = options.argv.remain;
 
-    operations.push(base.login);
-    operations.push(base.checkVersion);
-    operations.push(git.getRepositoryName);
+    options.number = options.number || parseInt(remain[1], 10);
+    options.remote = options.remote || config.default_remote;
+
+    operations.push(function(callback) {
+        git.getUser(options.remote, callback);
+    });
+
+    operations.push(function(callback) {
+        git.getRepo(options.remote, callback);
+    });
+
     operations.push(git.getCurrentBranch);
+    operations.push(base.checkVersion);
+    operations.push(User.login);
 
     async.series(operations, function(err, results) {
-        options.user = options.user || base.getUser();
-        options.repo = options.repo || results[2];
-        options.currentBranch = options.currentBranch || results[3];
-        options.number = options.number || parseInt(remain[1], 10);
+        options.repo = options.repo || results[1];
+        options.currentBranch = options.currentBranch || results[2];
 
-        if ((remain.length === cooked.length) && command.DETAILS.payload) {
-            payload = options.argv.cooked.concat();
-            payload.shift();
-            command.DETAILS.payload(payload, options);
-        }
+        normalizeUser(options, options.user, results[0], base.getUser());
+
+        expandAlias(options);
+
+        invokePayload(options, command, cooked, remain);
 
         new command(options).run();
     });
