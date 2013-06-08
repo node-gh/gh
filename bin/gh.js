@@ -64,7 +64,9 @@ else {
 
 // -- Utils --------------------------------------------------------------------
 function expandAlias(options) {
-    options.user = config.alias[options.user] || options.user;
+    if (config.alias) {
+        options.user = config.alias[options.user] || options.user;
+    }
 }
 
 function invokePayload(options, command, cooked, remain) {
