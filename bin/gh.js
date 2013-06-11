@@ -67,6 +67,8 @@ else {
 function expandAlias(options) {
     if (config.alias) {
         options.user = config.alias[options.user] || options.user;
+        options.fwd = config.alias[options.fwd] || options.fwd;
+        options.submit = config.alias[options.submit] || options.submit;
     }
 }
 
