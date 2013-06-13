@@ -39,7 +39,7 @@
         "moment ": "2.0.0",
         "handlebars ": "1.0.11",
         "git-wrapper": "0.1.1",
-        "github": "https://github.com/zenorocha/node-github/tarball/master",
+        "github": "0.1.10",
         "wordwrap": "0.0.2",
         "nopt": "2.1.1",
         "open": "0.0.3",
