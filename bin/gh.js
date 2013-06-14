@@ -115,28 +115,11 @@ if (command) {
         git.getRepo(options.remote, callback);
     });
 
-    operations = [
-        function(callback){
-            git.getCurrentBranch(function(error) {
-                callback(error);
-            });
-        },
-        function(callback){
-            base.checkVersion(function(error) {
-                callback(error);
-            });
-        },
-        function(callback){
-            User.login(function(error) {
-                callback(error);
-            });
-        }
-    ];
+    operations.push(git.getCurrentBranch);
+    operations.push(base.checkVersion);
+    operations.push(User.login);
 
     async.series(operations, function(err, results) {
-
-        if (err)
-            console.log('error' + JSON.stringify(err));
 
         options.repo = options.repo || results[1];
         options.currentBranch = options.currentBranch || results[2];
