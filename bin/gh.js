@@ -120,6 +120,7 @@ if (command) {
     operations.push(User.login);
 
     async.series(operations, function(err, results) {
+
         options.repo = options.repo || results[1];
         options.currentBranch = options.currentBranch || results[2];
 
