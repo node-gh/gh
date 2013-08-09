@@ -45,7 +45,8 @@
         "open": "0.0.3",
         "prompt": "0.2.9",
         "update-notifier": "0.1.3",
-        "userhome": "0.1.0"
+        "userhome": "0.1.0",
+        "mocha": "1.12.0"
     },
     "devDependencies": {
         "jshint": "2.1.2"
