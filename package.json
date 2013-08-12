@@ -30,7 +30,8 @@
         "gh": "bin/gh.js"
     },
     "scripts": {
-        "test": "jshint lib/ bin/"
+        "lint": "node_modules/.bin/jshint lib/ bin/",
+        "test": "node_modules/.bin/mocha --reporter list"
     },
     "dependencies": {
         "async": "0.2.7",
