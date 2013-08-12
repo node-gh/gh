@@ -530,6 +530,9 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.2.1** August 12, 2013
+    * Parse remote url with score on username
+    * Add tests using Mocha
 * **v1.2.0** June 7, 2013
     * Add ability to create alias for users
     * Add ability to list all issues/pull requests from a certain user
