@@ -224,9 +224,9 @@ Option                  | Usage        | Type
 ---                     | ---          | ---
 `-s`, `--submit`        | **Required** | `String`
 `-b`, `--branch`        | *Optional*   | `String`
+`-D`, `--description`   | *Optional*   | `String`
 `-r`, `--repo`          | *Optional*   | `String`
 `-t`, `--title`         | *Optional*   | `String`
-`-D`, `--description`   | *Optional*   | `String`
 
 Omitting `--title` will submit a pull request using current branch name as title.
 
@@ -531,6 +531,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.2.2** August 14, 2013
+    * Include `--description` attribute on PR submit
 * **v1.2.1** August 12, 2013
     * Parse remote url with score on username
     * Add tests using Mocha
