@@ -220,12 +220,13 @@ gh pr 1 --close --user eduardolundgren
 
 ### 7. Submit
 
-Option           | Usage        | Type
----              | ---          | ---
-`-s`, `--submit` | **Required** | `String`
-`-b`, `--branch` | *Optional*   | `String`
-`-r`, `--repo`   | *Optional*   | `String`
-`-t`, `--title`  | *Optional*   | `String`
+Option                  | Usage        | Type
+---                     | ---          | ---
+`-s`, `--submit`        | **Required** | `String`
+`-b`, `--branch`        | *Optional*   | `String`
+`-r`, `--repo`          | *Optional*   | `String`
+`-t`, `--title`         | *Optional*   | `String`
+`-D`, `--description`   | *Optional*   | `String`
 
 Omitting `--title` will submit a pull request using current branch name as title.
 
@@ -234,7 +235,7 @@ Omitting `--title` will submit a pull request using current branch name as title
 * Submit a pull request using the current branch.
 
     ```
-gh pr --submit eduardolundgren --title 'Fix #32'
+gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
     ```
 
 * Submit a pull request using the current branch to dev branch.
