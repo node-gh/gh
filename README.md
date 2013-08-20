@@ -451,6 +451,47 @@ gh is --list --label todo,bug
 gh is --list --user eduardolundgren --repo node-gh
     ```
 
+## Repo
+```
+gh repo
+```
+
+> **Alias:** `gh re`
+
+### 1. List
+
+Option                 | Usage        | Type
+---                    | ---          | ---
+`-l`, `--list`         | **Required** | `Boolean`
+`-d`, `--detailed`     | *Optional*   | `Boolean`
+`-u`, `--user`         | *Optional*   | `String`
+`-t`, `--type`         | *Optional*   | [`all`, `owner`, `public`, `private`, `member`]
+`--auto-ini`           | *Optional*   | `Boolean`
+`--gitignore-template` | *Optional*   | `String` (i.e., node, Ruby, Erlang, [etc](https://github.com/github/gitignore))
+`--homepage`            | *Optional*   | `String`
+`--description`            | *Optional*   | `String`
+
+
+#### Examples
+* List all [public] repositories of someone
+
+```
+gh re --list --user eduardolundgren
+```
+
+* List all your private repositories
+
+```
+gh re --list --type private
+```
+
+* List all your repositories, detailed
+
+```
+gh re --list --detailed
+```
+
+
 ## User
 
 ```
