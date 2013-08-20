@@ -11,6 +11,8 @@
 
     "open_pull_request_in_browser": true,
 
+    "open_repo_in_browser": true,
+
     "pull_branch_name_prefix": "pull-",
 
     "replace": {}
