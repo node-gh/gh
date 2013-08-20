@@ -1,0 +1,18 @@
+{{prefix}}
+{{#each repos}}
+{{{yellowBright "➜ " full_name}}}
+{{../prefix}}   {{#if description}}{{{magentaBright description}}}  {{/if}}(last update {{date updated_at}})
+{{../prefix}}     {{{greenBright "Forks: " forks ", watchers: " watchers ", open issues: " open_issues}}}
+{{#if ../detailed}}
+Private: Fork: homepage
+{{../../prefix}}     Homepage: {{{blueBright homepage}}}
+{{../../prefix}}     Private:  {{#if private}}true{{else}}false{{/if}}
+{{../../prefix}}     Fork:  {{#if fork}}true{{else}}false{{/if}}
+{{../../prefix}}     {{{blueBright html_url}}}
+{{#if body}}
+{{../../../prefix}}     > {{{body}}}
+{{/if}}
+{{../../prefix}}
+{{/if}}
+{{/each}}
+{{prefix}}
