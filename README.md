@@ -492,6 +492,40 @@ gh re --list --detailed
 ```
 
 
+
+### 2. Create
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-N`, `--new`         | **Required** | `Boolean`
+`-r`, `--repo`        | **Required** | `String`
+`-c`, `--clone`       | *Optional*   | `Boolean`
+`-t`, `--type`        | *Optional*   | [`private`]
+`--auto-init`         | *Optional*   | `Boolean`
+`gitignore-template`  | *Optional*   | `String`
+`--homepage`          | *Optional*   | `String`
+`--description`       | *Optional*   | `String`
+
+#### Examples
+
+* Create a new repository on GitHub, cloning locally.
+
+    ```
+gh re -N -r foo -c
+    ```
+
+* Create a new repository on GitHub, with .gitignore for Ruby and a homepage, without cloning locally, and adding a homepage and description for it
+
+    ```
+gh re -N -r gemified --gitignore-template Ruby --homepage http://gemifi.ed/ --description "A small tool to create gems out of thin air"
+    ```
+
+* Create a new private repository on GitHub, initializing it with a initial commit of the README
+
+    ```
+gh re -N -r my-personal-files --auto-init -t private
+
+
 ## User
 
 ```
