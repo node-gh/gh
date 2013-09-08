@@ -62,7 +62,7 @@ Option            | Usage        | Type
 `--remote`        | *Optional*   | `String`
 `-r`, `--repo`    | *Optional*   | `String`
 `-S`, `--state`   | *Optional*   | [`open`, `closed`]
-`-s`, `--user`    | *Optional*   | `String`
+`-u`, `--user`    | *Optional*   | `String`
 
 #### Examples
 
@@ -100,7 +100,7 @@ Option           | Usage        | Type
 `-R`, `--rebase` | *Optional*   | `Boolean`
 `--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
-`-s`, `--user`   | *Optional*   | `String`
+`-u`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -129,7 +129,7 @@ Option           | Usage        | Type
 `-b`, `--branch` | *Optional*   | `String`
 `--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
-`-s`, `--user`   | *Optional*   | `String`
+`-u`, `--user`   | *Optional*   | `String`
 
 Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`. Omitting `--branch` will merge or rebase into `config.default_branch`.
 
@@ -163,7 +163,7 @@ Option           | Usage        | Type
 `-n`, `--number` | **Required** | `Number`
 `--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
-`-s`, `--user`   | *Optional*   | `String`
+`-u`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -197,7 +197,7 @@ Option           | Usage        | Type
 `-n`, `--number` | **Required** | `Number`
 `--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
-`-s`, `--user`   | *Optional*   | `String`
+`-u`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -260,7 +260,7 @@ Option           | Usage        | Type
 `-l`, `--latest` | **Required** | `Boolean`
 `--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
-`-s`, `--user`   | *Optional*   | `String`
+`-u`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -283,7 +283,7 @@ Option           | Usage        | Type
 `-w`, `--watch`  | **Required** | `Boolean`
 `--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
-`-s`, `--user`   | *Optional*   | `String`
+`-u`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
@@ -372,7 +372,7 @@ Option           | Usage        | Type
 `-n`, `--number` | **Required** | `Number`
 `--remote`       | *Optional*   | `String`
 `-r`, `--repo`   | *Optional*   | `String`
-`-s`, `--user`   | *Optional*   | `String`
+`-u`, `--user`   | *Optional*   | `String`
 
 #### Examples
 
