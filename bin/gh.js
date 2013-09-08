@@ -93,7 +93,6 @@ function normalizeUser(options, paramUser, remoteUser, loggedUser) {
     else {
         options.user = options.paramUser || options.remoteUser || options.loggedUser;
     }
-    console.log(options.user);
 }
 
 // -- Run command --------------------------------------------------------------
