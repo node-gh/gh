@@ -138,21 +138,21 @@ Omitting `--number` will try to guess the pull number from branch name e.g. `pul
 * Merge or rebase pull request into a branch.
 
     ```
-gh pr 1 --merge
+gh pr 1 --fetch --merge
     ```
 
     ```
-gh pr 1 --rebase
+gh pr 1 --fetch --rebase
     ```
 
 * Merge or rebase pull request into branch `dev`.
 
     ```
-gh pr 1 --rebase --branch dev
+gh pr 1 --fetch --rebase --branch dev
     ```
 
     ```
-gh pr 1 --merge --branch dev
+gh pr 1 --fetch --merge --branch dev
     ```
 
 ### 4. Comment
