@@ -228,7 +228,7 @@ Option                  | Usage        | Type
 `-r`, `--repo`          | *Optional*   | `String`
 `-t`, `--title`         | *Optional*   | `String`
 
-Omitting `--title` will submit a pull request using current branch name as title.
+Omitting `--title` will submit a pull request using the last commit message as title.
 
 #### Examples
 
