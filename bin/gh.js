@@ -107,6 +107,8 @@ if (command) {
     options.number = options.number || parseInt(remain[1], 10);
     options.remote = options.remote || config.default_remote;
 
+    operations.push(User.login);
+
     operations.push(function(callback) {
         git.getUser(options.remote, callback);
     });
@@ -117,7 +119,6 @@ if (command) {
 
     operations.push(git.getCurrentBranch);
     operations.push(base.checkVersion);
-    operations.push(User.login);
 
     async.series(operations, function(err, results) {
         options.repo = options.repo || results[1];
