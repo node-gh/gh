@@ -66,7 +66,7 @@ Option            | Usage        | Type
 
 #### Examples
 
-* List open pulls requests for the current branch.
+* **Shortcut** for listing open pulls requests for the current branch.
 
     ```
 gh pr
@@ -104,7 +104,7 @@ Option           | Usage        | Type
 
 #### Examples
 
-* Fetch pull request and checkout into a new branch `pull-1`.
+* **Shortcut** for fetching pull request and checkout into a new branch `pull-1`.
 
     ```
 gh pr 1
@@ -264,7 +264,7 @@ Option           | Usage        | Type
 
 #### Examples
 
-* Display the latest activities on the current repository.
+* **Shortcut** for displaying the latest activities on the current repository.
 
     ```
 gh nt
@@ -321,7 +321,7 @@ Option            | Usage        | Type
 
 #### Examples
 
-* Create a new issue on the current repository.
+* **Shortcut** for creating a new issue on the current repository.
 
     ```
 gh is 'Node GH rocks!' 'Body with **Markdown** support'
@@ -409,7 +409,7 @@ Option             | Usage        | Type
 
 #### Examples
 
-* List all issues on the current repository.
+* **Shortcut** for listing all issues on the current repository.
 
     ```
 gh is
