@@ -488,7 +488,27 @@ gh alias
 
 > **Alias:** `gh al`
 
-### 1. Add
+### 1. List
+
+Option            | Usage        | Type
+---               | ---          | ---
+`-l`, `--list`    | **Required** | `Boolean`
+
+#### Examples
+
+* **Shortcut** for listing aliases.
+
+    ```
+gh alias
+    ```
+
+* List aliases.
+
+    ```
+gh alias --list
+    ```
+
+### 2. Add
 
 Option            | Usage        | Type
 ---               | ---          | ---
@@ -503,7 +523,7 @@ Option            | Usage        | Type
 gh alias --add zeno --user zenorocha
     ```
 
-### 2. Remove
+### 3. Remove
 
 Option            | Usage        | Type
 ---               | ---          | ---
