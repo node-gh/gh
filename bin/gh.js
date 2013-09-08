@@ -91,7 +91,7 @@ function normalizeUser(options, paramUser, remoteUser, loggedUser) {
         options.user = options.paramUser || options.loggedUser;
     }
     else {
-        options.user = options.paramUser || options.remoteUser;
+        options.user = options.paramUser || options.remoteUser || options.loggedUser;
     }
 }
 
