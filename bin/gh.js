@@ -93,6 +93,7 @@ function normalizeUser(options, paramUser, remoteUser, loggedUser) {
     else {
         options.user = options.paramUser || options.remoteUser || options.loggedUser;
     }
+    console.log(options.user);
 }
 
 // -- Run command --------------------------------------------------------------
@@ -121,10 +122,10 @@ if (command) {
     operations.push(base.checkVersion);
 
     async.series(operations, function(err, results) {
-        options.repo = options.repo || results[1];
-        options.currentBranch = options.currentBranch || results[2];
+        options.repo = options.repo || results[2];
+        options.currentBranch = options.currentBranch || results[3];
 
-        normalizeUser(options, options.user, results[0], base.getUser());
+        normalizeUser(options, options.user, results[1], base.getUser());
 
         expandAlias(options);
 
