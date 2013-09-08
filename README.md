@@ -313,6 +313,7 @@ Option            | Usage        | Type
 ---               | ---          | ---
 `-N`, `--new`     | **Required** | `Boolean`
 `-t`, `--title`   | **Required** | `String`
+`-A`, `--assignee`| *Optional*   | `String`
 `-L`, `--label`   | *Optional*   | `String`
 `-m`, `--message` | *Optional*   | `String`
 `--remote`        | *Optional*   | `String`
@@ -337,6 +338,12 @@ gh is --new --title 'Node GH rocks!' --message 'Body with **Markdown** support' 
 
     ```
 gh is --new --title 'Node GH rocks!' --label bug,question,test
+    ```
+
+* Create a new issue and assign it to someone.
+
+    ```
+gh is --new --title 'Node GH rocks!' --assignee zenorocha
     ```
 
 ### 2. Comment
@@ -399,6 +406,7 @@ Option             | Usage        | Type
 ---                | ---          | ---
 `-l`, `--list`     | **Required** | `Boolean`
 `-a`, `--all`      | *Optional*   | `Boolean`
+`-A`, `--assignee` | *Optional*   | `String`
 `-d`, `--detailed` | *Optional*   | `Boolean`
 `-L`, `--label`    | *Optional*   | `String`
 `-M`, `--milestone`| *Optional*   | `Number`
@@ -419,6 +427,12 @@ gh is
 
     ```
 gh is --list --all
+    ```
+
+* List issues assigned to someone.
+
+    ```
+gh is --list --assignee zenorocha
     ```
 
 * List issues with link and content.
