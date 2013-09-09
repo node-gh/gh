@@ -465,6 +465,81 @@ gh is --list --label todo,bug
 gh is --list --user eduardolundgren --repo node-gh
     ```
 
+## Repo
+```
+gh repo
+```
+
+> **Alias:** `gh re`
+
+### 1. List
+
+Option                 | Usage        | Type
+---                    | ---          | ---
+`-l`, `--list`         | **Required** | `Boolean`
+`-d`, `--detailed`     | *Optional*   | `Boolean`
+`-u`, `--user`         | *Optional*   | `String`
+`-t`, `--type`         | *Optional*   | [`all`, `owner`, `public`, `private`, `member`]
+`--auto-ini`           | *Optional*   | `Boolean`
+`--gitignore-template` | *Optional*   | `String` (i.e., node, Ruby, Erlang, [etc](https://github.com/github/gitignore))
+`--homepage`            | *Optional*   | `String`
+`--description`            | *Optional*   | `String`
+
+
+#### Examples
+* List all [public] repositories of someone
+
+```
+gh re --list --user eduardolundgren
+```
+
+* List all your private repositories
+
+```
+gh re --list --type private
+```
+
+* List all your repositories, detailed
+
+```
+gh re --list --detailed
+```
+
+
+
+### 2. Create
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-N`, `--new`         | **Required** | `Boolean`
+`-r`, `--repo`        | **Required** | `String`
+`-c`, `--clone`       | *Optional*   | `Boolean`
+`-t`, `--type`        | *Optional*   | [`private`]
+`--auto-init`         | *Optional*   | `Boolean`
+`gitignore-template`  | *Optional*   | `String`
+`--homepage`          | *Optional*   | `String`
+`--description`       | *Optional*   | `String`
+
+#### Examples
+
+* Create a new repository on GitHub, cloning locally.
+
+    ```
+gh re -N -r foo -c
+    ```
+
+* Create a new repository on GitHub, with .gitignore for Ruby and a homepage, without cloning locally, and adding a homepage and description for it
+
+    ```
+gh re -N -r gemified --gitignore-template Ruby --homepage http://gemifi.ed/ --description "A small tool to create gems out of thin air"
+    ```
+
+* Create a new private repository on GitHub, initializing it with a initial commit of the README
+
+    ```
+gh re -N -r my-personal-files --auto-init -t private
+
+
 ## User
 
 ```
