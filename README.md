@@ -655,6 +655,13 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.3.0** September 8, 2013
+    * Add new `gh repo` command
+    * Authenticate with GitHub regardless the command is run from a git repo
+    * Use last commit message as pull request title instead of branch name
+    * Document `gh alias --list`
+    * Add `--assignee` flag for issues
+    * Fix list issues that are related to a milestone
 * **v1.2.2** August 14, 2013
     * Include `--description` attribute on PR submit
 * **v1.2.1** August 12, 2013
