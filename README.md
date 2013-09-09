@@ -6,20 +6,21 @@
 
 ## Table of contents
 
-* [Usage](https://github.com/eduardolundgren/node-gh#usage)
-* [Install](https://github.com/eduardolundgren/node-gh#install)
-* [Dependencies](https://github.com/eduardolundgren/node-gh#dependencies)
-* [Demonstration](https://github.com/eduardolundgren/node-gh#demonstration)
-* [Available commands](https://github.com/eduardolundgren/node-gh#available-commands)
-    * [Pull requests](https://github.com/eduardolundgren/node-gh#pull-requests)
-    * [Notifications](https://github.com/eduardolundgren/node-gh#notifications)
-    * [Issues](https://github.com/eduardolundgren/node-gh#issues)
-    * [User](https://github.com/eduardolundgren/node-gh#user)
-    * [Alias](https://github.com/eduardolundgren/node-gh#alias)
-* [Team](https://github.com/eduardolundgren/node-gh#team)
-* [Contributing](https://github.com/eduardolundgren/node-gh#contributing)
-* [History](https://github.com/eduardolundgren/node-gh#history)
-* [License](https://github.com/eduardolundgren/node-gh#license)
+* [Usage](#usage)
+* [Install](#install)
+* [Dependencies](#dependencies)
+* [Demonstration](#demonstration)
+* [Available commands](#available-commands)
+    * [Pull requests](#pull-requests)
+    * [Notifications](#notifications)
+    * [Issues](#issues)
+    * [Repo](#repo)
+    * [User](#user)
+    * [Alias](#alias)
+* [Team](#team)
+* [Contributing](#contributing)
+* [History](#history)
+* [License](#license)
 
 ## Usage
 
