@@ -472,7 +472,29 @@ gh repo
 
 > **Alias:** `gh re`
 
-### 1. List
+### 1. Open
+
+Option                 | Usage        | Type
+---                    | ---          | ---
+`-o`, `--open`         | **Required** | `Boolean`
+`-u`, `--user`         | *Optional*   | `String`
+`-r`, `--repo`         | *Optional*   | `String`
+
+#### Examples
+
+* **Shortcut** for opening the GitHub repository page.
+
+    ```
+gh re
+    ```
+
+* Open GitHub repository page.
+
+    ```
+gh re --open --user eduardolundgren --repo node-gh
+    ```
+
+### 2. List
 
 Option                 | Usage        | Type
 ---                    | ---          | ---
@@ -480,65 +502,58 @@ Option                 | Usage        | Type
 `-d`, `--detailed`     | *Optional*   | `Boolean`
 `-u`, `--user`         | *Optional*   | `String`
 `-t`, `--type`         | *Optional*   | [`all`, `owner`, `public`, `private`, `member`]
-`--auto-ini`           | *Optional*   | `Boolean`
-`--gitignore-template` | *Optional*   | `String` (i.e., node, Ruby, Erlang, [etc](https://github.com/github/gitignore))
-`--homepage`            | *Optional*   | `String`
-`--description`            | *Optional*   | `String`
-
 
 #### Examples
-* List all [public] repositories of someone
 
-```
-gh re --list --user eduardolundgren
-```
+* List all repositories.
 
-* List all your private repositories
+    ```
+gh re --list
+    ```
 
-```
+* List all private repositories.
+
+    ```
 gh re --list --type private
-```
+    ```
 
-* List all your repositories, detailed
+* List all repositories for someone.
 
-```
-gh re --list --detailed
-```
+    ```
+gh re --list --user zenorocha
+    ```
 
-
-
-### 2. Create
+### 3. Create
 
 Option                | Usage        | Type
 ---                   | ---          | ---
-`-N`, `--new`         | **Required** | `Boolean`
-`-r`, `--repo`        | **Required** | `String`
+`-n`, `--new`         | **Required** | `String`
 `-c`, `--clone`       | *Optional*   | `Boolean`
 `-t`, `--type`        | *Optional*   | [`private`]
-`--auto-init`         | *Optional*   | `Boolean`
-`gitignore-template`  | *Optional*   | `String`
+`--init`              | *Optional*   | `Boolean`
+`--gitignore`         | *Optional*   | `String`
 `--homepage`          | *Optional*   | `String`
 `--description`       | *Optional*   | `String`
 
 #### Examples
 
-* Create a new repository on GitHub, cloning locally.
+* Create a new GitHub repository and clone on the current directory.
 
     ```
-gh re -N -r foo -c
+gh re --new foo --clone
     ```
 
-* Create a new repository on GitHub, with .gitignore for Ruby and a homepage, without cloning locally, and adding a homepage and description for it
+* Create a new GitHub repository using .gitignore template for Ruby.
 
     ```
-gh re -N -r gemified --gitignore-template Ruby --homepage http://gemifi.ed/ --description "A small tool to create gems out of thin air"
+gh re --new gemified --gitignore Ruby
     ```
 
-* Create a new private repository on GitHub, initializing it with a initial commit of the README
+* Create a new private repository on GitHub, initializing it with a initial commit of the README.
 
     ```
-gh re -N -r my-personal-files --auto-init -t private
-
+gh re --new foo --init --type private
+    ```
 
 ## User
 
