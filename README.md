@@ -477,22 +477,22 @@ gh repo
 
 Option                 | Usage        | Type
 ---                    | ---          | ---
-`-o`, `--open`         | **Required** | `Boolean`
+`-B`, `--browser`      | **Required** | `Boolean`
 `-u`, `--user`         | *Optional*   | `String`
 `-r`, `--repo`         | *Optional*   | `String`
 
 #### Examples
 
-* **Shortcut** for opening the GitHub repository page.
+* **Shortcut** for opening the GitHub repository page in the browser.
 
     ```
 gh re
     ```
 
-* Open GitHub repository page.
+* Open GitHub repository page in the browser.
 
     ```
-gh re --open --user eduardolundgren --repo node-gh
+gh re --browser --user eduardolundgren --repo node-gh
     ```
 
 ### 2. List
