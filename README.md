@@ -1,4 +1,4 @@
-# Node GH [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh)
+# Node GH [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh) [![Dependency Status](https://david-dm.org/eduardolundgren/node-gh.png)](https://david-dm.org/eduardolundgren/node-gh)
 
 ![Class Octocat](http://nodegh.io/images/class-octocat.jpg)
 
