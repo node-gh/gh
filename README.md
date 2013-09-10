@@ -483,6 +483,23 @@ gh is --list --label todo,bug
 gh is --list --user eduardolundgren --repo node-gh
     ```
 
+### 5. Open
+
+Option                 | Usage        | Type
+---                    | ---          | ---
+`-B`, `--browser`      | **Required** | `Boolean`
+`-n`, `--number`       | **Required** | `Number`
+`-u`, `--user`         | *Optional*   | `String`
+`-r`, `--repo`         | *Optional*   | `String`
+
+#### Examples
+
+* Open GitHub issue page in the browser.
+
+    ```
+gh is 100 --browser
+    ```
+
 ## Repo
 ```
 gh repo
