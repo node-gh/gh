@@ -554,23 +554,22 @@ gh re --new gemified --gitignore Ruby
 
     ```
 gh re --new foo --init --type private
-    ```    
+    ```
 
 ### 4. Delete
 
 Option                | Usage        | Type
 ---                   | ---          | ---
-`--delete`            | **Required** | `String`
-`--user`              | **Required** | `String`
+`-D`, `--delete`      | **Required** | `String`
+`-u`, `--user`        | **Required** | `String`
 
 #### Example
 
-* Delete a repository named vanilla of the logged user
+* Delete a repository of the logged user.
 
     ```
-gh re --delete vanilla
-    ```    
-
+gh re --delete foo
+    ```
 
 ## User
 
