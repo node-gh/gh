@@ -672,6 +672,9 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.3.1** September 9, 2013
+    * Fix log on `gh repo --new`
+    * Add ability to delete a repository
 * **v1.3.0** September 8, 2013
     * Add new `gh repo` command
     * Authenticate with GitHub regardless the command is run from a git repo
