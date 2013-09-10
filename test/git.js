@@ -1,3 +1,12 @@
+/*
+ * Copyright 2013, All Rights Reserved.
+ *
+ * Code licensed under the BSD License:
+ * https://github.com/eduardolundgren/blob/master/LICENSE.md
+ *
+ * @author Rodrigo Vidal <rodrigovidal777@gmail.com>
+ */
+
 var assert = require("assert");
 var git = require("../lib/git");
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * Copyright 2013 Eduardo Lundgren, All Rights Reserved.
+ * Copyright 2013, All Rights Reserved.
  *
  * Code licensed under the BSD License:
  * https://github.com/eduardolundgren/blob/master/LICENSE.md
