@@ -245,7 +245,7 @@ gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
 gh pr --submit eduardolundgren --branch dev
     ```
 
-### 8. Open
+### 8. Open in Browser
 
 Option                 | Usage        | Type
 ---                    | ---          | ---
@@ -483,7 +483,7 @@ gh is --list --label todo,bug
 gh is --list --user eduardolundgren --repo node-gh
     ```
 
-### 5. Open
+### 5. Open in Browser
 
 Option                 | Usage        | Type
 ---                    | ---          | ---
@@ -507,7 +507,7 @@ gh repo
 
 > **Alias:** `gh re`
 
-### 1. Open
+### 1. Open in Browser
 
 Option                 | Usage        | Type
 ---                    | ---          | ---
