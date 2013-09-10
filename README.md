@@ -245,6 +245,23 @@ gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
 gh pr --submit eduardolundgren --branch dev
     ```
 
+### 8. Open
+
+Option                 | Usage        | Type
+---                    | ---          | ---
+`-B`, `--browser`      | **Required** | `Boolean`
+`-n`, `--number`       | **Required** | `Number`
+`-u`, `--user`         | *Optional*   | `String`
+`-r`, `--repo`         | *Optional*   | `String`
+
+#### Examples
+
+* Open GitHub pull request page in the browser.
+
+    ```
+gh pr 100 --browser
+    ```
+
 ## Notifications
 
 ```
