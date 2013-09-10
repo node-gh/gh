@@ -705,6 +705,10 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.3.2** September 9, 2013
+    * Add ability to open GitHub website from commands
+    * Add shortcut for `gh repo --delete`
+    * Use logged user in `gh user`
 * **v1.3.1** September 9, 2013
     * Fix log on `gh repo --new`
     * Add ability to delete a repository
