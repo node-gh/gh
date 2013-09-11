@@ -752,6 +752,9 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.4.0** September 11, 2013
+    * Add hooks feature \o/
+    * Document config files
 * **v1.3.2** September 9, 2013
     * Add ability to open GitHub website from commands
     * Add shortcut for `gh repo --delete`
