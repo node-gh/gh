@@ -51,7 +51,9 @@
             },
             "submit": {
                 "before": [],
-                "after": []
+                "after": [
+                    "gh pr --browser --user {{options.submit}} --repo {{options.repo}} --number {{options.submittedPull}}"
+                ]
             }
         },
         "repo": {
@@ -69,8 +71,6 @@
     },
 
     "open_issue_in_browser": true,
-
-    "open_pull_request_in_browser": true,
 
     "pull_branch_name_prefix": "pr/",
 
