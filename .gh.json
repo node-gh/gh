@@ -13,56 +13,52 @@
                 "before": [],
                 "after": []
             },
-
             "new": {
                 "before": [],
                 "after": []
             },
-
             "open": {
                 "before": [],
                 "after": []
             }
         },
-
         "pull-request": {
             "close": {
                 "before": [],
                 "after": []
             },
-
             "fetch": {
                 "before": [],
-                "after": []
+                "after": [
+                    "gh pr {{options.number}} --comment 'Just started reviewing :) {{{signature}}}'"
+                ]
             },
-
             "fwd": {
                 "before": [],
-                "after": []
+                "after": [
+                    "gh pr {{options.number}} --comment 'Pull request forwarded to @{{options.fwd}}. [Check it here]({{forwardedLink}}) {{{signature}}}'"
+                ]
             },
-
             "merge": {
                 "before": [],
-                "after": []
+                "after": [
+                    "gh pr {{options.number}} --comment 'Thank you, pull request merged :D {{{signature}}}'"
+                ]
             },
-
             "open": {
                 "before": [],
                 "after": []
             },
-
             "submit": {
                 "before": [],
                 "after": []
             }
         },
-
         "repo": {
             "delete": {
                 "before": [],
                 "after": []
             },
-
             "new": {
                 "before": [],
                 "after": []
@@ -78,5 +74,7 @@
 
     "pull_branch_name_prefix": "pr/",
 
-    "replace": {}
+    "replace": {},
+
+    "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
 }
