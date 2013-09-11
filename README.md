@@ -695,48 +695,48 @@ gh alias --remove zeno
 ## Config
 
 There are some pretty useful configurations that you can set on [.gh.json](https://github.com/eduardolundgren/node-gh/blob/master/.gh.json).
-This file can be found under home directory *(on Windows: `C:\\Users\yourName\.gh.json` - on MacOSx: `/Users/yourName/.gh.json`)*.
+This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)*.
 
 * Set default branch and remote.
 
-	```javascript
+    ```javascript
 "default_branch": "master",
 "default_remote": "origin"
-	```
+    ```
 
 * GitHub data filled once you log in.
 
-	```javascript
+    ```javascript
 "github_token": "",
 "github_user": ""
-	```
+    ```
 
 * Automate tasks to be runned before or after a certain command.
 
-	```javascript
+    ```javascript
 "hooks": {
-    "pull-request": {
-        "merge": {
-            "before": [],
-            "after": [
-                "gh pr {{options.number}} --comment 'Thank you, pull request merged :D {{{signature}}}'"
-            ]
+        "pull-request": {
+            "merge": {
+                "before": [],
+                "after": [
+                    "gh pr {{options.number}} --comment 'Thank you, pull request merged :D {{{signature}}}'"
+                ]
+            }
         }
-    }
 }
-	```
+    ```
 
 * Set default branch name prefix for PR fetching.
 
-	```javascript
+    ```javascript
 "pull_branch_name_prefix": "pr-"
-	```
+    ```
 
 * Insert signature below issue comment.
 
-	```javascript
+    ```javascript
 "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
-	```
+    ```
 
 ## Team
 
