@@ -76,7 +76,7 @@
 
     "open_repo_in_browser": true,
 
-    "pull_branch_name_prefix": "pull-",
+    "pull_branch_name_prefix": "pr/",
 
     "replace": {}
 }
