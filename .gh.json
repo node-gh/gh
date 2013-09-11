@@ -7,6 +7,69 @@
 
     "github_user": "",
 
+    "hooks": {
+        "issue": {
+            "close": {
+                "before": [],
+                "after": []
+            },
+
+            "new": {
+                "before": [],
+                "after": []
+            },
+
+            "open": {
+                "before": [],
+                "after": []
+            }
+        },
+
+        "pull-request": {
+            "close": {
+                "before": [],
+                "after": []
+            },
+
+            "fetch": {
+                "before": [],
+                "after": []
+            },
+
+            "fwd": {
+                "before": [],
+                "after": []
+            },
+
+            "merge": {
+                "before": [],
+                "after": []
+            },
+
+            "open": {
+                "before": [],
+                "after": []
+            },
+
+            "submit": {
+                "before": [],
+                "after": []
+            }
+        },
+
+        "repo": {
+            "delete": {
+                "before": [],
+                "after": []
+            },
+
+            "new": {
+                "before": [],
+                "after": []
+            }
+        }
+    },
+
     "open_issue_in_browser": true,
 
     "open_pull_request_in_browser": true,
