@@ -32,19 +32,19 @@
             "fetch": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Just started reviewing :) {{{signature}}}'"
+                    "gh pr {{options.number}} --comment 'Just started reviewing :)'"
                 ]
             },
             "fwd": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Pull request forwarded to @{{options.fwd}}. [Check it here.]({{forwardedLink}}) {{{signature}}}'"
+                    "gh pr {{options.number}} --comment 'Pull request forwarded to @{{options.fwd}}. [Check it here.]({{forwardedLink}})'"
                 ]
             },
             "merge": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Thank you, pull request merged :D {{{signature}}}'"
+                    "gh pr {{options.number}} --comment 'Thank you, pull request merged :D'"
                 ]
             },
             "open": {
@@ -78,5 +78,5 @@
 
     "replace": {},
 
-    "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
+    "signature": " <br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
 }
