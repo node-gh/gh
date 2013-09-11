@@ -15,7 +15,9 @@
             },
             "new": {
                 "before": [],
-                "after": []
+                "after": [
+                    "gh is --browser --user {{options.user}} --repo {{options.repo}} --number {{options.number}}"
+                ]
             },
             "open": {
                 "before": [],
