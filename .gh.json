@@ -72,7 +72,7 @@
         }
     },
 
-    "pull_branch_name_prefix": "pr/",
+    "pull_branch_name_prefix": "pr-",
 
     "replace": {},
 
