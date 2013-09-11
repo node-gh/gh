@@ -719,7 +719,7 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
             "merge": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Thank you, pull request merged :D {{{signature}}}'"
+                    "gh pr {{options.number}} --comment 'Thank you, pull request merged :D'"
                 ]
             }
         }
