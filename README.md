@@ -17,6 +17,7 @@
     * [Repo](#repo)
     * [User](#user)
     * [Alias](#alias)
+* [Config](#config)
 * [Team](#team)
 * [Contributing](#contributing)
 * [History](#history)
@@ -132,7 +133,7 @@ Option           | Usage        | Type
 `-r`, `--repo`   | *Optional*   | `String`
 `-u`, `--user`   | *Optional*   | `String`
 
-Omitting `--number` will try to guess the pull number from branch name e.g. `pull-1` results in `--number 1`. Omitting `--branch` will merge or rebase into `config.default_branch`.
+Omitting `--number` will try to guess the pull number from branch name e.g. `pr-1` results in `--number 1`. Omitting `--branch` will merge or rebase into `config.default_branch`.
 
 #### Examples
 
@@ -690,6 +691,52 @@ Option            | Usage        | Type
     ```
 gh alias --remove zeno
     ```
+
+## Config
+
+There are some pretty useful configurations that you can set on [.gh.json](https://github.com/eduardolundgren/node-gh/blob/master/.gh.json).
+This file can be found under home directory *(on Windows: `C:\\Users\yourName\.gh.json` - on MacOSx: `/Users/yourName/.gh.json`)*.
+
+* Set default branch and remote.
+
+	```javascript
+"default_branch": "master",
+"default_remote": "origin"
+	```
+
+* GitHub data filled once you log in.
+
+	```javascript
+"github_token": "",
+"github_user": ""
+	```
+
+* Automate tasks to be runned before or after a certain command.
+
+	```javascript
+"hooks": {
+    "pull-request": {
+        "merge": {
+            "before": [],
+            "after": [
+                "gh pr {{options.number}} --comment 'Thank you, pull request merged :D {{{signature}}}'"
+            ]
+        }
+    }
+}
+	```
+
+* Set default branch name prefix for PR fetching.
+
+	```javascript
+"pull_branch_name_prefix": "pr-"
+	```
+
+* Insert signature below issue comment.
+
+	```javascript
+"signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
+	```
 
 ## Team
 
