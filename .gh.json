@@ -44,7 +44,7 @@
             "merge": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Thank you, pull request merged :D'"
+                    "gh pr {{options.number}} --comment 'Thank you, pull request merged! [See changes here.]({{compareLink}})'"
                 ]
             },
             "open": {
