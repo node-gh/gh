@@ -36,7 +36,7 @@
             "fwd": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Pull request forwarded to @{{options.fwd}}. [Check it here]({{forwardedLink}}) {{{signature}}}'"
+                    "gh pr {{options.number}} --comment 'Pull request forwarded to @{{options.fwd}}. [Check it here.]({{forwardedLink}}) {{{signature}}}'"
                 ]
             },
             "merge": {
