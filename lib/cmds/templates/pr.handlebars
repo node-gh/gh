@@ -2,7 +2,7 @@
 {{#each branches}}
 {{../prefix}}   {{name}} ({{total}})
 {{#each pulls}}
-{{../../prefix}}     {{{greenBright "#" number}}} {{{title}}} {{{magentaBright "@" head.user.login}}} ({{date created_at}})
+{{../../prefix}}     {{{greenBright "#" number}}} {{{title}}} {{{magentaBright "@" user.login}}} ({{date created_at}})
 {{#if ../../detailed}}
 {{../../../prefix}}     {{{blueBright html_url}}}
 {{#if body}}
