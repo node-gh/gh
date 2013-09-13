@@ -860,4 +860,4 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## License
 
-[BSD License](https://github.com/node-gh/gh/blob/master/README.md)
+[BSD License](https://github.com/node-gh/gh/blob/master/LICENSE.md)
