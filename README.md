@@ -759,6 +759,15 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.5.0** September 13, 2013
+    * Rename repository to `gh`
+    * Move repository to `node-gh` organization
+    * Add plugin infrastructure
+    * Add option to show the STDOUT of a hook
+    * Use best user value based on execution scope
+    * Add feature to create pull requests from an existing issue
+    * Fix GitHub links to use https instead of http
+    * Fix printing correct username on `gh pr -l`
 * **v1.4.0** September 11, 2013
     * Add hooks feature \o/
     * Document config files
