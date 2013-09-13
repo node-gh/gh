@@ -1,4 +1,4 @@
-# Node GH [![Build Status](https://secure.travis-ci.org/eduardolundgren/node-gh.png?branch=master)](https://travis-ci.org/eduardolundgren/node-gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh) [![Dependency Status](https://david-dm.org/eduardolundgren/node-gh.png)](https://david-dm.org/eduardolundgren/node-gh)
+# Node GH [![Build Status](https://secure.travis-ci.org/node-gh/gh.png?branch=master)](https://travis-ci.org/node-gh/gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh) [![Dependency Status](https://david-dm.org/node-gh/gh.png)](https://david-dm.org/node-gh/gh)
 
 ![Class Octocat](http://nodegh.io/images/class-octocat.jpg)
 
@@ -701,7 +701,7 @@ gh alias --remove zeno
 
 ## Config
 
-There are some pretty useful configurations that you can set on [.gh.json](https://github.com/eduardolundgren/node-gh/blob/master/.gh.json).
+There are some pretty useful configurations that you can set on [.gh.json](https://github.com/node-gh/gh/blob/master/.gh.json).
 This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)*.
 
 * Set default branch and remote.
@@ -747,7 +747,7 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 
 ## Team
 
-Node GH is maintained by these guys and some awesome [contributors](https://github.com/eduardolundgren/node-gh/graphs/contributors).
+Node GH is maintained by these guys and some awesome [contributors](https://github.com/node-gh/gh/graphs/contributors).
 
 [![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/)
 --- | ---
@@ -755,7 +755,7 @@ Node GH is maintained by these guys and some awesome [contributors](https://gith
 
 ## Contributing
 
-Contribute new commands to this project by copying and editing the content of [Hello World](https://github.com/eduardolundgren/node-gh/blob/master/lib/cmds/hello.js) example.
+Contribute new commands to this project by copying and editing the content of [Hello World](https://github.com/node-gh/gh/blob/master/lib/cmds/hello.js) example.
 
 ## History
 
@@ -860,4 +860,4 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## License
 
-[BSD License](https://github.com/eduardolundgren/node-gh/blob/master/README.md)
+[BSD License](https://github.com/node-gh/gh/blob/master/README.md)

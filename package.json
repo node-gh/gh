@@ -18,10 +18,10 @@
     "license": "BSD",
     "repository": {
         "type": "git",
-        "url": "git@github.com:eduardolundgren/node-gh.git"
+        "url": "git@github.com:node-gh/gh.git"
     },
     "bugs": {
-        "url": "https://github.com/eduardolundgren/node-gh/issues"
+        "url": "https://github.com/node-gh/gh/issues"
     },
     "keywords": [
         "git", "github", "external", "commands", "helpers"
