@@ -17,6 +17,7 @@ var async = require('async'),
     logger = require('../lib/logger'),
     nopt = require('nopt'),
     path = require('path'),
+    which = require('which'),
     Help = require('../lib/cmds/help').Impl,
     User = require('../lib/cmds/user').Impl,
     command,
@@ -29,6 +30,9 @@ var async = require('async'),
     options,
     parsed,
     remain;
+
+// -- Env ----------------------------------------------------------------------
+process.env.GH_PATH = path.join(__dirname, '../');
 
 // -- Init ---------------------------------------------------------------------
 config = base.getGlobalConfig();
@@ -61,6 +65,15 @@ else {
         command = null;
         return true;
     });
+}
+
+// If command was not found, check if it is registered as a plugin.
+if (!command) {
+    try {
+        command = require(which.sync('gh-' + remain[0])).Impl;
+    }
+    catch(e) {
+    }
 }
 
 // -- Utils --------------------------------------------------------------------
