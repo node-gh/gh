@@ -6,8 +6,8 @@
 
 ## Table of contents
 
-* [Usage](#usage)
 * [Install](#install)
+* [Usage](#usage)
 * [Dependencies](#dependencies)
 * [Demonstration](#demonstration)
 * [Available commands](#available-commands)
@@ -23,13 +23,13 @@
 * [History](#history)
 * [License](#license)
 
-## Usage
-
-    gh [command] [payload] [--flags]
-
 ## Install
 
     [sudo] npm install -g gh
+
+## Usage
+
+    gh [command] [payload] [--flags]
 
 ## Dependencies
 
