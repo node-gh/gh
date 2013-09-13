@@ -724,7 +724,7 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 "hooks": {
         "pull-request": {
             "merge": {
-                "before": [],
+                "before": [{"cmd": "ls -la", "log": true}],
                 "after": [
                     "gh pr {{options.number}} --comment 'Thank you, pull request merged :D'"
                 ]
