@@ -18,6 +18,7 @@
     * [User](#user)
     * [Alias](#alias)
 * [Config](#config)
+* [Test](#test)
 * [Team](#team)
 * [Contributing](#contributing)
 * [History](#history)
@@ -743,6 +744,20 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 
     ```javascript
 "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
+    ```
+
+## Test
+
+* Run [JSHint](http://www.jshint.com/), a tool to detect errors and potential problems.
+
+    ```
+npm run-script lint
+    ```
+
+* Run [Mocha](http://visionmedia.github.io/mocha/), a unit test framework.
+
+    ```
+npm run-script test
     ```
 
 ## Team
