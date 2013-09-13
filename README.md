@@ -227,6 +227,7 @@ Option                  | Usage        | Type
 `-s`, `--submit`        | **Required** | `String`
 `-b`, `--branch`        | *Optional*   | `String`
 `-D`, `--description`   | *Optional*   | `String`
+`-i`, `--issue`         | *Optional*   | `Number`
 `-r`, `--repo`          | *Optional*   | `String`
 `-t`, `--title`         | *Optional*   | `String`
 
@@ -244,6 +245,12 @@ gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
 
     ```
 gh pr --submit eduardolundgren --branch dev
+    ```
+
+* Submit a pull request from a issue.
+
+    ```
+gh pr --submit eduardolundgren --issue 150
     ```
 
 ### 8. Open in Browser
