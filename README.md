@@ -772,6 +772,8 @@ Node GH is maintained by these guys and some awesome [contributors](https://gith
 
 Contribute new commands to this project by copying and editing the content of [Hello World](https://github.com/node-gh/gh/blob/master/lib/cmds/hello.js) example.
 
+Or create new plugins by copying and editing the content of [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
+
 ## History
 
 * **v1.5.0** September 13, 2013
