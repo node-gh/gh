@@ -95,19 +95,6 @@ function invokePayload(options, command, cooked, remain) {
     }
 }
 
-function normalizeUser(options, paramUser, remoteUser, loggedUser) {
-    options.paramUser = paramUser;
-    options.remoteUser = remoteUser;
-    options.loggedUser = loggedUser;
-
-    if (options.all) {
-        options.user = options.paramUser || options.loggedUser;
-    }
-    else {
-        options.user = options.paramUser || options.remoteUser || options.loggedUser;
-    }
-}
-
 // -- Run command --------------------------------------------------------------
 if (command) {
     options = nopt(
@@ -134,10 +121,20 @@ if (command) {
     operations.push(base.checkVersion);
 
     async.series(operations, function(err, results) {
+        options.loggedUser = base.getUser();
+        options.remoteUser = results[1];
+
+        if (!options.user) {
+            if (options.repo || options.all) {
+                options.user = options.loggedUser;
+            }
+            else {
+                options.user = options.remoteUser || options.loggedUser;
+            }
+        }
+
         options.repo = options.repo || results[2];
         options.currentBranch = options.currentBranch || results[3];
-
-        normalizeUser(options, options.user, results[1], base.getUser());
 
         expandAlias(options);
 
