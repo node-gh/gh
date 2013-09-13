@@ -74,6 +74,7 @@ Option            | Usage        | Type
 ---               | ---          | ---
 `-l`, `--list`    | **Required** | `Boolean`
 `-a`, `--all`     | *Optional*   | `Boolean`
+`-m`, `--me`      | *Optional*   | `Boolean`
 `-d`, `--detailed`| *Optional*   | `Boolean`
 `-b`, `--branch`  | *Optional*   | `String`
 `--remote`        | *Optional*   | `String`
@@ -83,7 +84,7 @@ Option            | Usage        | Type
 
 #### Examples
 
-* **Shortcut** for listing open pulls requests for the current branch.
+* **Shortcut** for listing open pull requests for the current repository.
 
     ```
 gh pr
@@ -95,13 +96,19 @@ gh pr
 gh pr --list --all
     ```
 
-* List open pulls requests with link and content.
+* List open pull requests sent by me on current repository.
+
+    ```
+gh pr --list --me
+    ```
+
+* List open pull requests with link and content.
 
     ```
 gh pr --list --detailed
     ```
 
-* List open pulls requests for a branch.
+* List open pull requests for a branch.
 
     ```
 gh pr --list --branch master
