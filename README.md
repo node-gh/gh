@@ -96,7 +96,7 @@ gh pr
 gh pr --list --all
     ```
 
-* List open pull requests sent by me on current repository.
+* List open pull requests sent by logged user on current repository.
 
     ```
 gh pr --list --me
