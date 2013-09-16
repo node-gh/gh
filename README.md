@@ -776,6 +776,10 @@ Or create new plugins by copying and editing the content of [GH Boilerplate](htt
 
 ## History
 
+* **v1.5.1** September 15, 2013
+    * Use original pull request title when forwarding a pull request
+    * Use only the first line of the commit when creating pull requests
+    * Fix message when forwarding a pull request
 * **v1.5.0** September 13, 2013
     * Rename repository to `gh`
     * Move repository to `node-gh` organization
