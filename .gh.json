@@ -39,6 +39,7 @@
                 "before": [],
                 "after": [
                     "gh pr {{options.number}} --comment 'Pull request forwarded to {{forwardedLink}}. [See changes here.]({{compareLink}})'",
+                    "gh pr {{options.number}} --close"
                 ]
             },
             "merge": {
@@ -56,6 +57,7 @@
                 "after": [
                     "gh pr {{options.number}} --comment 'Pull request submitted to {{submittedLink}}. [See changes here.]({{compareLink}})'",
                     "gh pr --browser --user {{options.submit}} --repo {{options.repo}} --number {{options.submittedPull}}",
+                    "gh pr {{options.number}} --close"
                 ]
             }
         },
