@@ -274,7 +274,7 @@ gh pr 100 --browser
 ## Notifications
 
 ```
-gh notifications
+gh notification
 ```
 
 > **Alias:** `gh nt`
