@@ -55,9 +55,9 @@
             "submit": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Pull request submitted to {{submittedLink}}. [See changes here.]({{compareLink}})'",
+                    "{{#if options.number}} gh pr {{options.number}} --comment 'Pull request submitted to {{submittedLink}}. [See changes here.]({{compareLink}})' {{/if}}",
                     "gh pr --browser --user {{options.submit}} --repo {{options.repo}} --number {{options.submittedPull}}",
-                    "gh pr {{options.number}} --close"
+                    "{{#if options.number}} gh pr {{options.number}} --close {{/if}}"
                 ]
             }
         },
