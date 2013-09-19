@@ -90,13 +90,10 @@ function hasCommandInOptions(commands, options) {
     var found = false;
 
     commands.every(function(c) {
-        c = c.substring(2, c.length);
-
         if (options.hasOwnProperty(c)) {
             found = true;
             return false;
         }
-
         return true;
     });
 
