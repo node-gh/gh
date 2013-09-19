@@ -808,6 +808,8 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.6.1** September 19, 2013
+    * Forwarding pull request generates wrong "See changes" link
 * **v1.6.0** September 19, 2013
     * Accept multiple number values `gh pr --close -n 1 -n 2`
     * Add plugins info on the help command
