@@ -28,7 +28,7 @@
     "noarg": true,
     "node": true,
     "noempty": true,
-    "nomen": true,
+    "nomen": false,
     "onevar": true,
     "passfail": false,
     "plusplus": false,
