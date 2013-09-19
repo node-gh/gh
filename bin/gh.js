@@ -89,13 +89,15 @@ function expandAlias(options) {
 function hasCommandInOptions(commands, options) {
     var found = false;
 
-    commands.every(function(c) {
-        if (options.hasOwnProperty(c)) {
-            found = true;
-            return false;
-        }
-        return true;
-    });
+    if (commands) {
+        commands.every(function(c) {
+            if (options.hasOwnProperty(c)) {
+                found = true;
+                return false;
+            }
+            return true;
+        });
+    }
 
     return found;
 }
