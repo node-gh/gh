@@ -215,6 +215,18 @@ gh pr 1 --open
 gh pr 1 --close
     ```
 
+* Close multiple pull requests.
+
+	```
+gh pr --close --number 1 --number 2
+	```
+
+* Open multiple pull requests.
+
+	```
+gh pr --open --number 1 --number 2
+	```
+
 * Open or close a pull request that you've sent to someone.
 
     ```
@@ -418,13 +430,25 @@ gh is 1 --open
 * Close an issue.
 
     ```
-gh pr 1 --close
+gh is 1 --close
     ```
+
+* Close multiple issues.
+
+	```
+gh is --close --number 1 --number 2
+	```
+
+* Open multiple issues.
+
+	```
+gh is --open --number 1 --number 2
+	```
 
 * Open or close an issue that you've sent to someone.
 
     ```
-gh pr 1 --close --user eduardolundgren
+gh is 1 --close --user eduardolundgren
     ```
 
 ### 4. List
