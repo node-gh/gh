@@ -91,7 +91,7 @@ function hasCommandInOptions(commands, options) {
 
     if (commands) {
         commands.every(function(c) {
-            if (options.hasOwnProperty(c)) {
+            if (options[c] !== undefined) {
                 found = true;
                 return false;
             }
