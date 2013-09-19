@@ -808,6 +808,12 @@ Contribute new commands to this project by copying and editing the content of [H
 
 ## History
 
+* **v1.6.0** September 19, 2013
+    * Accept multiple number values `gh pr --close -n 1 -n 2`
+    * Add plugins info on the help command
+    * Fix `gh is --list --all`
+    * Fix bug with notifications command
+    * Improve hability to guess default command
 * **v1.5.1** September 15, 2013
     * Use original pull request title when forwarding a pull request
     * Use only the first line of the commit when creating pull requests
