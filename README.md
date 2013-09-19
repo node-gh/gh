@@ -18,7 +18,8 @@
     * [User](#user)
     * [Alias](#alias)
 * [Config](#config)
-* [Test](#test)
+* [Plugins](#plugins)
+* [Testing](#testing)
 * [Team](#team)
 * [Contributing](#contributing)
 * [History](#history)
@@ -770,7 +771,16 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
     ```
 
-## Test
+## Plugins
+
+* [GH Gif](https://github.com/node-gh/gh-gif) - A plugin for commenting on pull requests/issues using GIF reactions.
+* [GH Travis](https://github.com/node-gh/gh-travis) - A plugin for integrating Travis, a continous integration server.
+
+Feel free to create your own plugins by forking [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
+
+## Testing
+
+Check [Travis](https://travis-ci.org/node-gh/gh) for continous integration results.
 
 * Run [JSHint](http://www.jshint.com/), a tool to detect errors and potential problems.
 
@@ -795,8 +805,6 @@ Node GH is maintained by these guys and some awesome [contributors](https://gith
 ## Contributing
 
 Contribute new commands to this project by copying and editing the content of [Hello World](https://github.com/node-gh/gh/blob/master/lib/cmds/hello.js) example.
-
-Or create new plugins by copying and editing the content of [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
 
 ## History
 
