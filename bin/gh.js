@@ -26,6 +26,7 @@ var async = require('async'),
     commandPath,
     config,
     cooked,
+    iterativeOption,
     operations,
     options,
     parsed,
@@ -101,10 +102,12 @@ if (command) {
         command.DETAILS.options,
         command.DETAILS.shorthands, process.argv, 2);
 
+    iterativeOption = command.DETAILS.iterativeOption;
+
     cooked = options.argv.cooked;
     remain = options.argv.remain;
 
-    options.number = options.number || parseInt(remain[1], 10);
+    options.number = options.number || [parseInt(remain[1], 10)];
     options.remote = options.remote || config.default_remote;
 
     operations.push(User.login);
@@ -121,6 +124,8 @@ if (command) {
     operations.push(base.checkVersion);
 
     async.series(operations, function(err, results) {
+        var iterativeValues;
+
         options.loggedUser = base.getUser();
         options.remoteUser = results[1];
 
@@ -138,9 +143,22 @@ if (command) {
 
         expandAlias(options);
 
-        invokePayload(options, command, cooked, remain);
+        if (iterativeOption) {
+            iterativeValues = options[iterativeOption];
+        }
+        else {
+            iterativeValues = [];
+        }
 
-        new command(options).run();
+        iterativeValues.forEach(function(value) {
+            options = base.clone(options);
+
+            options[iterativeOption] = value;
+
+            invokePayload(options, command, cooked, remain);
+
+            new command(options).run();
+        });
     });
 }
 else {
