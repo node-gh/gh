@@ -26,7 +26,7 @@ var async = require('async'),
     commandPath,
     config,
     cooked,
-    iterativeOption,
+    iterative,
     operations,
     options,
     parsed,
@@ -102,7 +102,7 @@ if (command) {
         command.DETAILS.options,
         command.DETAILS.shorthands, process.argv, 2);
 
-    iterativeOption = command.DETAILS.iterativeOption;
+    iterative = command.DETAILS.iterative;
 
     cooked = options.argv.cooked;
     remain = options.argv.remain;
@@ -143,17 +143,17 @@ if (command) {
 
         expandAlias(options);
 
-        if (iterativeOption) {
-            iterativeValues = options[iterativeOption];
-        }
-        else {
-            iterativeValues = [];
-        }
+        // Try to retrieve iterative values from iterative option key,
+        // e.g. option['number'] === [1,2,3]. If iterative option key is not
+        // present, assume [undefined] in order to initialize the loop.
+        iterativeValues = options[iterative] || [undefined];
 
         iterativeValues.forEach(function(value) {
             options = base.clone(options);
 
-            options[iterativeOption] = value;
+            // Value can be undefined when the command doesn't have a iterative
+            // option.
+            options[iterative] = value;
 
             invokePayload(options, command, cooked, remain);
 
