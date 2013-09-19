@@ -106,7 +106,7 @@ function hasCommandInOptions(commands, options) {
 function invokePayload(options, command, cooked, remain) {
     var payload;
 
-    if (!hasCommandInOptions(command.DETAILS.commands, options) && command.DETAILS.payload) {
+    if (command.DETAILS.payload && !hasCommandInOptions(command.DETAILS.commands, options)) {
         payload = remain.concat();
         payload.shift();
         command.DETAILS.payload(payload, options);
