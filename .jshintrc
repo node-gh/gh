@@ -22,7 +22,7 @@
     "laxcomma": false,
     "loopfunc": false,
     "maxerr": 10000,
-    "maxlen": 150,
+    "maxlen": 180,
     "multistr": false,
     "newcap": true,
     "noarg": true,
