@@ -86,11 +86,28 @@ function expandAlias(options) {
     }
 }
 
+function hasCommandInOptions(commands, options) {
+    var found = false;
+
+    commands.every(function(c) {
+        c = c.substring(2, c.length);
+
+        if (options.hasOwnProperty(c)) {
+            found = true;
+            return false;
+        }
+
+        return true;
+    });
+
+    return found;
+}
+
 function invokePayload(options, command, cooked, remain) {
     var payload;
 
-    if ((remain.length === cooked.length) && command.DETAILS.payload) {
-        payload = cooked.concat();
+    if (!hasCommandInOptions(command.DETAILS.commands, options) && command.DETAILS.payload) {
+        payload = remain.concat();
         payload.shift();
         command.DETAILS.payload(payload, options);
     }
