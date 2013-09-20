@@ -36,6 +36,7 @@
     "dependencies": {
         "async": "0.2.7",
         "cli-color": "0.2.2",
+        "copy-paste": "0.0.9",
         "cli-log": "0.0.8",
         "moment ": "2.0.0",
         "handlebars ": "1.0.11",
