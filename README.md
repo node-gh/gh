@@ -637,7 +637,7 @@ Option                | Usage        | Type
 * Fork a GitHub repository.
 
     ```
-gh re --fork yui3 --user yui
+gh re --fork repo --user user
     ```
 
 * Fork a GitHub repository into the node-gh organization.
