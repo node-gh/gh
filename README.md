@@ -624,7 +624,30 @@ gh re --new gemified --gitignore Ruby
 gh re --new foo --init --type private
     ```
 
-### 4. Delete
+### 4. Fork
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-f`, `--fork`        | **Required** | `String`
+`-u`, `--user`        | **Required** | `String`
+`-O`, `--organization`| **Optional** | `Boolean`
+
+#### Examples
+
+* Fork a GitHub repository.
+
+    ```
+gh re --fork yui3 --user yui
+    ```
+
+* Fork a GitHub repository into the node-gh organization.
+
+    ```
+gh re --fork alloy-ui --user liferay --organization node-gh
+    ```
+
+
+### 5. Delete
 
 Option                | Usage        | Type
 ---                   | ---          | ---
