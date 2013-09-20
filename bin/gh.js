@@ -42,7 +42,10 @@ parsed = nopt(process.argv);
 remain = parsed.argv.remain;
 cooked = parsed.argv.cooked;
 
-if (!remain.length || cooked.indexOf('-h') >= 0 || cooked.indexOf('--help') >= 0) {
+if (!remain.length ||
+    (cooked.indexOf('-h') >= 0) ||
+    (cooked.indexOf('--help') >= 0)) {
+
     new Help().run();
     process.exit(0);
 }
