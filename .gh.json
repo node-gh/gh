@@ -76,6 +76,24 @@
                     "gh re --browser --user {{options.loggedUser}} --repo {{options.new}}"
                 ]
             }
+        },
+        "gists": {
+            "delete": {
+                "before": [],
+                "after": []
+            },
+            "fork": {
+                "before": [],
+                "after": [
+                    "gh gi --browser --user {{options.user}} --id {{options.id}}"
+                ]
+            },
+            "new": {
+                "before": [],
+                "after": [
+                    "gh gi --browser --user {{options.user}} --id {{options.id}}"
+                ]
+            }
         }
     },
 

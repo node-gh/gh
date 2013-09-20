@@ -15,6 +15,7 @@
     * [Notifications](#notifications)
     * [Issues](#issues)
     * [Repo](#repo)
+    * [Gists](#gists)
     * [User](#user)
     * [Alias](#alias)
 * [Config](#config)
@@ -660,6 +661,97 @@ Option                | Usage        | Type
 
     ```
 gh re --delete foo
+    ```
+
+## Gists
+
+```
+gh gists
+```
+
+> **Alias:** `gh gi`
+
+### 1. Open in Browser
+
+Option                 | Usage        | Type
+---                    | ---          | ---
+`-B`, `--browser`      | **Required** | `Boolean`
+`-u`, `--user`         | *Optional*   | `String`
+`--id`                 | *Optional*   | `String`
+
+#### Examples
+
+* **Shortcut** for opening your Gists in the browser.
+
+    ```
+gh gi
+    ```
+
+* Open a Gist in the browser.
+
+    ```
+gh gi --browser --id 5991877
+    ```
+
+
+### 2. Create
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-N`, `--new`         | **Required** | `String`
+`-c`, `--content`     | *Optional*   | `String`
+`--description`       | *Optional*   | `String`
+`-p`, `--private`     | *Optional*   | `Boolean`
+`-P`, `--paste`       | *Optional*   | `Boolean`
+
+#### Examples
+
+* Create a new Gist with a file foo.js with the contents of your clipboard
+
+    ```
+gh gi --new foo.js --paste
+    ```
+
+* Create a new Gist with a text file with a "Hello World"
+
+    ```
+gh gi --new hello --content "Hello World!"
+    ```
+
+* Create a new private Gist with a text file with a "Hello World"
+
+    ```
+gh gi --new hello --content "Hello World!" --private
+    ```
+
+
+### 3. Fork
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-f`, `--fork`        | **Required** | `String`
+
+#### Examples
+
+* Fork a Gist.
+
+    ```
+gh gi --fork 5444883
+    ```
+
+
+### 4. Delete
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-D`, `--delete`      | **Required** | `String`
+
+#### Example
+
+* Delete a Gist.
+
+    ```
+gh gi --delete 4252323
     ```
 
 ## User
