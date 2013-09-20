@@ -643,7 +643,7 @@ gh re --fork yui3 --user yui
 * Fork a GitHub repository into the node-gh organization.
 
     ```
-gh re --fork alloy-ui --user liferay --organization node-gh
+gh re --fork repo --user user --organization node-gh
     ```
 
 
