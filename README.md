@@ -597,7 +597,7 @@ gh re --list --user zenorocha
 
 Option                | Usage        | Type
 ---                   | ---          | ---
-`-n`, `--new`         | **Required** | `String`
+`-N`, `--new`         | **Required** | `String`
 `-c`, `--clone`       | *Optional*   | `Boolean`
 `-t`, `--type`        | *Optional*   | [`private`]
 `--init`              | *Optional*   | `Boolean`
