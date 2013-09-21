@@ -85,13 +85,13 @@
             "fork": {
                 "before": [],
                 "after": [
-                    "gh gi --browser --user {{options.user}} --id {{options.id}}"
+                    "gh gi --browser --id {{options.id}}"
                 ]
             },
             "new": {
                 "before": [],
                 "after": [
-                    "gh gi --browser --user {{options.user}} --id {{options.id}}"
+                    "gh gi --browser --id {{options.id}}"
                 ]
             }
         }
