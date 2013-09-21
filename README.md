@@ -677,7 +677,7 @@ Option                 | Usage        | Type
 ---                    | ---          | ---
 `-B`, `--browser`      | **Required** | `Boolean`
 `-u`, `--user`         | *Optional*   | `String`
-`--id`                 | *Optional*   | `String`
+`-i`, `--id`           | *Optional*   | `String`
 
 #### Examples
 
