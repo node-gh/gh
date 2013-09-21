@@ -219,15 +219,15 @@ gh pr 1 --close
 
 * Close multiple pull requests.
 
-	```
+    ```
 gh pr --close --number 1 --number 2
-	```
+    ```
 
 * Open multiple pull requests.
 
-	```
+    ```
 gh pr --open --number 1 --number 2
-	```
+    ```
 
 * Open or close a pull request that you've sent to someone.
 
