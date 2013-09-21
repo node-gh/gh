@@ -693,32 +693,31 @@ gh gi
 gh gi --browser --id 5991877
     ```
 
-
 ### 2. Create
 
 Option                | Usage        | Type
 ---                   | ---          | ---
 `-N`, `--new`         | **Required** | `String`
 `-c`, `--content`     | *Optional*   | `String`
-`--description`       | *Optional*   | `String`
+`-d`, `--description` | *Optional*   | `String`
 `-p`, `--private`     | *Optional*   | `Boolean`
 `-P`, `--paste`       | *Optional*   | `Boolean`
 
 #### Examples
 
-* Create a new Gist with a file foo.js with the contents of your clipboard
+* Create a Gist `foo.js` pasting the contents of your clipboard.
 
     ```
 gh gi --new foo.js --paste
     ```
 
-* Create a new Gist with a text file with a "Hello World"
+* Create a Gist `hello` containing "Hello World".
 
     ```
 gh gi --new hello --content "Hello World!"
     ```
 
-* Create a new private Gist with a text file with a "Hello World"
+* Create a private Gist `hello` containing "Hello World".
 
     ```
 gh gi --new hello --content "Hello World!" --private
@@ -752,6 +751,12 @@ Option                | Usage        | Type
 
     ```
 gh gi --delete 4252323
+    ```
+
+* Delete multiple Gists.
+
+    ```
+gh gi --delete 4252321 --delete 4252322
     ```
 
 ## User
