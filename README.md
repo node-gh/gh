@@ -48,16 +48,16 @@ In order to sucessfully run this project you must have [NodeJS](http://nodejs.or
 gh help
 ```
 
-* List all options available in all comands.
+* List all comands options.
 
     ```
 gh help --all
     ```
-    
-* List all options in a command.
+
+* List specific command options.
 
     ```
-gh help command
+gh help <command>
     ```
 
 ## Pull requests
