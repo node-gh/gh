@@ -5,10 +5,11 @@
 {{#each commands}}
 {{../prefix}}    {{{magentaBright "➜  "}}}{{#if alias}}{{{magentaBright alias ", "}}}{{/if}}{{{magentaBright name}}} {{{description}}}
 {{#each flags}}
-{{../../prefix}}          {{#if shorthand}}{{#if cmd}}{{{redBright "-" shorthand ", "}}{{else}}{{{greenBright "-" shorthand ", "}}{{/if}}{{/if}}{{#if cmd}}{{{redBright "--" option}}{{else}}{{{greenBright "--" option}}{{/if}}  {{#if type}}({{type}}){{/if}}
-{{/each}}
+{{../../prefix}}          {{#if shorthand}}{{{greenBright "-" shorthand ", "}}{{/if}}{{{greenBright "--" option}}{{#if cmd}}*{{/if}}  {{#if type}}({{type}}){{/if}}{{/each}}
 {{../prefix}}
 {{/each}}
 {{#if notFiltered}}
+{{prefix}} (*) Flags that can execute an action.
+{{prefix}}
 {{prefix}} See 'gh help <command>' for more information on a specified command.
 {{/if}}
