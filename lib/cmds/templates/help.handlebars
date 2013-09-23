@@ -8,8 +8,6 @@
 {{../../prefix}}          {{#if shorthand}}{{{greenBright "-" shorthand ", "}}{{/if}}{{{greenBright "--" option}}{{#if cmd}}*{{/if}}  {{#if type}}({{type}}){{/if}}{{/each}}
 {{../prefix}}
 {{/each}}
-{{#if notFiltered}}
 {{prefix}} (*) Flags that can execute an action.
 {{prefix}}
 {{prefix}} See 'gh help <command>' for more information on a specified command.
-{{/if}}
