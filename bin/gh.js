@@ -9,7 +9,8 @@
  * @author Eduardo Lundgren <eduardolundgren@gmail.com>
  */
 
-// -- Requires -----------------------------------------------------------------
+// -- Requires -------------------------------------------------------------------------------------
+
 var async = require('async'),
     base = require('../lib/base'),
     fs = require('fs'),
@@ -32,10 +33,12 @@ var async = require('async'),
     parsed,
     remain;
 
-// -- Env ----------------------------------------------------------------------
+// -- Env ------------------------------------------------------------------------------------------
+
 process.env.GH_PATH = path.join(__dirname, '../');
 
-// -- Init ---------------------------------------------------------------------
+// -- Init -----------------------------------------------------------------------------------------
+
 config = base.getGlobalConfig();
 operations = [];
 parsed = nopt(process.argv);
@@ -53,7 +56,8 @@ if (!remain.length ||
 commandDir = path.join(__dirname, '..', 'lib', 'cmds');
 commandPath = path.join(commandDir, remain[0] + '.js');
 
-// -- Find command -------------------------------------------------------------
+// -- Find command ---------------------------------------------------------------------------------
+
 if (fs.existsSync(commandPath)) {
     command = require(commandPath).Impl;
 }
@@ -77,11 +81,11 @@ if (!command) {
     try {
         command = require(which.sync('gh-' + remain[0])).Impl;
     }
-    catch(e) {
-    }
+    catch (e) {}
 }
 
-// -- Utils --------------------------------------------------------------------
+// -- Utils ----------------------------------------------------------------------------------------
+
 function expandAlias(options) {
     if (config.alias) {
         options.user = config.alias[options.user] || options.user;
@@ -116,7 +120,8 @@ function invokePayload(options, command, cooked, remain) {
     }
 }
 
-// -- Run command --------------------------------------------------------------
+// -- Run command ----------------------------------------------------------------------------------
+
 if (command) {
     options = nopt(
         command.DETAILS.options,
