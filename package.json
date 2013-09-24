@@ -51,6 +51,8 @@
         "which": "1.0.5"
     },
     "devDependencies": {
+        "grunt": "0.4.1",
+        "grunt-jsbeautifier": "0.2.2",
         "jshint": "2.1.2",
         "mocha": "1.12.0"
     },
