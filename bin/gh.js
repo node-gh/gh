@@ -79,7 +79,11 @@ else {
 // If command was not found, check if it is registered as a plugin.
 if (!command) {
     try {
-        command = require(which.sync('gh-' + remain[0])).Impl;
+        command = require(base.getPluginPath('gh-' + remain[0])).Impl;
+
+        // If plugin command exists, register the executed plugin name on
+        // process.env.PLUGIN. This may simplify core plugin infrastructure.
+        process.env.PLUGIN = remain[0];
     }
     catch (e) {}
 }

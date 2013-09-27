@@ -99,6 +99,8 @@
 
     "pull_branch_name_prefix": "pr-",
 
+    "plugins": {},
+
     "replace": {},
 
     "signature": " <br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
