@@ -132,7 +132,7 @@ if (command) {
     cooked = options.argv.cooked;
     remain = options.argv.remain;
 
-    options.number = options.number || [parseInt(remain[1], 10)];
+    options.number = options.number || [remain[1]];
     options.remote = options.remote || config.default_remote;
 
     operations.push(User.login);
