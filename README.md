@@ -891,6 +891,18 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 }
     ```
 
+* Run automated tasks passing arguments to the commands. Required for prompt commands.
+
+    ```javascript
+"hooks": {
+        "pull-request": {
+            "merge": {
+                "before": [{"cmd": "foo", "args": ["bar", "qux"]}]
+            }
+        }
+}
+    ```
+
 * Set default branch name prefix for PR fetching.
 
     ```javascript
