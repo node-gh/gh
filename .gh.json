@@ -1,4 +1,10 @@
 {
+    "api": {
+        "host": "api.github.com",
+        "protocol": "https",
+        "version": "3.0.0"
+    },
+
     "default_branch": "master",
 
     "default_remote": "origin",
