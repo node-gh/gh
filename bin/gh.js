@@ -24,7 +24,6 @@ var async = require('async'),
     commandDir,
     commandFiles,
     commandPath,
-    config,
     cooked,
     iterative,
     operations,
@@ -38,7 +37,6 @@ process.env.GH_PATH = path.join(__dirname, '../');
 
 // -- Init -----------------------------------------------------------------------------------------
 
-config = base.getGlobalConfig();
 operations = [];
 parsed = nopt(process.argv);
 remain = parsed.argv.remain;
@@ -89,10 +87,12 @@ if (!command) {
 // -- Utils ----------------------------------------------------------------------------------------
 
 function expandAlias(options) {
-    if (config.alias) {
-        options.user = config.alias[options.user] || options.user;
-        options.fwd = config.alias[options.fwd] || options.fwd;
-        options.submit = config.alias[options.submit] || options.submit;
+    var alias = base.config.alias;
+
+    if (alias) {
+        options.user = alias[options.user] || options.user;
+        options.fwd = alias[options.fwd] || options.fwd;
+        options.submit = alias[options.submit] || options.submit;
     }
 }
 
@@ -135,7 +135,7 @@ if (command) {
     remain = options.argv.remain;
 
     options.number = options.number || [remain[1]];
-    options.remote = options.remote || config.default_remote;
+    options.remote = options.remote || base.config.default_remote;
 
     operations.push(User.login);
 
