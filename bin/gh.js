@@ -18,7 +18,6 @@ var async = require('async'),
     logger = require('../lib/logger'),
     nopt = require('nopt'),
     path = require('path'),
-    which = require('which'),
     Help = require('../lib/cmds/help').Impl,
     User = require('../lib/cmds/user').Impl,
     command,
@@ -78,14 +77,13 @@ else {
 
 // If command was not found, check if it is registered as a plugin.
 if (!command) {
-    try {
-        command = require(base.getPluginPath('gh-' + remain[0])).Impl;
+    command = base.getPlugin(remain[0]).Impl;
 
+    if (command) {
         // If plugin command exists, register the executed plugin name on
         // process.env.PLUGIN. This may simplify core plugin infrastructure.
         process.env.PLUGIN = remain[0];
     }
-    catch (e) {}
 }
 
 // -- Utils ----------------------------------------------------------------------------------------
