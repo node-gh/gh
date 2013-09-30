@@ -862,6 +862,16 @@ gh alias --remove zeno
 There are some pretty useful configurations that you can set on [.gh.json](https://github.com/node-gh/gh/blob/master/.gh.json).
 This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)*.
 
+* GitHub API configurations. Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
+
+    ```javascript
+"api": {
+    "host": "api.github.com",
+    "protocol": "https",
+    "version": "3.0.0"
+}
+    ```
+
 * Set default branch and remote.
 
     ```javascript
