@@ -929,6 +929,7 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 
 * [GH Gif](https://github.com/node-gh/gh-gif) - A plugin for commenting on pull requests/issues using GIF reactions.
 * [GH Travis](https://github.com/node-gh/gh-travis) - A plugin for integrating Travis, a continous integration server.
+* [GH Jira](https://github.com/node-gh/gh-jira) - A plugin for integrating Jira, an issue management system.
 
 Feel free to create your own plugins by forking [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
 
