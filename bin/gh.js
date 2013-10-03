@@ -83,7 +83,7 @@ if (!command) {
 
         // If plugin command exists, register the executed plugin name on
         // process.env.PLUGIN. This may simplify core plugin infrastructure.
-        process.env.PLUGIN = remain[0];
+        process.env.NODEGH_PLUGIN = remain[0];
     }
 }
 
