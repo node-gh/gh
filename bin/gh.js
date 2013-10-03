@@ -29,6 +29,7 @@ var async = require('async'),
     operations,
     options,
     parsed,
+    plugin,
     remain;
 
 // -- Env ------------------------------------------------------------------------------------------
@@ -75,9 +76,11 @@ else {
 
 // If command was not found, check if it is registered as a plugin.
 if (!command) {
-    command = base.getPlugin(remain[0]).Impl;
+    plugin = base.getPlugin(remain[0]);
 
-    if (command) {
+    if (plugin) {
+        command = plugin.Impl;
+
         // If plugin command exists, register the executed plugin name on
         // process.env.PLUGIN. This may simplify core plugin infrastructure.
         process.env.PLUGIN = remain[0];
