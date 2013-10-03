@@ -20,6 +20,7 @@ var async = require('async'),
     path = require('path'),
     Help = require('../lib/cmds/help').Impl,
     User = require('../lib/cmds/user').Impl,
+    config = base.getConfig(),
     command,
     commandDir,
     commandFiles,
@@ -90,12 +91,10 @@ if (!command) {
 // -- Utils ----------------------------------------------------------------------------------------
 
 function expandAlias(options) {
-    var alias = base.config.alias;
-
-    if (alias) {
-        options.user = alias[options.user] || options.user;
-        options.fwd = alias[options.fwd] || options.fwd;
-        options.submit = alias[options.submit] || options.submit;
+    if (config.alias) {
+        options.user = config.alias[options.user] || options.user;
+        options.fwd = config.alias[options.fwd] || options.fwd;
+        options.submit = config.alias[options.submit] || options.submit;
     }
 }
 
@@ -138,7 +137,7 @@ if (command) {
     remain = options.argv.remain;
 
     options.number = options.number || [remain[1]];
-    options.remote = options.remote || base.config.default_remote;
+    options.remote = options.remote || config.default_remote;
 
     operations.push(User.login);
 
