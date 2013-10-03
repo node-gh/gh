@@ -90,14 +90,6 @@ if (!command) {
 
 // -- Utils ----------------------------------------------------------------------------------------
 
-function expandAlias(options) {
-    if (config.alias) {
-        options.user = config.alias[options.user] || options.user;
-        options.fwd = config.alias[options.fwd] || options.fwd;
-        options.submit = config.alias[options.submit] || options.submit;
-    }
-}
-
 function hasCommandInOptions(commands, options) {
     var found = false;
 
@@ -170,7 +162,7 @@ if (command) {
         options.repo = options.repo || results[2];
         options.currentBranch = options.currentBranch || results[3];
 
-        expandAlias(options);
+        base.expandAliases(options);
 
         // Try to retrieve iterative values from iterative option key,
         // e.g. option['number'] === [1,2,3]. If iterative option key is not
