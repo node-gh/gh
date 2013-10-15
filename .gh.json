@@ -44,14 +44,14 @@
             "fwd": {
                 "before": [],
                 "after": [
-                    "{{#if options.changes}} gh pr {{options.number}} --comment 'Pull request forwarded to {{forwardedLink}}. [See changes here.]({{compareLink}})' {{/if}}",
+                    "gh pr {{options.number}} --comment 'Pull request forwarded to {{forwardedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'",
                     "gh pr {{options.number}} --close"
                 ]
             },
             "merge": {
                 "before": [],
                 "after": [
-                    "{{#if options.changes}} gh pr {{options.number}} --comment 'Thank you, pull request merged! [See changes here.]({{compareLink}})' {{/if}}"
+                    "gh pr {{options.number}} --comment 'Thank you, pull request merged!{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'"
                 ]
             },
             "open": {
@@ -61,9 +61,9 @@
             "submit": {
                 "before": [],
                 "after": [
-                    "{{#if options.changes}}{{#if options.number}} gh pr {{options.number}} --comment 'Pull request submitted to {{submittedLink}}. [See changes here.]({{compareLink}})' {{/if}}{{/if}}",
+                    "{{#if options.number}}gh pr {{options.number}} --comment 'Pull request submitted to {{submittedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'{{/if}}",
                     "gh pr --browser --user {{options.submit}} --repo {{options.repo}} --number {{options.submittedPull}}",
-                    "{{#if options.number}} gh pr {{options.number}} --close {{/if}}"
+                    "{{#if options.number}}gh pr {{options.number}} --close{{/if}}"
                 ]
             }
         },
