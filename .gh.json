@@ -9,6 +9,8 @@
 
     "default_remote": "origin",
 
+    "git_command": "git",
+
     "github_token": "",
 
     "github_user": "",
