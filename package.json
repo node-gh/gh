@@ -39,7 +39,7 @@
         "cli-log": "~0.0.8",
         "copy-paste": "~0.0.9",
         "moment": "~2.4.0",
-        "handlebars": "~1.0.12",
+        "handlebars": "1.0.11",
         "github": "~0.1.12",
         "inquirer": "~0.3.4",
         "wordwrap": "~0.0.2",
