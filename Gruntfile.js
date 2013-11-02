@@ -67,5 +67,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-mocha-test');
+
+    grunt.registerTask('default', ['jshint', 'mochaTest']);
     grunt.registerTask('format', ['jsbeautifier']);
 };
