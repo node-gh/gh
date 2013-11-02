@@ -10,16 +10,41 @@
 
 module.exports = function(grunt) {
 
-    grunt.loadNpmTasks('grunt-jsbeautifier');
-
     grunt.initConfig({
         jsbeautifier: {
             files: ['bin/*.js', 'lib/**/*.js', 'test/**/*.js', '*.js'],
             options: {
                 config: '.jsbeautifyrc'
             }
+        },
+
+        jshint: {
+            options: grunt.file.readJSON('.jshintrc'),
+            gruntfile: 'Gruntfile.js',
+            files: {
+                src: [
+                  'bin/*.js',
+                  'lib/**/*.js'
+                ]
+            },
+            test: {
+                options: {
+                    globals: {
+                        describe: true,
+                        it: true,
+                        beforeEach: true,
+                        afterEach: true,
+                        before: true,
+                        after: true
+                    }
+                },
+                src: 'test/**/*.js'
+            }
+        },
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.registerTask('format', ['jsbeautifier']);
 };
