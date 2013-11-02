@@ -5,9 +5,13 @@
  * https://github.com/node-gh/gh/blob/master/LICENSE.md
  *
  * @author Zeno Rocha <zno.rocha@gmail.com>
+ * @author Eduardo Lundgren <zno.rocha@gmail.com>
  */
 
 module.exports = function(grunt) {
+
+    grunt.loadNpmTasks('grunt-jsbeautifier');
+
     grunt.initConfig({
         jsbeautifier: {
             files: ['bin/*.js', 'lib/**/*.js', 'test/**/*.js', '*.js'],
@@ -16,8 +20,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
-    grunt.loadNpmTasks('grunt-jsbeautifier');
 
     grunt.registerTask('format', ['jsbeautifier']);
 };
