@@ -36,8 +36,7 @@
     "gh": "bin/gh.js"
   },
   "scripts": {
-    "lint": "node_modules/.bin/jshint bin/ lib/ test/",
-    "test": "node_modules/.bin/mocha --reporter list"
+    "test": "grunt travis"
   },
   "dependencies": {
     "async": "~0.2.9",
