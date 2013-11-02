@@ -1,63 +1,68 @@
 {
-    "name": "gh",
-    "description": "GitHub command line tools.",
-    "version": "1.8.2",
-    "homepage": "http://nodegh.io",
-    "author": {
-        "name": "Eduardo Lundgren",
-        "email": "eduardolundgren@gmail.com",
-        "web": "http://www.eduardo.io",
-        "twitter": "eduardolundgren"
-    },
-    "contributors": [{
-        "name": "Zeno Rocha",
-        "email": "zno.rocha@gmail.com",
-        "web": "http://zenorocha.com",
-        "twitter": "zenorocha"
-    }],
-    "license": "BSD",
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:node-gh/gh.git"
-    },
-    "bugs": {
-        "url": "https://github.com/node-gh/gh/issues"
-    },
-    "keywords": [
-        "git", "github", "external", "commands", "helpers"
-    ],
-    "bin": {
-        "gh": "bin/gh.js"
-    },
-    "scripts": {
-        "lint": "node_modules/.bin/jshint bin/ lib/ test/",
-        "test": "node_modules/.bin/mocha --reporter list"
-    },
-    "dependencies": {
-        "async": "~0.2.9",
-        "cli-color": "~0.2.3",
-        "cli-log": "~0.0.8",
-        "copy-paste": "~0.1.0",
-        "moment": "~2.4.0",
-        "handlebars": "1.0.11",
-        "github": "~0.1.12",
-        "inquirer": "~0.3.4",
-        "wordwrap": "~0.0.2",
-        "nopt": "~2.1.2",
-        "open": "~0.0.4",
-        "truncate": "~1.0.2",
-        "update-notifier": "~0.1.7",
-        "userhome": "~0.1.0",
-        "which": "~1.0.5"
-    },
-    "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-jsbeautifier": "~0.2.2",
-        "jshint": "~2.3.0",
-        "mocha": "~1.12.0"
-    },
-    "engines": {
-        "node": ">=0.8 <0.12"
-    },
-    "preferGlobal": "true"
+  "name": "gh",
+  "description": "GitHub command line tools.",
+  "version": "1.8.2",
+  "homepage": "http://nodegh.io",
+  "author": {
+    "name": "Eduardo Lundgren",
+    "email": "eduardolundgren@gmail.com",
+    "web": "http://www.eduardo.io",
+    "twitter": "eduardolundgren"
+  },
+  "contributors": [
+    {
+      "name": "Zeno Rocha",
+      "email": "zno.rocha@gmail.com",
+      "web": "http://zenorocha.com",
+      "twitter": "zenorocha"
+    }
+  ],
+  "license": "BSD",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:node-gh/gh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/node-gh/gh/issues"
+  },
+  "keywords": [
+    "git",
+    "github",
+    "external",
+    "commands",
+    "helpers"
+  ],
+  "bin": {
+    "gh": "bin/gh.js"
+  },
+  "scripts": {
+    "lint": "node_modules/.bin/jshint bin/ lib/ test/"
+  },
+  "dependencies": {
+    "async": "~0.2.9",
+    "cli-color": "~0.2.3",
+    "cli-log": "~0.0.8",
+    "copy-paste": "~0.1.0",
+    "moment": "~2.4.0",
+    "handlebars": "1.0.11",
+    "github": "~0.1.12",
+    "inquirer": "~0.3.4",
+    "wordwrap": "~0.0.2",
+    "nopt": "~2.1.2",
+    "open": "~0.0.4",
+    "truncate": "~1.0.2",
+    "update-notifier": "~0.1.7",
+    "userhome": "~0.1.0",
+    "which": "~1.0.5"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-jsbeautifier": "~0.2.2",
+    "jshint": "~2.3.0",
+    "mocha": "~1.12.0"
+  },
+  "engines": {
+    "node": ">=0.8 <0.12"
+  },
+  "preferGlobal": "true"
 }
