@@ -13,10 +13,6 @@
     "expr": true,
     "forin": true,
     "funcscope": false,
-    "globals": {
-        "describe": true,
-        "it": true
-    },
     "globalstrict": false,
     "immed": true,
     "iterator": false,
