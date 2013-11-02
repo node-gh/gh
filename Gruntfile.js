@@ -22,10 +22,7 @@ module.exports = function(grunt) {
             options: grunt.file.readJSON('.jshintrc'),
             gruntfile: 'Gruntfile.js',
             files: {
-                src: [
-                  'bin/*.js',
-                  'lib/**/*.js'
-                ]
+                src: ['bin/*.js', 'lib/**/*.js']
             },
             test: {
                 options: {
