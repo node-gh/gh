@@ -57,8 +57,10 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-contrib-watch": "~0.5.3",
     "grunt-jsbeautifier": "~0.2.2",
-    "jshint": "~2.3.0",
+    "grunt-mocha-test": "~0.7.0",
     "mocha": "~1.12.0"
   },
   "engines": {
