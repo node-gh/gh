@@ -52,10 +52,19 @@ module.exports = function(grunt) {
                 src: ['test/**/*.js']
             }
         },
+
+        watch: {
+            files: [
+                'Gruntfile.js',
+                '<%= jshint.files.src %>',
+                '<%= jshint.test.src %>'
+            ],
+            tasks: ['jshint', 'mochaTest']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.registerTask('format', ['jsbeautifier']);
