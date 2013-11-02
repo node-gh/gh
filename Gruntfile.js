@@ -25,16 +25,7 @@ module.exports = function(grunt) {
                 src: ['bin/*.js', 'lib/**/*.js']
             },
             test: {
-                options: {
-                    globals: {
-                        describe: true,
-                        it: true,
-                        beforeEach: true,
-                        afterEach: true,
-                        before: true,
-                        after: true
-                    }
-                },
+                options: grunt.file.readJSON('test/.jshintrc'),
                 src: ['test/**/*.js']
             }
         },
