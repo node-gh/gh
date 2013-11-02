@@ -41,10 +41,22 @@ module.exports = function(grunt) {
                 src: 'test/**/*.js'
             }
         },
+
+        mochaTest: {
+            test: {
+                options: {
+                    slow: 1500,
+                    timeout: 50000,
+                    reporter: 'spec'
+                },
+                src: ['test/**/*.js']
+            }
+        },
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks('grunt-mocha-test');
     grunt.registerTask('format', ['jsbeautifier']);
 };
