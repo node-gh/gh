@@ -38,7 +38,7 @@ module.exports = function(grunt) {
                         after: true
                     }
                 },
-                src: 'test/**/*.js'
+                src: ['test/**/*.js']
             }
         },
 
