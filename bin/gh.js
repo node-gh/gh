@@ -9,7 +9,7 @@
  * @author Eduardo Lundgren <eduardolundgren@gmail.com>
  */
 
- 'use strict';
+'use strict';
 
 // -- Requires -------------------------------------------------------------------------------------
 
