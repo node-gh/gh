@@ -57,12 +57,13 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.9",
     "grunt-contrib-jshint": "~0.7.1",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-jsbeautifier": "0.2.2",
     "grunt-mocha-test": "~0.7.0",
-    "mocha": "~1.12.0",
-    "grunt-cli": "~0.1.9"
+    "matchdep": "0.3.0",
+    "mocha": "~1.12.0"
   },
   "engines": {
     "node": ">=0.8 <0.12"
