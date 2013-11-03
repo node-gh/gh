@@ -9,6 +9,8 @@
  * @author Eduardo Lundgren <eduardolundgren@gmail.com>
  */
 
+ 'use strict';
+
 // -- Requires -------------------------------------------------------------------------------------
 
 var async = require('async'),

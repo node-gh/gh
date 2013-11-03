@@ -8,6 +8,8 @@
  * @author Zeno Rocha <zno.rocha@gmail.com>
  */
 
+ 'use strict';
+
 // -- Requires -------------------------------------------------------------------------------------
 
 var assert = require('assert'),

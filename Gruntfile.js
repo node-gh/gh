@@ -8,6 +8,8 @@
  * @author Eduardo Lundgren <zno.rocha@gmail.com>
  */
 
+'use strict';
+
 module.exports = function(grunt) {
 
     grunt.initConfig({
