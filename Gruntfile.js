@@ -59,4 +59,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['jshint', 'mochaTest']);
     grunt.registerTask('format', ['jsbeautifier']);
     grunt.registerTask('travis', ['jshint', 'mochaTest']);
+
 };
