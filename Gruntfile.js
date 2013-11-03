@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         jshint: {
             options: grunt.file.readJSON('.jshintrc'),
             gruntfile: 'Gruntfile.js',
-            files: {
+            lib: {
                 src: ['bin/*.js', 'lib/**/*.js']
             },
             test: {
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         watch: {
             files: [
                 'Gruntfile.js',
-                '<%= jshint.files.src %>',
+                '<%= jshint.lib.src %>',
                 '<%= jshint.test.src %>'
             ],
             tasks: ['jshint', 'mochaTest']
