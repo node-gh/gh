@@ -935,18 +935,22 @@ Feel free to create your own plugins by forking [GH Boilerplate](https://github.
 
 ## Testing
 
-Check [Travis](https://travis-ci.org/node-gh/gh) for continous integration results.
+* Check [Travis](https://travis-ci.org/node-gh/gh) for continous integration results. Or run to preview the travis status.
+
+    ```
+grunt travis
+    ```
 
 * Run [JSHint](http://www.jshint.com/), a tool to detect errors and potential problems.
 
     ```
-npm run-script lint
+grunt jshint
     ```
 
 * Run [Mocha](http://visionmedia.github.io/mocha/), a unit test framework.
 
     ```
-npm run-script test
+grunt mochaTest
     ```
 
 ## Team
