@@ -13,6 +13,20 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
+        bump: {
+            options: {
+                files: ['package.json'],
+                commit: true,
+                commitMessage: 'Release v%VERSION%',
+                commitFiles: ['package.json'],
+                createTag: true,
+                tagName: 'v%VERSION%',
+                tagMessage: '',
+                push: true,
+                pushTo: 'origin'
+            }
+        },
+
         jsbeautifier: {
             files: ['bin/*.js', 'lib/**/*.js', 'test/**/*.js', '*.js'],
             options: {
@@ -53,6 +67,7 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jsbeautifier');
