@@ -63,7 +63,7 @@ module.exports = function(grunt) {
                 '<%= jshint.lib.src %>',
                 '<%= jshint.test.src %>'
             ],
-            tasks: ['jshint', 'mochaTest']
+            tasks: ['default']
         }
     });
 
@@ -74,7 +74,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
 
     grunt.registerTask('default', ['jshint', 'mochaTest']);
-    grunt.registerTask('format', ['jsbeautifier']);
-    grunt.registerTask('travis', ['jshint', 'mochaTest']);
+    grunt.registerTask('format',  ['jsbeautifier']);
 
 };

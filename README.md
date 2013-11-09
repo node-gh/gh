@@ -20,7 +20,7 @@
     * [Alias](#alias)
 * [Config](#config)
 * [Plugins](#plugins)
-* [Testing](#testing)
+* [Tasks](#tasks)
 * [Team](#team)
 * [Contributing](#contributing)
 * [History](#history)
@@ -933,12 +933,20 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 
 Feel free to create your own plugins by forking [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
 
-## Testing
+## Tasks
 
-* Check [Travis](https://travis-ci.org/node-gh/gh) for continous integration results. Or run to preview the travis status.
+* Bump package version, create tag, commit and push.
 
     ```
-grunt travis
+grunt bump       // v0.0.1
+grunt bump:minor // v0.1.0
+grunt bump:major // v1.0.0
+    ```
+
+* Run [JSBeautifier](http://jsbeautifier.org/), a tool to format code.
+
+    ```
+grunt format
     ```
 
 * Run [JSHint](http://www.jshint.com/), a tool to detect errors and potential problems.
@@ -951,6 +959,18 @@ grunt jshint
 
     ```
 grunt mochaTest
+    ```
+
+* Watch for changes and run `jshint` and `mochaTest` tasks.
+
+    ```
+grunt watch
+    ```
+
+* Shortcut for `jshint` and `mochaTest` tasks.
+
+    ```
+grunt
     ```
 
 ## Team
