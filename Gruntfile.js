@@ -53,8 +53,10 @@ module.exports = function(grunt) {
         }
     });
 
-    // Load all Grunt tasks installed from NPM
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
     grunt.registerTask('default', ['jshint', 'mochaTest']);
     grunt.registerTask('format', ['jsbeautifier']);
