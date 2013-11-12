@@ -36,7 +36,7 @@
     "gh": "bin/gh.js"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt ci"
   },
   "dependencies": {
     "async": "~0.2.9",
