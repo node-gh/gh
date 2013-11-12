@@ -63,7 +63,7 @@ module.exports = function(grunt) {
                 '<%= jshint.lib.src %>',
                 '<%= jshint.test.src %>'
             ],
-            tasks: ['default']
+            tasks: ['lint', 'test']
         }
     });
 
