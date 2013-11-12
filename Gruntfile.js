@@ -15,15 +15,15 @@ module.exports = function(grunt) {
     grunt.initConfig({
         bump: {
             options: {
-                files: ['package.json'],
                 commit: true,
-                commitMessage: 'Release v%VERSION%',
                 commitFiles: ['package.json'],
+                commitMessage: 'Release v%VERSION%',
                 createTag: true,
-                tagName: 'v%VERSION%',
-                tagMessage: '',
+                files: ['package.json'],
                 push: true,
-                pushTo: 'origin'
+                pushTo: 'origin',
+                tagMessage: '',
+                tagName: 'v%VERSION%'
             }
         },
 
@@ -35,11 +35,11 @@ module.exports = function(grunt) {
         },
 
         jshint: {
-            options: grunt.file.readJSON('.jshintrc'),
             gruntfile: 'Gruntfile.js',
             lib: {
                 src: ['bin/*.js', 'lib/**/*.js']
             },
+            options: grunt.file.readJSON('.jshintrc'),
             test: {
                 options: grunt.file.readJSON('test/.jshintrc'),
                 src: ['test/**/*.js']
@@ -49,9 +49,9 @@ module.exports = function(grunt) {
         mochaTest: {
             test: {
                 options: {
+                    reporter: 'spec',
                     slow: 1500,
-                    timeout: 50000,
-                    reporter: 'spec'
+                    timeout: 50000
                 },
                 src: ['test/**/*.js']
             }
