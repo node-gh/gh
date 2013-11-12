@@ -952,16 +952,16 @@ grunt format
 * Run [JSHint](http://www.jshint.com/), a tool to detect errors and potential problems.
 
     ```
-grunt jshint
+grunt lint
     ```
 
 * Run [Mocha](http://visionmedia.github.io/mocha/), a unit test framework.
 
     ```
-grunt mochaTest
+grunt test
     ```
 
-* Watch for changes and run `jshint` and `mochaTest` tasks.
+* Watch for changes and run `lint` and `test` tasks.
 
     ```
 grunt watch
