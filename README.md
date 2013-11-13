@@ -89,7 +89,7 @@ Option            | Usage        | Type
 gh pr
     ```
 
-* List open pulls requests for all branches.
+* List open pulls requests for all branches from all your repositories.
 
     ```
 gh pr --list --all
