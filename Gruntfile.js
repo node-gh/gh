@@ -5,7 +5,7 @@
  * https://github.com/node-gh/gh/blob/master/LICENSE.md
  *
  * @author Zeno Rocha <zno.rocha@gmail.com>
- * @author Eduardo Lundgren <zno.rocha@gmail.com>
+ * @author Eduardo Lundgren <eduardo.lundgren@gmail.com>
  */
 
 'use strict';
