@@ -599,7 +599,7 @@ gh re --list
 gh re --list --type private
     ```
 
-* List all repositories for someone.
+* List all repositories from someone.
 
     ```
 gh re --list --user zenorocha
