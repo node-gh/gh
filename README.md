@@ -705,7 +705,28 @@ gh gi
 gh gi --browser --id 5991877
     ```
 
-### 2. Create
+### 2. List
+
+Option                 | Usage        | Type
+---                    | ---          | ---
+`-l`, `--list`         | **Required** | `Boolean`
+`-u`, `--user`         | *Optional*   | `String`
+
+#### Examples
+
+* List all gists.
+
+    ```
+gh gi --list
+    ```
+
+* List all gists from someone.
+
+    ```
+gh gi --list --user brunocoelho
+    ```
+
+### 3. Create
 
 Option                | Usage        | Type
 ---                   | ---          | ---
@@ -736,7 +757,7 @@ gh gi --new hello --content "Hello World!" --private
     ```
 
 
-### 3. Fork
+### 4. Fork
 
 Option                | Usage        | Type
 ---                   | ---          | ---
@@ -751,7 +772,7 @@ gh gi --fork 5444883
     ```
 
 
-### 4. Delete
+### 5. Delete
 
 Option                | Usage        | Type
 ---                   | ---          | ---
