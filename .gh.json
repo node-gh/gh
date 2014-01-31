@@ -9,6 +9,8 @@
 
     "default_remote": "origin",
 
+    "fwd_description": "{{options.description}}\n\ncc @{{pull.user.login}}",
+
     "git_command": "git",
 
     "github_token": "",
