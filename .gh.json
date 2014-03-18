@@ -9,8 +9,6 @@
 
     "default_remote": "origin",
 
-    "fwd_description": "{{options.description}}\n\ncc @{{pull.user.login}}",
-
     "git_command": "git",
 
     "github_token": "",
@@ -48,6 +46,7 @@
             "fwd": {
                 "before": [],
                 "after": [
+                    "gh pr {{options.submittedPullNumber}} --user {{options.fwd}} --comment '/cc @{{options.submittedUser}}'",
                     "gh pr {{options.number}} --comment 'Pull request forwarded to {{forwardedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'",
                     "gh pr {{options.number}} --close"
                 ]
