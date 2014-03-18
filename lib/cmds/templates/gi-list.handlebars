@@ -1,9 +1,8 @@
 {{#each gists}}{{../prefix}} {{{yellowBright "➜ " user.login "/" id}}}
-{{../prefix}}     {{{blueBright html_url}}}
-{{../prefix}}     comments: {{{greenBright comments}}}
 {{#if description}}
-{{../../prefix}}     description: {{{wordwrap description 6}}}
+{{../../prefix}}     {{{wordwrap description}}}
 {{/if}}
+{{../prefix}}     {{{blueBright html_url}}}
 {{../prefix}}
 
 {{/each}}
