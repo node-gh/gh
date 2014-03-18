@@ -998,9 +998,9 @@ grunt
 
 Node GH is maintained by these guys and some awesome [contributors](https://github.com/node-gh/gh/graphs/contributors).
 
-[![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/)
---- | ---
-[Eduardo Lundgren](https://github.com/eduardolundgren/) | [Zeno Rocha](https://github.com/zenorocha/)
+[![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/) | [![Henrique Vicente](http://gravatar.com/avatar/5733fd332f2a0da11931e0e73ddfb20d?s=70)](https://github.com/henvic/) | [![Bruno Coelho](http://gravatar.com/avatar/1f90c690b534779560d3bfdb23772915?s=70)](https://github.com/brunocoelho/)
+--- | --- | --- | ---
+[Eduardo Lundgren](https://github.com/eduardolundgren/) | [Zeno Rocha](https://github.com/zenorocha/) | [Henrique Vicente](https://github.com/henvic/) | [Bruno Coelho](https://github.com/brunocoelho/)
 
 ## Contributing
 
