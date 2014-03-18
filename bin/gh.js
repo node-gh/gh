@@ -77,6 +77,16 @@ else {
     });
 }
 
+
+// Verify if gh was invoked from the directory of a plugin
+if (fs.existsSync(process.cwd() + '/.gh-plugin')) {
+    plugin = process.cwd() + '/' + require(process.cwd() + '/package.json').bin['gh-' + remain[0]];
+
+    if (fs.existsSync(plugin)) {
+        command = require(plugin).Impl;
+    }
+}
+
 // If command was not found, check if it is registered as a plugin.
 if (!command) {
     plugin = base.getPlugin(remain[0]);
