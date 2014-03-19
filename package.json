@@ -43,7 +43,7 @@
     "cli-color": "~0.2.3",
     "cli-log": "~0.0.8",
     "copy-paste": "~0.1.0",
-    "github": "~0.1.12",
+    "github": "~0.1.14",
     "handlebars": "1.0.11",
     "inquirer": "~0.3.4",
     "moment": "~2.4.0",
