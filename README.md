@@ -80,7 +80,7 @@ Option            | Usage        | Type
 `-b`, `--branch`  | *Optional*   | `String`
 `--remote`        | *Optional*   | `String`
 `-r`, `--repo`    | *Optional*   | `String`
-`--sort`          | *Optional*   | [`created`, `updated`, `popularity`, `long-running`]
+`--sort`          | *Optional*   | [`created`, `updated`, `popularity`, `long-running`, `complexity`]
 `-S`, `--state`   | *Optional*   | [`open`, `closed`]
 `-u`, `--user`    | *Optional*   | `String`
 
@@ -116,16 +116,22 @@ gh pr --list --detailed
 gh pr --list --branch master
     ```
 
-* List open pull requests and sort them by popularity (comment count).
+* List open pull requests and sort them by popularity *(comment count)*.
 
     ```
 gh pr --list --sort popularity
     ```
 
-* List open pull requests and sort them by asc long-running (old but still active).
+* List open pull requests and sort them by asc long-running *(old but still active)*.
 
     ```
 gh pr --list --sort long-running --direction asc
+    ```
+    
+* List open pull requests and sort them by complexity *(complexity is calculated based on number of additions, deletions, changed files, comments and review comments)*.
+
+    ```
+gh pr --list --sort complexity
     ```
 
 ### 2. Fetch
