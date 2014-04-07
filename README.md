@@ -1,4 +1,4 @@
-# Node GH [![Build Status](https://secure.travis-ci.org/node-gh/gh.png?branch=master)](https://travis-ci.org/node-gh/gh) [![NPM version](https://badge.fury.io/js/gh.png)](http://badge.fury.io/js/gh) [![Dependency Status](https://david-dm.org/node-gh/gh.png)](https://david-dm.org/node-gh/gh)
+# Node GH [![Build Status](https://secure.travis-ci.org/node-gh/gh.svg?branch=master)](https://travis-ci.org/node-gh/gh) [![NPM version](https://badge.fury.io/js/gh.svg)](http://badge.fury.io/js/gh) [![Dependency Status](https://david-dm.org/node-gh/gh.svg?theme=badge.io)](https://david-dm.org/node-gh/gh)
 
 ![Class Octocat](http://nodegh.io/images/class-octocat.jpg)
 
