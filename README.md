@@ -934,7 +934,7 @@ This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.js
 "github_user": ""
     ```
 
-* Automate tasks to be runned before or after a certain command.
+* Run automated tasks before or after a certain command.
 
     ```javascript
 "hooks": {
