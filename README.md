@@ -80,6 +80,7 @@ Option            | Usage        | Type
 ---               | ---          | ---
 `-l`, `--list`    | **Required** | `Boolean`
 `-a`, `--all`     | *Optional*   | `Boolean`
+`-O`, `--org`     | *Optional*   | `String`
 `-m`, `--me`      | *Optional*   | `Boolean`
 `-d`, `--detailed`| *Optional*   | `Boolean`
 `--direction`     | *Optional*   | [`asc`, `desc`]
@@ -102,6 +103,11 @@ gh pr
 
     ```
 gh pr --list --all
+    ```
+
+* List open pull requests sent by logged user on current repository.
+
+gh pr --list --all --org github
     ```
 
 * List open pull requests sent by logged user on current repository.
