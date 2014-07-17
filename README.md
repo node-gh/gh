@@ -1,4 +1,10 @@
-# Node GH [![Build Status](https://secure.travis-ci.org/node-gh/gh.svg?branch=master)](https://travis-ci.org/node-gh/gh) [![NPM version](https://badge.fury.io/js/gh.svg)](http://badge.fury.io/js/gh) [![Dependency Status](https://david-dm.org/node-gh/gh.svg?theme=badge.io)](https://david-dm.org/node-gh/gh)
+# Node GH
+
+[![NPM version](http://img.shields.io/npm/v/gh.svg?style=flat)](http://npmjs.org/gh)
+[![NPM downloads](http://img.shields.io/npm/dm/gh.svg?style=flat)](http://npmjs.org/gh)
+[![Build Status](http://img.shields.io/travis/node-gh/gh/master.svg?style=flat)](https://travis-ci.org/node-gh/gh)
+[![Dependencies Status](http://img.shields.io/david/node-gh/gh.svg?style=flat)](https://david-dm.org/node-gh/gh)
+[![DevDependencies Status](http://img.shields.io/david/dev/node-gh/gh.svg?style=flat)](https://david-dm.org/node-gh/gh#info=devDependencies)
 
 ![Class Octocat](http://nodegh.io/images/class-octocat.jpg)
 
@@ -127,7 +133,7 @@ gh pr --list --sort popularity
     ```
 gh pr --list --sort long-running --direction asc
     ```
-    
+
 * List open pull requests and sort them by complexity *(complexity is calculated based on number of additions, deletions, changed files, comments and review comments)*.
 
     ```
