@@ -915,6 +915,7 @@ gh alias --remove zeno
 
 There are some pretty useful configurations that you can set on [.gh.json](https://github.com/node-gh/gh/blob/master/.gh.json).
 This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)*.
+You can also set per-project configurations by adding a `.gh.json` file in your project's root folder and overriding existing keys.
 
 * GitHub API configurations. Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
 
