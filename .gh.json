@@ -9,6 +9,10 @@
 
     "default_remote": "origin",
 
+    "default_pr_forwarder": "",
+
+    "default_pr_reviewer": "",
+
     "git_command": "git",
 
     "github_token": "",

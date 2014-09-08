@@ -230,6 +230,9 @@ Option           | Usage        | Type
 `--fwd`          | **Required** | `String`
 `-n`, `--number` | **Required** | `Number`
 
+Omitting a value for `--fwd` fallbacks to the `default_pr_forwarder` key found
+in your [config file](#config).
+
 #### Examples
 
 * Forward a pull request to another reviewer.
@@ -291,7 +294,9 @@ Option                  | Usage        | Type
 `-r`, `--repo`          | *Optional*   | `String`
 `-t`, `--title`         | *Optional*   | `String`
 
-Omitting `--title` will submit a pull request using the last commit message as title.
+Omitting a value for `--submit` fallbacks to the `default_pr_reviewer` key found
+in your [config file](#config). Omitting `--title` will submit a pull request
+using the last commit message as title.
 
 #### Examples
 
@@ -915,6 +920,7 @@ gh alias --remove zeno
 
 There are some pretty useful configurations that you can set on [.gh.json](https://github.com/node-gh/gh/blob/master/.gh.json).
 This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)*.
+
 You can also set per-project configurations by adding a `.gh.json` file in your project's root folder and overriding existing keys.
 
 * GitHub API configurations. Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
@@ -932,6 +938,13 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
     ```javascript
 "default_branch": "master",
 "default_remote": "origin"
+    ```
+
+* Set default users when [submitting](#7-submit) or [forwarding](#5-forward) pull requests.
+
+    ```javascript
+"default_pr_forwarder": "",
+"default_pr_reviewer": ""
     ```
 
 * GitHub data filled once you log in.
