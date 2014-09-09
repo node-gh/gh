@@ -48,7 +48,7 @@
     "inquirer": "^0.7.1",
     "moment": "^2.8.3",
     "nopt": "^3.0.1",
-    "open": "^0.0.4",
+    "open": "^0.0.5",
     "truncate": "^1.0.2",
     "update-notifier": "^0.2.1",
     "userhome": "^0.1.0",
@@ -57,13 +57,13 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-bump": "0.0.13",
+    "grunt-bump": "^0.0.15",
     "grunt-cli": "~0.1.9",
-    "grunt-contrib-jshint": "~0.9.2",
-    "grunt-contrib-watch": "~0.6.0",
-    "grunt-jsbeautifier": "0.2.6",
-    "grunt-mocha-test": "~0.10.0",
-    "mocha": "~1.18.2"
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.0",
+    "grunt-jsbeautifier": "^0.2.7",
+    "grunt-mocha-test": "^0.11.0",
+    "mocha": "^1.21.4"
   },
   "engines": {
     "node": ">=0.8 <0.12"
