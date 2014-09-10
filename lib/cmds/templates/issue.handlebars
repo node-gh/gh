@@ -6,6 +6,9 @@
 {{#if body}}
 {{../../../prefix}}     > {{{wordwrap body 6}}}
 {{/if}}
+{{#if labels}}
+{{../../../prefix}}     {{{greenBright "labels: "}}}{{#each labels}}{{{blueBright name}}}{{#unless @last}}|{{/unless}}{{/each}}
+{{/if}}
 {{../../prefix}}
 {{/if}}
 {{/each}}
