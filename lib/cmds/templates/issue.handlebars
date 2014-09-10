@@ -7,7 +7,7 @@
 {{../../../prefix}}     > {{{wordwrap body 6}}}
 {{/if}}
 {{#if labels}}
-{{../../../prefix}}     {{{greenBright "labels: "}}}{{#each labels}}{{{blueBright name}}}{{#unless @last}},{{/unless}}{{/each}}
+{{../../../prefix}}     {{{greenBright "labels:"}}}  {{#each labels}}{{name}}{{#unless @last}},{{/unless}}{{/each}}
 {{/if}}
 {{../../prefix}}
 {{/if}}
