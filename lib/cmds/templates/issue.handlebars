@@ -9,6 +9,9 @@
 {{#if labels}}
 {{../../../prefix}}     {{{greenBright "labels:"}}}  {{#each labels}}{{name}}{{#unless @last}},{{/unless}}{{/each}}
 {{/if}}
+{{#if milestone}}
+{{../../../prefix}}     {{{greenBright "milestone:"}}} {{{milestone.title}}} - {{{milestone.number}}}
+{{/if}}
 {{../../prefix}}
 {{/if}}
 {{/each}}
