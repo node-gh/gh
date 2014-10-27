@@ -863,11 +863,11 @@ gh user --logout
 
 Option             | Usage        | Type
 ---                | ---          | ---
-`-w`, `--whoami`   | **optional** | `Boolean`
+`-w`, `--whoami`   | **Required** | `Boolean`
 
 #### Examples
 
-* Prints your username to stdout. 
+* Prints your username to stdout.
 
     ```
 gh user --whoami
