@@ -13,8 +13,6 @@
 
     "default_pr_reviewer": "",
 
-    "git_command": "git",
-
     "github_token": "",
 
     "github_user": "",
