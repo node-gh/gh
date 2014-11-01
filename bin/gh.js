@@ -42,6 +42,8 @@ process.env.GH_PATH = path.join(__dirname, '../');
 
 // -- Init -----------------------------------------------------------------------------------------
 
+require('../lib/init');
+
 operations = [];
 parsed = nopt(process.argv);
 remain = parsed.argv.remain;
