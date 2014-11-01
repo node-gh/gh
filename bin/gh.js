@@ -15,6 +15,7 @@
 
 var async = require('async'),
     base = require('../lib/base'),
+    configs = require('../lib/configs'),
     fs = require('fs'),
     git = require('../lib/git'),
     logger = require('../lib/logger'),
@@ -22,7 +23,7 @@ var async = require('async'),
     path = require('path'),
     Help = require('../lib/cmds/help').Impl,
     User = require('../lib/cmds/user').Impl,
-    config = base.getConfig(),
+    config = configs.getConfig(),
     command,
     commandDir,
     commandFiles,
@@ -40,6 +41,8 @@ var async = require('async'),
 process.env.GH_PATH = path.join(__dirname, '../');
 
 // -- Init -----------------------------------------------------------------------------------------
+
+require('../lib/init');
 
 operations = [];
 parsed = nopt(process.argv);
@@ -79,7 +82,7 @@ else {
 
 // If command was not found, check if it is registered as a plugin.
 if (!command) {
-    plugin = base.getPlugin(remain[0]);
+    plugin = configs.getPlugin(remain[0]);
 
     if (plugin) {
         command = plugin.Impl;
