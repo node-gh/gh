@@ -14,7 +14,7 @@
 var npm = require('npm'),
     logger = require('../lib/logger');
 
-npm.load(function (err, npm) {
+npm.load(function (err) {
     if (err) {
         return logger.error(err);
     }
