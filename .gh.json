@@ -44,21 +44,21 @@
             "fetch": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Just started reviewing :)'"
+                    "gh pr {{options.number}} --user {{options.user}} --repo {{options.repo}} --comment 'Just started reviewing :)'"
                 ]
             },
             "fwd": {
                 "before": [],
                 "after": [
                     "gh pr {{options.submittedPullNumber}} --user {{options.fwd}} --comment '/cc @{{options.submittedUser}}'",
-                    "gh pr {{options.number}} --comment 'Pull request forwarded to {{forwardedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'",
+                    "gh pr {{options.number}} --user {{options.user}} --repo {{options.repo}} --comment 'Pull request forwarded to {{forwardedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'",
                     "gh pr {{options.number}} --close"
                 ]
             },
             "merge": {
                 "before": [],
                 "after": [
-                    "gh pr {{options.number}} --comment 'Thank you, pull request merged!{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'"
+                    "gh pr {{options.number}} --user {{options.user}} --repo {{options.repo}} --comment 'Thank you, pull request merged!{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'"
                 ]
             },
             "open": {
@@ -68,9 +68,9 @@
             "submit": {
                 "before": [],
                 "after": [
-                    "{{#if options.number}}gh pr {{options.number}} --comment 'Pull request submitted to {{submittedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'{{/if}}",
+                    "{{#if options.number}}gh pr {{options.number}} --user {{options.user}} --repo {{options.repo}} --comment 'Pull request submitted to {{submittedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'{{/if}}",
                     "gh pr --browser --user {{options.submit}} --repo {{options.repo}} --number {{options.submittedPull}}",
-                    "{{#if options.number}}gh pr {{options.number}} --close{{/if}}"
+                    "{{#if options.number}}gh pr --user {{options.user}} --repo {{options.repo}} {{options.number}} --close{{/if}}"
                 ]
             }
         },

@@ -585,6 +585,11 @@ Option                 | Usage        | Type
 
 #### Examples
 
+* **Shortcut** for opening GitHub issue page in the browser.
+    ```
+gh is 100
+    ```
+
 * Open GitHub issue page in the browser.
 
     ```
