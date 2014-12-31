@@ -114,8 +114,6 @@
 
     "plugins": {},
 
-    "prefix": "gh",
-
     "replace": {},
 
     "signature": " <br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
