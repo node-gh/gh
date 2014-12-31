@@ -23,5 +23,5 @@ npm.load(function (err) {
     // -- Env ------------------------------------------------------------------------------------------
     process.env.GH_PATH = path.join(__dirname, '../');
 
-    require('../lib/cmd.js');
+    require('../lib/cmd.js').run();
 });
