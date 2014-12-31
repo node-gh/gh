@@ -13,8 +13,6 @@
 
     "default_pr_reviewer": "",
 
-    "git_command": "git",
-
     "github_token": "",
 
     "github_user": "",
@@ -115,8 +113,6 @@
     "pull_branch_name_prefix": "pr-",
 
     "plugins": {},
-
-    "prefix": "gh",
 
     "replace": {},
 
