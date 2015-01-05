@@ -1012,6 +1012,8 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
 "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
     ```
 
+If you need to use a custom git command, set the environment variable `GH_GIT_COMMAND`.
+
 ## Plugins
 
 * [GH Gif](https://github.com/node-gh/gh-gif) - A plugin for commenting on pull requests/issues using GIF reactions.
