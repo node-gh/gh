@@ -1,6 +1,6 @@
 Software License Agreement (BSD License)
 
-Copyright (c) 2013, Eduardo Antonio Lundgren Melo and Zeno Rocha Bueno Netto.
+Copyright (c) 2013-2015, Eduardo Antonio Lundgren Melo and Zeno Rocha Bueno Netto.
 All rights reserved.
 
 Redistribution and use of this software in source and binary forms, with or without modification, are

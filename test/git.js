@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, All Rights Reserved.
+ * Copyright 2013-2015, All Rights Reserved.
  *
  * Code licensed under the BSD License:
  * https://github.com/node-gh/gh/blob/master/LICENSE.md
