@@ -1,10 +1,10 @@
-{{#each repos}}{{../prefix}} {{{yellowBright "➜ " full_name}}}
+{{#each repos}}{{{yellowBright "➜ " full_name}}}
 {{#if ../detailed}}
-{{../../prefix}}     {{{blueBright html_url}}}
-{{../../prefix}}      {{#if description}}{{{wordwrap description 6}}}  {{/if}}{{#if homepage}}({{{homepage}}}){{/if}}
-{{../../prefix}}     last update {{date updated_at}}
+    {{{blueBright html_url}}}
+     {{#if description}}{{{wordwrap description 6}}}  {{/if}}{{#if homepage}}({{{homepage}}}){{/if}}
+    last update {{date updated_at}}
 {{/if}}
-{{../prefix}}     forks: {{{greenBright forks}}}, stars: {{{greenBright watchers}}}, issues: {{{greenBright open_issues}}}
-{{../prefix}}
+    forks: {{{greenBright forks}}}, stars: {{{greenBright watchers}}}, issues: {{{greenBright open_issues}}}
+
 
 {{/each}}

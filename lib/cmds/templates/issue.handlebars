@@ -1,12 +1,12 @@
-{{prefix}} {{{yellowBright "➜ " user "/" repo}}}
 {{#each issues}}
-{{../prefix}}     {{{greenBright "#" number}}} {{{title}}} {{{magentaBright "@" user.login}}} ({{date created_at}})
+    {{{greenBright "#" number}}} {{{title}}} {{{magentaBright "@" user.login}}} ({{date created_at}})
 {{#if ../detailed}}
-{{../../prefix}}     {{{blueBright html_url}}}
+    {{{blueBright html_url}}}
 {{#if body}}
-{{../../../prefix}}     > {{{wordwrap body 6}}}
+    > {{{wordwrap body 6}}}
 {{/if}}
-{{../../prefix}}
+
 {{/if}}
+
+
 {{/each}}
-{{prefix}}
