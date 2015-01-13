@@ -154,7 +154,7 @@ Option           | Usage        | Type
 
 #### Examples
 
-* **Shortcut** for fetching pull request and checkout into a new branch `pull-1`.
+* **Shortcut** for fetching pull request and checkout into a new branch `pr-1`.
 
     ```
 gh pr 1
