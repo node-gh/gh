@@ -3,6 +3,8 @@ node_js:
     - "0.12"
     - "0.11"
     - "0.10"
+env:
+    - NO_UPDATE_NOTIFIER=true
 script:
     - npm test
     - ./bin/gh.js
