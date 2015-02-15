@@ -11,7 +11,8 @@
 
 'use strict';
 
-var path = require('path');
+var path = require('path'),
+    tracker = require('../lib/tracker');
 
 try {
     // -- Env ------------------------------------------------------------------------------------------
@@ -19,5 +20,6 @@ try {
 
     require('../lib/cmd.js').run();
 } catch (e) {
+    tracker.track('error');
     throw e;
 }
