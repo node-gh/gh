@@ -12,7 +12,13 @@
 'use strict';
 
 var path = require('path'),
-    tracker = require('../lib/tracker');
+    fs = require('fs'),
+    tracker = require('../lib/tracker'),
+    configs = require('../lib/configs');
+
+if (!fs.existsSync(configs.getUserHomePath())) {
+    configs.createGlobalConfig();
+}
 
 try {
     // -- Env ------------------------------------------------------------------------------------------
