@@ -59,14 +59,14 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-bump": "^0.0.15",
-    "grunt-cli": "~0.1.9",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-watch": "^0.6.0",
-    "grunt-jsbeautifier": "^0.2.7",
-    "grunt-mocha-test": "^0.11.0",
+    "grunt-bump": "^0.1.0",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-jsbeautifier": "^0.2.8",
+    "grunt-mocha-test": "^0.12.7",
     "insight": "^0.5.0",
-    "mocha": "^1.21.4"
+    "mocha": "^2.1.0"
   },
   "engines": {
     "node": ">=0.10"
