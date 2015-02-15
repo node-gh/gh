@@ -20,6 +20,11 @@ if (!fs.existsSync(configs.getUserHomePath())) {
     configs.createGlobalConfig();
 }
 
+// If configs.PLUGINS_PATH_KEY is undefined, try to cache it before proceeding.
+if (configs.getConfig()[configs.PLUGINS_PATH_KEY] === undefined) {
+    configs.getNodeModulesGlobalPath();
+}
+
 try {
     // -- Env ------------------------------------------------------------------------------------------
     process.env.GH_PATH = path.join(__dirname, '../');
