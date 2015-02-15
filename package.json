@@ -44,7 +44,6 @@
     "cli-color": "^0.3.2",
     "cli-log": "^0.0.8",
     "copy-paste": "^1.0.1",
-    "execSync": "^1.0.2",
     "spawn-sync": "^1.0.4",
     "github": "^0.2.3",
     "handlebars": "^3.0.0",
