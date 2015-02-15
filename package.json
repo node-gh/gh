@@ -69,7 +69,7 @@
     "mocha": "^1.21.4"
   },
   "engines": {
-    "node": ">=0.8 <0.12"
+    "node": ">=0.10"
   },
   "preferGlobal": "true"
 }
