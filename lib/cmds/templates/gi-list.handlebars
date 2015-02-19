@@ -1,9 +1,8 @@
-{{#each gists}}
-{{{yellowBright "➜ " user.login "/" id}}}
+{{#each gists}}{{../prefix}} {{{yellowBright "➜ " user.login "/" id}}}
 {{#if description}}
-    {{{wordwrap description}}}
+{{../../prefix}}     {{{wordwrap description}}}
 {{/if}}
-    {{{blueBright html_url}}}
-
+{{../prefix}}     {{{blueBright html_url}}}
+{{../prefix}}
 
 {{/each}}

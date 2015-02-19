@@ -1,15 +1,15 @@
-{{{yellowBright "➜ " user "/" repo}}}
+{{prefix}} {{{yellowBright "➜ " user "/" repo}}}
 {{#each branches}}
-    {{name}} ({{total}})
+{{../prefix}}   {{name}} ({{total}})
 {{#each pulls}}
-    {{{greenBright "#" number}}} {{{title}}} {{{magentaBright "@" user.login}}} ({{date created_at}})
+{{../../prefix}}     {{{greenBright "#" number}}} {{{title}}} {{{magentaBright "@" user.login}}} ({{date created_at}})
 {{#if ../../detailed}}
-    {{{blueBright html_url}}}
+{{../../../prefix}}     {{{blueBright html_url}}}
 {{#if body}}
-    {{{wordwrap body 6}}}
+{{../../../../prefix}}     {{{wordwrap body 6}}}
 {{/if}}
-
+{{../../../prefix}}
 {{/if}}
 {{/each}}
-
+{{../prefix}}
 {{/each}}
