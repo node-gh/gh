@@ -777,14 +777,13 @@ Option                | Usage        | Type
 `-c`, `--content`     | *Optional*   | `String`
 `-d`, `--description` | *Optional*   | `String`
 `-p`, `--private`     | *Optional*   | `Boolean`
-`-P`, `--paste`       | *Optional*   | `Boolean`
 
 #### Examples
 
-* Create a Gist `foo.js` pasting the contents of your clipboard.
+* Create a Gist `foo.js`.
 
     ```
-gh gi --new foo.js --paste
+gh gi --new foo.js
     ```
 
 * Create a Gist `hello` containing "Hello World".
