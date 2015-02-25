@@ -13,8 +13,16 @@
 
 var path = require('path'),
     fs = require('fs'),
+    logger = require('../lib/logger'),
+    pkg = require('../package.json'),
+    semver = require('semver'),
     tracker = require('../lib/tracker'),
     configs = require('../lib/configs');
+
+// Check node version
+if (!isCompatibleNodeVersion()) {
+    logger.error('Please update your NodeJS version: http://nodejs.org/download');
+}
 
 if (!fs.existsSync(configs.getUserHomePath())) {
     configs.createGlobalConfig();
@@ -25,12 +33,16 @@ if (configs.getConfig()[configs.PLUGINS_PATH_KEY] === undefined) {
     configs.getNodeModulesGlobalPath();
 }
 
+// -- Env ------------------------------------------------------------------------------------------
 try {
-    // -- Env ------------------------------------------------------------------------------------------
     process.env.GH_PATH = path.join(__dirname, '../');
 
     require('../lib/cmd.js').run();
 } catch (e) {
     tracker.track('error');
     throw e;
+}
+
+function isCompatibleNodeVersion() {
+    return semver.satisfies(process.version, pkg.engines.node);
 }
