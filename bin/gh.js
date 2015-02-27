@@ -20,6 +20,10 @@ var path = require('path'),
     configs = require('../lib/configs');
 
 // Check node version
+function isCompatibleNodeVersion() {
+    return semver.satisfies(process.version, pkg.engines.node);
+}
+
 if (!isCompatibleNodeVersion()) {
     logger.error('Please update your NodeJS version: http://nodejs.org/download');
 }
@@ -41,8 +45,4 @@ try {
 } catch (e) {
     tracker.track('error');
     throw e;
-}
-
-function isCompatibleNodeVersion() {
-    return semver.satisfies(process.version, pkg.engines.node);
 }
