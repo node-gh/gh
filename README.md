@@ -46,7 +46,7 @@ In order to sucessfully run this project you must have [NodeJS](http://nodejs.or
 
 ## Demonstration
 
-[![Demo](http://nodegh.io/images/nodegh-demo.jpg)](http://ascii.io/a/3391/)
+[![Demo](http://nodegh.io/images/nodegh-demo.jpg)](https://asciinema.org/a/3391)
 
 ## Available commands
 
