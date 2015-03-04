@@ -17,11 +17,16 @@ var path = require('path'),
     pkg = require('../package.json'),
     semver = require('semver'),
     tracker = require('../lib/tracker'),
-    configs = require('../lib/configs');
+    configs = require('../lib/configs'),
+    verbose = process.argv.indexOf('--verbose') === true;
 
 // Check node version
 function isCompatibleNodeVersion() {
     return semver.satisfies(process.version, pkg.engines.node);
+}
+
+if (verbose) {
+    process.env.GH_VERBOSE = true;
 }
 
 if (!isCompatibleNodeVersion()) {
