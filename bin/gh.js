@@ -49,5 +49,5 @@ try {
     require('../lib/cmd.js').run();
 } catch (e) {
     tracker.track('error');
-    throw e;
+    console.error(e.stack || e);
 }
