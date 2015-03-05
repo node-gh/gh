@@ -780,12 +780,6 @@ Option                | Usage        | Type
 
 #### Examples
 
-* Create a Gist `foo.js`.
-
-    ```
-gh gi --new foo.js
-    ```
-
 * Create a Gist `hello` containing "Hello World".
 
     ```
