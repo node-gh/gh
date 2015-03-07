@@ -941,7 +941,8 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
 "api": {
     "host": "api.github.com",
     "protocol": "https",
-    "version": "3.0.0"
+    "version": "3.0.0",
+    "pathPrefix": null
 }
     ```
 
