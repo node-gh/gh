@@ -2,7 +2,8 @@
     "api": {
         "host": "api.github.com",
         "protocol": "https",
-        "version": "3.0.0"
+        "version": "3.0.0",
+        "pathPrefix": null
     },
 
     "default_branch": "master",
