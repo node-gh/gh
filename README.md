@@ -518,7 +518,7 @@ Option             | Usage        | Type
 `-A`, `--assignee` | *Optional*   | `String`
 `-d`, `--detailed` | *Optional*   | `Boolean`
 `-L`, `--label`    | *Optional*   | `String`
-`-M`, `--milestone`| *Optional*   | `Number`
+`-M`, `--milestone`| *Optional*   | [`Number`, `String`]
 `--remote`         | *Optional*   | `String`
 `-r`, `--repo`     | *Optional*   | `String`
 `-S`, `--state`    | *Optional*   | [`open`, `closed`]
