@@ -11,7 +11,7 @@
 
 'use strict';
 
-var verbose = process.argv.indexOf('--verbose') === true;
+var verbose = process.argv.indexOf('--verbose') !== -1;
 
 if (verbose) {
     process.env.GH_VERBOSE = true;
