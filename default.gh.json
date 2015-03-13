@@ -1,4 +1,6 @@
 {
+    "version": "1.11.4",
+
     "api": {
         "host": "api.github.com",
         "protocol": "https",
