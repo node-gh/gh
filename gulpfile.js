@@ -47,10 +47,12 @@ function reportTask() {
 }
 
 function testTask(done) {
-    // var queue = [lintTask, complexityTask, testUnitTask, coverTask, coverageTask];
-    // var test = new Promise();
-
-    return runSequence('lint', 'complexity', 'test-cover', 'test-coverage', done);
+    return runSequence(
+        'complexity',
+        'test-cover',
+        'test-coverage',
+        done
+    );
 }
 
 gulp.task('lint', lintTask);
