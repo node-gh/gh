@@ -14,10 +14,6 @@ var rewire = require('rewire'),
     logger = rewire('../lib/logger');
 
 describe('Logger Module Tests', function() {
-    it('should sum 1 + 1', function() {
-        assert.strictEqual(2, 1 + 1);
-    });
-
     it('should log debug', function() {
         logger.debug('message ignored');
         logger.__with__({
