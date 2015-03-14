@@ -3,6 +3,7 @@
 var paths,
     gulp = require('gulp'),
     jshint = require('gulp-jshint'),
+    jscs = require('gulp-jscs'),
     mocha = require('gulp-mocha'),
     istanbul = require('gulp-istanbul'),
     complexity = require('gulp-complexity'),
@@ -25,7 +26,8 @@ function lintTask() {
     return gulp.src(paths.lint)
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
-        .pipe(jshint.reporter('fail'));
+        .pipe(jshint.reporter('fail'))
+        .pipe(jscs());
 }
 
 function complexityTask() {

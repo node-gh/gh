@@ -1,0 +1,6 @@
+{
+	"preset": "crockford",
+	"disallowKeywordsOnNewLine": null,
+	"disallowDanglingUnderscores": null,
+    "requireSpaceAfterKeywords": null
+}
