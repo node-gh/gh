@@ -37,7 +37,8 @@
     "gh": "bin/gh.js"
   },
   "scripts": {
-    "test": "gulp"
+    "test": "gulp test",
+    "ci": "gulp ci"
   },
   "dependencies": {
     "async": "^0.9.0",
