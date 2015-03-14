@@ -14,7 +14,7 @@ content = {
     'unit': 'Run unit tests and create code coverage report in HTML',
     'test': 'Run all code quality tools',
     'coverage-report': 'Open code coverage report',
-    'complexity-report': 'Open code complexity and static analysis report',
+    'plato-report': 'Open code complexity and static analysis report',
     'watch': 'Watch for any changes and run linting and tests'
 };
 
