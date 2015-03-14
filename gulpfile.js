@@ -22,9 +22,10 @@ paths = {
     cover: ['lib/**/*.js'],
     unit: ['test/**/*.js', '!test/fixture/*.js'],
     watch: ['lib/**/*.js'],
-    'plato-directory': 'complexity',
-    'coverage-report': './coverage/lcov-report/index.html',
-    'plato-report': './complexity/index.html'
+    'coverage-report-directory': 'reports/coverage',
+    'coverage-report': 'reports/coverage/lcov-report/index.html',
+    'plato-report-directory': 'reports/complexity',
+    'plato-report': 'reports/complexity/index.html'
 };
 
 function lintTask() {
@@ -38,7 +39,7 @@ function lintTask() {
 function platoTask() {
     exec.spawnSyncStream('node_modules/plato/bin/plato', [
         '--dir',
-        'complexity',
+        paths['plato-report-directory'],
         '--recurse',
         '--title',
         'Node GH',
@@ -74,7 +75,8 @@ function mochaTest() {
 function unitTask() {
     return mochaTest()
         .pipe(istanbul.writeReports({
-            reporters: ['lcov', 'json']
+            reporters: ['lcov', 'json'],
+            dir: paths['coverage-report-directory']
         }));
 }
 
