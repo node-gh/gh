@@ -2,7 +2,6 @@
     "asi": false,
     "bitwise": true,
     "boss": true,
-    "browser": true,
     "curly": true,
     "debug": false,
     "eqeqeq": true,
