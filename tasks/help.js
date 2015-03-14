@@ -8,13 +8,13 @@ header = '\nusage: gulp <command>\n\n' +
     'The most commonly used gh tasks are:';
 
 content = {
-    'help': 'Print this',
     'lint': 'Lint code',
-    'complexity': 'Run code complexity analysis and create report',
-    'unit': 'Run unit tests and create code coverage report',
-    'test': 'Run all code quality tool tests and create ocde complexity analysis and coverage reports',
-    'coverage-report': 'Show code coverage summary',
-    'complexity-report': 'Show code complexity analysis report',
+    'complexity': 'Show code complexity analysis summary',
+    'plato': 'Create advanced code complexity static analysis in HTML',
+    'unit': 'Run unit tests and create code coverage report in HTML',
+    'test': 'Run all code quality tools',
+    'coverage-report': 'Open code coverage report',
+    'complexity-report': 'Open code complexity and static analysis report',
     'watch': 'Watch for any changes and run linting and tests'
 };
 
