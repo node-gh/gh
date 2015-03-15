@@ -1,19 +1,21 @@
 #!/bin/bash
 
-echo Revision: $TRAVIS_COMMIT \($TRAVIS_BRANCH\) 2>&1 | tee report
-echo Date: `date` 2>&1 | tee -a report
-echo https://travis-ci.org/node-gh/gh/jobs/$TRAVIS_JOB_ID 2>&1 | tee -a report
-echo | tee -a report
-echo Travis Build ID: $TRAVIS_BUILD_ID 2>&1 | tee -a report
-echo Travis Build number: $TRAVIS_BUILD_NUMBER 2>&1 | tee -a report
-echo Travis Job ID: $TRAVIS_JOB_ID 2>&1 | tee -a report
-echo Travis Job Number: $TRAVIS_JOB_NUMBER 2>&1 | tee -a report
-echo Travis repo slug: $TRAVIS_REPO_SLUG 2>&1 | tee -a report
-echo | tee -a report
-echo `uname -a` 2>&1 | tee -a report
-echo | tee -a report
-echo `node -e 'console.log(process.versions);'` 2>&1 | tee -a report
-echo | tee -a report
+(
+    echo Revision: $TRAVIS_COMMIT \($TRAVIS_BRANCH\) $TRAVIS_TAG
+    echo Date: `date`
+    echo https://travis-ci.org/node-gh/gh/jobs/$TRAVIS_JOB_ID
+    echo
+    echo Travis Build ID: $TRAVIS_BUILD_ID
+    echo Travis Build number: $TRAVIS_BUILD_NUMBER
+    echo Travis Job ID: $TRAVIS_JOB_ID
+    echo Travis Job Number: $TRAVIS_JOB_NUMBER
+    echo Travis repo slug: $TRAVIS_REPO_SLUG
+    echo
+    echo `uname -a`
+    echo
+    echo `node -e 'console.log(process.versions);'`
+    echo
+)  2>&1 | tee report
 
 if [ "${TRAVIS_REPO_SLUG}" != "node-gh/gh" ]; then
     echo "Jumping report publishing. Not in the gh repo slug.">&2
