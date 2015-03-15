@@ -82,7 +82,9 @@ function unitTask() {
 
 function unitCiTask() {
     return mochaTest()
-        .pipe(istanbul.writeReports());
+        .pipe(istanbul.writeReports({
+            dir: paths['coverage-report-directory']
+        }));
 }
 
 function testTask(done) {
