@@ -1042,7 +1042,7 @@ Node GH is maintained by these guys and some awesome [contributors](https://gith
 
 ## Contributing
 
-For detailed instructions, check [Contributing](https://github.com/node-gh/gh/blob/master/CONTRIBUTING.md).
+For detailed instructions, check [Contributing](https://github.com/node-gh/gh/blob/master/CONTRIBUTING.md). Don't miss the [source code reports](https://node-gh.github.io/reports/).
 
 ## History
 
