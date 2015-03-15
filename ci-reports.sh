@@ -42,27 +42,12 @@ if [ `echo $TRAVIS_JOB_NUMBER | cut -d '.' -f 2` != "1" ]; then
     exit
 fi;
 
-if [ -d "reports" ]; then
-    mv reports current-reports
-else
-    echo Reports not generated.
-    exit 1
-fi;
-
-git clone git@github.com:node-gh/reports.git
-
 if [ ! -d "reports" ]; then
     echo Reports directory not created after git clone. Exiting.
     exit 1
 fi;
 
 mv report reports
-
-if [ -d "current-reports" ]; then
-    mv current-reports/* reports
-fi;
-
-cd reports
 
 REPORTS_NAME=`basename $(pwd)`
 
