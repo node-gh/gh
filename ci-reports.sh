@@ -71,8 +71,10 @@ if [ "${REPORTS_NAME}" != "reports" ]; then
     exit 1
 fi;
 
+COMMIT_MSG="Source code report for $TRAVIS_REPO_SLUG@$TRAVIS_COMMIT $TRAVIS_TAG"
+
 git config --global user.email "octocat@nodegh.io"
 git config --global user.name "gh octocat"
 git add .
-git commit -m "Source code report for node-gh/gh/$TRAVIS_COMMIT"
+git commit -m $COMMIT_MSG
 git push
