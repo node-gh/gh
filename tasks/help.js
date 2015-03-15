@@ -15,7 +15,8 @@ content = {
     'test': 'Run all code quality tools',
     'coverage-report': 'Open code coverage report',
     'plato-report': 'Open code complexity and static analysis report',
-    'watch': 'Watch for any changes and run linting and tests'
+    'watch': 'Watch for any changes and run linting and tests',
+    'ci-reports': 'Open CI reports page'
 };
 
 function help() {

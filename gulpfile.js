@@ -133,6 +133,10 @@ function watchTask() {
     return gulp.watch(paths.watch, ['test']);
 }
 
+function ciReportsTask() {
+    open('https://node-gh.github.io/reports/');
+}
+
 gulp.task('default', help);
 gulp.task('help', help);
 gulp.task('lint', lintTask);
@@ -146,3 +150,4 @@ gulp.task('ci', ciTask);
 gulp.task('coverage-report', coverageReportTask);
 gulp.task('plato-report', platoReportTask);
 gulp.task('watch', watchTask);
+gulp.task('ci-reports', ciReportsTask);
