@@ -20,7 +20,7 @@ Contribute new commands to this project by copying and editing the content of [H
 ## [NodeGH](nodegh.io) source code reports
 Please verify the following reports when contributing code.
 
-* [Code coverage](https://node-gh.github.io/reports/coverage/)
+* [Code coverage](https://node-gh.github.io/reports/coverage/lcov-report/index.html)
 * [Static analysis & code complexity](https://node-gh.github.io/reports/complexity/)
 
 ***Report is generated for the master branch by a Travis CI hook.***
