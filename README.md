@@ -659,6 +659,7 @@ gh re --list --user zenorocha
 Option                | Usage        | Type
 ---                   | ---          | ---
 `-N`, `--new`         | **Required** | `String`
+`--organization`      | *Optional*   | `String`
 `-c`, `--clone`       | *Optional*   | `Boolean`
 `-t`, `--type`        | *Optional*   | [`private`]
 `--init`              | *Optional*   | `Boolean`
@@ -672,6 +673,12 @@ Option                | Usage        | Type
 
     ```
 gh re --new foo --clone
+    ```
+    
+* Create a new GitHub repository for an organization.
+
+    ```
+gh re --new foo --organization node-gh
     ```
 
 * Create a new GitHub repository using .gitignore template for Ruby.

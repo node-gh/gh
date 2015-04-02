@@ -87,7 +87,7 @@
             "new": {
                 "before": [],
                 "after": [
-                    "gh re --browser --user {{options.loggedUser}} --repo {{options.new}}"
+                    "gh re --browser --user {{options.user}} --repo {{options.new}}"
                 ]
             }
         },
