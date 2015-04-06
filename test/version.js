@@ -22,16 +22,33 @@ describe('Version Module Tests', function() {
     });
 
     it('should print versions', function() {
-        var loggerMock = {
+        var pkgMock,
+            baseMock,
+            loggerMock;
+
+        pkgMock = {
+            name: 'gh',
+            version: '0.0.1'
+        };
+
+        baseMock = {
+            asyncReadPackages: function(callback) {
+                callback(pkgMock);
+            }
+        };
+
+        loggerMock = {
             log: function(message) {
                 var parts = message.split(' ');
 
                 assert.strictEqual(parts.length, 2);
-                assert.strictEqual(parts[0].slice(0, 2), 'gh');
+                assert.strictEqual(parts[0], 'gh');
+                assert.strictEqual(parts[1], pkgMock.version);
                 assert(semver.valid(parts[1]) !== null);
             }
         };
 
+        version.__set__("base", baseMock);
         version.__set__("logger", loggerMock);
 
         new version.Impl().run();
