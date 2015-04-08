@@ -6,6 +6,7 @@ before_install:
     - sh ci.sh
 script:
     - npm run-script ci
+    - npm link
     - gh
 after_success:
     - sh ci-reports.sh
