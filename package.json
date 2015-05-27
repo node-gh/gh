@@ -50,7 +50,6 @@
     "moment": "^2.9.0",
     "nopt": "^3.0.1",
     "open": "^0.0.5",
-    "semver": "^4.3.1",
     "truncate": "^1.0.2",
     "update-notifier": "^0.3.0",
     "userhome": "^1.0.0",
