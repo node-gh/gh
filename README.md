@@ -107,6 +107,7 @@ gh pr --list --all
 
 * List open pull requests sent by logged user on current repository.
 
+    ```
 gh pr --list --all --org github
     ```
 
