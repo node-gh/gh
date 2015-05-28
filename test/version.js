@@ -11,7 +11,6 @@
 
 var rewire = require('rewire'),
     assert = require('assert'),
-    semver = require('semver'),
     version = rewire('../lib/cmds/version');
 
 describe('Version Module Tests', function() {
@@ -44,7 +43,6 @@ describe('Version Module Tests', function() {
                 assert.strictEqual(parts.length, 2);
                 assert.strictEqual(parts[0], 'gh');
                 assert.strictEqual(parts[1], pkgMock.version);
-                assert(semver.valid(parts[1]) !== null);
             }
         };
 
