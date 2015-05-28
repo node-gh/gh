@@ -46,7 +46,7 @@
     "github": "^0.2.4",
     "handlebars": "^3.0.3",
     "inquirer": "^0.8.5",
-    "insight": "^0.6.0",
+    "insight": "^0.5.2",
     "moment": "^2.10.3",
     "nopt": "^3.0.2",
     "open": "^0.0.5",
