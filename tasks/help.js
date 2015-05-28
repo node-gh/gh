@@ -1,6 +1,6 @@
 'use strict';
 
-var clc = require('cli-color'),
+var colors = require('colors'),
     header,
     content;
 
@@ -33,7 +33,7 @@ function help() {
     });
 
     methods.forEach(function(item) {
-        output += '  ' + clc.cyan(item) +
+        output += '  ' + colors.cyan(item) +
             new Array(spacing - item.length + 2).join(' ') +
             content[item] + '\n';
     });
