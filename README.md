@@ -74,7 +74,16 @@ gh pull-request
 
 > **Alias:** `gh pr`
 
-### 1. List
+### 1. Info
+Option            | Usage        | Type
+---               | ---          | ---
+`-u`, `--user`    | *Required*   | `String`
+`-I`, `--info`    | *Required*   | `Boolean`
+`-n`, `--number`  | *Required*   | `String`
+`-r`, `--repo`    | *Optional*   | `String`
+`-u`, `--user`    | *Optional*   | `String`
+
+### 2. List
 
 Option            | Usage        | Type
 ---               | ---          | ---
@@ -97,6 +106,12 @@ Option            | Usage        | Type
 
     ```
 gh pr
+    ```
+
+* Get information about a pull request.
+
+    ```
+gh pr --info number
     ```
 
 * List open pulls requests for all branches from all your repositories.
@@ -147,7 +162,7 @@ gh pr --list --sort long-running --direction asc
 gh pr --list --sort complexity
     ```
 
-### 2. Fetch
+### 3. Fetch
 
 Option           | Usage        | Type
 ---              | ---          | ---
@@ -176,7 +191,7 @@ gh pr 1 --fetch --rebase
 gh pr 1 --fetch --merge
     ```
 
-### 3. Merge or rebase
+### 4. Merge or rebase
 
 Option           | Usage        | Type
 ---              | ---          | ---
@@ -212,7 +227,7 @@ gh pr 1 --fetch --rebase --branch dev
 gh pr 1 --fetch --merge --branch dev
     ```
 
-### 4. Comment
+### 5. Comment
 
 Option           | Usage        | Type
 ---              | ---          | ---
@@ -230,7 +245,7 @@ Option           | Usage        | Type
 gh pr 1 --comment "Merged, thank you!"
     ```
 
-### 5. Forward
+### 6. Forward
 
 Option           | Usage        | Type
 ---              | ---          | ---
@@ -248,7 +263,7 @@ in your [config file](#config).
 gh pr 1 --fwd username
     ```
 
-### 6. Open or close
+### 7. Open or close
 
 Option           | Usage        | Type
 ---              | ---          | ---
@@ -290,7 +305,7 @@ gh pr --open --number 1 --number 2
 gh pr 1 --close --user eduardolundgren
     ```
 
-### 7. Submit
+### 8. Submit
 
 Option                  | Usage        | Type
 ---                     | ---          | ---
@@ -325,7 +340,7 @@ gh pr --submit eduardolundgren --branch dev
 gh pr --submit eduardolundgren --issue 150
     ```
 
-### 8. Open in Browser
+### 9. Open in Browser
 
 Option                 | Usage        | Type
 ---                    | ---          | ---
@@ -675,7 +690,7 @@ Option                | Usage        | Type
     ```
 gh re --new foo --clone
     ```
-    
+
 * Create a new GitHub repository for an organization.
 
     ```
