@@ -12,6 +12,7 @@
 var rewire = require('rewire'),
     assert = require('assert'),
     pullRequest = rewire('../lib/cmds/pull-request'),
+    pullRequestsUnstable = require('./fixture/pull-request-unstable.json'),
     pullRequestsInfo = require('./fixture/pull-request-info.json');
 
 describe('Pull Requests Module Tests', function() {
@@ -40,13 +41,19 @@ describe('Pull Requests Module Tests', function() {
         });
     });
 
-    it('should get pull request', function() {
+    it('should get pull request with mergeable state clean', function() {
         var pr = new pullRequest.Impl({
             repo: 'senna.js'
         });
 
+        pr.options.info = true;
+
         pullRequest.__with__({
             'logger.log': function() {
+                // only evaluate that the clean has a green log message
+                if (arguments[0].indexOf("clean") > 1) {
+                    assert.strictEqual(arguments[0], "\u001B[32mMergeable (clean)\u001b[39m");
+                }
             },
             'logger.warn': function() {
                 assert.fail('Expected test to pass.');
@@ -62,6 +69,33 @@ describe('Pull Requests Module Tests', function() {
             }
         })(function() {
             pr.get('liferay', 'senna.js', '36');
+        });
+    });
+
+    it('should get pull request with mergeable state unstable', function() {
+        var pr = new pullRequest.Impl({
+            repo: 'senna.js'
+        });
+
+        pr.options.info = true;
+
+        pullRequest.__with__({
+            'logger.log': function() {
+            },
+            'logger.warn': function() {
+                assert.strictEqual(arguments[0], "\u001B[31mNot mergeable (unstable)\u001b[39m");
+            },
+            base: {
+                github: {
+                    pullRequests: {
+                        get: function(payload, callback) {
+                            callback(undefined, pullRequestsUnstable);
+                        }
+                    }
+                }
+            }
+        })(function() {
+            pr.get('liferay', 'senna.js', '78');
         });
     });
 });
