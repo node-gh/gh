@@ -44,7 +44,7 @@ describe('Pull Requests Module Tests', function() {
     it('should get pull request with mergeable state clean', function() {
         var cleanLogFound = false,
             pr = new pullRequest.Impl({
-              repo: 'senna.js'
+                repo: 'senna.js'
             });
 
         pr.options.info = true;
