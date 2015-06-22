@@ -66,6 +66,12 @@ gh help --all
 gh help <command>
     ```
 
+### Global flags
+Option            | Usage        | Type
+---               | ---          | ---
+`--verbose`    | *Optional*   | `Boolean`
+`--no-hooks`    | *Optional*   | `Boolean`
+
 ## Pull requests
 
 ```
