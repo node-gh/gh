@@ -42,9 +42,10 @@ describe('Pull Requests Module Tests', function() {
     });
 
     it('should get pull request with mergeable state clean', function() {
-        var pr = new pullRequest.Impl({
-            repo: 'senna.js'
-        });
+        var cleanLogFound = false,
+            pr = new pullRequest.Impl({
+              repo: 'senna.js'
+            });
 
         pr.options.info = true;
 
@@ -52,6 +53,8 @@ describe('Pull Requests Module Tests', function() {
             'logger.log': function() {
                 // only evaluate that the clean has a green log message
                 if (arguments[0].indexOf("clean") > 1) {
+                    cleanLogFound = true;
+
                     assert.strictEqual(arguments[0], "\u001B[32mMergeable (clean)\u001b[39m");
                 }
             },
@@ -70,6 +73,10 @@ describe('Pull Requests Module Tests', function() {
         })(function() {
             pr.get('liferay', 'senna.js', '36');
         });
+
+        if (cleanLogFound === false) {
+            assert.fail('Clean log was not found.');
+        }
     });
 
     it('should get pull request with mergeable state unstable', function() {
