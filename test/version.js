@@ -46,8 +46,8 @@ describe('Version Module Tests', function() {
             }
         };
 
-        version.__set__("base", baseMock);
-        version.__set__("logger", loggerMock);
+        version.__set__('base', baseMock);
+        version.__set__('logger', loggerMock);
 
         new version.Impl().run();
     });

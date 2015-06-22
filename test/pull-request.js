@@ -52,10 +52,10 @@ describe('Pull Requests Module Tests', function() {
         pullRequest.__with__({
             'logger.log': function() {
                 // only evaluate that the clean has a green log message
-                if (arguments[0].indexOf("clean") > 1) {
+                if (arguments[0].indexOf('clean') > 1) {
                     cleanLogFound = true;
 
-                    assert.strictEqual(arguments[0], "\u001B[32mMergeable (clean)\u001b[39m");
+                    assert.strictEqual(arguments[0], '\u001B[32mMergeable (clean)\u001b[39m');
                 }
             },
             'logger.warn': function() {
@@ -90,7 +90,7 @@ describe('Pull Requests Module Tests', function() {
             'logger.log': function() {
             },
             'logger.warn': function() {
-                assert.strictEqual(arguments[0], "\u001B[31mNot mergeable (unstable)\u001b[39m");
+                assert.strictEqual(arguments[0], '\u001B[31mNot mergeable (unstable)\u001b[39m');
             },
             base: {
                 github: {
