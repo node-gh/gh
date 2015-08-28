@@ -6,8 +6,6 @@
 [![Dependencies Status](http://img.shields.io/david/node-gh/gh.svg?style=flat)](https://david-dm.org/node-gh/gh)
 [![DevDependencies Status](http://img.shields.io/david/dev/node-gh/gh.svg?style=flat)](https://david-dm.org/node-gh/gh#info=devDependencies)
 
-![Class Octocat](http://nodegh.io/images/class-octocat.jpg)
-
 > All the power of GitHub in your terminal.
 
 ## Table of contents
