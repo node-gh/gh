@@ -19,20 +19,10 @@
 }
 
 .logo-container {
-  font-size: 64px;
+  font-size: 128px;
   font-weight: 900;
   letter-spacing: -2px;
   color: #5dcaf3;
-}
-
-.logo-container .logo {
-  background: url(../images/class-octocat.jpg) center 0 no-repeat;
-  background-size: 350px 350px;
-  height: 350px;
-  margin: 0 auto 26px;
-  overflow: hidden;
-  text-indent: -9999em;
-  width: 350px;
 }
 
 .logo-container small {
