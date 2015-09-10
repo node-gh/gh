@@ -40,7 +40,7 @@
 
 ## Dependencies
 
-In order to sucessfully run this project you must have [NodeJS](http://nodejs.org/download/) installed.
+In order to sucessfully run this project you must have [NodeJS >= v0.12.0](http://nodejs.org/dist/v0.12.0/) installed.
 
 ## Demonstration
 
