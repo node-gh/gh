@@ -26,13 +26,13 @@ function help() {
 
     methods = Object.keys(content);
 
-    methods.forEach(function(item) {
+    methods.forEach(function (item) {
         if (spacing < item.length) {
             spacing = item.length + 1;
         }
     });
 
-    methods.forEach(function(item) {
+    methods.forEach(function (item) {
         output += '  ' + colors.cyan(item) +
             new Array(spacing - item.length + 2).join(' ') +
             content[item] + '\n';

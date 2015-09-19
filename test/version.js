@@ -13,14 +13,14 @@ var rewire = require('rewire'),
     assert = require('assert'),
     version = rewire('../lib/cmds/version');
 
-describe('Version Module Tests', function() {
-    it('should load Version', function() {
-        assert.doesNotThrow(function() {
+describe('Version Module Tests', function () {
+    it('should load Version', function () {
+        assert.doesNotThrow(function () {
             assert(typeof new version.Impl() === 'object');
         });
     });
 
-    it('should print versions', function() {
+    it('should print versions', function () {
         var pkgMock,
             baseMock,
             loggerMock;
@@ -31,13 +31,13 @@ describe('Version Module Tests', function() {
         };
 
         baseMock = {
-            asyncReadPackages: function(callback) {
+            asyncReadPackages: function (callback) {
                 callback(pkgMock);
             }
         };
 
         loggerMock = {
-            log: function(message) {
+            log: function (message) {
                 var parts = message.split(' ');
 
                 assert.strictEqual(parts.length, 2);

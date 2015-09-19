@@ -17,10 +17,10 @@ var assert = require('assert'),
 
 // -- Suites ---------------------------------------------------------------------------------------
 
-describe('Git Module Tests', function() {
-    describe('Function parseRemoteUrl', function() {
-        describe('ssh clone url', function() {
-            it('should parse remote url with score on repo name', function() {
+describe('Git Module Tests', function () {
+    describe('Function parseRemoteUrl', function () {
+        describe('ssh clone url', function () {
+            it('should parse remote url with score on repo name', function () {
                 var p = git.parseRemoteUrl(
                     'git@github.com:eduardolundgren/node-gh.git');
 
@@ -28,7 +28,7 @@ describe('Git Module Tests', function() {
                 assert.equal('node-gh', p[1]);
             });
 
-            it('should parse remote url with score on username', function() {
+            it('should parse remote url with score on username', function () {
                 var p = git.parseRemoteUrl(
                     'git@github.com:elixir-lang/elixir.git');
 
@@ -37,8 +37,8 @@ describe('Git Module Tests', function() {
             });
         });
 
-        describe('https clone url', function() {
-            it('should parse remote url with score on repo name', function() {
+        describe('https clone url', function () {
+            it('should parse remote url with score on repo name', function () {
                 var p = git.parseRemoteUrl(
                     'https://github.com/eduardolundgren/node-gh.git');
 
@@ -46,7 +46,7 @@ describe('Git Module Tests', function() {
                 assert.equal('node-gh', p[1]);
             });
 
-            it('should parse remote url with score on username', function() {
+            it('should parse remote url with score on username', function () {
                 var p = git.parseRemoteUrl(
                     'https://github.com/elixir-lang/elixir.git');
 
