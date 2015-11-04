@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-    - "4.0"
+    - "5.0"
+    - "4.2"
     - "0.12"
-    - iojs
 sudo: false
 before_install:
     - sh ci.sh
