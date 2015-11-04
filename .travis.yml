@@ -2,7 +2,6 @@ language: node_js
 node_js:
     - "5.0"
     - "4.2"
-    - "0.12"
 sudo: false
 before_install:
     - sh ci.sh

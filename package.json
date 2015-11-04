@@ -1,7 +1,7 @@
 {
   "name": "gh",
   "description": "GitHub command line tools.",
-  "version": "1.12.1",
+  "version": "1.12.2",
   "homepage": "http://nodegh.io",
   "author": {
     "name": "Eduardo Lundgren",
@@ -72,7 +72,7 @@
     "run-sequence": "^1.1.4"
   },
   "engines": {
-    "node": ">=0.12"
+    "node": ">=4.0"
   },
   "preferGlobal": "true"
 }
