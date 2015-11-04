@@ -68,7 +68,11 @@ gh help <command>
 Option            | Usage        | Type
 ---               | ---          | ---
 `--verbose`    | *Optional*   | `Boolean`
+`--insane`     | *Optional*   | `Boolean`
 `--no-hooks`    | *Optional*   | `Boolean`
+
+The verbose flag is useful for debugging issues.
+The insane flag is a more complete verbose flag, which leaks more privacy sensitive data by default.
 
 ## Pull requests
 
