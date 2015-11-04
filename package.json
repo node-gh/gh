@@ -42,6 +42,9 @@
   },
   "dependencies": {
     "async": "^1.4.2",
+    "babel-core": "^6.0.20",
+    "lodash": "^3.10.1",
+    "request": "^2.65.0",
     "colors": "^1.1.2",
     "github": "^0.2.4",
     "handlebars": "^4.0.2",
