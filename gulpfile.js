@@ -90,8 +90,9 @@ function unitCiTask() {
 function testTask(done) {
     return runSequence(
         'lint',
-        'plato',
-        'complexity',
+        // plato and gulp-complexity currently doesn't support ES6
+        // 'plato',
+        // 'complexity',
         'unit',
         done
     );
@@ -100,8 +101,8 @@ function testTask(done) {
 function ciTask(done) {
     return runSequence(
         'lint',
-        'plato',
-        'complexity',
+        // 'plato',
+        // 'complexity',
         'unit-ci',
         done
     );
