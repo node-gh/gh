@@ -620,6 +620,48 @@ gh is 100
 gh is 100 --browser
     ```
 
+### 6. Search
+
+Option             | Usage        | Type
+---                | ---          | ---
+`-s`, `--search`   | **Required** | `Boolean`
+`-a`, `--all`      | *Optional*   | `Boolean`
+`-d`, `--detailed` | *Optional*   | `Boolean`
+`-r`, `--repo`     | *Optional*   | `String`
+`-u`, `--user`     | *Optional*   | `String`
+
+#### Examples
+
+* Search issues in current repository
+
+    ```
+gh is --search 'term'
+    ```
+
+* Search issues in all repositories for a user
+
+    ```
+gh is --all --user node-gh --search 'term'
+    ```
+
+* Search issues in a repository for a user
+
+    ```
+gh is  --user node-gh --repo gh --search 'term'
+    ```
+
+* Search issues in a repository for a user with link and content
+
+    ```
+gh is  --user node-gh --repo gh --search 'term'
+    ```
+
+* Search issues with github filters
+
+    ```
+gh is  --user node-gh --repo gh --search 'updated:<=2013-05-24'
+    ```
+
 ## Repo
 ```
 gh repo
