@@ -122,13 +122,13 @@ gh pr
 gh pr --info number
     ```
 
-* List open pulls requests for all branches from all your repositories.
+* List open pull requests for all branches from all your repositories.
 
     ```
 gh pr --list --all
     ```
 
-* List open pull requests sent by logged user on current repository.
+* List open pull requests for all branches in all repositories belonging to the "github" organization.
 
     ```
 gh pr --list --all --org github
