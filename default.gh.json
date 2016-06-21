@@ -29,7 +29,7 @@
             "new": {
                 "before": [],
                 "after": [
-                    "gh is --browser --user {{options.user}} --repo {{options.repo}} --number {{options.number}}"
+                    "gh is --browser {{options.browser}} --user {{options.user}} --repo {{options.repo}} --number {{options.number}}"
                 ]
             },
             "open": {
@@ -70,7 +70,7 @@
                 "before": [],
                 "after": [
                     "{{#if options.number}}gh pr {{options.number}} --user {{options.user}} --repo {{options.repo}} --comment 'Pull request submitted to {{submittedLink}}.{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'{{/if}}",
-                    "gh pr --browser --user {{options.submit}} --repo {{options.repo}} --number {{options.submittedPull}}",
+                    "gh pr --browser {{options.browser}} --user {{options.submit}} --repo {{options.repo}} --number {{options.submittedPull}}",
                     "{{#if options.number}}gh pr --user {{options.user}} --repo {{options.repo}} {{options.number}} --close{{/if}}"
                 ]
             }
@@ -87,7 +87,7 @@
             "new": {
                 "before": [],
                 "after": [
-                    "gh re --browser --user {{options.user}} --repo {{options.new}}"
+                    "gh re --browser {{options.browser}} --user {{options.user}} --repo {{options.new}}"
                 ]
             }
         },
@@ -99,13 +99,13 @@
             "fork": {
                 "before": [],
                 "after": [
-                    "gh gi --browser --id {{options.id}}"
+                    "gh gi --browser {{options.browser}} --id {{options.id}}"
                 ]
             },
             "new": {
                 "before": [],
                 "after": [
-                    "gh gi --browser --id {{options.id}}"
+                    "gh gi --browser {{options.browser}} --id {{options.id}}"
                 ]
             }
         }
