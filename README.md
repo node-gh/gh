@@ -662,6 +662,30 @@ gh is  --user node-gh --repo gh --search 'term'
 gh is  --user node-gh --repo gh --search 'updated:<=2013-05-24'
     ```
 
+### 7. Assign
+
+Option            | Usage        | Type
+---               | ---          | ---
+`--assign`        | **Required** | `Boolean`
+`-A`, `--assignee`| **Required** | `String`
+`-n`, `--number`  | **Required** | `Number`
+`-r`, `--repo`    | *Optional*   | `String`
+`-u`, `--user`    | *Optional*   | `String`
+
+#### Examples
+
+* Assign an issue on the current repository to a user.
+
+    ```
+gh is --assign --assignee zenorocha --number 1
+    ```
+
+* Assign an issue on a specific repository to a user.
+
+    ```
+gh is --assign --assignee zenorocha --number 1 --user eduardolundgren --repo gh
+    ```
+
 ## Repo
 ```
 gh repo
