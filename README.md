@@ -725,7 +725,7 @@ gh re --list --user zenorocha
 Option                | Usage        | Type
 ---                   | ---          | ---
 `-N`, `--new`         | **Required** | `String`
-`--organization`      | *Optional*   | `String`
+`-O`, `--organization`| *Optional*   | `String`
 `-c`, `--clone`       | *Optional*   | `Boolean`
 `-t`, `--type`        | *Optional*   | [`private`]
 `--init`              | *Optional*   | `Boolean`
@@ -765,7 +765,7 @@ Option                | Usage        | Type
 ---                   | ---          | ---
 `-f`, `--fork`        | **Required** | `String`
 `-u`, `--user`        | **Required** | `String`
-`-O`, `--organization`| **Optional** | `Boolean`
+`-O`, `--organization`| *Optional*   | `String`
 
 #### Examples
 
@@ -780,7 +780,6 @@ gh re --fork repo --user user
     ```
 gh re --fork repo --user user --organization node-gh
     ```
-
 
 ### 5. Delete
 
