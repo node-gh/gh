@@ -749,7 +749,7 @@ gh re --list --user zenorocha
 Option                | Usage        | Type
 ---                   | ---          | ---
 `-N`, `--new`         | **Required** | `String`
-`--organization`      | *Optional*   | `String`
+`-O`, `--organization`| *Optional*   | `String`
 `-c`, `--clone`       | *Optional*   | `Boolean`
 `-t`, `--type`        | *Optional*   | [`private`]
 `--init`              | *Optional*   | `Boolean`
@@ -789,7 +789,7 @@ Option                | Usage        | Type
 ---                   | ---          | ---
 `-f`, `--fork`        | **Required** | `String`
 `-u`, `--user`        | **Required** | `String`
-`-O`, `--organization`| **Optional** | `Boolean`
+`-O`, `--organization`| *Optional*   | `String`
 
 #### Examples
 
@@ -805,7 +805,6 @@ gh re --fork repo --user user
 gh re --fork repo --user user --organization node-gh
     ```
 
-
 ### 5. Delete
 
 Option                | Usage        | Type
@@ -819,6 +818,30 @@ Option                | Usage        | Type
 
     ```
 gh re --delete foo
+    ```
+
+### 6. Clone
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-c`, `--clone`       | **Required** | `String`
+`-r`, `--repo`        | **Required** | `String`
+`-O`, `--organization`| *Optional*   | `String`
+`-P`, `--protocol`    | *Optional*   | `String`
+`-u`, `--user`        | *Optional*   | `String`
+
+#### Examples
+
+* Clone a repository.
+
+    ```
+gh re --clone --repo gh
+    ```
+
+* Clone a repository from a specific user using HTTPS protocol.
+
+    ```
+gh re --clone --user eduardolundgren --repo gh --protocol https
     ```
 
 ## Gists
