@@ -844,6 +844,104 @@ gh re --clone --repo gh
 gh re --clone --user eduardolundgren --repo gh --protocol https
     ```
 
+### 7. Create Label
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-C`, `--color`       | **Required** | `String`
+`-L`, `--label`       | **Required** | `Boolean`
+`-N`, `--new`         | **Required** | `String`
+`-r`, `--repo`        | **Required** | `String`
+`-O`, `--organization`| *Optional*   | `String`
+`-u`, `--user`        | *Optional*   | `String`
+
+#### Examples
+
+* Create a label for a repository.
+
+    ```
+gh re --label --new bug --color color --repo gh
+    ```
+
+* Create a label for a user's repository.
+
+    ```
+gh re --label --new bug --color color --user eduardolundgren --repo gh
+    ```
+
+### 8. Delete Label
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-L`, `--label`       | **Required** | `Boolean`
+`-D`, `--delete`      | **Required** | `String`
+`-r`, `--repo`        | **Required** | `String`
+`-O`, `--organization`| *Optional*   | `String`
+`-u`, `--user`        | *Optional*   | `String`
+
+#### Examples
+
+* Delete a label from a repository.
+
+    ```
+gh re --label --delete bug --repo gh
+    ```
+
+* Delete a label from a user's repository.
+
+    ```
+gh re --label --delete bug --user eduardolundgren --repo gh
+    ```
+
+### 9. List Labels
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-L`, `--label`       | **Required** | `Boolean`
+`-l`, `--list`        | **Required** | `Boolean`
+`-r`, `--repo`        | **Required** | `String`
+`-O`, `--organization`| *Optional*   | `String`
+`-u`, `--user`        | *Optional*   | `String`
+
+#### Examples
+
+* List labels for a repository.
+
+    ```
+gh re --label --list --repo gh
+    ```
+
+* List labels for a user's repository.
+
+    ```
+gh re --label --list --user eduardolundgren --repo gh
+    ```
+
+### 10. Update Label
+
+Option                | Usage        | Type
+---                   | ---          | ---
+`-C`, `--color`       | **Required** | `String`
+`-L`, `--label`       | **Required** | `Boolean`
+`-r`, `--repo`        | **Required** | `String`
+`-U`, `--update`      | **Required** | `String`
+`-O`, `--organization`| *Optional*   | `String`
+`-u`, `--user`        | *Optional*   | `String`
+
+#### Examples
+
+* Update a label for a repository.
+
+    ```
+gh re --label --update bug --color color --repo gh
+    ```
+
+* Update a label for a user's repository.
+
+    ```
+gh re --label --update bug --color color --user eduardolundgren --repo gh
+    ```
+
 ## Gists
 
 ```
