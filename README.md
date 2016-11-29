@@ -1154,8 +1154,8 @@ gh alias --remove zeno
 
 ## Config
 
-There are some pretty useful configurations that you can set on [.gh.json](https://github.com/node-gh/gh/blob/master/.gh.json).
-This file can be found under home directory *(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)*.
+There are some pretty useful configurations that you can set on [.gh.json](https://github.com/node-gh/gh/blob/master/default.gh.json).
+This file goes in your home directory *(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)*.
 
 You can also set per-project configurations by adding a `.gh.json` file in your project's root folder and overriding existing keys.
 
