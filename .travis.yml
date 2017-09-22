@@ -4,6 +4,8 @@ node_js:
     - "6"
     - "8"
 sudo: false
+env:
+    - FORCE_COLOR=true
 before_install:
     - sh ci.sh
 script:
