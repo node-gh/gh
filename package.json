@@ -25,7 +25,6 @@
   "bugs": {
     "url": "https://github.com/node-gh/gh/issues"
   },
-  "trackingCode": "UA-58265773-2",
   "keywords": [
     "git",
     "github",
@@ -45,16 +44,15 @@
   "dependencies": {
     "async": "^1.5.0",
     "babel-polyfill": "^6.0.16",
-    "lodash": "^3.10.1",
-    "request": "^2.65.0",
     "colors": "^1.1.2",
     "github": "^0.2.4",
     "handlebars": "^4.0.4",
     "inquirer": "^0.11.0",
-    "insight": "^0.7.0",
+    "lodash": "^3.10.1",
     "moment": "^2.13.0",
     "nopt": "^3.0.4",
     "open": "^0.0.5",
+    "request": "^2.65.0",
     "truncate": "^2.0.0",
     "update-notifier": "^0.5.0",
     "userhome": "^1.0.0",

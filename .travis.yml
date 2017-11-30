@@ -11,7 +11,6 @@ before_install:
 script:
     - npm run-script ci
     - npm link
-    - "echo optOut: true > ~/.config/configstore/insight-gh.yml"
     - gh
 after_success:
     - sh ci-reports.sh
