@@ -31,7 +31,7 @@
     },
     "scripts": {
         "ci": "gulp ci",
-        "format": "prettier-eslint --write \"client/src/**/*.js\"",
+        "format": "prettier-eslint --write \"lib/**/*.js\"",
         "lint-staged": "lint-staged",
         "postpublish": "sh postpublish.sh",
         "precommit": "lint-staged",
