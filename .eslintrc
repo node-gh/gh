@@ -20,6 +20,8 @@
         "no-console": 0,
         "no-constant-condition": 0,
         "no-shadow": 0,
+        "no-unsafe-finally": 0,
+        "no-useless-escape": 0,
         "padded-blocks": 0
     }
 }
