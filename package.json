@@ -65,7 +65,6 @@
     "devDependencies": {
         "babel": "^5.8",
         "babel-eslint": "^8.1.2",
-        "chalk": "^2.3.0",
         "eslint": "^4.14.0",
         "eslint-config-prettier": "^2.9.0",
         "eslint-config-recommended": "^2.0.0",

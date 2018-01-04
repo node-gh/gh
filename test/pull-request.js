@@ -2,7 +2,6 @@
 
 var rewire = require('rewire'),
     assert = require('assert'),
-    chalk = require('chalk'),
     pullRequest = rewire('../lib/cmds/pull-request'),
     pullRequestsUnstable = require('./fixture/pull-request-unstable.json'),
     pullRequestsInfo = require('./fixture/pull-request-info.json')
@@ -45,8 +44,9 @@ describe('Pull Requests Module Tests', function() {
                 // only evaluate that the clean has a green log message
                 if (arguments[0].indexOf('clean') > 1) {
                     cleanLogFound = true
+                    console.log('options=========>', arguments)
 
-                    assert.strictEqual(arguments[0], chalk.green('Mergeable (clean)'))
+                    assert.strictEqual(arguments[0], 'Mergeable (clean)')
                 }
             },
             'logger.warn': function() {
@@ -80,7 +80,7 @@ describe('Pull Requests Module Tests', function() {
         pullRequest.__with__({
             'logger.log': function() {},
             'logger.warn': function() {
-                assert.strictEqual(arguments[0], chalk.red('Not mergeable (unstable)'))
+                assert.strictEqual(arguments[0], 'Not mergeable (unstable)')
             },
             base: {
                 github: {
