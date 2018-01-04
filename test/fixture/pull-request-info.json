@@ -40,7 +40,8 @@
     "review_comments_url": "https://api.github.com/repos/liferay/senna.js/pulls/36/comments",
     "review_comment_url": "https://api.github.com/repos/liferay/senna.js/pulls/comments{/number}",
     "comments_url": "https://api.github.com/repos/liferay/senna.js/issues/36/comments",
-    "statuses_url": "https://api.github.com/repos/liferay/senna.js/statuses/5c49ec7de1614c0e4699db3f2681fb21208a1e4f",
+    "statuses_url":
+        "https://api.github.com/repos/liferay/senna.js/statuses/5c49ec7de1614c0e4699db3f2681fb21208a1e4f",
     "head": {
         "label": "dhyegofernando:master",
         "ref": "master",
@@ -93,9 +94,7 @@
             "id": 22793191,
             "name": "senna.js",
             "full_name": "liferay/senna.js",
-            "owner": [
-                null
-            ],
+            "owner": [null],
             "private": false,
             "html_url": "https://github.com/liferay/senna.js",
             "description": ":seedling: A blazing-fast Single Page Application engine",
@@ -103,10 +102,12 @@
             "url": "https://api.github.com/repos/liferay/senna.js",
             "forks_url": "https://api.github.com/repos/liferay/senna.js/forks",
             "keys_url": "https://api.github.com/repos/liferay/senna.js/keys{/key_id}",
-            "collaborators_url": "https://api.github.com/repos/liferay/senna.js/collaborators{/collaborator}",
+            "collaborators_url":
+                "https://api.github.com/repos/liferay/senna.js/collaborators{/collaborator}",
             "teams_url": "https://api.github.com/repos/liferay/senna.js/teams",
             "hooks_url": "https://api.github.com/repos/liferay/senna.js/hooks",
-            "issue_events_url": "https://api.github.com/repos/liferay/senna.js/issues/events{/number}",
+            "issue_events_url":
+                "https://api.github.com/repos/liferay/senna.js/issues/events{/number}",
             "events_url": "https://api.github.com/repos/liferay/senna.js/events",
             "assignees_url": "https://api.github.com/repos/liferay/senna.js/assignees{/user}",
             "branches_url": "https://api.github.com/repos/liferay/senna.js/branches{/branch}",
@@ -124,7 +125,8 @@
             "commits_url": "https://api.github.com/repos/liferay/senna.js/commits{/sha}",
             "git_commits_url": "https://api.github.com/repos/liferay/senna.js/git/commits{/sha}",
             "comments_url": "https://api.github.com/repos/liferay/senna.js/comments{/number}",
-            "issue_comment_url": "https://api.github.com/repos/liferay/senna.js/issues/comments{/number}",
+            "issue_comment_url":
+                "https://api.github.com/repos/liferay/senna.js/issues/comments{/number}",
             "contents_url": "https://api.github.com/repos/liferay/senna.js/contents/{+path}",
             "compare_url": "https://api.github.com/repos/liferay/senna.js/compare/{base}...{head}",
             "merges_url": "https://api.github.com/repos/liferay/senna.js/merges",
@@ -133,7 +135,8 @@
             "issues_url": "https://api.github.com/repos/liferay/senna.js/issues{/number}",
             "pulls_url": "https://api.github.com/repos/liferay/senna.js/pulls{/number}",
             "milestones_url": "https://api.github.com/repos/liferay/senna.js/milestones{/number}",
-            "notifications_url": "https://api.github.com/repos/liferay/senna.js/notifications{?since,all,participating}",
+            "notifications_url":
+                "https://api.github.com/repos/liferay/senna.js/notifications{?since,all,participating}",
             "labels_url": "https://api.github.com/repos/liferay/senna.js/labels{/name}",
             "releases_url": "https://api.github.com/repos/liferay/senna.js/releases{/id}",
             "created_at": "2014-08-09T19:13:14Z",
@@ -184,7 +187,8 @@
             "href": "https://api.github.com/repos/liferay/senna.js/pulls/36/commits"
         },
         "statuses": {
-            "href": "https://api.github.com/repos/liferay/senna.js/statuses/5c49ec7de1614c0e4699db3f2681fb21208a1e4f"
+            "href":
+                "https://api.github.com/repos/liferay/senna.js/statuses/5c49ec7de1614c0e4699db3f2681fb21208a1e4f"
         }
     },
     "merged": false,
