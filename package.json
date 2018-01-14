@@ -33,9 +33,9 @@
         "ci": "gulp ci",
         "format": "prettier-eslint --write \"lib/**/*.js\"",
         "lint-staged": "lint-staged",
-        "postpublish": "sh postpublish.sh",
+        "postpublish": "sh scripts/postpublish.sh",
         "precommit": "lint-staged",
-        "prepublish": "sh prepublish.sh",
+        "prepublish": "sh scripts/prepublish.sh",
         "test": "gulp test"
     },
     "lint-staged": {

@@ -29,6 +29,6 @@ Please verify the following reports when contributing code.
 
 The static analysis ([plato](https://github.com/es-analysis/plato)) has historical data. If you want to retrieve them, the better approach is to clone [node-gh/reports.git](https://github.com/node-gh/reports) inside your gh repo so you can compare to see what your modifications does to the code base.
 
-The reports are published to gh-pages from Travis with a private deploy key that only works for that repo (for security reasons) and is invoked by the Travis after_success hook [ci-reports.sh](https://github.com/node-gh/gh/blob/master/ci-reports.sh) and, also, only for the first job on a build (so that it only runs against the current stable node version) on the master branch of [node-gh/gh](https://travis-ci.org/node-gh/gh).
+The reports are published to gh-pages from Travis with a private deploy key that only works for that repo (for security reasons) and is invoked by the Travis after_success hook [ci-reports.sh](https://github.com/node-gh/gh/blob/master/scripts/ci-reports.sh) and, also, only for the first job on a build (so that it only runs against the current stable node version) on the master branch of [node-gh/gh](https://travis-ci.org/node-gh/gh).
 
 Disclaimer: having a git repo inside another can get you a little confused when you forget about it.

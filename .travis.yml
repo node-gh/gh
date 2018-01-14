@@ -7,10 +7,10 @@ sudo: false
 env:
     - FORCE_COLOR=true
 before_install:
-    - sh ci.sh
+    - sh scripts/ci.sh
 script:
     - npm run-script ci
     - npm link
     - gh
 after_success:
-    - sh ci-reports.sh
+    - sh scripts/ci-reports.sh
