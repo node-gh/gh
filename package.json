@@ -25,22 +25,30 @@
     "bugs": {
         "url": "https://github.com/node-gh/gh/issues"
     },
-    "keywords": ["git", "github", "external", "commands", "helpers"],
+    "keywords": [
+        "git",
+        "github",
+        "external",
+        "commands",
+        "helpers"
+    ],
     "bin": {
         "gh": "bin/gh.js"
     },
     "scripts": {
         "ci": "gulp ci",
-        "format": "prettier-eslint --write \"lib/**/*.js\"",
+        "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
+        "fix": "eslint --fix \"lib/**/*.js\" \"lib/*.js\" \"test/*.js\"",
+        "format": "prettier --write \"lib/**/*.js\" \"lib/*.js\" \"test/*.js\" && npm run fix",
         "lint-staged": "lint-staged",
         "postpublish": "sh scripts/postpublish.sh",
-        "precommit": "lint-staged",
+        "precommit": "lint-staged && npm test",
         "prepublish": "sh scripts/prepublish.sh",
         "test": "gulp test"
     },
     "lint-staged": {
         "*.{js,json}": [
-            "prettier-eslint --write --config .prettierrc --eslint-config-path .eslintrc ",
+            "prettier --write && eslint --fix",
             "git add"
         ]
     },
@@ -77,7 +85,6 @@
         "lint-staged": "^6.0.0",
         "plato": "^1.5.0",
         "prettier": "^1.9.2",
-        "prettier-eslint-cli": "^4.7.0",
         "rewire": "^2.3.4",
         "run-sequence": "^1.1.4"
     },

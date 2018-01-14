@@ -98,15 +98,11 @@
             },
             "fork": {
                 "before": [],
-                "after": [
-                    "gh gi --browser {{options.browser}} --id {{options.id}}"
-                ]
+                "after": ["gh gi --browser {{options.browser}} --id {{options.id}}"]
             },
             "new": {
                 "before": [],
-                "after": [
-                    "gh gi --browser {{options.browser}} --id {{options.id}}"
-                ]
+                "after": ["gh gi --browser {{options.browser}} --id {{options.id}}"]
             }
         }
     },
