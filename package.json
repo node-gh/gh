@@ -39,7 +39,7 @@
         "test": "gulp test"
     },
     "lint-staged": {
-        "*.{js,json,scss}": [
+        "*.{js,json}": [
             "prettier-eslint --write --config .prettierrc --eslint-config-path .eslintrc ",
             "git add"
         ]
