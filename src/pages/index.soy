@@ -1,0 +1,170 @@
+---
+title: "Node GH"
+description: "GitHub command line tools"
+---
+
+{namespace pageIndex}
+
+/**
+ * @param site
+ */
+{template .render}
+	{call main.render data="all"}
+		{param content kind="html"}
+			{call .header data="all" /}
+			{call .why /}
+			{call .features /}
+			{call .how /}
+			{call .highlights /}
+			{call .footer /}
+		{/param}
+	{/call}
+{/template}
+
+/**
+ * @param site
+ */
+{template .header}
+	<header class="header">
+		<div class="container">
+			<h1 class="header-title">{$site.title}</h1>
+			<h2 class="header-subtitle">{$site.index.description}</h2>
+			<div class="header-cta">
+				<a href="/docs/getting-started/#demo" class="btn btn-accent">Watch Our Demo</a>
+				<a href="/docs/getting-started/" class="btn btn-default">Get Started Quick</a>
+			</div>
+		</div>
+	</header>
+{/template}
+
+/**
+ *
+ */
+{template .why}
+	<article class="about">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-md-offset-2">
+					<h3 class="about-title">Motivation</h3>
+					<p class="about-description">Working with Github's UI can at times be painfully slow... especially when repetitive tasks could simply be executed from the CLI with much greater speed. That's why we created Node GH. To make tasks like opening, closing & forwarding Pull Requests a breeze!</p>
+				</div>
+			</div>
+		</div>
+	</article>
+{/template}
+
+/**
+ *
+ */
+{template .features}
+	<div class="features">
+		<div class="container">
+			<div class="row">
+				<section class="feature col-md-4 col-md-offset-2">
+					<div class="feature-graphic">
+						<span class="icon-16-code-file"></span>
+					</div>
+					<h3 class="feature-title">Pull Requests</h3>
+					<p class="feature-description">A crowd favorite feature: interface with Github's Pull Request API right from your CLI</p>
+				</section>
+
+				<section class="feature col-md-4">
+					<div class="feature-graphic">
+						<span class="icon-16-hammer"></span>
+					</div>
+					<h3 class="feature-title">Issues</h3>
+					<p class="feature-description">Create & Modify Github Issues without having to navigate back & forth in your browser</p>
+				</section>
+
+				<section class="feature col-md-4">
+					<div class="feature-graphic">
+						<span class="icon-16-cloud"></span>
+					</div>
+					<h3 class="feature-title">Repo</h3>
+					<p class="feature-description">Open, create & clone repos with simple commands like "gh re"</p>
+				</section>
+			</div>
+		</div>
+	</div>
+{/template}
+
+/**
+ *
+ */
+{template .how}
+	<article class="about">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-md-offset-2">
+					<h3 class="about-title">It's easier than you think</h3>
+					<p class="about-description">One task that often takes up too much time is opening Pull Requests through the Github UI</p>
+
+					<div class="code-container"><button class="btn btn-sm btn-copy"><span class="icon-12-overlap"></span></button><pre><code class="code" data-mode="shell" ref="code">gh pr --submit theUser --branch dev</code></pre><div class="CodeMirror cm-s-dracula"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 12px; left: 381.688px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="-1"></textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 60px; margin-bottom: -16px; border-right-width: 14px; min-height: 48px; min-width: 247.891px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>1</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors" style=""><div class="CodeMirror-cursor" style="left: 321.688px; top: 0px; height: 24px;">&nbsp;</div></div><div class="CodeMirror-code" role="presentation"><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -60px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 61px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">gh pr <span class="cm-attribute">--submit</span> theUser <span class="cm-attribute">--branch</span> dev</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 14px; width: 1px; border-bottom: 0px solid transparent; top: 48px;"></div><div class="CodeMirror-gutters" style="height: 62px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 61px;"></div></div></div></div></div>
+
+					<p class="about-description">Which can be simplified to:</p>
+
+					<div class="code-container"><button class="btn btn-sm btn-copy"><span class="icon-12-overlap"></span></button><pre><code class="code" data-mode="shell" ref="code">gh pr -s theUser -b dev</code></pre><div class="CodeMirror cm-s-dracula"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 12px; left: 381.688px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="-1"></textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 60px; margin-bottom: -16px; border-right-width: 14px; min-height: 48px; min-width: 247.891px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>1</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors" style=""><div class="CodeMirror-cursor" style="left: 321.688px; top: 0px; height: 24px;">&nbsp;</div></div><div class="CodeMirror-code" role="presentation"><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -60px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 61px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">gh pr <span class="cm-attribute">-s</span> theUser <span class="cm-attribute">-b</span> dev</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 14px; width: 1px; border-bottom: 0px solid transparent; top: 48px;"></div><div class="CodeMirror-gutters" style="height: 62px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 61px;"></div></div></div></div></div>
+
+					<p class="about-description">It's as simple as that! But if you need fine-tuned control when submitting your PR (like linking it to an issue #) there are plenty other flags available.</p>
+				</div>
+			</div>
+		</div>
+	</article>
+{/template}
+
+/**
+ *
+ */
+{template .highlights}
+	<div class="highlights">
+		<div class="container">
+			<section class="highlight row">
+				<div class="col-md-6 col-md-offset-2">
+					<h4 class="highlight-title">Save Time & Get Things Done Right From the CLI</h4>
+					<p class="highlight-description">This screen cast shows how fast it is to add submit a PR. When your PR submits successfully, it will open it up in your browser. Bam!</p>
+				</div>
+				<div class="col-md-6 col-md-offset-1">
+					<script src="https://asciinema.org/a/3391.js" id="asciicast-3391" async data-autoplay="true" cols="400"></script>
+				</div>
+			</section>
+
+			<section class="highlight row">
+				<div class="col-md-6 col-md-offset-2">
+					<img class="img-responsive" src="/images/ci.jpg" alt="Continuous Integration">
+				</div>
+				<div class="col-md-6 col-md-offset-1">
+					<h4 class="highlight-title">Simplify Your CI</h4>
+					<p class="highlight-description">If you want to execute commands programmatically & declaratively from your CI tasks, go for it!</p>
+				</div>
+			</section>
+
+			<section class="highlight row">
+				<div class="col-md-6 col-md-offset-2">
+					<h4 class="highlight-title">Enjoy Your Workflow</h4>
+					<p class="highlight-description">Our lives are so often packed with endless activities. And sometimes it feels like we never have enough time. Our hope is that this tool will help you to stay focused, productive & happy while enjoying the comfort & speed of the good ol' cli.</p>
+				</div>
+                <div class="col-md-6 col-md-offset-2">
+                    <img class="dance-gif img-responsive" src="/images/dance.gif" alt="Carlton Dance">
+				</div>
+			</section>
+		</div>
+	</div>
+{/template}
+
+/**
+ *
+ */
+{template .footer}
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+				<p class="footer-description col-md-6 col-md-offset-2">
+					Copyright © 2018 <a href="https://liferay.com">Liferay, Inc</a>
+				</p>
+				<p class="footer-description col-md-6">
+					Powered by <a href="http://wedeploy.com">WeDeploy™</a>
+				</p>
+			</div>
+		</div>
+	</footer>
+{/template}

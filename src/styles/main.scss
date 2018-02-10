@@ -1,0 +1,43 @@
+$accent: #4285F4;
+
+@import "marble";
+
+// Root
+@import "templates/root";
+
+// Landing
+@import "templates/landing";
+
+// Docs
+@import "templates/docs";
+
+// Search
+@import "templates/search";
+
+// Tutorial
+@import "templates/tutorial";
+
+// Custom Styles
+th {
+	text-align: left;
+}
+
+.about-description {
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+
+.dance-gif {
+    padding-top: 20px;
+}
+
+.highlights {
+
+	h4 {
+		text-align: center;
+	}
+
+	p {
+		text-align: center;
+	}
+}

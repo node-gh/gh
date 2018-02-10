@@ -1,0 +1,15 @@
+{namespace main}
+
+/**
+ * @param content
+ * @param? elementClasses
+ */
+{template .render}
+	<div class="{$elementClasses ?: 'main'}">
+		<main class="content">
+			{call Topbar.render data="all" /}
+
+			{$content}
+		</main>
+	</div>
+{/template}

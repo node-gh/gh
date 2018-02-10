@@ -1,0 +1,37 @@
+{namespace Topbar}
+
+/**
+ * @param? elementClasses
+ * @param site
+ */
+{template .render}
+	<nav class="topbar topbar-light {$elementClasses ? ' ' + $elementClasses : ''}">
+		{call .logo data="all" /}
+		{call .menu data="all" /}
+	</nav>
+{/template}
+
+/**
+ * @param site
+ */
+{template .logo}
+	<div class="topbar-logo">
+		<a class="topbar-logo-link" href="/">
+			<span class="topbar-logo-icon icon-16-command-line"></span>
+			<span class="topbar-logo-text">{$site.title}</span>
+		</a>
+	</div>
+{/template}
+
+/**
+ * @param site
+ */
+{template .menu}
+	{call ElectricNavigation.render}
+		{param depth: 1 /}
+		{param elementClasses: 'topbar-list' /}
+		{param linkClasses: 'topbar-link' /}
+		{param listItemClasses: 'topbar-item' /}
+		{param section: $site.index /}
+	{/call}
+{/template}

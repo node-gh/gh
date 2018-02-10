@@ -1,0 +1,76 @@
+{namespace guide}
+
+/**
+ * @param page
+ * @param site
+ */
+{template .render}
+	<div class="main">
+		<main class="guide">
+			<div class="docs">
+				{call Topbar.render data="all"}
+					{param elementClasses: 'topbar-docs' /}
+				{/call}
+				{call Sidebar.render}
+					{param section: $site.index.children['docs'] /}
+					{param site: $site /}
+				{/call}
+				{call .guide data="all" /}
+			</div>
+		</main>
+	</div>
+{/template}
+
+/**
+ * @param page
+ * @param site
+ * @param content
+ */
+{template .guide}
+	<div class="sidebar-offset">
+
+		<header class="guide-header">
+			<div class="container-hybrid">
+				<h1 class="title">{$page.title} Guide</h1>
+			</div>
+		</header>
+
+		<div class="container-hybrid">
+			<div class="docs-guide row">
+				<div class="docs-content col-xs-16 col-md-9">
+					<div class="guide-content">
+						{$content}
+					</div>
+
+					{if $site.githubRepo}
+						{call .contribute data="all" /}
+					{/if}
+				</div>
+
+				<nav class="col-xs-16 col-md-offset-2 col-md-5">
+					<div class="docs-nav-container">
+						{call ElectricReadingProgress.render}
+							{param elementClasses: 'docs-nav' /}
+							{param offsetTop: 200 /}
+						{/call}
+					</div>
+				</nav>
+			</div>
+		</div>
+	</div>
+{/template}
+
+/**
+ * @param page
+ * @param site
+ */
+{template .contribute}
+	<div class="contribute">
+		<div class="contribute-img">
+			<span class="icon-16-github"></span>
+		</div>
+		<div class="contribute-text">
+			<p>Contribute on Github! <a href="https://github.com/{$site.githubRepo}/tree/master/{$page.srcFilePath}" class="contribute-link" target="_blank">Edit this section</a>.</p>
+		</div>
+	</div>
+{/template}

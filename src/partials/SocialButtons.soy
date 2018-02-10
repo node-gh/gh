@@ -1,0 +1,24 @@
+{namespace SocialButtons}
+
+/**
+ * @param page
+ * @param siteUrl
+ */
+{template .render}
+	<div class="social">
+		<div class="social-banner">
+			<p class="social-banner-title">Share this article</p>
+		</div>
+		<div class="social-buttons">
+			<a class="social-button facebook" href="https://www.facebook.com/sharer/sharer.php?u={$siteUrl}{$page.url}" target="_blank">
+				<span class="icon-16-facebook"></span>
+			</a>
+			<a class="social-button twitter" href="https://twitter.com/home?status={$page.title}%20{$siteUrl}{$page.url}" target="_blank">
+				<span class="icon-16-twitter"></span>
+			</a>
+			<a class="social-button linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={$siteUrl}{$page.url}" target="_blank">
+				<span class="icon-16-linkedin"></span>
+			</a>
+		</div>
+	</div>
+{/template}

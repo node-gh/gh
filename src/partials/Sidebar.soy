@@ -1,0 +1,48 @@
+{namespace Sidebar}
+
+/**
+ * @param section
+ * @param site
+ */
+{template .render}
+	<nav class="sidebar">
+		<a class="sidebar-header toggler-header-collapsed">
+			<span class="sidebar-icon icon-16-menu"></span>
+			<span>Docs Menu</span>
+			<span class="sidebar-icon-right">
+				<span class="icon-12-arrow-down-short"></span>
+				<span class="icon-12-arrow-up-short"></span>
+			</span>
+		</a>
+
+		<div class="sidebar-toggler-content toggler-collapsed">
+			<div class="sidebar-search">
+				{call ElectricSearchAutocomplete.render}
+					{param dataURL: ($site.basePath ?: '') + '/site.json' /}
+					{param maxResults: 3 /}
+					{param path: '/docs/' /}
+					{param placeholder: 'Search Docs' /}
+				{/call}
+			</div>
+
+			{call ElectricNavigation.render}
+				{param elementClasses: 'sidebar-list sidebar-list-1' /}
+				{param listItemClasses: 'sidebar-item' /}
+				{param anchorVariant: 'sidebar' /}
+				{param section: $section /}
+			{/call}
+		</div>
+	</nav>
+{/template}
+
+/**
+ * @param page
+ */
+{deltemplate ElectricNavigation.anchor variant="'sidebar'"}
+	<a class="sidebar-link {$page.active ? 'sidebar-link-selected' : ''}" href="{$page.url}">
+		{if $page.icon}
+			<span class="sidebar-icon icon-16-{$page.icon}"></span>
+		{/if}
+		<span>{$page.title}</span>
+	</a>
+{/deltemplate}
