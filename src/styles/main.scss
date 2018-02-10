@@ -27,12 +27,47 @@ th {
     line-height: 1.5;
 }
 
-.dance-gif {
-    padding-top: 20px;
+@media all and (max-width: 961px) {
+    .highlight {
+        iframe, img {
+            width: 100%;
+        }
+    }
+}
+
+.highlight {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+
+    &.reverse {
+        flex-direction: row-reverse;
+    }
+
+    > div {
+        flex-basis: 45%;
+    }
+
+    iframe, img {
+        width: 100% !important;
+    }
+
+    img {
+        padding-top: 2rem;
+    }
+
+    @media all and (max-width: 961px) {
+        &, &.reverse {
+            flex-direction: column;
+        }
+
+        > div {
+            width: 100% !important;
+        }
+    }
 }
 
 .highlights {
-
 	h4 {
 		text-align: center;
 	}
