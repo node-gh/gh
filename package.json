@@ -41,7 +41,7 @@
         "test": "gulp test"
     },
     "lint-staged": {
-        "*.{js,json}": ["prettier --write && eslint --fix", "git add"]
+        "*.{js,json}": ["prettier-eslint --write", "git add"]
     },
     "dependencies": {
         "async": "^1.5.0",
@@ -76,6 +76,7 @@
         "lint-staged": "^6.0.0",
         "plato": "^1.5.0",
         "prettier": "^1.9.2",
+        "prettier-eslint-cli": "^4.7.1",
         "rewire": "^2.3.4",
         "run-sequence": "^1.1.4"
     },
