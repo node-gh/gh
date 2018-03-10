@@ -1,7 +1,7 @@
 {
     "name": "gh",
     "description": "GitHub command line tools.",
-    "version": "1.12.9",
+    "version": "1.12.10",
     "homepage": "http://nodegh.io",
     "author": {
         "name": "Eduardo Lundgren",
