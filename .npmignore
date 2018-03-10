@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+npm-debug.log
+reports
+scripts
+tasks
+test
+.editorconfig
+.eslintrc
+.prettierrc
+.travis.yml
+CONTRIBUTING.md
+gh_rsa.enc
+gh_rsa.pub
+gulpfile.js
