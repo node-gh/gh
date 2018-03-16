@@ -1,7 +1,7 @@
 {
     "name": "gh",
     "description": "GitHub command line tools.",
-    "version": "1.12.10",
+    "version": "1.12.11",
     "homepage": "http://nodegh.io",
     "author": {
         "name": "Eduardo Lundgren",
@@ -25,7 +25,13 @@
     "bugs": {
         "url": "https://github.com/node-gh/gh/issues"
     },
-    "keywords": ["git", "github", "external", "commands", "helpers"],
+    "keywords": [
+        "git",
+        "github",
+        "external",
+        "commands",
+        "helpers"
+    ],
     "bin": {
         "gh": "bin/gh.js"
     },
@@ -41,7 +47,10 @@
         "test": "gulp test"
     },
     "lint-staged": {
-        "*.{js,json}": ["prettier-eslint --write", "git add"]
+        "*.{js}": [
+            "prettier-eslint --write",
+            "git add"
+        ]
     },
     "dependencies": {
         "async": "^1.5.0",
