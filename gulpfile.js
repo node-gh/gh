@@ -7,7 +7,7 @@ var paths,
     istanbul = require('gulp-istanbul'),
     complexity = require('gulp-complexity'),
     runSequence = require('run-sequence'),
-    open = require('open'),
+    open = require('opn'),
     help = require('./tasks/help'),
     exec = require('./lib/exec')
 
