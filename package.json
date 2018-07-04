@@ -37,18 +37,15 @@
     },
     "scripts": {
         "ci": "gulp ci",
-        "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
-        "fix": "eslint --fix \"lib/**/*.js\" \"lib/*.js\" \"test/*.js\"",
-        "format": "prettier --write \"lib/**/*.js\" \"lib/*.js\" \"test/*.js\" && npm run fix",
-        "lint-staged": "lint-staged",
+        "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
         "postpublish": "sh scripts/postpublish.sh",
-        "precommit": "lint-staged && npm test",
-        "prepublish": "sh scripts/prepublish.sh",
+        "precommit": "lint-staged",
+        "prepublish": "sh scripts/prepublish.sh && npm run format",
         "test": "gulp test"
     },
     "lint-staged": {
-        "*.{js}": [
-            "prettier-eslint --write",
+        "*.js": [
+            "prettier-standard",
             "git add"
         ]
     },
@@ -85,7 +82,7 @@
         "lint-staged": "^6.0.0",
         "plato": "^1.5.0",
         "prettier": "^1.9.2",
-        "prettier-eslint-cli": "^4.7.1",
+        "prettier-standard": "^8.0.1",
         "rewire": "^2.3.4",
         "run-sequence": "^1.1.4"
     },
