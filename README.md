@@ -1163,10 +1163,10 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
 
 ```javascript
 "api": {
-    "host": "api.github.com",
+    "host": "github.mydomain.com",
     "protocol": "https",
     "version": "3.0.0",
-    "pathPrefix": null
+    "pathPrefix": "/api/v3"
 }
 ```
 
