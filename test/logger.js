@@ -87,4 +87,32 @@ describe('Logger Module Tests', function() {
             logger.log('help')
         })
     })
+
+    describe('color logging', function() {
+        it('should log colored', function() {
+            logger.__with__({
+                console: {
+                    log: function() {
+                        assert.strictEqual(arguments.length, 1)
+                        assert.strictEqual(arguments[0], 'help')
+                    },
+                },
+            })(function() {
+                logger.optionalColors(true).green('help')
+            })
+        })
+
+        it("shouldn't log colored", function() {
+            logger.__with__({
+                console: {
+                    log: function() {
+                        assert.strictEqual(arguments.length, 1)
+                        assert.strictEqual(arguments[0], 'help')
+                    },
+                },
+            })(function() {
+                logger.optionalColors(false).green('help')
+            })
+        })
+    })
 })
