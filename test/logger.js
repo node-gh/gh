@@ -98,7 +98,8 @@ describe('Logger Module Tests', function() {
                     },
                 },
             })(function() {
-                logger.optionalColors(true).green('help')
+                process.argv.push('--no-color')
+                logger.colors.green('help')
             })
         })
 
@@ -111,7 +112,7 @@ describe('Logger Module Tests', function() {
                     },
                 },
             })(function() {
-                logger.optionalColors(false).green('help')
+                logger.colors.green('help')
             })
         })
     })
