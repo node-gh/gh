@@ -69,6 +69,7 @@ Option            | Usage        | Type
 ---               | ---          | ---
 `--verbose`    | *Optional*   | `Boolean`
 `--insane`     | *Optional*   | `Boolean`
+`--no-color`    | *Optional*   | `Boolean`
 `--no-hooks`    | *Optional*   | `Boolean`
 
 The verbose flag is useful for debugging issues.
