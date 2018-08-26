@@ -15,6 +15,11 @@
             "email": "zno.rocha@gmail.com",
             "web": "http://zenorocha.com",
             "twitter": "zenorocha"
+        },
+        {
+            "name": "Ryan Garant",
+            "email": "ryantgarant@gmail.com",
+            "web": "https://github.com/protoEvangelion"
         }
     ],
     "license": "BSD-3-Clause",
