@@ -12,8 +12,8 @@
 
 -   [Install](#install)
 -   [Usage](#usage)
--   [Dependencies](#dependencies)
 -   [Demonstration](#demonstration)
+-   [Supported Node Versions](#supported-node-versions)
 -   [Available commands](#available-commands)
     -   [Pull requests](#pull-requests)
     -   [Notifications](#notifications)
@@ -38,13 +38,16 @@
 
     gh [command] [payload] [--flags]
 
-## Dependencies
-
-In order to sucessfully run this project you must have [NodeJS >= v0.12.0](http://nodejs.org/dist/v0.12.0/) installed.
 
 ## Demonstration
 
 [![Demo](http://nodegh.io/images/nodegh-demo.jpg)](https://asciinema.org/a/3391)
+
+## Supported Node Versions:
+
+- We support the node versions that the Node.js organization supports which as of now is Node v6 & up.
+
+<p><img src="https://raw.githubusercontent.com/nodejs/Release/master/schedule.png" alt="LTS Schedule"/></p>
 
 ## Available commands
 
