@@ -6,7 +6,6 @@ var paths,
     mocha = require('gulp-mocha'),
     istanbul = require('gulp-istanbul'),
     complexity = require('gulp-complexity'),
-    runSequence = require('run-sequence'),
     open = require('opn'),
     help = require('./tasks/help'),
     exec = require('./lib/exec')
@@ -23,7 +22,7 @@ paths = {
     'plato-report': 'reports/complexity/index.html',
 }
 
-function platoTask() {
+function platoTask(done) {
     exec.spawnSyncStream('node_modules/plato/bin/plato', [
         '--dir',
         paths['plato-report-directory'],
@@ -36,65 +35,55 @@ function platoTask() {
         'tasks',
         'gulpfile.js',
     ])
+
+    done()
 }
 
-function complexityTask() {
-    return gulp.src(paths.complexity).pipe(
+function complexityTask(done) {
+    gulp.src(paths.complexity).pipe(
         complexity({
             halstead: 29,
             cyclomatic: 17,
         })
     )
+
+    done()
 }
 
-function coverTask() {
-    return gulp
-        .src(paths.cover)
+function coverTask(done) {
+    gulp.src(paths.cover)
         .pipe(istanbul({ includeUntested: true }))
         .pipe(istanbul.hookRequire())
+
+    done()
 }
 
 function mochaTest() {
     return gulp.src(paths.unit).pipe(mocha())
 }
 
-function unitTask() {
-    return mochaTest().pipe(
+function unitTask(done) {
+    mochaTest().pipe(
         istanbul.writeReports({
             reporters: ['lcov', 'json'],
             dir: paths['coverage-report-directory'],
         })
     )
+
+    done()
 }
 
-function unitCiTask() {
-    return mochaTest().pipe(
+function unitCiTask(done) {
+    mochaTest().pipe(
         istanbul.writeReports({
             dir: paths['coverage-report-directory'],
         })
     )
+
+    done()
 }
 
-function testTask(done) {
-    return runSequence(
-        // plato and gulp-complexity currently doesn't support ES6
-        // 'plato',
-        // 'complexity',
-        'unit',
-        done
-    )
-}
-
-function ciTask(done) {
-    return runSequence(
-        // 'plato',
-        // 'complexity',
-        'unit-ci',
-        done
-    )
-}
-
-function coverageReportTask() {
+function coverageReportTask(done) {
     var file = paths['coverage-report']
 
     if (!fs.existsSync(file)) {
@@ -102,10 +91,12 @@ function coverageReportTask() {
         return
     }
 
-    open(file)
+    open(file, { wait: false })
+
+    done()
 }
 
-function platoReportTask() {
+function platoReportTask(done) {
     var file = paths['plato-report']
 
     if (!fs.existsSync(file)) {
@@ -113,27 +104,39 @@ function platoReportTask() {
         return
     }
 
-    open(file)
+    open(file, { wait: false })
+
+    done()
 }
 
-function watchTask() {
-    return gulp.watch(paths.watch, ['test'])
+function watchTask(done) {
+    gulp.watch(paths.watch, ['test'])
+
+    done()
 }
 
-function ciReportsTask() {
-    open('https://node-gh.github.io/reports/')
+function ciReportsTask(done) {
+    open('https://node-gh.github.io/reports/', { wait: false })
+
+    done()
 }
 
 gulp.task('default', help)
 gulp.task('help', help)
+gulp.task('test', unitTask)
+// gulp.task('test', gulp.series('plato', 'complexity', unitTask))
+
 gulp.task('plato', platoTask)
 gulp.task('complexity', complexityTask)
 gulp.task('test-cover', coverTask)
-gulp.task('unit', ['test-cover'], unitTask)
-gulp.task('unit-ci', ['test-cover'], unitCiTask)
-gulp.task('test', testTask)
-gulp.task('ci', ciTask)
+
+gulp.task('ci', unitTask)
+// gulp.task('ci', gulp.series('plato', 'complexity', unitCiTask))
+gulp.task('unit', gulp.series('test-cover', unitTask))
+gulp.task('unit-ci', gulp.series('test-cover', unitCiTask))
+
 gulp.task('coverage-report', coverageReportTask)
 gulp.task('plato-report', platoReportTask)
-gulp.task('watch', watchTask)
 gulp.task('ci-reports', ciReportsTask)
+
+gulp.task('watch', watchTask)

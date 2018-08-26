@@ -38,9 +38,8 @@
     "scripts": {
         "ci": "gulp ci",
         "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
-        "postpublish": "sh scripts/postpublish.sh",
+        "prepare": "babel lib/rest-api-client.js --out-file lib/rest-api-client.js",
         "precommit": "lint-staged",
-        "prepublish": "sh scripts/prepublish.sh && npm run format",
         "test": "gulp test"
     },
     "lint-staged": {

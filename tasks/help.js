@@ -25,7 +25,7 @@ content = {
     'ci-reports': 'Open CI reports page',
 }
 
-function help() {
+function help(done) {
     var output = '',
         spacing = 0,
         methods
@@ -48,6 +48,8 @@ function help() {
     })
 
     console.log([header, output].join('\n'))
+
+    done()
 }
 
 module.exports = help
