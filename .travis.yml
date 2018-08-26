@@ -15,3 +15,8 @@ script:
     - gh
 after_success:
     - sh scripts/ci-reports.sh
+deploy:
+    provider: script
+    skip_cleanup: true
+    script:
+        - npx travis-deploy-once "npx semantic-release --branch master"
