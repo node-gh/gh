@@ -40,12 +40,20 @@
     "bin": {
         "gh": "bin/gh.js"
     },
+    "release": {
+        "branch": "master",
+        "debug": true
+    },
     "scripts": {
+        "commit": "git-cz",
         "ci": "gulp ci",
         "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
         "prepare": "babel lib/rest-api-client.js --out-file lib/rest-api-client.js",
         "precommit": "lint-staged",
         "test": "gulp test"
+    },
+    "czConfig": {
+        "path": "node_modules/cz-conventional-changelog"
     },
     "lint-staged": {
         "*.js": [
@@ -74,6 +82,8 @@
     "devDependencies": {
         "babel-cli": "^6.26.0",
         "babel-eslint": "^8.2.6",
+        "commitizen": "^2.10.1",
+        "cz-conventional-changelog": "^2.1.0",
         "eslint": "^4.0.0",
         "eslint-config-esnext": "^3.0.0",
         "eslint-config-prettier": "^3.0.1",
