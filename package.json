@@ -25,7 +25,7 @@
     "license": "BSD-3-Clause",
     "repository": {
         "type": "git",
-        "url": "git@github.com:node-gh/gh.git"
+        "url": "https://github.com/node-gh/gh.git"
     },
     "bugs": {
         "url": "https://github.com/node-gh/gh/issues"
@@ -87,7 +87,9 @@
         "lint-staged": "^6.0.0",
         "prettier": "^1.9.2",
         "prettier-standard": "^8.0.1",
-        "rewire": "^2.3.4"
+        "rewire": "^2.3.4",
+        "semantic-release": "^15.9.9",
+        "travis-deploy-once": "^5.0.3"
     },
     "engines": {
         "node": ">=0.12"
