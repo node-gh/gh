@@ -26,4 +26,4 @@ jobs:
               provider: script
               skip_cleanup: true
               script:
-                  - npx semantic-release --branch master
+                  - npx semantic-release
