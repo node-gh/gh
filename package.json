@@ -40,6 +40,10 @@
     "bin": {
         "gh": "bin/gh.js"
     },
+    "release": {
+        "branch": "dev",
+        "debug": true
+    },
     "scripts": {
         "ci": "gulp ci",
         "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
