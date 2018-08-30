@@ -104,4 +104,11 @@ describe('Pull Requests Module Tests', function() {
             pr.get('liferay', 'senna.js', '78')
         })
     })
+
+    it('should only get the issue number from a properly prefixed branch', function() {
+        var pr = new pullRequest.Impl({ repo: 'senna.js' })
+
+        assert.equal(pr.getPullRequestNumberFromBranch_('pr-12345', 'pr-'), '12345')
+        assert.equal(pr.getPullRequestNumberFromBranch_('abcpr-12345', 'pr-'), undefined)
+    })
 })
