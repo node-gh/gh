@@ -61,7 +61,8 @@
             }
         ],
         "publish": [
-            "@semantic-release/github"
+            "@semantic-release/github",
+            "@semantic-release/npm"
         ]
     },
     "scripts": {
