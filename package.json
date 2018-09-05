@@ -67,6 +67,7 @@
     "scripts": {
         "commit": "git-cz",
         "ci": "gulp ci",
+        "flame": "0x --output-dir flame bin/gh.js",
         "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
         "prepare": "babel lib/rest-api-client.js --out-file lib/rest-api-client.js",
         "precommit": "lint-staged",
@@ -97,6 +98,7 @@
         "wordwrap": "^1.0.0"
     },
     "devDependencies": {
+        "0x": "^4.3.0",
         "@semantic-release/git": "^7.0.3",
         "@semantic-release/github": "^5.0.4",
         "@semantic-release/npm": "^5.0.4",

@@ -2,3 +2,6 @@ reports
 node_modules
 npm-debug.log
 .DS_Store
+
+# flame graphs dir
+/flame
