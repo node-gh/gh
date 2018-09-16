@@ -21,6 +21,7 @@
         "no-confusing-arrow": 0,
         "no-console": 0,
         "no-constant-condition": 0,
+        "no-redeclare": 0,
         "no-shadow": 0,
         "no-unsafe-finally": 0,
         "no-useless-escape": 0,
