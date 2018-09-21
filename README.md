@@ -5,6 +5,8 @@
 [![Build Status](http://img.shields.io/travis/node-gh/gh/master.svg?style=flat)](https://travis-ci.org/node-gh/gh)
 [![Known Vulnerabilities](https://snyk.io/test/github/node-gh/gh/badge.svg)](https://snyk.io/test/github/node-gh/gh)
 [![DevDependencies Status](http://img.shields.io/david/dev/node-gh/gh.svg?style=flat)](https://david-dm.org/node-gh/gh#info=devDependencies)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 > All the power of GitHub in your terminal.
 
