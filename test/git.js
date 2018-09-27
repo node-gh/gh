@@ -1,11 +1,7 @@
-/*
- * Copyright 2013-2018, All Rights Reserved.
- *
- * Code licensed under the BSD License:
- * https://github.com/node-gh/gh/blob/master/LICENSE.md
- *
- * @author Rodrigo Vidal <rodrigovidal777@gmail.com>
- * @author Zeno Rocha <zno.rocha@gmail.com>
+/**
+ * © 2013 Liferay, Inc. <https://liferay.com> and Node GH contributors
+ * (see file: CONTRIBUTORS)
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 'use strict'

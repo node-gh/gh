@@ -40,14 +40,13 @@
 
     gh [command] [payload] [--flags]
 
-
 ## Demonstration
 
 [![Demo](http://nodegh.io/images/nodegh-demo.jpg)](https://asciinema.org/a/3391)
 
 ## Supported Node Versions:
 
-- We support the node versions that the Node.js organization supports which as of now is Node v6 & up.
+-   We support the node versions that the Node.js organization supports which as of now is Node v6 & up.
 
 <p><img src="https://raw.githubusercontent.com/nodejs/Release/master/schedule.png" alt="LTS Schedule"/></p>
 
@@ -1261,10 +1260,10 @@ Feel free to create your own plugins by forking [GH Boilerplate](https://github.
 
 ## Team
 
-Node GH is maintained by these guys and some awesome [contributors](https://github.com/node-gh/gh/graphs/contributors).
+Node GH is maintained by these guys and [some awesome contributors](CONTRIBUTORS).
 
-| Contributors | | |
-| - | - | - |
+| Contributors                                                                                                                                                                         |                                                                                                                                                                       |                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) [Eduardo Lundgren](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/) [Zeno Rocha](https://github.com/zenorocha/)          | [![Henrique Vicente](http://gravatar.com/avatar/5733fd332f2a0da11931e0e73ddfb20d?s=70)](https://github.com/henvic/) [Henrique Vicente](https://github.com/henvic/)   |
 | [![Bruno Coelho](http://gravatar.com/avatar/1f90c690b534779560d3bfdb23772915?s=70)](https://github.com/brunocoelho/) [Bruno Coelho](https://github.com/brunocoelho/)                 | [![Dustin Ryerson](https://avatars2.githubusercontent.com/u/2080476?v=3&s=70)](https://github.com/dustinryerson/) [Dustin Ryerson](https://github.com/dustinryerson/) | [![Ryan Garant](https://avatars1.githubusercontent.com/u/20076677?s=70&v=4)](https://github.com/protoEvangelion/) [Ryan Garant](https://github.com/protoEvangelion/) |
 

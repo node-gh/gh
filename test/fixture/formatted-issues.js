@@ -1,3 +1,9 @@
+/**
+ * © 2013 Liferay, Inc. <https://liferay.com> and Node GH contributors
+ * (see file: CONTRIBUTORS)
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 const mockFormattedIssues = `#2 Sesame seeds split without a pop! @octokit-fixture-user-b (a year ago)
 I’ve waited all year long, but there was no pop 😭
 https://github.com/octokit-fixture-org/search-issues/issues/2
