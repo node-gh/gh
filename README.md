@@ -1297,4 +1297,4 @@ For detailed changelog, check [Releases](https://github.com/node-gh/gh/releases)
 
 ## License
 
-[BSD License](https://github.com/node-gh/gh/blob/master/LICENSE.md)
+[BSD-3-Clause](https://github.com/node-gh/gh/blob/master/LICENSE.txt)
