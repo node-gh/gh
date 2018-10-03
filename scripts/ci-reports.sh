@@ -1,4 +1,7 @@
 #!/bin/bash
+# © 2013 Liferay, Inc. <https://liferay.com> and Node GH contributors
+# (see file: CONTRIBUTORS)
+# SPDX-License-Identifier: BSD-3-Clause
 
 if [ "${TRAVIS_REPO_SLUG}" != "node-gh/gh" ]; then
     echo "Skipping report publishing: not in the gh repo slug.">&2
