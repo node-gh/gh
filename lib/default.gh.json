@@ -115,5 +115,9 @@
 
     "replace": {},
 
+    "ssh": true,
+
+    "color": true,
+
     "signature": " <br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
 }
