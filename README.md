@@ -1239,6 +1239,12 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
 "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
 ```
 
+-   Turn off ssh when pulling a repo and use https instead.
+
+```javascript
+"ssh": false,
+```
+
 If you need to use a custom git command, set the environment variable `GH_GIT_COMMAND`.
 
 ## Plugins
