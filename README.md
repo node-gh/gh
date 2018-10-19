@@ -6,6 +6,8 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/node-gh/gh/badge.svg)](https://snyk.io/test/github/node-gh/gh)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/context:javascript)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/alerts)
 
 > All the power of GitHub in your terminal.
 
