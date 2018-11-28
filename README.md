@@ -27,7 +27,7 @@
     -   [Alias](#alias)
 -   [Config](#config)
 -   [Plugins](#plugins)
--   [Tasks](#tasks)
+-   [Developer tasks](#developer-tasks)
 -   [Team](#team)
 -   [Contributing](#contributing)
 -   [History](#history)
@@ -1260,7 +1260,7 @@ If you need to use a custom git command, set the environment variable `GH_GIT_CO
 
 Feel free to create your own plugins by forking [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
 
-## Developer Tasks
+## Developer tasks
 
 -   `complexity` Show code complexity analysis summary
 -   `plato` Create advanced code complexity static analysis in HTML
