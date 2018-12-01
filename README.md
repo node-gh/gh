@@ -43,7 +43,11 @@
 
 ## Demonstration
 
-[![Demo](http://nodegh.io/images/nodegh-demo.jpg)](https://asciinema.org/a/3391)
+<a href="https://asciinema.org/a/214594?autoplay=1">
+    <p align="center">
+        <img alt="Terminal Demo" src="http://nodegh.io/images/terminal-demo.svg" width="600">
+    </p>
+</a>
 
 ## Supported Node Versions:
 
