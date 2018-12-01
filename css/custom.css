@@ -65,8 +65,14 @@
 /* Demo
    ========================================================================== */
 
+.asciicast {
+  display: flex !important;
+  justify-content: center;
+}
+
 .demo {
   background: #ebedef;
+  width: 100%;
 }
 
 iframe {
