@@ -26,7 +26,7 @@ export const name = 'Repo'
 export const DETAILS = {
     alias: 're',
     description: 'Provides a set of util commands to work with Repositories.',
-    commands: ['browser', 'clone', 'delete', 'fork', 'list', 'new', 'update'],
+    commands: ['browser', 'clone', 'delete', 'fork', 'list', 'new', 'update', 'search'],
     options: {
         browser: Boolean,
         clone: Boolean,
@@ -48,6 +48,7 @@ export const DETAILS = {
         private: Boolean,
         protocol: String,
         repo: String,
+        search: String,
         type: ['all', 'forks', 'member', 'owner', 'public', 'private', 'source'],
         update: String,
         user: String,
@@ -66,6 +67,7 @@ export const DETAILS = {
         p: ['--private'],
         P: ['--protocol'],
         r: ['--repo'],
+        s: ['--search'],
         t: ['--type'],
         U: ['--update'],
         u: ['--user'],
@@ -307,6 +309,29 @@ export async function run(options, done) {
         listCallback_(options, listData)
 
         await afterHooks('repo.list', { options })
+    } else if (options.search) {
+        if (options.organization) {
+            user = options.organization
+            options.type = options.type || TYPE_ALL
+        } else {
+            user = options.user
+            options.type = options.type || TYPE_OWNER
+        }
+
+        if (options.isTTY.out) {
+            logger.log(
+                'Searching ' +
+                    logger.colors.green(options.type) +
+                    ' repos in ' +
+                    logger.colors.green(user)
+            )
+        }
+
+        try {
+            await search(options, user)
+        } catch (error) {
+            logger.error(`Can't list repos.\n${error}`)
+        }
     } else if (options.new && !options.label) {
         if (!options.new.trim()) {
             options = produce(options, draft => {
@@ -560,6 +585,42 @@ function updateLabel(options, user): Promise<Octokit.Response<Octokit.IssuesUpda
     }
 
     return options.GitHub.issues.updateLabel(payload)
+}
+
+async function search(options, user) {
+    let terms = [options.search]
+
+    // @fix currently options.user is always set, so I'm checking argv
+    if (options.argv.original.some(arg => arg === '-u' || arg === '--user')) {
+        terms.push(`user:${options.user}`)
+    }
+
+    if (options.organization) {
+        terms.push(`org:${options.organization}`)
+    }
+
+    if (options.type === 'public' || options.type === 'private') {
+        terms.push(`is:${options.type}`)
+        delete options.type
+    }
+
+    // add remaining search terms
+    terms = terms.concat(options.argv.remain.slice(1))
+
+    const payload = {
+        user,
+        q: terms.join(' '),
+        // type: options.type,
+        per_page: 100,
+    }
+
+    const { data } = await options.github.search.repos(payload)
+
+    // console.log(repos)
+    // process.exit()
+    // const re = new RegExp(options.search, 'i')
+    // repos = repos.filter(r => re.test(r.name))
+    listCallback_(options, data.items.slice(0, 10))
 }
 
 function normalizeColor(color) {
