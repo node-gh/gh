@@ -958,6 +958,41 @@ gh re --label --update bug --color color --repo gh
 gh re --label --update bug --color color --user eduardolundgren --repo gh
 ```
 
+### 11. Search
+
+Search repositories for the terms in name, description or readme.
+You can filter the results using GitHub's [search qualifiers](https://help.github.com/articles/searching-for-repositories/)
+
+| Option             | Usage        | Type                                            |
+| ------------------ | ------------ | ----------------------------------------------- |
+| `-s`, `--search`   | **Required** | `Boolean`                                       |
+| `-d`, `--detailed` | _Optional_   | `Boolean`                                       |
+| `-u`, `--user`     | _Optional_   | `String`                                        |
+| `-t`, `--type`     | _Optional_   | [`all`, `owner`, `public`, `private`, `member`] |
+
+#### Examples
+
+-   Search private repositories you have access to with the term "framework".
+
+```
+gh re --search framework --type private
+```
+or
+```
+gh re --search framework is:private
+```
+
+-   Search for repositories mentioning "hapi" on tokilabs organization and show detailed info
+
+```
+gh re -d -o tokilabs --search hapi
+```
+or
+```
+gh re -d --search hapi org:tokilabs
+```
+
+
 ## Gists
 
 ```
