@@ -2,52 +2,10 @@
 
 exports[`E2E: Issues Module Test List Issues \`gh is\` 1`] = `
 "Listing open issues on protoevangelion/gh
-#43 test2 3 @protoEvangelion (13 days ago)
+#43 testGo @protoEvangelion (a year ago)
 
-#42 test2 @protoEvangelion (13 days ago)
+#42 test2 @protoEvangelion (a year ago)
 
-#38 Node GH rocks! @protoEvangelion (18 days ago)
-
-#33 test @protoEvangelion (3 months ago)
-
-#26 new @protoEvangelion (4 months ago)
-
-#25 1 @protoEvangelion (4 months ago)
-
-#24 new issue @protoEvangelion (4 months ago)
-
-#21 ryan @protoEvangelion (4 months ago)
-
-#20 test5 @protoEvangelion (5 months ago)
-
-#18 test @protoEvangelion (5 months ago)
-
-#17 test @protoEvangelion (5 months ago)
-
-#16 test @protoEvangelion (5 months ago)
-
-#15 test @protoEvangelion (5 months ago)
-
-#14 hello @protoEvangelion (5 months ago)
-
-#13 hello @protoEvangelion (5 months ago)
-
-#12 Node GH rocks! @protoEvangelion (5 months ago)
-
-#10 node-gh @protoEvangelion (5 months ago)
-
-#9 test9 @protoEvangelion (5 months ago)
-
-#8 test8 @protoEvangelion (5 months ago)
-
-#7 test7 @protoEvangelion (5 months ago)
-
-#6 test6 @protoEvangelion (5 months ago)
-
-#5 test5 @protoEvangelion (5 months ago)
-
-#2 test2 @protoEvangelion (a year ago)
-
-#1 test1 @protoEvangelion (a year ago)
+#38 Node GH rocks! @protoEvangelion (a year ago)
 "
 `;

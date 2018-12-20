@@ -72,7 +72,6 @@
         "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
         "prepare": "babel lib/rest-api-client.js --out-file lib/rest-api-client.js",
         "precommit": "lint-staged",
-        "run": "cross-env NODE_ENV=testing gh ",
         "test": "cross-env NODE_ENV=testing jest --verbose false",
         "test:watch": "cross-env NODE_ENV=testing jest --watch --verbose false",
         "test:ci": "cross-env NODE_ENV=testing jest --coverage && codecov",
