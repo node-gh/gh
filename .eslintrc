@@ -1,9 +1,10 @@
 {
     "parser": "babel-eslint",
-    "extends": ["eslint:recommended", "prettier"],
-    "plugins": ["prettier"],
+    "extends": ["eslint:recommended", "prettier", "plugin:jest/recommended"],
+    "plugins": ["jest", "prettier"],
     "env": {
-        "node": true
+        "node": true,
+        "jest/globals": true
     },
     "globals": {
         "__dirname": true,
