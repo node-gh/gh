@@ -67,12 +67,16 @@
     },
     "scripts": {
         "commit": "git-cz",
-        "ci": "gulp ci",
+        "ci": "npm run test:ci",
         "flame": "0x --output-dir flame bin/gh.js",
         "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
         "prepare": "babel lib/rest-api-client.js --out-file lib/rest-api-client.js",
         "precommit": "lint-staged",
-        "test": "cross-env NODE_ENV=testing gulp test"
+        "run": "cross-env NODE_ENV=testing gh ",
+        "test": "cross-env NODE_ENV=testing jest --verbose false",
+        "test:watch": "cross-env NODE_ENV=testing jest --watch --verbose false",
+        "test:ci": "cross-env NODE_ENV=testing jest --coverage && codecov",
+        "test:coverage": "cross-env NODE_ENV=testing jest --coverage"
     },
     "lint-staged": {
         "*.js": [
@@ -114,13 +118,16 @@
         "eslint-config-esnext": "^3.0.0",
         "eslint-config-prettier": "^3.0.1",
         "eslint-config-recommended": "^3.0.0",
+        "eslint-plugin-jest": "^22.1.2",
         "eslint-plugin-prettier": "^2.6.2",
         "gulp": "^4.0.0",
         "gulp-complexity": "^0.3.2",
         "gulp-istanbul": "^1.1.3",
         "gulp-mocha": "^6.0.0",
         "husky": "^0.14.3",
+        "jest": "^23.6.0",
         "lint-staged": "^6.0.0",
+        "nock": "^10.0.3",
         "prettier": "^1.9.2",
         "prettier-standard": "^8.0.1",
         "rewire": "^2.3.4",

@@ -4,7 +4,8 @@ npm-debug.log
 reports
 scripts
 tasks
-test
+_tests_
+coverage
 .editorconfig
 .eslintrc
 .prettierrc

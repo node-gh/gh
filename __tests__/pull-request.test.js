@@ -50,7 +50,6 @@ describe('Pull Requests Module Tests', function() {
                 // only evaluate that the clean has a green log message
                 if (arguments[0].indexOf('clean') > 1) {
                     cleanLogFound = true
-                    console.log('options=========>', arguments)
 
                     assert.strictEqual(arguments[0], 'Mergeable (clean)')
                 }
