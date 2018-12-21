@@ -4,14 +4,16 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-const { execSync } = require('child_process')
+const { runCmd } = require('./testUtils')
 
 describe('E2E: Issues Module Test', () => {
     it('List Issues `gh is`', done => {
-        const result = execSync('bin/gh.js is', { cwd: process.cwd() })
+        expect(runCmd('bin/gh.js is')).toMatchSnapshot()
+        done()
+    })
 
-        expect(result.toString()).toMatchSnapshot()
-
+    it('Comment on Issuess `gh is 1 -c "test"`', done => {
+        expect(runCmd(`bin/gh.js is 1 -c "test"`)).toMatchSnapshot()
         done()
     })
 })

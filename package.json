@@ -67,15 +67,14 @@
     },
     "scripts": {
         "commit": "git-cz",
-        "ci": "npm run test:ci",
-        "flame": "0x --output-dir flame bin/gh.js",
         "format": "prettier-standard 'lib/*.js' && prettier-standard 'lib/**/*.js' && prettier-standard 'bin/*.js'",
         "prepare": "babel lib/rest-api-client.js --out-file lib/rest-api-client.js",
         "precommit": "lint-staged",
         "test": "cross-env NODE_ENV=testing jest --verbose false",
         "test:watch": "cross-env NODE_ENV=testing jest --watch --verbose false",
         "test:ci": "cross-env NODE_ENV=testing jest --coverage && codecov",
-        "test:coverage": "cross-env NODE_ENV=testing jest --coverage"
+        "test:coverage": "cross-env NODE_ENV=testing jest --coverage",
+        "test:program": "cross-env NODE_ENV=testing gh "
     },
     "lint-staged": {
         "*.js": [
@@ -102,7 +101,6 @@
         "wordwrap": "^1.0.0"
     },
     "devDependencies": {
-        "0x": "^4.3.0",
         "@octokit/fixtures": "^8.5.0",
         "@semantic-release/git": "^7.0.3",
         "@semantic-release/github": "^5.0.4",
@@ -130,8 +128,7 @@
         "prettier": "^1.9.2",
         "prettier-standard": "^8.0.1",
         "rewire": "^2.3.4",
-        "semantic-release": "^15.9.9",
-        "travis-deploy-once": "^5.0.3"
+        "semantic-release": "^15.9.9"
     },
     "engines": {
         "node": ">=0.12"
