@@ -1,29 +1,32 @@
 language: node_js
-node_js:
-    - '6'
-    - '8'
-    - '9'
-    - '10'
 sudo: false
 env:
     - FORCE_COLOR=true
-before_install:
-    - sh scripts/ci.sh
+
+# Trigger a push build on master and greenkeeper branches + PRs build on every branches
+# Avoid double build on PRs (See https://github.com/travis-ci/travis-ci/issues/1147)
+branches:
+    only:
+        - master
+        - type != push
+
 script:
-    - npm run-script ci
+    - npm run-script test:ci
     - npm link
-    - gh
-after_success:
-    - sh scripts/ci-reports.sh
+    - gh is
+
 jobs:
     include:
-        # Define the release stage that runs semantic-release
+        - stage: test
+          node_js:
+              - '8'
+              - '9'
+              - '10'
         - stage: release
           node_js: lts/*
-          # Advanced: optionally overwrite your default `script` step to skip the tests
-          # script: skip
-          deploy:
-              provider: script
-              skip_cleanup: true
-              script:
-                  - npx semantic-release
+          script: npx semantic-release
+
+stages:
+    - test
+    - name: release
+      if: branch = master AND type IN (push)

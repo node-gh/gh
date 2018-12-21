@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`E2E: Issues Module Test Comment on Issuess \`gh is 1 -c "test"\` 1`] = `
+"Adding comment on issue #1
+https://github.com/protoEvangelion/gh/issues/1#issuecomment-000000001
+"
+`;
+
 exports[`E2E: Issues Module Test List Issues \`gh is\` 1`] = `
 "Listing open issues on protoevangelion/gh
 #43 testGo @protoEvangelion (a year ago)
