@@ -1,5 +1,10 @@
 language: node_js
 sudo: false
+node_js:
+    - '6'
+    - '8'
+    - 'lts/*'
+    - 'node'
 env:
     - FORCE_COLOR=true
 
@@ -13,15 +18,9 @@ branches:
 script:
     - npm run-script test:ci
     - npm link
-    - gh is
 
 jobs:
     include:
-        - stage: test
-          node_js:
-              - '8'
-              - '9'
-              - '10'
         - stage: release
           node_js: lts/*
           script: npx semantic-release
@@ -29,4 +28,4 @@ jobs:
 stages:
     - test
     - name: release
-      if: branch = master AND type IN (push)
+      if: repo = node-gh/gh AND branch = master AND type IN (push)
