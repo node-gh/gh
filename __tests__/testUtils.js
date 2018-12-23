@@ -12,7 +12,7 @@ exports.runCmd = function runCmd(cmd) {
 
 exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
     const nockBack = require('nock').back
-    const { isArray, isPlainObject, mapValues } = require('lodash')
+    const { isArray, isPlainObject, map, mapValues } = require('lodash')
     let id = 0
     let newCmdName = null
 
@@ -23,6 +23,8 @@ exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
             newCmdName = 'Issue'
         } else if (argv.includes('--comment')) {
             newCmdName = 'IssueComment'
+        } else if (argv.includes('--new')) {
+            newCmdName = 'IssueNew'
         }
     }
 
@@ -42,6 +44,10 @@ exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
     function normalize(value, key) {
         if (isPlainObject(value)) {
             return mapValues(value, normalize)
+        }
+
+        if (isArray(value) && isPlainObject(value[0])) {
+            return map(value, normalize)
         }
 
         if (key.includes('_at')) {
