@@ -5,15 +5,8 @@
  */
 
 const { runCmd } = require('./testUtils')
-let describeIf
 
-if (process.env.CONTINUOUS_INTEGRATION && process.env.TRAVIS_EVENT_TYPE !== 'push') {
-    describeIf = describe.skip
-} else {
-    describeIf = describe
-}
-
-describeIf('E2E: Issues Module Test', () => {
+describe('E2E: Issues Module Test', () => {
     it('List Issues `gh is`', done => {
         expect(runCmd('bin/gh.js is')).toMatchSnapshot()
         done()
