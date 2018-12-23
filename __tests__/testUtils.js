@@ -25,6 +25,10 @@ exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
             newCmdName = 'IssueComment'
         } else if (argv.includes('--new')) {
             newCmdName = 'IssueNew'
+        } else if (argv.includes('--open')) {
+            newCmdName = 'IssueOpen'
+        } else if (argv.includes('--close')) {
+            newCmdName = 'IssueClose'
         }
     }
 
