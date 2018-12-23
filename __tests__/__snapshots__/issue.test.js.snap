@@ -34,3 +34,12 @@ exports[`E2E: Issues Module Test List Issues \`gh is\` 1`] = `
 #38 Node GH rocks! @protoEvangelion (a year ago)
 "
 `;
+
+exports[`E2E: Issues Module Test Search Issues \`gh is -s hi\` 1`] = `
+"Searching for hi in issues for protoEvangelion/gh
+
+#19 hi @protoEvangelion (a year ago)
+
+#1 test1 @protoEvangelion (a year ago)
+"
+`;

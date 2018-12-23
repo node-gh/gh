@@ -31,4 +31,9 @@ describe('E2E: Issues Module Test', () => {
         expect(runCmd(`bin/gh.js is 1 -C`)).toMatchSnapshot()
         done()
     })
+
+    it('Search Issues `gh is -s hi`', done => {
+        expect(runCmd(`bin/gh.js is -s 'hi'`)).toMatchSnapshot()
+        done()
+    })
 })
