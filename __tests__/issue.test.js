@@ -23,4 +23,9 @@ describeIf('E2E: Issues Module Test', () => {
         expect(runCmd(`bin/gh.js is 1 -c "test"`)).toMatchSnapshot()
         done()
     })
+
+    it('Create a new issue `gh is -N -t "Node GH rocks!" -L bug,question,test`', done => {
+        expect(runCmd(`bin/gh.js is -N -t "Node GH rocks!" -L bug,question,test`)).toMatchSnapshot()
+        done()
+    })
 })

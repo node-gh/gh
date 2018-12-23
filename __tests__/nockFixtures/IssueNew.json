@@ -1,0 +1,86 @@
+[
+    {
+        "scope": "https://api.github.com:443",
+        "method": "post",
+        "path": "/repos/protoEvangelion/gh/issues?",
+        "body": {
+            "title": "Node GH rocks!",
+            "labels": [
+                "bug",
+                "question",
+                "test"
+            ]
+        },
+        "status": 201,
+        "response": {
+            "url": "https://api.github.com/repos/protoEvangelion/gh/issues/49",
+            "repository_url": "https://api.github.com/repos/protoEvangelion/gh",
+            "labels_url": "https://api.github.com/repos/protoEvangelion/gh/issues/49/labels{/name}",
+            "comments_url": "https://api.github.com/repos/protoEvangelion/gh/issues/49/comments",
+            "events_url": "https://api.github.com/repos/protoEvangelion/gh/issues/49/events",
+            "html_url": "https://github.com/protoEvangelion/gh/issues/49",
+            "id": 1000,
+            "node_id": 1001,
+            "number": 49,
+            "title": "Node GH rocks!",
+            "user": {
+                "login": "protoEvangelion",
+                "id": 1002,
+                "node_id": 1003,
+                "avatar_url": "https://avatars3.githubusercontent.com/u/000000001?v=4",
+                "gravatar_id": 1004,
+                "url": "https://api.github.com/users/protoEvangelion",
+                "html_url": "https://github.com/protoEvangelion",
+                "followers_url": "https://api.github.com/users/protoEvangelion/followers",
+                "following_url": "https://api.github.com/users/protoEvangelion/following{/other_user}",
+                "gists_url": "https://api.github.com/users/protoEvangelion/gists{/gist_id}",
+                "starred_url": "https://api.github.com/users/protoEvangelion/starred{/owner}{/repo}",
+                "subscriptions_url": "https://api.github.com/users/protoEvangelion/subscriptions",
+                "organizations_url": "https://api.github.com/users/protoEvangelion/orgs",
+                "repos_url": "https://api.github.com/users/protoEvangelion/repos",
+                "events_url": "https://api.github.com/users/protoEvangelion/events{/privacy}",
+                "received_events_url": "https://api.github.com/users/protoEvangelion/received_events",
+                "type": "User",
+                "site_admin": false
+            },
+            "labels": [
+                {
+                    "id": 1005,
+                    "node_id": 1006,
+                    "url": "https://api.github.com/repos/protoEvangelion/gh/labels/bug",
+                    "name": "bug",
+                    "color": "ee0701",
+                    "default": true
+                },
+                {
+                    "id": 1007,
+                    "node_id": 1008,
+                    "url": "https://api.github.com/repos/protoEvangelion/gh/labels/question",
+                    "name": "question",
+                    "color": "cc317c",
+                    "default": true
+                },
+                {
+                    "id": 1009,
+                    "node_id": 1010,
+                    "url": "https://api.github.com/repos/protoEvangelion/gh/labels/test",
+                    "name": "test",
+                    "color": "ededed",
+                    "default": false
+                }
+            ],
+            "state": "open",
+            "locked": false,
+            "assignee": null,
+            "assignees": [],
+            "milestone": null,
+            "comments": 0,
+            "created_at": "2017-10-10T16:00:00Z",
+            "updated_at": "2017-10-10T16:00:00Z",
+            "closed_at": "2017-10-10T16:00:00Z",
+            "author_association": "OWNER",
+            "body": null,
+            "closed_by": null
+        }
+    }
+]

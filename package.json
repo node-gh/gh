@@ -34,13 +34,7 @@
     "bugs": {
         "url": "https://github.com/node-gh/gh/issues"
     },
-    "keywords": [
-        "git",
-        "github",
-        "external",
-        "commands",
-        "helpers"
-    ],
+    "keywords": ["git", "github", "external", "commands", "helpers"],
     "bin": {
         "gh": "bin/gh.js"
     },
@@ -56,18 +50,12 @@
             "@semantic-release/npm",
             {
                 "path": "@semantic-release/git",
-                "assets": [
-                    "package.json",
-                    "bin/gh.js",
-                    "lib/**/*.js"
-                ],
-                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+                "assets": ["package.json", "bin/gh.js", "lib/**/*.js"],
+                "message":
+                    "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
             }
         ],
-        "publish": [
-            "@semantic-release/github",
-            "@semantic-release/npm"
-        ]
+        "publish": ["@semantic-release/github", "@semantic-release/npm"]
     },
     "scripts": {
         "commit": "git-cz",
@@ -76,8 +64,8 @@
         "env:test": "cross-env NODE_ENV=testing GH_USER=protoEvangelion GH_TOKEN=0001",
         "test": "npm run env:test -- jest",
         "test:watch": "npm run env:test -- jest --watch",
-        "test:ci": "cross-env NODE_ENV=testing jest",
-        "test:coverage": "cross-env NODE_ENV=testing jest --coverage",
+        "test:ci": "npm run env:test -- jest",
+        "test:coverage": "npm run env:test -- jest --coverage",
         "test:program": "npm run env:test -- gh "
     },
     "husky": {
@@ -96,7 +84,7 @@
         "moment": "~2.20.1",
         "nopt": "~3.0.4",
         "opn": "~5.3.0",
-        "request": "~2.83.0",
+        "request": "~2.88.0",
         "truncate": "~2.0.0",
         "update-notifier": "~0.5.0",
         "userhome": "~1.0.0",
