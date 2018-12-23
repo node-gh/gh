@@ -29,11 +29,9 @@ exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
             newCmdName = 'IssueOpen'
         } else if (argv.includes('--close')) {
             newCmdName = 'IssueClose'
+        } else if (argv.includes('--search')) {
+            newCmdName = 'IssueSearch'
         }
-    }
-
-    if (!newCmdName) {
-        throw new Error(`Cmd flags do not match any of our test fixtures for ---> ${cmdName}`)
     }
 
     nockBack.fixtures = `${process.cwd()}/__tests__/nockFixtures`
