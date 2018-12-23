@@ -1,8 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`E2E: Issues Module Test Comment on Issues \`gh is 1 -C\` 1`] = `
+"Closing issue #1 on protoEvangelion/gh
+https://github.com/protoEvangelion/gh/issues/1
+"
+`;
+
 exports[`E2E: Issues Module Test Comment on Issues \`gh is 1 -c "test"\` 1`] = `
 "Adding comment on issue #1
 https://github.com/protoEvangelion/gh/issues/1#issuecomment-000000001
+"
+`;
+
+exports[`E2E: Issues Module Test Comment on Issues \`gh is 1 -o\` 1`] = `
+"Opening issue #1 on protoEvangelion/gh
+https://github.com/protoEvangelion/gh/issues/1
 "
 `;
 
