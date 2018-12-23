@@ -31,15 +31,19 @@ exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
             newCmdName = 'IssueClose'
         } else if (argv.includes('--search')) {
             newCmdName = 'IssueSearch'
+        } else if (argv.includes('--assign')) {
+            newCmdName = 'IssueAssign'
         }
     }
 
     nockBack.fixtures = `${process.cwd()}/__tests__/nockFixtures`
 
-    return nockBack(`${newCmdName}.json`, {
+    const nockPromise = nockBack(`${newCmdName}.json`, {
         before,
         afterRecord,
     })
+
+    return () => nockPromise.then(({ nockDone }) => nockDone())
 
     /* --- Normalization Functions --- */
 
