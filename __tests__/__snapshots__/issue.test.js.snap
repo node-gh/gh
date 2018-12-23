@@ -35,6 +35,12 @@ exports[`E2E: Issues Module Test List Issues \`gh is\` 1`] = `
 "
 `;
 
+exports[`E2E: Issues Module Test Search Issues \`gh is --assign -A protoEvangelion --number 1\` 1`] = `
+"Assigning issue #1 on protoEvangelion/gh to protoEvangelion
+https://github.com/protoEvangelion/gh/issues/1
+"
+`;
+
 exports[`E2E: Issues Module Test Search Issues \`gh is -s hi\` 1`] = `
 "Searching for hi in issues for protoEvangelion/gh
 

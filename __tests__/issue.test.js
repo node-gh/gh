@@ -36,4 +36,11 @@ describe('E2E: Issues Module Test', () => {
         expect(runCmd(`bin/gh.js is -s 'hi'`)).toMatchSnapshot()
         done()
     })
+
+    it(`Search Issues \`gh is --assign -A ${process.env.GH_USER} --number 1\``, done => {
+        expect(
+            runCmd(`bin/gh.js is --assign -A ${process.env.GH_USER} --number 1`)
+        ).toMatchSnapshot()
+        done()
+    })
 })
