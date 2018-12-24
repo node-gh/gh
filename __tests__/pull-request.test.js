@@ -6,13 +6,22 @@
 
 'use strict'
 
-var rewire = require('rewire'),
-    assert = require('assert'),
-    pullRequest = rewire('../lib/cmds/pull-request'),
-    pullRequestsUnstable = require('./fixture/pull-request-unstable.json'),
-    pullRequestsInfo = require('./fixture/pull-request-info.json')
+const rewire = require('rewire')
+const assert = require('assert')
+const pullRequestsUnstable = require('./fixture/pull-request-unstable.json')
+const pullRequestsInfo = require('./fixture/pull-request-info.json')
+const { runCmd } = require('./testUtils')
+
+describe('E2E: Pull Request Module Test', () => {
+    it('List PRs `gh pr`', done => {
+        expect(runCmd('bin/gh.js pr')).toMatchSnapshot()
+        done()
+    })
+})
 
 describe('Pull Requests Module Tests', function() {
+    const pullRequest = rewire('../lib/cmds/pull-request')
+
     it('should fail to get pull request', function() {
         var pr = new pullRequest.Impl({
             repo: 'senna.js',

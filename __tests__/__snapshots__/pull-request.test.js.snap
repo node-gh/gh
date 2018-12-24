@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
+"Listing open pull requests on protoEvangelion/gh
+protoEvangelion/gh
+master (3)
+#51 pr3 @protoEvangelion (a year ago) ✓
+#50 pr2 @protoEvangelion (a year ago) ✓
+#33 test @protoEvangelion (a year ago) ✓
+"
+`;
