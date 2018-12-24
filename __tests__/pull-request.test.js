@@ -22,6 +22,16 @@ describe('E2E: Pull Request Module Test', () => {
         expect(runCmd('bin/gh.js pr --info 50')).toMatchSnapshot()
         done()
     })
+
+    it('Fetch PR `gh pr --fetch 50`', done => {
+        expect(runCmd('bin/gh.js pr --fetch 50')).toMatchSnapshot()
+        done()
+    })
+
+    it('Comment on PR `gh pr 50 --comment "Just started reviewing :)"`', done => {
+        expect(runCmd('bin/gh.js pr 50 --comment "Just started reviewing :)"')).toMatchSnapshot()
+        done()
+    })
 })
 
 describe('Pull Requests Module Tests', function() {
