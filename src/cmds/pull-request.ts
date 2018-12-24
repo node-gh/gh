@@ -7,8 +7,12 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as async from 'async'
+import * as Table from 'cli-table'
 import { startsWith } from 'lodash'
+import marked from 'marked'
+import TerminalRenderer from 'marked-terminal'
 import * as openUrl from 'opn'
+import wrap from 'word-wrap'
 import * as base from '../base'
 import * as git from '../git'
 import * as hooks from '../hooks'
@@ -457,6 +461,84 @@ PullRequest.prototype.getPullsTemplateJson_ = function(pulls, opt_callback) {
     opt_callback && opt_callback(null, json)
 }
 
+PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
+    var options = this.options
+    var tableHead = ['#', 'Title', 'Author', 'Opened', 'Status']
+    var showDetails = options.info || options.detailed
+
+    if (showDetails) {
+        tableHead[1] = 'Details'
+    }
+
+    function getColWidths() {
+        var cols = process.stdout.columns
+        var noCol = 0.07 * cols,
+            titleCol = 0.53 * cols,
+            authorCol = 0.16 * cols,
+            dateCol = 0.13 * cols,
+            statusCol = 0.07 * cols
+
+        return [noCol, titleCol, authorCol, dateCol, statusCol].map(function(col) {
+            return Math.floor(col)
+        })
+    }
+
+    function getPRBody(pull, length) {
+        var title = wrap(pull.title, { indent: '', width: length })
+        var body = ''
+
+        if (showDetails) {
+            marked.setOptions({
+                renderer: new TerminalRenderer(),
+            })
+            body += logger.colors.blue('Title:')
+            body += '\n\n'
+            body += title
+            body += '\n\n'
+            body += logger.colors.blue('Body:')
+            body += '\n\n'
+            body += marked(wrap(pull.body || 'N/A', { indent: '', width: length }))
+        } else {
+            body += title
+        }
+
+        if (options.link || showDetails) {
+            body += '\n' + logger.colors.blue(pull.html_url)
+        }
+
+        return body
+    }
+
+    var tableWidths = getColWidths()
+    var table = new Table({
+        head: tableHead,
+        colWidths: tableWidths,
+    })
+
+    pulls.forEach(function(pull) {
+        var status = ''
+        var columns = []
+
+        switch (pull.combinedStatus) {
+            case 'success':
+                status = logger.colors.green(' ✓')
+                break
+            case 'failure':
+                status = logger.colors.red(' ✗')
+                break
+        }
+
+        columns.push('#' + pull.number)
+        columns.push(getPRBody(pull, tableWidths[1] - 5))
+        columns.push(logger.colors.magenta('@' + pull.user.login))
+        columns.push(logger.getDuration(pull.created_at))
+        columns.push(status)
+
+        table.push(columns)
+    })
+    logger.log(table.toString())
+}
+
 PullRequest.prototype.printPullInfo_ = function(pull) {
     const options = this.options
 
@@ -621,7 +703,11 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
             json.branches.forEach(branch => {
                 logger.log(`${branch.name} (${branch.total})`)
 
-                branch.pulls.forEach(instance.printPullInfo_, instance)
+                if (config.output === 'table') {
+                    instance.printPullsInfoTable_(branch.pulls)
+                } else {
+                    branch.pulls.forEach(instance.printPullInfo_, instance)
+                }
             })
         }
 
