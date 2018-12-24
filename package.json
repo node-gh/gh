@@ -1,7 +1,7 @@
 {
     "name": "gh",
     "description": "GitHub command line tools.",
-    "version": "1.13.5",
+    "version": "1.13.6",
     "homepage": "http://nodegh.io",
     "author": {
         "name": "Eduardo Lundgren",
@@ -34,7 +34,13 @@
     "bugs": {
         "url": "https://github.com/node-gh/gh/issues"
     },
-    "keywords": ["git", "github", "external", "commands", "helpers"],
+    "keywords": [
+        "git",
+        "github",
+        "external",
+        "commands",
+        "helpers"
+    ],
     "bin": {
         "gh": "bin/gh.js"
     },
@@ -50,12 +56,18 @@
             "@semantic-release/npm",
             {
                 "path": "@semantic-release/git",
-                "assets": ["package.json", "bin/gh.js", "lib/**/*.js"],
-                "message":
-                    "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+                "assets": [
+                    "package.json",
+                    "bin/gh.js",
+                    "lib/**/*.js"
+                ],
+                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
             }
         ],
-        "publish": ["@semantic-release/github", "@semantic-release/npm"]
+        "publish": [
+            "@semantic-release/github",
+            "@semantic-release/npm"
+        ]
     },
     "scripts": {
         "commit": "git-cz",
