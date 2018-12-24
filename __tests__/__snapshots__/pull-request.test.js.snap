@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`E2E: Pull Request Module Test Close PR \`gh pr 50 --close\` 1`] = `
+"Closing pull request #50
+https://github.com/protoEvangelion/gh/pull/50
+"
+`;
+
 exports[`E2E: Pull Request Module Test Comment on PR \`gh pr 50 --comment "Just started reviewing :)"\` 1`] = `
 "Adding comment on pull request #50
 https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
@@ -26,5 +32,11 @@ master (3)
 #51 pr3 @protoEvangelion (a year ago) ✓
 #50 pr2 @protoEvangelion (a year ago) ✓
 #33 test @protoEvangelion (a year ago) ✓
+"
+`;
+
+exports[`E2E: Pull Request Module Test Open PR \`gh pr 50 --open\` 1`] = `
+"Opening pull request #50
+https://github.com/protoEvangelion/gh/pull/50
 "
 `;
