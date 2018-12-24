@@ -22,12 +22,12 @@ describe('E2E: Issues Module Test', () => {
         done()
     })
 
-    it('Comment on Issues `gh is 1 -o`', done => {
+    it('Open Issue `gh is 1 -o`', done => {
         expect(runCmd(`bin/gh.js is 1 -o`)).toMatchSnapshot()
         done()
     })
 
-    it('Comment on Issues `gh is 1 -C`', done => {
+    it('Close Issue `gh is 1 -C`', done => {
         expect(runCmd(`bin/gh.js is 1 -C`)).toMatchSnapshot()
         done()
     })
