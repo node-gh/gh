@@ -24,56 +24,51 @@ function formatCmdName(cmd, argv) {
         if (argv.includes(current)) {
             return `${cmd.name}${upperFirst(current.slice(2))}`
         }
-    }, undefined)
+    }, null)
+}
+
+function filterByCmdName(cmd, cmdName) {
+    return cmd.name === cmdName
 }
 
 exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
     const nockBack = require('nock').back
     const { isArray, isPlainObject, map, mapValues } = require('lodash')
+
     let id = 0
-    let newCmdName = null
 
-    nockBack.setMode('record')
-
+    // These should only include the flags that you need for e2e tests
     const cmds = [
         {
             name: 'Issue',
             flags: ['--comment', '--new', '--open', '--close', '--search', '--assign'],
         },
-    ]
+        {
+            name: 'PullRequest',
+            flags: ['--info'],
+        },
+    ].filter(cmd => filterByCmdName(cmd, cmdName))
 
-    cmds.forEach(cmd => formatCmdName(cmd, argv))
-
-    if (cmdName === 'Issue') {
-        if (argv.length === 1) {
-            newCmdName = 'Issue'
-        } else if (argv.includes('--comment')) {
-            newCmdName = 'IssueComment'
-        } else if (argv.includes('--new')) {
-            newCmdName = 'IssueNew'
-        } else if (argv.includes('--open')) {
-            newCmdName = 'IssueOpen'
-        } else if (argv.includes('--close')) {
-            newCmdName = 'IssueClose'
-        } else if (argv.includes('--search')) {
-            newCmdName = 'IssueSearch'
-        } else if (argv.includes('--assign')) {
-            newCmdName = 'IssueAssign'
-        }
-    }
+    const newCmdName = formatCmdName(cmds[0], argv)
 
     nockBack.fixtures = `${process.cwd()}/__tests__/nockFixtures`
+    nockBack.setMode('record')
 
     const nockPromise = nockBack(`${newCmdName}.json`, {
         before,
         afterRecord,
     })
 
-    return () => nockPromise.then(({ nockDone }) => nockDone())
+    return () =>
+        nockPromise.then(({ nockDone }) => nockDone()).catch(err => {
+            throw new Error(`Nock ==> ${err}`)
+        })
 
     /* --- Normalization Functions --- */
 
     function normalize(value, key) {
+        if (!value) return value
+
         if (isPlainObject(value)) {
             return mapValues(value, normalize)
         }
