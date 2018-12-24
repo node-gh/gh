@@ -1,4 +1,5 @@
 const { execSync } = require('child_process')
+const { upperFirst } = require('lodash')
 
 exports.runCmd = function runCmd(cmd) {
     try {
@@ -10,6 +11,22 @@ exports.runCmd = function runCmd(cmd) {
     return result.toString()
 }
 
+function formatCmdName(cmd, argv) {
+    if (argv.length === 1) {
+        return cmd.name
+    }
+
+    return cmd.flags.reduce((flagName, current) => {
+        if (flagName) {
+            return flagName
+        }
+
+        if (argv.includes(current)) {
+            return `${cmd.name}${upperFirst(current.slice(2))}`
+        }
+    }, undefined)
+}
+
 exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
     const nockBack = require('nock').back
     const { isArray, isPlainObject, map, mapValues } = require('lodash')
@@ -17,6 +34,15 @@ exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
     let newCmdName = null
 
     nockBack.setMode('record')
+
+    const cmds = [
+        {
+            name: 'Issue',
+            flags: ['--comment', '--new', '--open', '--close', '--search', '--assign'],
+        },
+    ]
+
+    cmds.forEach(cmd => formatCmdName(cmd, argv))
 
     if (cmdName === 'Issue') {
         if (argv.length === 1) {
