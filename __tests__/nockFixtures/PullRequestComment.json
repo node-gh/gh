@@ -1,0 +1,42 @@
+[
+    {
+        "scope": "https://api.github.com:443",
+        "method": "post",
+        "path": "/repos/protoEvangelion/gh/issues/50/comments?",
+        "body": {
+            "body": "Just started reviewing :)"
+        },
+        "status": 201,
+        "response": {
+            "url": "https://api.github.com/repos/protoEvangelion/gh/issues/comments/000000001",
+            "html_url": "https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001",
+            "issue_url": "https://api.github.com/repos/protoEvangelion/gh/issues/50",
+            "id": 1000,
+            "node_id": 1001,
+            "user": {
+                "login": "protoEvangelion",
+                "id": 1002,
+                "node_id": 1003,
+                "avatar_url": "https://avatars3.githubusercontent.com/u/000000001?v=4",
+                "gravatar_id": "",
+                "url": "https://api.github.com/users/protoEvangelion",
+                "html_url": "https://github.com/protoEvangelion",
+                "followers_url": "https://api.github.com/users/protoEvangelion/followers",
+                "following_url": "https://api.github.com/users/protoEvangelion/following{/other_user}",
+                "gists_url": "https://api.github.com/users/protoEvangelion/gists{/gist_id}",
+                "starred_url": "https://api.github.com/users/protoEvangelion/starred{/owner}{/repo}",
+                "subscriptions_url": "https://api.github.com/users/protoEvangelion/subscriptions",
+                "organizations_url": "https://api.github.com/users/protoEvangelion/orgs",
+                "repos_url": "https://api.github.com/users/protoEvangelion/repos",
+                "events_url": "https://api.github.com/users/protoEvangelion/events{/privacy}",
+                "received_events_url": "https://api.github.com/users/protoEvangelion/received_events",
+                "type": "User",
+                "site_admin": false
+            },
+            "created_at": "2017-10-10T16:00:00Z",
+            "updated_at": "2017-10-10T16:00:00Z",
+            "author_association": "OWNER",
+            "body": "Just started reviewing :)"
+        }
+    }
+]

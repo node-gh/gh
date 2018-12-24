@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`E2E: Pull Request Module Test Comment on PR \`gh pr 50 --comment "Just started reviewing :)"\` 1`] = `
+"Adding comment on pull request #50
+https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
+"
+`;
+
+exports[`E2E: Pull Request Module Test Fetch PR \`gh pr --fetch 50\` 1`] = `
+"Fetching pull request #50 into branch pr-50
+[hook] gh pr 50 --user protoEvangelion --repo gh --comment 'Just started reviewing :)'
+Adding comment on pull request #50
+https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
+"
+`;
+
 exports[`E2E: Pull Request Module Test Get PR Info \`gh pr --info 50\` 1`] = `
 "#50 pr2 @protoEvangelion (a year ago)
 "
