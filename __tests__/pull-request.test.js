@@ -17,6 +17,11 @@ describe('E2E: Pull Request Module Test', () => {
         expect(runCmd('bin/gh.js pr')).toMatchSnapshot()
         done()
     })
+
+    it('Get PR Info `gh pr --info 50`', done => {
+        expect(runCmd('bin/gh.js pr --info 50')).toMatchSnapshot()
+        done()
+    })
 })
 
 describe('Pull Requests Module Tests', function() {

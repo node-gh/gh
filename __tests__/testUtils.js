@@ -1,7 +1,12 @@
 const { execSync } = require('child_process')
 const { upperFirst } = require('lodash')
 
-exports.runCmd = function runCmd(cmd) {
+module.exports = {
+    runCmd,
+    prepareTestFixtures,
+}
+
+function runCmd(cmd) {
     try {
         var result = execSync(cmd, { cwd: process.cwd() })
     } catch (error) {
@@ -31,7 +36,7 @@ function filterByCmdName(cmd, cmdName) {
     return cmd.name === cmdName
 }
 
-exports.prepareTestFixtures = function prepareTestFixtures(cmdName, argv) {
+function prepareTestFixtures(cmdName, argv) {
     const nockBack = require('nock').back
     const { isArray, isPlainObject, map, mapValues } = require('lodash')
 
