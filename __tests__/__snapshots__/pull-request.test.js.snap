@@ -1,5 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`E2E: Pull Request Module Test Get PR Info \`gh pr --info 50\` 1`] = `
+"#50 pr2 @protoEvangelion (a year ago)
+"
+`;
+
 exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
