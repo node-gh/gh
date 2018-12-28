@@ -16,6 +16,7 @@ branches:
         - type != push
 
 script:
+    - if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then audit-ci --moderate; fi
     - npm run-script test:ci
     - npm link
 
