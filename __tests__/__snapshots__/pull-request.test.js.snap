@@ -40,3 +40,10 @@ exports[`E2E: Pull Request Module Test Open PR \`gh pr 50 --open\` 1`] = `
 https://github.com/protoEvangelion/gh/pull/50
 "
 `;
+
+exports[`E2E: Pull Request Module Test Submit PR \`gh pr -s protoEvangelion -b master -t "pr title" -D "pr description"\` 1`] = `
+"Submitting pull request to @protoEvangelion
+https://github.com/protoEvangelion/gh/pull/54
+[hook] gh pr --browser  --user protoEvangelion --repo gh --number 54
+"
+`;
