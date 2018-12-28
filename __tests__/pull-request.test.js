@@ -42,6 +42,13 @@ describe('E2E: Pull Request Module Test', () => {
         expect(runCmd('bin/gh.js pr 50 --close')).toMatchSnapshot()
         done()
     })
+
+    it('Submit PR `gh pr -s protoEvangelion -b master -t "pr title" -D "pr description"`', done => {
+        expect(
+            runCmd('bin/gh.js pr -s protoEvangelion -b master -t "pr title" -D "pr description"')
+        ).toMatchSnapshot()
+        done()
+    })
 })
 
 describe('Pull Requests Module Tests', function() {
