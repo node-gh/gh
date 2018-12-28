@@ -7,18 +7,18 @@
             "title": "pr title",
             "body": "pr description",
             "base": "master",
-            "head": "protoEvangelion:test-pr"
+            "head": "protoEvangelion:test"
         },
         "status": 201,
         "response": {
-            "url": "https://api.github.com/repos/protoEvangelion/gh/pulls/54",
+            "url": "https://api.github.com/repos/protoEvangelion/gh/pulls/55",
             "id": 1000,
             "node_id": 1001,
-            "html_url": "https://github.com/protoEvangelion/gh/pull/54",
-            "diff_url": "https://github.com/protoEvangelion/gh/pull/54.diff",
-            "patch_url": "https://github.com/protoEvangelion/gh/pull/54.patch",
-            "issue_url": "https://api.github.com/repos/protoEvangelion/gh/issues/54",
-            "number": 54,
+            "html_url": "https://github.com/protoEvangelion/gh/pull/55",
+            "diff_url": "https://github.com/protoEvangelion/gh/pull/55.diff",
+            "patch_url": "https://github.com/protoEvangelion/gh/pull/55.patch",
+            "issue_url": "https://api.github.com/repos/protoEvangelion/gh/issues/55",
+            "number": 55,
             "state": "open",
             "locked": false,
             "title": "pr title",
@@ -54,15 +54,15 @@
             "requested_teams": [],
             "labels": [],
             "milestone": null,
-            "commits_url": "https://api.github.com/repos/protoEvangelion/gh/pulls/54/commits",
-            "review_comments_url": "https://api.github.com/repos/protoEvangelion/gh/pulls/54/comments",
+            "commits_url": "https://api.github.com/repos/protoEvangelion/gh/pulls/55/commits",
+            "review_comments_url": "https://api.github.com/repos/protoEvangelion/gh/pulls/55/comments",
             "review_comment_url": "https://api.github.com/repos/protoEvangelion/gh/pulls/comments{/number}",
-            "comments_url": "https://api.github.com/repos/protoEvangelion/gh/issues/54/comments",
-            "statuses_url": "https://api.github.com/repos/protoEvangelion/gh/statuses/32ec88d52d90f000000001e0ffe64b3376c11964b6f12",
+            "comments_url": "https://api.github.com/repos/protoEvangelion/gh/issues/55/comments",
+            "statuses_url": "https://api.github.com/repos/protoEvangelion/gh/statuses/31e7dedd4e000000001e38949a33e02fd30bcef6b8427",
             "head": {
-                "label": "protoEvangelion:test-pr",
-                "ref": "test-pr",
-                "sha": "32ec88d52d90f7096e0ffe64b3376c11964b6f12",
+                "label": "protoEvangelion:test",
+                "ref": "test",
+                "sha": "31e7dedd4e8795e38949a33e02fd30bcef6b8427",
                 "user": {
                     "login": "protoEvangelion",
                     "id": 1004,
@@ -157,7 +157,7 @@
                     "clone_url": "https://github.com/protoEvangelion/gh.git",
                     "svn_url": "https://github.com/protoEvangelion/gh",
                     "homepage": "http://nodegh.io",
-                    "size": 10887,
+                    "size": 10914,
                     "stargazers_count": 0,
                     "watchers_count": 0,
                     "language": "JavaScript",
@@ -281,7 +281,7 @@
                     "clone_url": "https://github.com/protoEvangelion/gh.git",
                     "svn_url": "https://github.com/protoEvangelion/gh",
                     "homepage": "http://nodegh.io",
-                    "size": 10887,
+                    "size": 10914,
                     "stargazers_count": 0,
                     "watchers_count": 0,
                     "language": "JavaScript",
@@ -309,28 +309,28 @@
             },
             "_links": {
                 "self": {
-                    "href": "https://api.github.com/repos/protoEvangelion/gh/pulls/54"
+                    "href": "https://api.github.com/repos/protoEvangelion/gh/pulls/55"
                 },
                 "html": {
-                    "href": "https://github.com/protoEvangelion/gh/pull/54"
+                    "href": "https://github.com/protoEvangelion/gh/pull/55"
                 },
                 "issue": {
-                    "href": "https://api.github.com/repos/protoEvangelion/gh/issues/54"
+                    "href": "https://api.github.com/repos/protoEvangelion/gh/issues/55"
                 },
                 "comments": {
-                    "href": "https://api.github.com/repos/protoEvangelion/gh/issues/54/comments"
+                    "href": "https://api.github.com/repos/protoEvangelion/gh/issues/55/comments"
                 },
                 "review_comments": {
-                    "href": "https://api.github.com/repos/protoEvangelion/gh/pulls/54/comments"
+                    "href": "https://api.github.com/repos/protoEvangelion/gh/pulls/55/comments"
                 },
                 "review_comment": {
                     "href": "https://api.github.com/repos/protoEvangelion/gh/pulls/comments{/number}"
                 },
                 "commits": {
-                    "href": "https://api.github.com/repos/protoEvangelion/gh/pulls/54/commits"
+                    "href": "https://api.github.com/repos/protoEvangelion/gh/pulls/55/commits"
                 },
                 "statuses": {
-                    "href": "https://api.github.com/repos/protoEvangelion/gh/statuses/32ec88d52d90f7096e0ffe64b3376c11964b6f12"
+                    "href": "https://api.github.com/repos/protoEvangelion/gh/statuses/31e7dedd4e8795e38949a33e02fd30bcef6b8427"
                 }
             },
             "author_association": "OWNER",
@@ -342,10 +342,10 @@
             "comments": 0,
             "review_comments": 0,
             "maintainer_can_modify": false,
-            "commits": 11,
-            "additions": 12326,
-            "deletions": 14901,
-            "changed_files": 39
+            "commits": 1,
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": 1
         }
     }
 ]
