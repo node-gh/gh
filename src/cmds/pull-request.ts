@@ -462,84 +462,105 @@ PullRequest.prototype.getPullsTemplateJson_ = function(pulls, opt_callback) {
 }
 
 PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
-    var options = this.options
-    var tableHead = ['#', 'Title', 'Author', 'Opened', 'Status']
-    var showDetails = options.info || options.detailed
+    const options = this.options
+    const showDetails = options.info || options.detailed
 
-    if (showDetails) {
-        tableHead[1] = 'Details'
+    logger.log(generateTable())
+
+    function generateTable() {
+        const tableWidths = getColWidths()
+
+        const table = new Table({
+            colWidths: tableWidths,
+        })
+
+        let tableHead = [
+            { content: '#', hAlign: 'center' },
+            showDetails ? 'Details' : 'Title',
+            'Author',
+            'Opened',
+            'Status',
+        ]
+
+        tableHead = tableHead.map(heading => {
+            if (typeof heading === 'string') {
+                return logger.colors.red(heading)
+            }
+
+            return { ...heading, content: logger.colors.red(heading.content) }
+        })
+
+        table.push(tableHead)
+
+        pulls.forEach(pull => {
+            const createdTime = logger.getDuration(pull.created_at)
+            const number = logger.colors.green(`#${pull.number}`)
+            const prInfo = formatPrInfo(pull, tableWidths[1] - 5)
+            const user = logger.colors.magenta(`@${pull.user.login}`)
+
+            const status =
+                pull.combinedStatus === 'success'
+                    ? logger.colors.green('✓')
+                    : logger.colors.red('✗')
+
+            table.push([
+                { content: number, hAlign: 'center' },
+                prInfo,
+                user,
+                createdTime,
+                { content: status, hAlign: 'center' },
+            ])
+        })
+
+        return table.toString()
     }
 
     function getColWidths() {
-        const cols = process.stdout.columns
-        const noCol = 0.07 * cols
-        const titleCol = 0.53 * cols
-        const authorCol = 0.16 * cols
-        const dateCol = 0.13 * cols
-        const statusCol = 0.07 * cols
+        const authorCol = 21
+        const dateCol = 15
+        const noCol = 9
+        const statusCol = 8
 
-        return [noCol, titleCol, authorCol, dateCol, statusCol].map(col => {
-            return Math.floor(col)
-        })
+        const titleCol = process.stdout.columns - authorCol - dateCol - noCol - statusCol - 7
+
+        return [noCol, titleCol, authorCol, dateCol, statusCol].map(col => Math.floor(col))
     }
 
-    function getPRBody(pull, length) {
-        var title = wrap(length)(pull.title)
-        var body = ''
+    function formatPrInfo(pull, length) {
+        const title = wrap(length)(pull.title)
+        let info = title
 
         if (showDetails) {
             marked.setOptions({
                 renderer: new TerminalRenderer({
-                    width: length,
                     reflowText: true,
+                    width: length,
                 }),
             })
-            body += logger.colors.blue('Title:')
-            body += '\n\n'
-            body += title
-            body += '\n\n'
-            body += logger.colors.blue('Body:')
-            body += '\n\n'
-            body += marked(pull.body || 'N/A')
-        } else {
-            body += title
+
+            info = `
+                ${logger.colors.blue('Title:')}
+
+                ${title}
+
+                ${logger.colors.blue('Body:')}
+
+                ${marked(pull.body || 'N/A')}
+            `
         }
 
         if (options.link || showDetails) {
-            body += `\n${logger.colors.blue(pull.html_url)}`
+            info = `
+                ${info}
+                ${logger.colors.cyan(pull.html_url)}
+            `
         }
 
-        return body
+        return info
+            .replace(/  +/gm, '')
+            .replace(/(\n\n\n)/gm, '\n')
+            .trim()
     }
-
-    var tableWidths = getColWidths()
-    var table = new Table({
-        head: tableHead,
-        colWidths: tableWidths,
-    })
-
-    pulls.forEach(pull => {
-        let status = ''
-        const columns = []
-
-        switch (pull.combinedStatus) {
-            case 'success':
-                status = logger.colors.green(' ✓')
-                break
-            case 'failure':
-                status = logger.colors.red(' ✗')
-                break
-        }
-
-        columns.push(`#${pull.number}`)
-        columns.push(getPRBody(pull, tableWidths[1] - 5))
-        columns.push(logger.colors.magenta(`@${pull.user.login}`))
-        columns.push(logger.getDuration(pull.created_at))
-        columns.push(status)
-
-        table.push(columns)
-    })
-    logger.log(table.toString())
 }
 
 PullRequest.prototype.printPullInfo_ = function(pull) {
