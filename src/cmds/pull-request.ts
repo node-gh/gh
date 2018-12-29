@@ -7,12 +7,12 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as async from 'async'
-import * as Table from 'cli-table'
+import * as Table from 'cli-table2'
 import { startsWith } from 'lodash'
-import marked from 'marked'
-import TerminalRenderer from 'marked-terminal'
+import * as marked from 'marked'
+import * as TerminalRenderer from 'marked-terminal'
 import * as openUrl from 'opn'
-import wrap from 'word-wrap'
+import * as wrap from 'wordwrap'
 import * as base from '../base'
 import * as git from '../git'
 import * as hooks from '../hooks'
@@ -471,25 +471,28 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
     }
 
     function getColWidths() {
-        var cols = process.stdout.columns
-        var noCol = 0.07 * cols,
-            titleCol = 0.53 * cols,
-            authorCol = 0.16 * cols,
-            dateCol = 0.13 * cols,
-            statusCol = 0.07 * cols
+        const cols = process.stdout.columns
+        const noCol = 0.07 * cols
+        const titleCol = 0.53 * cols
+        const authorCol = 0.16 * cols
+        const dateCol = 0.13 * cols
+        const statusCol = 0.07 * cols
 
-        return [noCol, titleCol, authorCol, dateCol, statusCol].map(function(col) {
+        return [noCol, titleCol, authorCol, dateCol, statusCol].map(col => {
             return Math.floor(col)
         })
     }
 
     function getPRBody(pull, length) {
-        var title = wrap(pull.title, { indent: '', width: length })
+        var title = wrap(length)(pull.title)
         var body = ''
 
         if (showDetails) {
             marked.setOptions({
-                renderer: new TerminalRenderer(),
+                renderer: new TerminalRenderer({
+                    width: length,
+                    reflowText: true,
+                }),
             })
             body += logger.colors.blue('Title:')
             body += '\n\n'
@@ -497,13 +500,13 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
             body += '\n\n'
             body += logger.colors.blue('Body:')
             body += '\n\n'
-            body += marked(wrap(pull.body || 'N/A', { indent: '', width: length }))
+            body += marked(pull.body || 'N/A')
         } else {
             body += title
         }
 
         if (options.link || showDetails) {
-            body += '\n' + logger.colors.blue(pull.html_url)
+            body += `\n${logger.colors.blue(pull.html_url)}`
         }
 
         return body
@@ -515,9 +518,9 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         colWidths: tableWidths,
     })
 
-    pulls.forEach(function(pull) {
-        var status = ''
-        var columns = []
+    pulls.forEach(pull => {
+        let status = ''
+        const columns = []
 
         switch (pull.combinedStatus) {
             case 'success':
@@ -528,9 +531,9 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
                 break
         }
 
-        columns.push('#' + pull.number)
+        columns.push(`#${pull.number}`)
         columns.push(getPRBody(pull, tableWidths[1] - 5))
-        columns.push(logger.colors.magenta('@' + pull.user.login))
+        columns.push(logger.colors.magenta(`@${pull.user.login}`))
         columns.push(logger.getDuration(pull.created_at))
         columns.push(status)
 
