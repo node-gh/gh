@@ -1,0 +1,10 @@
+[
+    {
+        "scope": "https://api.github.com:443",
+        "method": "delete",
+        "path": "/gists/1ad5b3b35fe6906e8980c0fd7522e2d6?",
+        "body": "",
+        "status": 204,
+        "response": {}
+    }
+]

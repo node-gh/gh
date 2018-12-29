@@ -1,0 +1,56 @@
+[
+    {
+        "scope": "https://api.github.com:443",
+        "method": "post",
+        "path": "/gists/5444883/fork?",
+        "body": {},
+        "status": 201,
+        "response": {
+            "url": "https://api.github.com/gists/1ad5b3b35fe000000001e8980c0fd7522e2d6",
+            "forks_url": "https://api.github.com/gists/1ad5b3b35fe000000001e8980c0fd7522e2d6/forks",
+            "commits_url": "https://api.github.com/gists/1ad5b3b35fe000000001e8980c0fd7522e2d6/commits",
+            "id": 1000,
+            "node_id": 1001,
+            "git_pull_url": "https://gist.github.com/1ad5b3b35fe000000001e8980c0fd7522e2d6.git",
+            "git_push_url": "https://gist.github.com/1ad5b3b35fe000000001e8980c0fd7522e2d6.git",
+            "html_url": "https://gist.github.com/1ad5b3b35fe000000001e8980c0fd7522e2d6",
+            "files": {
+                "html5-demos.md": {
+                    "filename": "html5-demos.md",
+                    "type": "text/plain",
+                    "language": "Markdown",
+                    "raw_url": "https://gist.githubusercontent.com/protoEvangelion/1ad5b3b35fe000000001e8980c0fd7522e2d6/raw/25ec9d6bae86e0a41b5fec48ea918a92d8bed480/html5-demos.md",
+                    "size": 987
+                }
+            },
+            "public": true,
+            "created_at": "2017-10-10T16:00:00Z",
+            "updated_at": "2017-10-10T16:00:00Z",
+            "description": "The HTML5 Amount of Awesomeness (work in progress)",
+            "comments": 0,
+            "user": null,
+            "comments_url": "https://api.github.com/gists/1ad5b3b35fe000000001e8980c0fd7522e2d6/comments",
+            "owner": {
+                "login": "protoEvangelion",
+                "id": 1002,
+                "node_id": 1003,
+                "avatar_url": "https://avatars3.githubusercontent.com/u/000000001?v=4",
+                "gravatar_id": "",
+                "url": "https://api.github.com/users/protoEvangelion",
+                "html_url": "https://github.com/protoEvangelion",
+                "followers_url": "https://api.github.com/users/protoEvangelion/followers",
+                "following_url": "https://api.github.com/users/protoEvangelion/following{/other_user}",
+                "gists_url": "https://api.github.com/users/protoEvangelion/gists{/gist_id}",
+                "starred_url": "https://api.github.com/users/protoEvangelion/starred{/owner}{/repo}",
+                "subscriptions_url": "https://api.github.com/users/protoEvangelion/subscriptions",
+                "organizations_url": "https://api.github.com/users/protoEvangelion/orgs",
+                "repos_url": "https://api.github.com/users/protoEvangelion/repos",
+                "events_url": "https://api.github.com/users/protoEvangelion/events{/privacy}",
+                "received_events_url": "https://api.github.com/users/protoEvangelion/received_events",
+                "type": "User",
+                "site_admin": false
+            },
+            "truncated": false
+        }
+    }
+]
