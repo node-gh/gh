@@ -1,0 +1,99 @@
+[
+    {
+        "scope": "https://api.github.com:443",
+        "method": "post",
+        "path": "/gists?",
+        "body": {
+            "public": true,
+            "description": "",
+            "files": {
+                "hello": {
+                    "content": "Hello World!"
+                }
+            }
+        },
+        "status": 201,
+        "response": {
+            "url": "https://api.github.com/gists/027b64c22a5e8d1bf16bc2cfede77e43",
+            "forks_url": "https://api.github.com/gists/027b64c22a5e8d1bf16bc2cfede77e43/forks",
+            "commits_url": "https://api.github.com/gists/027b64c22a5e8d1bf16bc2cfede77e43/commits",
+            "id": 1000,
+            "node_id": 1001,
+            "git_pull_url": "https://gist.github.com/027b64c22a5e8d1bf16bc2cfede77e43.git",
+            "git_push_url": "https://gist.github.com/027b64c22a5e8d1bf16bc2cfede77e43.git",
+            "html_url": "https://gist.github.com/027b64c22a5e8d1bf16bc2cfede77e43",
+            "files": {
+                "hello": {
+                    "filename": "hello",
+                    "type": "text/plain",
+                    "language": null,
+                    "raw_url": "https://gist.githubusercontent.com/protoEvangelion/027b64c22a5e8d1bf16bc2cfede77e43/raw/c57eff55ebc0c000000001af5f72bac72762cf4f4/hello",
+                    "size": 12,
+                    "truncated": false,
+                    "content": "Hello World!"
+                }
+            },
+            "public": true,
+            "created_at": "2017-10-10T16:00:00Z",
+            "updated_at": "2017-10-10T16:00:00Z",
+            "description": "",
+            "comments": 0,
+            "user": null,
+            "comments_url": "https://api.github.com/gists/027b64c22a5e8d1bf16bc2cfede77e43/comments",
+            "owner": {
+                "login": "protoEvangelion",
+                "id": 1002,
+                "node_id": 1003,
+                "avatar_url": "https://avatars3.githubusercontent.com/u/000000001?v=4",
+                "gravatar_id": "",
+                "url": "https://api.github.com/users/protoEvangelion",
+                "html_url": "https://github.com/protoEvangelion",
+                "followers_url": "https://api.github.com/users/protoEvangelion/followers",
+                "following_url": "https://api.github.com/users/protoEvangelion/following{/other_user}",
+                "gists_url": "https://api.github.com/users/protoEvangelion/gists{/gist_id}",
+                "starred_url": "https://api.github.com/users/protoEvangelion/starred{/owner}{/repo}",
+                "subscriptions_url": "https://api.github.com/users/protoEvangelion/subscriptions",
+                "organizations_url": "https://api.github.com/users/protoEvangelion/orgs",
+                "repos_url": "https://api.github.com/users/protoEvangelion/repos",
+                "events_url": "https://api.github.com/users/protoEvangelion/events{/privacy}",
+                "received_events_url": "https://api.github.com/users/protoEvangelion/received_events",
+                "type": "User",
+                "site_admin": false
+            },
+            "forks": [],
+            "history": [
+                {
+                    "user": {
+                        "login": "protoEvangelion",
+                        "id": 1004,
+                        "node_id": 1005,
+                        "avatar_url": "https://avatars3.githubusercontent.com/u/000000001?v=4",
+                        "gravatar_id": "",
+                        "url": "https://api.github.com/users/protoEvangelion",
+                        "html_url": "https://github.com/protoEvangelion",
+                        "followers_url": "https://api.github.com/users/protoEvangelion/followers",
+                        "following_url": "https://api.github.com/users/protoEvangelion/following{/other_user}",
+                        "gists_url": "https://api.github.com/users/protoEvangelion/gists{/gist_id}",
+                        "starred_url": "https://api.github.com/users/protoEvangelion/starred{/owner}{/repo}",
+                        "subscriptions_url": "https://api.github.com/users/protoEvangelion/subscriptions",
+                        "organizations_url": "https://api.github.com/users/protoEvangelion/orgs",
+                        "repos_url": "https://api.github.com/users/protoEvangelion/repos",
+                        "events_url": "https://api.github.com/users/protoEvangelion/events{/privacy}",
+                        "received_events_url": "https://api.github.com/users/protoEvangelion/received_events",
+                        "type": "User",
+                        "site_admin": false
+                    },
+                    "version": "f7647e901e64d646af67a085f59cad9d34ecf56f",
+                    "committed_at": "2017-10-10T16:00:00Z",
+                    "change_status": {
+                        "total": 1,
+                        "additions": 1,
+                        "deletions": 0
+                    },
+                    "url": "https://api.github.com/gists/027b64c22a5e8d1bf16bc2cfede77e43/f000000001e901e64d646af67a085f59cad9d34ecf56f"
+                }
+            ],
+            "truncated": false
+        }
+    }
+]

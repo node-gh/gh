@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E: Gist Module Test Create new gist \`gh gi --new hello --content "Hello World!"\` 1`] = `
+"Creating public gist on 
+https://gist.github.com/027b64c22a5e8d1bf16bc2cfede77e43
+[hook] gh gi --browser  --id 1000
+"
+`;
+
+exports[`E2E: Gist Module Test Delete gists \`gh gi --delete 027b64c22a5e8d1bf16bc2cfede77e43 --delete 1ad5b3b35fe6906e8980c0fd7522e2d6\` 1`] = `
+"Deleting gist /027b64c22a5e8d1bf16bc2cfede77e43
+Deleting gist /1ad5b3b35fe6906e8980c0fd7522e2d6
+"
+`;
+
+exports[`E2E: Gist Module Test Fork a gist \`gh gi --fork 5444883\` 1`] = `
+"Forking gist on 
+https://gist.github.com/1ad5b3b35fe000000001e8980c0fd7522e2d6
+[hook] gh gi --browser  --id
+"
+`;
+
+exports[`E2E: Gist Module Test List Gists \`gh gi\` 1`] = `
+"Listing gists for protoEvangelion
+protoEvangelion/1000 a year ago
+Hubspot Form Generator
+https://gist.github.com/000000001f227a2c690e76c6fa2ca5b444de1
+
+protoEvangelion/1004 a year ago
+Liferay.provide minimal example
+https://gist.github.com/000000001b5c7f25c00095ef73095db0b59cfc
+
+protoEvangelion/1008 a year ago
+Fix aui adding pre styles
+https://gist.github.com/dfc000000001b8c49c8a97dbc98cf7193
+
+"
+`;
