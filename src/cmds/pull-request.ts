@@ -727,7 +727,7 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
             json.branches.forEach(branch => {
                 logger.log(`${branch.name} (${branch.total})`)
 
-                if (config.output === 'table') {
+                if (config.pretty_print) {
                     instance.printPullsInfoTable_(branch.pulls)
                 } else {
                     branch.pulls.forEach(instance.printPullInfo_, instance)

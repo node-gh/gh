@@ -113,6 +113,8 @@
 
     "plugins": {},
 
+    "pretty_print": true,
+
     "replace": {},
 
     "ssh": true,
