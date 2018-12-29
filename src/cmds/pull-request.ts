@@ -20,6 +20,7 @@ import * as logger from '../logger'
 import Issues from './issue'
 
 const config = base.getConfig()
+const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
@@ -151,7 +152,7 @@ PullRequest.prototype.run = function(done) {
         logger.error("You've invoked a method that requires an issue number.")
     }
 
-    if (options.browser && process.env.NODE_ENV !== 'testing') {
+    if (options.browser && !testing) {
         instance.browser(options.user, options.repo, options.number)
     }
 
@@ -487,7 +488,7 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
                 return logger.colors.red(heading)
             }
 
-            return { ...heading, content: logger.colors.red(heading.content) }
+            return { content: logger.colors.red(heading.content), hAlign: heading.hAlign }
         })
 
         table.push(tableHead)
@@ -521,7 +522,8 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         const noCol = 9
         const statusCol = 8
 
-        const titleCol = process.stdout.columns - authorCol - dateCol - noCol - statusCol - 7
+        const currentColsWidth = testing ? 100 : process.stdout.columns
+        const titleCol = currentColsWidth - authorCol - dateCol - noCol - statusCol - 7
 
         return [noCol, titleCol, authorCol, dateCol, statusCol].map(col => Math.floor(col))
     }
@@ -867,7 +869,7 @@ PullRequest.prototype.submit = function(user, opt_callback) {
 
     pullBranch = options.pullBranch || options.currentBranch
 
-    if (process.env.NODE_ENV === 'testing') {
+    if (testing) {
         pullBranch = 'test'
     }
 
