@@ -71,6 +71,10 @@ function prepareTestFixtures(cmdName, argv) {
             name: 'Repo',
             flags: ['--list', '--new', '--fork', '--delete'],
         },
+        {
+            name: 'User',
+            flags: ['--logout', '--whoami'],
+        },
     ].filter(cmd => filterByCmdName(cmd, cmdName))
 
     const newCmdName = formatCmdName(cmds[0], argv)
