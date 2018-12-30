@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E: Repo Module Test Create new repo \`gh re --new foo --init\` 1`] = `
+"Creating a new repo on protoEvangelion/foo
+https://github.com/protoEvangelion/foo
+[hook] gh re --browser  --user protoEvangelion --repo foo
+"
+`;
+
+exports[`E2E: Repo Module Test Delete repo \`gh re --delete foo\` 1`] = `
+"Deleting repo protoEvangelion/foo
+"
+`;
+
+exports[`E2E: Repo Module Test Fork a repo \`gh re --fork prettier --user prettier\` 1`] = `
+"Forking repo prettier/prettier on /prettier
+https://github.com/protoEvangelion/prettier
+"
+`;
+
+exports[`E2E: Repo Module Test List Repos \`gh re --list\` 1`] = `
+"protoEvangelion/100-days-of-code
+protoEvangelion/adopt-a-family
+protoEvangelion/alloy-ui
+"
+`;

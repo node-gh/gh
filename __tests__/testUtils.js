@@ -16,6 +16,10 @@ function runCmd(cmd) {
     return result.toString()
 }
 
+function concatUpper(one, two) {
+    return `${one}${upperFirst(two)}`
+}
+
 function formatCmdName(cmd, argv) {
     if (argv.length === 1) {
         return cmd.name
@@ -27,7 +31,7 @@ function formatCmdName(cmd, argv) {
         }
 
         if (argv.includes(current)) {
-            return `${cmd.name}${upperFirst(current.slice(2))}`
+            return concatUpper(cmd.name, current.slice(2))
         }
     }, null)
 }
@@ -62,6 +66,10 @@ function prepareTestFixtures(cmdName, argv) {
         },
         {
             name: 'Notifications',
+        },
+        {
+            name: 'Repo',
+            flags: ['--list', '--new', '--fork', '--delete'],
         },
     ].filter(cmd => filterByCmdName(cmd, cmdName))
 
