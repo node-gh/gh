@@ -28,7 +28,7 @@ Hello.DETAILS = {
     shorthands: {
         w: ['--world'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         options.world = true
     },
 }
@@ -36,8 +36,8 @@ Hello.DETAILS = {
 // -- Commands -------------------------------------------------------------------------------------
 
 Hello.prototype.run = function() {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     if (options.world) {
         instance.world()

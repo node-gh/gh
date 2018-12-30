@@ -39,13 +39,13 @@ Help.DETAILS = {
 // -- Commands -------------------------------------------------------------------------------------
 
 Help.prototype.run = function() {
-    var instance = this,
-        commands = [],
-        cmdDir = path.join(__dirname, '../cmds/'),
-        files = base.find(cmdDir, /\.js$/),
-        filter,
-        options = this.options,
-        plugins
+    const instance = this
+    const commands = []
+    const cmdDir = path.join(__dirname, '../cmds/')
+    const files = base.find(cmdDir, /\.js$/)
+    let filter
+    const options = this.options
+    let plugins
 
     // Remove help from command list
     files.splice(files.indexOf('help.js'), 1)
@@ -54,11 +54,11 @@ Help.prototype.run = function() {
     // Get external plugins
     plugins = configs.getPlugins()
 
-    plugins.forEach(function(plugin) {
+    plugins.forEach(plugin => {
         try {
             files.push(configs.getPluginPath(plugin))
         } catch (e) {
-            logger.warn("Can't get " + plugin + ' plugin path.')
+            logger.warn(`Can't get ${plugin} plugin path.`)
         }
     })
 
@@ -68,12 +68,12 @@ Help.prototype.run = function() {
         filter = options.argv.remain[1]
     }
 
-    files.forEach(function(dir) {
-        var cmd = require(path.resolve(cmdDir, dir)),
-            alias = cmd.Impl.DETAILS.alias || '',
-            flags = [],
-            name = path.basename(dir, '.js').replace(/^gh-/, ''),
-            offset = 20 - alias.length - name.length
+    files.forEach(dir => {
+        const cmd = require(path.resolve(cmdDir, dir))
+        const alias = cmd.Impl.DETAILS.alias || ''
+        let flags = []
+        const name = path.basename(dir, '.js').replace(/^gh-/, '')
+        let offset = 20 - alias.length - name.length
 
         if (offset < 1) {
             offset = 1
@@ -93,16 +93,16 @@ Help.prototype.run = function() {
         }
 
         commands.push({
-            alias: alias,
+            alias,
+            flags,
+            name,
             description: cmd.Impl.DETAILS.description,
-            flags: flags,
-            name: name,
-            offset: new Array(offset + 1).join(' '),
+            offset: ' '.repeat(offset + 1),
         })
     })
 
     if (filter && commands.length === 0) {
-        logger.error('No manual entry for ' + filter)
+        logger.error(`No manual entry for ${filter}`)
         return
     }
 
@@ -110,24 +110,24 @@ Help.prototype.run = function() {
 }
 
 Help.prototype.listFlags_ = function(command) {
-    var flags = command.flags,
-        content = ''
+    const flags = command.flags
+    let content = ''
 
-    flags.forEach(function(flag) {
+    flags.forEach(flag => {
         content += '    '
 
         if (flag.shorthand) {
-            content += '-' + flag.shorthand + ', '
+            content += `-${flag.shorthand}, `
         }
 
-        content += '--' + flag.option
+        content += `--${flag.option}`
 
         if (flag.cmd) {
             content += '*'
         }
 
         if (flag.type) {
-            content += logger.colors.cyan(' (' + flag.type + ')')
+            content += logger.colors.cyan(` (${flag.type})`)
         }
 
         content += '\n'
@@ -141,9 +141,9 @@ Help.prototype.listFlags_ = function(command) {
 }
 
 Help.prototype.listCommands_ = function(commands) {
-    var content = 'usage: gh <command> [payload] [--flags] [--verbose] [--no-hooks]\n\n',
-        pos,
-        command
+    let content = 'usage: gh <command> [payload] [--flags] [--verbose] [--no-hooks]\n\n'
+    let pos
+    let command
 
     content += 'List of available commands:\n'
 
@@ -153,41 +153,40 @@ Help.prototype.listCommands_ = function(commands) {
             content += '  '
 
             if (command.alias) {
-                content += logger.colors.magenta(command.alias) + ', '
+                content += `${logger.colors.magenta(command.alias)}, `
             }
 
-            content +=
-                logger.colors.magenta(command.name) + command.offset + command.description + '\n'
+            content += `${logger.colors.magenta(command.name)}${command.offset}${
+                command.description
+            }\n`
 
             content += this.listFlags_(command)
         }
     }
 
-    content +=
-        '\n(*) Flags that can execute an action.\n' +
-        "'gh help' lists available commands.\n" +
-        "'gh help -a' lists all available subcommands."
+    content += `\n(*) Flags that can execute an action.\n'gh help' lists available commands.\n'gh help -a' lists all available subcommands.`
 
     return content
 }
 
 Help.prototype.groupOptions_ = function(details) {
-    var instance = this,
-        cmd,
-        options,
-        shorthands,
-        grouped = []
+    const instance = this
+    let cmd
+    let options
+    let shorthands
+    let grouped = []
 
     options = Object.keys(details.options)
     shorthands = Object.keys(details.shorthands)
 
-    options.forEach(function(option) {
-        var foundShorthand, type
+    options.forEach(option => {
+        let foundShorthand
+        let type
 
-        shorthands.forEach(function(shorthand) {
+        shorthands.forEach(shorthand => {
             var shorthandValue = details.shorthands[shorthand][0]
 
-            if (shorthandValue === '--' + option) {
+            if (shorthandValue === `--${option}`) {
                 foundShorthand = shorthand
             }
         })
@@ -196,10 +195,10 @@ Help.prototype.groupOptions_ = function(details) {
         type = instance.getType_(details.options[option])
 
         grouped.push({
-            cmd: cmd,
-            option: option,
+            cmd,
+            option,
+            type,
             shorthand: foundShorthand,
-            type: type,
         })
     })
 
@@ -207,8 +206,8 @@ Help.prototype.groupOptions_ = function(details) {
 }
 
 Help.prototype.getType_ = function(type) {
-    var types,
-        separator = ', '
+    let types
+    const separator = ', '
 
     if (Array.isArray(type)) {
         types = type

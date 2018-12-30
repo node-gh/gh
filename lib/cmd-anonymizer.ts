@@ -19,8 +19,8 @@ CmdAnonymizer.prototype.extractArgument = function(word) {
 }
 
 CmdAnonymizer.prototype.isOptionValue = function(option, value) {
-    var choice = this.options[option],
-        booleans = ['true', 'false']
+    const choice = this.options[option]
+    const booleans = ['true', 'false']
 
     return (
         (choice instanceof Array && choice.indexOf(value) !== -1) ||
@@ -40,8 +40,8 @@ CmdAnonymizer.prototype.isValueInOptions = function(options, value) {
 }
 
 CmdAnonymizer.prototype.classify = function(word) {
-    var arg = this.extractArgument(word),
-        whitelist = ['verbose', 'no-hooks']
+    const arg = this.extractArgument(word)
+    const whitelist = ['verbose', 'no-hooks']
 
     if (whitelist.indexOf(arg) === 0) {
         this.invoked.push(word)

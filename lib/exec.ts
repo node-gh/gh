@@ -12,13 +12,13 @@ const logger = require('./logger')
 exports.spawnSync = function(cmd, args, options) {
     var exec
 
-    logger.debug('spawnSync: ' + cmd + ' ' + args.join(' '))
+    logger.debug(`spawnSync: ${cmd} ${args.join(' ')}`)
 
     exec = child_process.spawnSync(cmd, args, options)
 
     if (exec.error && exec.error.code === 'ENOENT' && process.platform === 'win32') {
         logger.debug("Invoking patched sapwnSync due to Windows' libuv bug")
-        exec = child_process.spawnSync(cmd + '.cmd', args, options)
+        exec = child_process.spawnSync(`${cmd}.cmd`, args, options)
     }
 
     return {
@@ -29,7 +29,8 @@ exports.spawnSync = function(cmd, args, options) {
 }
 
 exports.spawnSyncStream = function(cmd, args, options) {
-    var proc, err
+    let proc
+    let err
 
     if (!options) {
         options = {}
@@ -37,14 +38,14 @@ exports.spawnSyncStream = function(cmd, args, options) {
 
     options.stdio = ['pipe', process.stdout, process.stderr]
 
-    logger.debug('spawnSyncStream: ' + cmd + ' ' + args.join(' '))
+    logger.debug(`spawnSyncStream: ${cmd} ${args.join(' ')}`)
 
     proc = child_process.spawnSync(cmd, args, options)
 
     if (proc.status !== 0) {
         err = new Error()
         err.code = proc.status
-        err.message = 'Child process terminated with error code ' + err.code
+        err.message = `Child process terminated with error code ${err.code}`
 
         throw err
     }
@@ -57,7 +58,7 @@ exports.execSync = function(cmd, options) {
         options = {}
     }
 
-    logger.debug('execSync: ' + cmd)
+    logger.debug(`execSync: ${cmd}`)
 
     options.stdio = ['pipe', process.stdout, process.stderr]
 
@@ -69,7 +70,7 @@ exports.execSyncInteractiveStream = function(cmd, options) {
         options = {}
     }
 
-    logger.debug('execSyncInteractiveStream: ' + cmd)
+    logger.debug(`execSyncInteractiveStream: ${cmd}`)
 
     options.stdio = 'inherit'
 

@@ -43,7 +43,7 @@ Milestone.DETAILS = {
         o: ['--organization'],
         l: ['--list'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         options.list = true
     },
 }
@@ -51,17 +51,18 @@ Milestone.DETAILS = {
 // -- Commands -------------------------------------------------------------------------------------
 
 Milestone.prototype.run = function(done) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     if (options.list) {
         if (options.all) {
             logger.log(
-                'Listing milestones for ' +
-                    logger.colors.green(options.organization || options.user)
+                `Listing milestones for ${logger.colors.green(
+                    options.organization || options.user
+                )}`
             )
 
-            instance.listFromAllRepositories(function(err) {
+            instance.listFromAllRepositories(err => {
                 if (err) {
                     throw new Error(`Can't list milestones for ${options.user}.\n${err}`)
                 }
@@ -71,7 +72,7 @@ Milestone.prototype.run = function(done) {
 
             logger.log(`Listing milestones on ${logger.colors.green(userRepo)}`)
 
-            instance.list(options.user, options.repo, function(err) {
+            instance.list(options.user, options.repo, err => {
                 if (err) {
                     throw new Error(`Can't list milestones on ${userRepo}\n${err}`)
                 }
@@ -83,31 +84,31 @@ Milestone.prototype.run = function(done) {
 }
 
 Milestone.prototype.list = function(user, repo, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
-        repo: repo,
-        user: user,
+        repo,
+        user,
     }
 
-    base.github.issues.getAllMilestones(payload, function(err, milestones) {
+    base.github.issues.getAllMilestones(payload, (err, milestones) => {
         if (err && !options.all) {
             throw new Error(logger.getErrorMessage(err))
         }
 
-        milestones.sort(function(a, b) {
+        milestones.sort((a, b) => {
             return a.due_on > b.due_on ? -1 : 1
         })
 
         if (milestones && milestones.length > 0) {
-            milestones.forEach(function(milestone) {
+            milestones.forEach(milestone => {
                 const due = milestone.due_on ? logger.getDuration(milestone.due_on) : 'n/a'
                 const description = milestone.description || ''
                 const title = logger.colors.green(milestone.title)
                 const state = logger.colors.magenta(`@${milestone.state} (due ${due})`)
-                const prefix = options.all ? logger.colors.blue(user + '/' + repo + ' ') : ''
+                const prefix = options.all ? logger.colors.blue(`${user}/${repo} `) : ''
 
                 logger.log(`${prefix} ${title} ${description} ${state}`)
             })
@@ -118,11 +119,11 @@ Milestone.prototype.list = function(user, repo, opt_callback) {
 }
 
 Milestone.prototype.listFromAllRepositories = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        operations = [],
-        op = 'getAll',
-        payload
+    const instance = this
+    const options = instance.options
+    const operations = []
+    let op = 'getAll'
+    let payload
 
     payload = {
         type: 'all',
@@ -134,12 +135,12 @@ Milestone.prototype.listFromAllRepositories = function(opt_callback) {
         payload.org = options.organization
     }
 
-    base.github.repos[op](payload, function(err, repositories) {
+    base.github.repos[op](payload, (err, repositories) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
-            repositories.forEach(function(repository) {
-                operations.push(function(callback) {
+            repositories.forEach(repository => {
+                operations.push(callback => {
                     instance.list(repository.owner.login, repository.name, callback)
                 })
             })

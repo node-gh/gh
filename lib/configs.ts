@@ -12,15 +12,15 @@ const exec = require('./exec')
 const path = require('path')
 const userhome = require('userhome')
 const which = require('which')
-const cache = {}
+let cache = {}
 const PLUGINS_PATH_KEY = 'plugins_path'
 let plugins
 
 // -- Config -------------------------------------------------------------------
 
 exports.getNodeModulesGlobalPath = function() {
-    var result,
-        path = exports.getConfig()[PLUGINS_PATH_KEY]
+    let result
+    let path = exports.getConfig()[PLUGINS_PATH_KEY]
 
     if (path === undefined) {
         result = exec.spawnSync('npm', ['root', '-g'])
@@ -45,18 +45,18 @@ exports.getUserHomePath = function() {
 }
 
 function getConfig(opt_plugin) {
-    var globalConfig = exports.getGlobalConfig(opt_plugin),
-        projectConfig,
-        result = {}
+    const globalConfig = exports.getGlobalConfig(opt_plugin)
+    let projectConfig
+    const result = {}
 
     try {
         projectConfig = JSON.parse(fs.readFileSync(exports.getProjectConfigPath()))
 
-        Object.keys(globalConfig).forEach(function(key) {
+        Object.keys(globalConfig).forEach(key => {
             result[key] = globalConfig[key]
         })
 
-        Object.keys(projectConfig).forEach(function(key) {
+        Object.keys(projectConfig).forEach(key => {
             result[key] = projectConfig[key]
         })
 
@@ -80,22 +80,25 @@ exports.getConfig = function(opt_plugin) {
         cache[opt_plugin] = config
     }
 
-    var protocol = config.api.protocol + '://',
-        is_enterprise = config.api.host !== 'api.github.com'
+    const protocol = `${config.api.protocol}://`
+    const is_enterprise = config.api.host !== 'api.github.com'
 
     if (config.github_host === undefined) {
-        config.github_host = protocol + (is_enterprise ? config.api.host : 'github.com') + '/'
+        config.github_host = `${protocol}${is_enterprise ? config.api.host : 'github.com'}/`
     }
     if (config.github_gist_host === undefined) {
-        config.github_gist_host =
-            protocol + (is_enterprise ? config.api.host + '/gist' : 'gist.github.com') + '/'
+        config.github_gist_host = `${protocol}${
+            is_enterprise ? `${config.api.host}/gist` : 'gist.github.com'
+        }/`
     }
 
     return config
 }
 
 exports.getGlobalConfig = function(opt_plugin) {
-    var defaultConfig, configPath, userConfig
+    let defaultConfig
+    let configPath
+    let userConfig
 
     configPath = exports.getUserHomePath()
 
@@ -106,12 +109,12 @@ exports.getGlobalConfig = function(opt_plugin) {
     defaultConfig = JSON.parse(fs.readFileSync(exports.getGlobalConfigPath()))
     userConfig = JSON.parse(fs.readFileSync(configPath))
 
-    Object.keys(userConfig).forEach(function(key) {
+    Object.keys(userConfig).forEach(key => {
         defaultConfig[key] = userConfig[key]
     })
 
     if (opt_plugin) {
-        exports.getPlugins().forEach(function(plugin) {
+        exports.getPlugins().forEach(plugin => {
             exports.addPluginConfig(defaultConfig, plugin)
         })
     }
@@ -141,11 +144,11 @@ exports.createGlobalConfig = function() {
 }
 
 exports.writeGlobalConfig = function(jsonPath, value) {
-    var config = exports.getGlobalConfig(),
-        i,
-        output,
-        path,
-        pathLen
+    const config = exports.getGlobalConfig()
+    let i
+    let output
+    let path
+    let pathLen
 
     path = jsonPath.split('.')
     output = config
@@ -160,7 +163,7 @@ exports.writeGlobalConfig = function(jsonPath, value) {
 }
 
 exports.saveJsonConfig = function(path, object) {
-    var options = {
+    const options = {
         mode: parseInt('0600', 8),
     }
 
@@ -168,17 +171,18 @@ exports.saveJsonConfig = function(path, object) {
 }
 
 exports.writeGlobalConfigCredentials = function(user, token) {
-    var configPath = exports.getUserHomePath()
+    const configPath = exports.getUserHomePath()
 
     exports.writeGlobalConfig('github_user', user)
     exports.writeGlobalConfig('github_token', token)
-    logger.log('Writing GH config data: ' + configPath)
+    logger.log(`Writing GH config data: ${configPath}`)
 }
 
 // -- Plugins ------------------------------------------------------------------
 
 exports.addPluginConfig = function(config, plugin) {
-    var pluginConfig, userConfig
+    let pluginConfig
+    let userConfig
 
     try {
         // Always use the plugin name without prefix. To be safe removing "gh-"
@@ -187,14 +191,14 @@ exports.addPluginConfig = function(config, plugin) {
 
         pluginConfig = require(path.join(
             exports.getNodeModulesGlobalPath(),
-            'gh-' + plugin,
+            `gh-${plugin}`,
             'gh-plugin.json'
         ))
 
         // Merge default plugin configuration with the user's.
         userConfig = config.plugins[plugin] || {}
 
-        Object.keys(userConfig).forEach(function(key) {
+        Object.keys(userConfig).forEach(key => {
             pluginConfig[key] = userConfig[key]
         })
 
@@ -214,7 +218,7 @@ function getPlugins() {
     }
 
     try {
-        plugins = fs.readdirSync(pluginsPath).filter(function(plugin) {
+        plugins = fs.readdirSync(pluginsPath).filter(plugin => {
             return plugin.substring(0, 3) === 'gh-'
         })
     } catch (e) {
@@ -236,7 +240,7 @@ exports.getPlugins = function() {
 exports.getPlugin = function(plugin) {
     plugin = exports.getPluginBasename(plugin)
 
-    return require(exports.getPluginPath('gh-' + plugin))
+    return require(exports.getPluginPath(`gh-${plugin}`))
 }
 
 exports.getPluginPath = function(plugin) {

@@ -23,7 +23,7 @@ const config = configs.getConfig()
 
 function hasCommandInOptions(commands, options) {
     if (commands) {
-        return commands.some(function(c) {
+        return commands.some(c => {
             return options[c] !== undefined
         })
     }
@@ -42,16 +42,19 @@ function invokePayload(options, command, cooked, remain) {
 }
 
 function findCommand(name) {
-    var Command, commandDir, commandFiles, commandPath
+    let Command
+    let commandDir
+    let commandFiles
+    let commandPath
 
     commandDir = path.join(__dirname, 'cmds')
-    commandPath = path.join(commandDir, name + '.js')
+    commandPath = path.join(commandDir, `${name}.js`)
 
     if (fs.existsSync(commandPath)) {
         Command = require(commandPath).Impl
     } else {
         commandFiles = base.find(commandDir, /\.js$/i)
-        commandFiles.every(function(file) {
+        commandFiles.every(file => {
             commandPath = path.join(commandDir, file)
             Command = require(commandPath).Impl
 
@@ -68,8 +71,8 @@ function findCommand(name) {
 }
 
 function loadCommand(name) {
-    var Command = findCommand(name),
-        plugin
+    let Command = findCommand(name)
+    let plugin
 
     // If command was not found, check if it is registered as a plugin.
     if (!Command) {
@@ -90,21 +93,21 @@ function loadCommand(name) {
 }
 
 exports.setUp = function() {
-    var Command,
-        iterative,
-        operations = [],
-        options,
-        parsed = nopt(process.argv),
-        remain = parsed.argv.remain,
-        cooked = parsed.argv.cooked
+    let Command
+    let iterative
+    let options
+    const operations = []
+    const parsed = nopt(process.argv)
+    let remain = parsed.argv.remain
+    let cooked = parsed.argv.cooked
 
-    operations.push(function(callback) {
+    operations.push(callback => {
         base.checkVersion()
 
         callback()
     })
 
-    operations.push(function(callback) {
+    operations.push(callback => {
         var module = remain[0]
 
         if (cooked[0] === '--version' || cooked[0] === '-v') {
@@ -137,9 +140,9 @@ exports.setUp = function() {
         }
     })
 
-    async.series(operations, function() {
-        var iterativeValues,
-            remoteUrl = git.getRemoteUrl(options.remote)
+    async.series(operations, () => {
+        let iterativeValues
+        const remoteUrl = git.getRemoteUrl(options.remote)
 
         options.isTTY = {}
         options.isTTY.in = Boolean(process.stdin.isTTY)
@@ -167,7 +170,7 @@ exports.setUp = function() {
         // present, assume [undefined] in order to initialize the loop.
         iterativeValues = options[iterative] || [undefined]
 
-        iterativeValues.forEach(function(value) {
+        iterativeValues.forEach(value => {
             options = base.clone(options)
 
             // Value can be undefined when the command doesn't have a iterative

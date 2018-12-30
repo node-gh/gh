@@ -21,7 +21,7 @@ Version.prototype.run = function() {
 }
 
 Version.prototype.printVersion = function(pkg) {
-    logger.log(pkg.name + ' ' + pkg.version)
+    logger.log(`${pkg.name} ${pkg.version}`)
 }
 
 exports.Impl = Version

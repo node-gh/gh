@@ -53,7 +53,7 @@ Gists.DETAILS = {
         p: ['--private'],
         u: ['--user'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         options.list = true
     },
 }
@@ -61,8 +61,8 @@ Gists.DETAILS = {
 // -- Commands -------------------------------------------------------------------------------------
 
 Gists.prototype.run = function(done) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     instance.config = config
 
@@ -76,9 +76,9 @@ Gists.prototype.run = function(done) {
     }
 
     if (options.delete) {
-        hooks.invoke('gists.delete', instance, function(afterHooksCallback) {
+        hooks.invoke('gists.delete', instance, afterHooksCallback => {
             logger.log(
-                'Deleting gist ' + logger.colors.green(options.loggedUser + '/' + options.delete)
+                `Deleting gist ${logger.colors.green(`${options.loggedUser}/${options.delete}`)}`
             )
 
             if (testing) {
@@ -99,7 +99,7 @@ Gists.prototype.run = function(done) {
 
             function _deleteHandler(proceed, cb) {
                 if (proceed) {
-                    instance.delete(options.delete, function(err) {
+                    instance.delete(options.delete, err => {
                         if (err) {
                             logger.error("Can't delete gist.")
                             return
@@ -117,10 +117,10 @@ Gists.prototype.run = function(done) {
     }
 
     if (options.fork) {
-        hooks.invoke('gists.fork', instance, function(afterHooksCallback) {
-            logger.log('Forking gist on ' + logger.colors.green(options.loggedUser))
+        hooks.invoke('gists.fork', instance, afterHooksCallback => {
+            logger.log(`Forking gist on ${logger.colors.green(options.loggedUser)}`)
 
-            instance.fork(options.fork, function(err, gist) {
+            instance.fork(options.fork, (err, gist) => {
                 if (err) {
                     logger.error(JSON.parse(err.message).message)
                     return
@@ -135,11 +135,11 @@ Gists.prototype.run = function(done) {
     }
 
     if (options.list) {
-        logger.log('Listing gists for ' + logger.colors.green(options.user))
+        logger.log(`Listing gists for ${logger.colors.green(options.user)}`)
 
-        instance.list(options.user, function(err) {
+        instance.list(options.user, err => {
             if (err) {
-                logger.error("Can't list gists for " + options.user + '.')
+                logger.error(`Can't list gists for ${options.user}.`)
                 return
             }
 
@@ -148,25 +148,24 @@ Gists.prototype.run = function(done) {
     }
 
     if (options.new) {
-        hooks.invoke('gists.new', instance, function(afterHooksCallback) {
-            var privacy = options.private ? 'private' : 'public'
+        hooks.invoke('gists.new', instance, afterHooksCallback => {
+            const privacy = options.private ? 'private' : 'public'
 
             options.new = options.new
 
             logger.log(
-                'Creating ' +
-                    logger.colors.magenta(privacy) +
-                    ' gist on ' +
-                    logger.colors.green(options.loggedUser)
+                `Creating ${logger.colors.magenta(privacy)} gist on ${logger.colors.green(
+                    options.loggedUser
+                )}`
             )
 
-            instance.new(options.new, options.content, function(err, gist) {
+            instance.new(options.new, options.content, (err, gist) => {
                 if (gist) {
                     options.id = gist.id
                 }
 
                 if (err) {
-                    logger.error("Can't create gist. " + JSON.parse(err.message).message)
+                    logger.error(`Can't create gist. ${JSON.parse(err.message).message}`)
                     return
                 }
 
@@ -186,7 +185,7 @@ Gists.prototype.browser = function(gist) {
 
 Gists.prototype.delete = function(id, opt_callback) {
     var payload = {
-        id: id,
+        id,
     }
 
     base.github.gists.delete(payload, opt_callback)
@@ -194,46 +193,44 @@ Gists.prototype.delete = function(id, opt_callback) {
 
 Gists.prototype.fork = function(id, opt_callback) {
     var payload = {
-        id: id,
+        id,
     }
 
     base.github.gists.fork(payload, opt_callback)
 }
 
 Gists.prototype.list = function(user, opt_callback) {
-    var instance = this,
-        payload
-
-    payload = {
-        user: user,
+    const instance = this
+    const payload = {
+        user,
     }
 
-    base.github.gists.getFromUser(payload, function(err, gists) {
+    base.github.gists.getFromUser(payload, (err, gists) => {
         instance.listCallback_(err, gists, opt_callback)
     })
 }
 
 Gists.prototype.listCallback_ = function(err, gists, opt_callback) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     if (err && !options.all) {
         logger.error(logger.getErrorMessage(err))
     }
 
     if (gists && gists.length > 0) {
-        gists.forEach(function(gist) {
+        gists.forEach(gist => {
             logger.log(
-                logger.colors.yellow(gist.owner.login + '/' + gist.id) +
-                    ' ' +
-                    logger.getDuration(gist.updated_at)
+                `${logger.colors.yellow(`${gist.owner.login}/${gist.id}`)} ${logger.getDuration(
+                    gist.updated_at
+                )}`
             )
 
             if (gist.description) {
                 logger.log(gist.description)
             }
 
-            logger.log(logger.colors.blue(gist.html_url) + '\n')
+            logger.log(`${logger.colors.blue(gist.html_url)}\n`)
         })
 
         opt_callback && opt_callback(err)
@@ -241,15 +238,15 @@ Gists.prototype.listCallback_ = function(err, gists, opt_callback) {
 }
 
 Gists.prototype.new = function(name, content, opt_callback) {
-    var instance = this,
-        file = {},
-        options = instance.options,
-        payload
+    const instance = this
+    const file = {}
+    const options = instance.options
+    let payload
 
     options.description = options.description || ''
 
     file[name] = {
-        content: content,
+        content,
     }
 
     payload = {

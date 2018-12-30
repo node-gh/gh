@@ -6,45 +6,50 @@
 
 export = {}
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError('Cannot call a class as a function')
-    }
-}
-
-const _request = require('request')
+const request = require('request')
 const http = require('http')
-const _url = require('url')
-const _ = require('lodash')
+const url = require('url')
+const lodash = require('lodash')
 const logger = require('./logger')
 
-var RestApiClient = (function() {
-    function RestApiClient(options) {
-        _classCallCheck(this, RestApiClient)
+class RestApiClient {
+    options
 
-        options = _.merge(this.DEFAULT_CONFIG, options)
+    DEFAULT_CONFIG = {
+        protocol: 'https',
+        host: 'localhost',
+        port: '443',
+        user: 'user',
+        password: 'password',
+        base: '',
+        strictSSL: true,
+    }
+
+    constructor(options) {
+        options = lodash.merge(this.DEFAULT_CONFIG, options)
         this.options = options
     }
 
-    RestApiClient.prototype.encode = function encode() {
+    encode() {
         return encodeURIComponent.apply(this, arguments)
     }
 
-    RestApiClient.prototype.url = function url(pathname, query) {
-        var options = this.options
-        var uri = _url.format({
-            protocol: options.protocol,
+    url(pathname, query?: string) {
+        const options = this.options
+
+        const uri = url.format({
+            query,
             hostname: options.host,
-            port: options.port,
             pathname: options.base + pathname,
-            query: query,
+            port: options.port,
+            protocol: options.protocol,
         })
 
         return decodeURIComponent(uri)
     }
 
-    RestApiClient.prototype.authorize = function authorize(p) {
-        var options = this.options
+    authorize(p) {
+        const options = this.options
 
         if (p.oauth) {
             p.oauth = options.oauth
@@ -59,49 +64,42 @@ var RestApiClient = (function() {
         }
     }
 
-    RestApiClient.prototype.request = function request(method, path, params) {
+    request(method, path, params?: object) {
         if (typeof path === 'object') {
-            var args = Array.from(path)
+            let args = Array.from(path)
             args.unshift(method)
             return this.request.apply(this, args)
         }
 
-        var options = this.options
+        let options = this.options
 
-        var p = {
+        let p = {
+            method,
             strictSSL: options.strictSSL,
-            method: method,
             uri: this.url(path),
             json: true,
             followAllRedirects: true,
         }
 
         if (params) {
-            p = _.merge(p, params)
+            p = lodash.merge(p, params)
         }
 
         this.authorize(p)
 
-        var id = Math.floor(Math.random() * 10000000)
-        var begin = new Date().getTime()
+        let id = Math.floor(Math.random() * 10000000)
+        let begin = new Date().getTime()
 
-        return new Promise(function(resolve, reject) {
-            logger.debug(
-                'New request #' + id + ' started at ' + begin + ':\n' + method + ' ' + p.uri
-            )
+        return new Promise((resolve, reject) => {
+            logger.debug(`New request #${id} started at ${begin}:\n${method} ${p.uri}`)
+
             logger.insane(p)
-            _request(p, function(error, response) {
-                var end = new Date().getTime()
+
+            request(p, (error, response) => {
+                let end = new Date().getTime()
                 logger.debug(
-                    'End of request #' +
-                        id +
-                        ' at ' +
-                        end +
-                        ' (' +
-                        (end - begin) +
-                        'ms)' +
-                        ' with status code: ' +
-                        (response && response.statusCode)
+                    `End of request #${id} at ${end} (${end -
+                        begin}ms) with status code: ${response && response.statusCode}`
                 )
 
                 if (response) {
@@ -118,10 +116,10 @@ var RestApiClient = (function() {
 
                 if (response.statusCode < 200 || response.statusCode > 399) {
                     reject({
-                        error: response.statusCode + ' ' + http.STATUS_CODES[response.statusCode],
+                        response,
+                        error: `${response.statusCode} ${http.STATUS_CODES[response.statusCode]}`,
                         code: response.statusCode,
                         msg: http.STATUS_CODES[response.statusCode],
-                        response: response,
                     })
                     return
                 }
@@ -131,33 +129,21 @@ var RestApiClient = (function() {
         })
     }
 
-    RestApiClient.prototype.get = function get() {
+    get() {
         return this.request('GET', arguments)
     }
 
-    RestApiClient.prototype.post = function post() {
+    post() {
         return this.request('POST', arguments)
     }
 
-    RestApiClient.prototype.put = function put() {
+    put() {
         return this.request('PUT', arguments)
     }
 
-    RestApiClient.prototype['delete'] = function _delete() {
+    delete() {
         return this.request('DELETE', arguments)
     }
-
-    return RestApiClient
-})()
-
-RestApiClient.prototype.DEFAULT_CONFIG = {
-    protocol: 'https',
-    host: 'localhost',
-    port: '443',
-    user: 'user',
-    password: 'password',
-    base: '',
-    strictSSL: true,
 }
 
 module.exports = RestApiClient

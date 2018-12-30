@@ -2,8 +2,11 @@
     "rulesDirectory": ["tslint-plugin-prettier"],
     "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
     "rules": {
+        "function-name": false,
         "import-name": false,
         "no-increment-decrement": false,
+        "no-parameter-reassignment": false,
+        "no-this-assignment": false,
         "no-var-keyword": false,
         "prefer-const": false,
         "prettier": [
