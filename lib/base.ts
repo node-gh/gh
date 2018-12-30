@@ -6,11 +6,11 @@
 
 'use strict'
 
-var configs = require('./configs'),
-    fs = require('fs'),
-    Github = require('github'),
-    path = require('path'),
-    updateNotifier = require('update-notifier')
+const configs = require('./configs')
+const fs = require('fs')
+const Github = require('github')
+const path = require('path')
+const updateNotifier = require('update-notifier')
 
 // -- Config -------------------------------------------------------------------
 

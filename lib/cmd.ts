@@ -8,8 +8,6 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-require('@babel/polyfill')
-
 var async = require('async'),
     base = require('./base'),
     configs = require('./configs'),
