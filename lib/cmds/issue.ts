@@ -78,7 +78,7 @@ Issue.DETAILS = {
         t: ['--title'],
         u: ['--user'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         if (payload[0]) {
             if (/^\d+$/.test(payload[0])) {
                 options.browser = true
@@ -101,38 +101,33 @@ Issue.STATE_OPEN = 'open'
 // -- Commands -------------------------------------------------------------------------------------
 
 Issue.prototype.run = function(done) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     instance.config = config
 
     options.state = options.state || Issue.STATE_OPEN
 
     if (options.assign) {
-        hooks.invoke('issue.assign', instance, function(afterHooksCallback) {
-            var user
-            if (options.user) {
-                user = options.user
-            } else {
-                user = options.loggedUser
-            }
+        hooks.invoke('issue.assign', instance, afterHooksCallback => {
+            const user = options.user || options.loggedUser
 
             logger.log(
-                'Assigning issue ' +
-                    logger.colors.green('#' + options.number) +
-                    ' on ' +
-                    logger.colors.green(user + '/' + options.repo) +
-                    ' to ' +
-                    logger.colors.green(options.assignee)
+                `Assigning issue ${logger.colors.green(
+                    `#${options.number}`
+                )} on ${logger.colors.green(`${user}/${options.repo}`)} to ${logger.colors.green(
+                    options.assignee
+                )}`
             )
 
-            instance.assign(function(err, issue) {
+            instance.assign((err, issue) => {
                 if (err) {
                     logger.error("Can't assign issue.")
                     return
                 }
 
                 logger.log(issue.html_url)
+
                 afterHooksCallback()
 
                 done && done()
@@ -146,23 +141,23 @@ Issue.prototype.run = function(done) {
     }
 
     if (options.close) {
-        hooks.invoke('issue.close', instance, function(afterHooksCallback) {
+        hooks.invoke('issue.close', instance, afterHooksCallback => {
             options.state = Issue.STATE_CLOSED
 
             logger.log(
-                'Closing issue ' +
-                    logger.colors.green('#' + options.number) +
-                    ' on ' +
-                    logger.colors.green(options.user + '/' + options.repo)
+                `Closing issue ${logger.colors.green(
+                    `#${options.number}`
+                )} on ${logger.colors.green(`${options.user}/${options.repo}`)}`
             )
 
-            instance.close(function(err, issue) {
+            instance.close((err, issue) => {
                 if (err) {
                     logger.error("Can't close issue.")
                     return
                 }
 
                 logger.log(issue.html_url)
+
                 afterHooksCallback()
 
                 done && done()
@@ -171,9 +166,9 @@ Issue.prototype.run = function(done) {
     }
 
     if (options.comment) {
-        logger.log('Adding comment on issue ' + logger.colors.green('#' + options.number))
+        logger.log(`Adding comment on issue ${logger.colors.green(`#${options.number}`)}`)
 
-        instance.comment(function(err, issue) {
+        instance.comment((err, issue) => {
             if (err) {
                 throw new Error(`Can't add comment.\n${err}`)
             }
@@ -187,29 +182,27 @@ Issue.prototype.run = function(done) {
     if (options.list) {
         if (options.all) {
             logger.log(
-                'Listing ' +
-                    logger.colors.green(options.state) +
-                    ' issues for ' +
-                    logger.colors.green(options.user)
+                `Listing ${logger.colors.green(options.state)} issues for ${logger.colors.green(
+                    options.user
+                )}`
             )
 
-            instance.listFromAllRepositories(function(err) {
+            instance.listFromAllRepositories(err => {
                 if (err) {
-                    logger.error("Can't list issues for " + options.user + '.')
+                    logger.error(`Can't list issues for ${options.user}.`)
                     return
                 }
             })
         } else {
             logger.log(
-                'Listing ' +
-                    logger.colors.green(options.state) +
-                    ' issues on ' +
-                    logger.colors.green(options.user + '/' + options.repo)
+                `Listing ${logger.colors.green(options.state)} issues on ${logger.colors.green(
+                    `${options.user}/${options.repo}`
+                )}`
             )
 
-            instance.list(options.user, options.repo, function(err) {
+            instance.list(options.user, options.repo, err => {
                 if (err) {
-                    logger.error("Can't list issues on " + options.user + '/' + options.repo)
+                    logger.error(`Can't list issues on ${options.user}/${options.repo}`)
                     return
                 }
 
@@ -219,12 +212,12 @@ Issue.prototype.run = function(done) {
     }
 
     if (options.new) {
-        hooks.invoke('issue.new', instance, function(afterHooksCallback) {
+        hooks.invoke('issue.new', instance, afterHooksCallback => {
             logger.log(
-                'Creating a new issue on ' + logger.colors.green(options.user + '/' + options.repo)
+                `Creating a new issue on ${logger.colors.green(`${options.user}/${options.repo}`)}`
             )
 
-            instance.new(function(err, issue) {
+            instance.new((err, issue) => {
                 if (err) {
                     throw new Error(`Can't create new issue.\n${err}`)
                 }
@@ -234,6 +227,7 @@ Issue.prototype.run = function(done) {
                 }
 
                 logger.log(issue.html_url)
+
                 afterHooksCallback()
 
                 done && done()
@@ -242,21 +236,21 @@ Issue.prototype.run = function(done) {
     }
 
     if (options.open) {
-        hooks.invoke('issue.open', instance, function(afterHooksCallback) {
+        hooks.invoke('issue.open', instance, afterHooksCallback => {
             logger.log(
-                'Opening issue ' +
-                    logger.colors.green('#' + options.number) +
-                    ' on ' +
-                    logger.colors.green(options.user + '/' + options.repo)
+                `Opening issue ${logger.colors.green(
+                    `#${options.number}`
+                )} on ${logger.colors.green(`${options.user}/${options.repo}`)}`
             )
 
-            instance.open(function(err, issue) {
+            instance.open((err, issue) => {
                 if (err) {
                     logger.error("Can't open issue.")
                     return
                 }
 
                 logger.log(issue.html_url)
+
                 afterHooksCallback()
 
                 done && done()
@@ -281,9 +275,9 @@ Issue.prototype.run = function(done) {
         instance.search(user, repo, err => {
             if (err) {
                 if (options.all) {
-                    logger.error("Can't search issues for " + user)
+                    logger.error(`Can't search issues for ${user}`)
                 } else {
-                    logger.error("Can't search issues on " + user + '/' + repo)
+                    logger.error(`Can't search issues on ${user}/${repo}`)
                 }
 
                 return
@@ -297,7 +291,7 @@ Issue.prototype.run = function(done) {
 Issue.prototype.assign = function(opt_callback) {
     var instance = this
 
-    instance.getIssue_(function(err, issue) {
+    instance.getIssue_((err, issue) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
@@ -311,13 +305,13 @@ Issue.prototype.browser = function(user, repo, number) {
         number = ''
     }
 
-    openUrl(config.github_host + user + '/' + repo + '/issues/' + number, { wait: false })
+    openUrl(`${config.github_host}${user}/${repo}/issues/${number}`, { wait: false })
 }
 
 Issue.prototype.close = function(opt_callback) {
     var instance = this
 
-    instance.getIssue_(function(err, issue) {
+    instance.getIssue_((err, issue) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
@@ -327,15 +321,15 @@ Issue.prototype.close = function(opt_callback) {
 }
 
 Issue.prototype.comment = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        body,
-        payload
+    const instance = this
+    let options = instance.options
+    let body
+    let payload
 
     body = logger.applyReplacements(options.comment, config.replace) + config.signature
 
     payload = {
-        body: body,
+        body,
         number: options.number,
         repo: options.repo,
         user: options.user,
@@ -345,20 +339,20 @@ Issue.prototype.comment = function(opt_callback) {
 }
 
 Issue.prototype.editIssue_ = function(title, state, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     options.label = options.label || []
 
     payload = {
+        state,
+        title,
         labels: options.label,
         number: options.number,
         assignee: options.assignee,
         milestone: options.milestone,
         repo: options.repo,
-        state: state,
-        title: title,
         user: options.user,
     }
 
@@ -366,9 +360,9 @@ Issue.prototype.editIssue_ = function(title, state, opt_callback) {
 }
 
 Issue.prototype.getIssue_ = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
         number: options.number,
@@ -380,18 +374,18 @@ Issue.prototype.getIssue_ = function(opt_callback) {
 }
 
 Issue.prototype.list = function(user, repo, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        operations = [],
-        payload
+    const instance = this
+    const options = instance.options
+    const operations = []
+    let payload
 
     options.label = options.label || ''
 
     payload = {
+        repo,
+        user,
         labels: options.label,
-        repo: repo,
         state: options.state,
-        user: user,
     }
 
     if (options['no-milestone']) {
@@ -401,22 +395,20 @@ Issue.prototype.list = function(user, repo, opt_callback) {
     }
 
     if (options.milestone) {
-        operations.push(function(callback) {
+        operations.push(callback => {
             base.github.issues.getAllMilestones(
                 {
-                    repo: repo,
-                    user: user,
+                    repo,
+                    user,
                 },
-                function(err, results) {
+                (err, results) => {
                     if (err) {
                         logger.warn(err.message)
                     }
 
-                    results.some(function(milestone) {
+                    results.some(milestone => {
                         if (options.milestone === milestone.title) {
-                            logger.debug(
-                                'Milestone ' + milestone.title + ' number: ' + milestone.number
-                            )
+                            logger.debug(`Milestone ${milestone.title} number: ${milestone.number}`)
                             payload.milestone = milestone.number
                             return true
                         }
@@ -432,11 +424,11 @@ Issue.prototype.list = function(user, repo, opt_callback) {
         payload.assignee = options.assignee
     }
 
-    operations.push(function(callback) {
+    operations.push(callback => {
         base.github.issues.repoIssues(payload, callback)
     })
 
-    async.series(operations, function(err, results) {
+    async.series(operations, (err, results) => {
         if (err && !options.all) {
             logger.error(logger.getErrorMessage(err))
         }
@@ -460,20 +452,20 @@ Issue.prototype.list = function(user, repo, opt_callback) {
 }
 
 Issue.prototype.listFromAllRepositories = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
         type: 'all',
         user: options.user,
     }
 
-    base.github.repos.getAll(payload, function(err, repositories) {
+    base.github.repos.getAll(payload, (err, repositories) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
-            repositories.forEach(function(repository) {
+            repositories.forEach(repository => {
                 instance.list(repository.owner.login, repository.name, opt_callback)
             })
         }
@@ -481,10 +473,10 @@ Issue.prototype.listFromAllRepositories = function(opt_callback) {
 }
 
 Issue.prototype.new = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        body,
-        payload
+    const instance = this
+    const options = instance.options
+    let body
+    let payload
 
     if (options.message) {
         body = logger.applyReplacements(options.message, config.replace)
@@ -497,8 +489,8 @@ Issue.prototype.new = function(opt_callback) {
     }
 
     payload = {
+        body,
         assignee: options.assignee,
-        body: body,
         repo: options.repo,
         title: options.title,
         user: options.user,
@@ -511,7 +503,7 @@ Issue.prototype.new = function(opt_callback) {
 Issue.prototype.open = function(opt_callback) {
     var instance = this
 
-    instance.getIssue_(function(err, issue) {
+    instance.getIssue_((err, issue) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
@@ -521,11 +513,12 @@ Issue.prototype.open = function(opt_callback) {
 }
 
 Issue.prototype.search = function(user, repo, opt_callback, options) {
-    var instance = this,
-        options = instance.options || options,
-        operations = [],
-        query = ['type:issue'],
-        payload
+    const instance = this
+    const operations = []
+    let query = ['type:issue']
+    let payload
+
+    options = instance.options || options
 
     options.label = options.label || ''
 
@@ -538,10 +531,9 @@ Issue.prototype.search = function(user, repo, opt_callback, options) {
     }
 
     query.push(options.search)
-    query = query.join(' ')
 
     payload = {
-        q: query,
+        q: query.join(' '),
         type: 'Issues',
     }
 
@@ -573,7 +565,7 @@ Issue.prototype.search = function(user, repo, opt_callback, options) {
 }
 
 function formatIssues(issues, showDetailed) {
-    issues.sort(function(a, b) {
+    issues.sort((a, b) => {
         return a.number > b.number ? -1 : 1
     })
 

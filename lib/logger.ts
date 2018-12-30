@@ -6,7 +6,7 @@
 
 export = {}
 
-const logger = {}
+const logger: any = {}
 const fs = require('fs')
 const handlebars = require('handlebars')
 const moment = require('moment')
@@ -25,7 +25,7 @@ logger.debug = function() {
     }
 
     if (typeof arguments[0] === 'string') {
-        arguments[0] = 'DEBUG: ' + arguments[0]
+        arguments[0] = `DEBUG: ${arguments[0]}`
         console.log.apply(this, arguments)
         return
     }
@@ -44,7 +44,7 @@ logger.insane = function() {
 
 logger.error = function() {
     if (typeof arguments[0] === 'string') {
-        arguments[0] = 'fatal: ' + arguments[0]
+        arguments[0] = `fatal: ${arguments[0]}`
     }
 
     console.error.apply(this, arguments)
@@ -52,7 +52,7 @@ logger.error = function() {
 }
 
 logger.warn = function() {
-    arguments[0] = 'warning: ' + arguments[0]
+    arguments[0] = `warning: ${arguments[0]}`
     console.error.apply(this, arguments)
 }
 
@@ -130,7 +130,8 @@ logger.logTemplate = function(source, map) {
 }
 
 logger.logTemplateFile = function(file, map) {
-    var templatePath, source
+    let templatePath
+    let source
 
     templatePath = path.join(file)
 
@@ -148,77 +149,54 @@ logger.registerHelper = function(name, callback) {
 }
 
 logger.registerHelpers_ = function() {
-    handlebars.registerHelper('date', function(date) {
+    handlebars.registerHelper('date', date => {
         return logger.getDuration(date)
     })
 
     handlebars.registerHelper('compareLink', function() {
-        return (
-            this.options.github_host +
-            this.options.user +
-            '/' +
-            this.options.repo +
-            '/compare/' +
-            this.options.pullHeadSHA +
-            '...' +
-            this.options.currentSHA
-        )
+        const { github_host, user, repo, pullHeadSHA, currentSHA } = this.options
+
+        return `${github_host}${user}/${repo}/compare/${pullHeadSHA}...${currentSHA}`
     })
 
     handlebars.registerHelper('forwardedLink', function() {
-        return (
-            this.options.github_host +
-            this.options.fwd +
-            '/' +
-            this.options.repo +
-            '/pull/' +
-            this.options.forwardedPull
-        )
+        const { github_host, fwd, repo, forwardedPull } = this.options
+
+        return `${github_host}${fwd}/${repo}/pull/${forwardedPull}`
     })
 
     handlebars.registerHelper('link', function() {
-        return (
-            this.options.github_host +
-            this.options.user +
-            '/' +
-            this.options.repo +
-            '/pull/' +
-            this.options.number
-        )
+        const { github_host, user, repo, number } = this.options
+
+        return `${github_host}${user}/${repo}/pull/${number}`
     })
 
     handlebars.registerHelper('submittedLink', function() {
-        return (
-            this.options.github_host +
-            this.options.submit +
-            '/' +
-            this.options.repo +
-            '/pull/' +
-            this.options.submittedPull
-        )
+        const { github_host, submit, repo, submittedPull } = this.options
+
+        return `${github_host}${submit}/${repo}/pull/${submittedPull}`
     })
 
     handlebars.registerHelper('issueLink', function() {
-        return (
-            this.options.github_host +
-            this.options.user +
-            '/' +
-            this.options.repo +
-            '/issues/' +
-            this.options.number
-        )
+        const { github_host, user, repo, number } = this.options
+
+        return `${github_host}${user}/${repo}/issues/${number}`
     })
 
     handlebars.registerHelper('gistLink', function() {
-        return this.options.github_gist_host + this.options.loggedUser + '/' + this.options.id
+        const { github_gist_host, loggedUser, id } = this.options
+
+        return `${github_gist_host}${loggedUser}/${id}`
     })
 
     handlebars.registerHelper('repoLink', function() {
-        return this.options.github_host + this.options.user + '/' + this.options.repo
+        const { github_gist_host, user, repo } = this.options
+
+        return `${github_gist_host}${user}/${repo}`
     })
 
-    handlebars.registerHelper('wordwrap', function(text, padding, stripNewLines) {
-        var gutter = ''
+    handlebars.registerHelper('wordwrap', (text, padding, stripNewLines) => {
+        let gutter = ''
 
         if (stripNewLines !== false) {
             text = text.replace(/[\r\n\s\t]+/g, ' ')
@@ -227,10 +205,10 @@ logger.registerHelpers_ = function() {
         text = wrap(text).split('\n')
 
         if (padding > 0) {
-            gutter = new Array(padding).join(' ')
+            gutter = ' '.repeat(padding)
         }
 
-        return text.join('\n' + gutter)
+        return text.join(`\n${gutter}`)
     })
 }
 
@@ -241,7 +219,7 @@ logger.colors = colors
 if (process.argv.indexOf('--no-color') !== -1 || process.env.NODE_ENV === 'testing') {
     logger.colors = _.reduce(
         _.keys(logger.colors.styles),
-        function(memo, color) {
+        (memo, color) => {
             memo[color] = function returnValue(value) {
                 return value
             }

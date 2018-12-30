@@ -64,20 +64,20 @@ exports.push = function(remote, branch) {
 }
 
 exports.fetch = function(repoUrl, headBranch, pullBranch) {
-    var args = ['fetch', repoUrl, headBranch + ':' + pullBranch, '--no-tags']
+    var args = ['fetch', repoUrl, `${headBranch}:${pullBranch}`, '--no-tags']
 
     return !testing && exec.spawnSyncStream(git_command, args)
 }
 
 exports.countUserAdjacentCommits = function() {
-    var git,
-        params,
-        commits = 0,
-        user = exports.getConfig('user.name'),
-        author
+    let git
+    let params
+    let commits = 0
+    const user = exports.getConfig('user.name')
+    let author
 
     do {
-        params = ['log', '-1', '--skip=' + commits, '--pretty=%an']
+        params = ['log', '-1', `--skip=${commits}`, '--pretty=%an']
         git = exec.spawnSync(git_command, params)
 
         if (git.status !== 0) {
@@ -113,14 +113,14 @@ exports.findRoot = function() {
 }
 
 exports.getCommitMessage = function(branch, number) {
-    var git,
-        params = ['log']
+    let git
+    const params = ['log']
 
     if (!number) {
         number = 1
     }
 
-    params.push('-' + number, '--first-parent', '--no-merges', '--pretty=%s')
+    params.push(`-${number}`, '--first-parent', '--no-merges', '--pretty=%s')
 
     if (branch) {
         params.push(branch)
@@ -142,7 +142,7 @@ exports.getConfig = function(key) {
     var git = exec.spawnSync(git_command, ['config', '--get', key])
 
     if (git.status !== 0) {
-        throw new Error('No git config found for ' + key + '\n')
+        throw new Error(`No git config found for ${key}\n`)
     }
 
     return git.stdout
@@ -175,7 +175,7 @@ exports.getLastCommitSHA = function() {
 
 exports.getRemoteUrl = function(remote) {
     try {
-        return exports.getConfig('remote.' + remote + '.url')
+        return exports.getConfig(`remote.${remote}.url`)
     } catch (e) {
         logger.debug("Can't get remote URL.")
         return

@@ -42,7 +42,7 @@ Notifications.DETAILS = {
         u: ['--user'],
         w: ['--watch'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         options.latest = true
     },
 }
@@ -50,31 +50,31 @@ Notifications.DETAILS = {
 // -- Commands -------------------------------------------------------------------------------------
 
 Notifications.prototype.run = function(done) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     if (options.latest) {
         logger.log(
-            'Listing activities on ' + logger.colors.green(options.user + '/' + options.repo)
+            `Listing activities on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
         instance.latest(false, done)
     }
 
     if (options.watch) {
         logger.log(
-            'Watching any activity on ' + logger.colors.green(options.user + '/' + options.repo)
+            `Watching any activity on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
         instance.watch()
     }
 }
 
 Notifications.prototype.latest = function(opt_watch, done) {
-    var instance = this,
-        options = instance.options,
-        operations,
-        payload,
-        listEvents,
-        filteredListEvents = []
+    const instance = this
+    const options = instance.options
+    let operations
+    let payload
+    let listEvents
+    let filteredListEvents = []
 
     operations = [
         function(callback) {
@@ -83,7 +83,7 @@ Notifications.prototype.latest = function(opt_watch, done) {
                 repo: options.repo,
             }
 
-            base.github.events.getFromRepo(payload, function(err, data) {
+            base.github.events.getFromRepo(payload, (err, data) => {
                 if (!err) {
                     listEvents = data
                 }
@@ -91,7 +91,7 @@ Notifications.prototype.latest = function(opt_watch, done) {
             })
         },
         function(callback) {
-            listEvents.forEach(function(event) {
+            listEvents.forEach(event => {
                 event.txt = instance.getMessage_(event)
 
                 if (opt_watch) {
@@ -108,25 +108,21 @@ Notifications.prototype.latest = function(opt_watch, done) {
         },
     ]
 
-    async.series(operations, function(err) {
+    async.series(operations, err => {
         if (err) {
             throw new Error(`Can't get latest notifications.\n${err}`)
         }
 
         if (filteredListEvents.length) {
             if (!options.watch) {
-                logger.log(logger.colors.yellow(options.user + '/' + options.repo))
+                logger.log(logger.colors.yellow(`${options.user}/${options.repo}`))
             }
 
-            filteredListEvents.forEach(function(event) {
+            filteredListEvents.forEach(event => {
                 logger.log(
-                    logger.colors.magenta('@' + event.actor.login) +
-                        ' ' +
-                        event.txt +
-                        ' ' +
-                        logger.colors.cyan(options.repo) +
-                        ' ' +
-                        logger.getDuration(event.created_at)
+                    `${logger.colors.magenta(`@${event.actor.login}`)} ${
+                        event.txt
+                    } ${logger.colors.cyan(options.repo)} ${logger.getDuration(event.created_at)}`
                 )
             })
         }
@@ -136,51 +132,47 @@ Notifications.prototype.latest = function(opt_watch, done) {
 }
 
 Notifications.prototype.watch = function() {
-    var instance = this,
-        intervalTime = 3000
+    const instance = this
+    const intervalTime = 3000
 
     instance.latest()
 
-    setInterval(function() {
+    setInterval(() => {
         instance.latest(true)
     }, intervalTime)
 }
 
 Notifications.prototype.getMessage_ = function(event) {
-    var txt = '',
-        type = event.type,
-        payload = event.payload
+    let txt = ''
+    const type = event.type
+    const payload = event.payload
 
     switch (type) {
         case 'CommitCommentEvent':
             txt = 'commented on a commit at'
             break
         case 'CreateEvent':
-            txt = 'created ' + payload.ref_type + ' ' + logger.colors.green(payload.ref) + ' at'
+            txt = `created ${payload.ref_type} ${logger.colors.green(payload.ref)} at`
             break
         case 'DeleteEvent':
-            txt = 'removed ' + payload.ref_type + ' ' + logger.colors.green(payload.ref) + ' at'
+            txt = `removed ${payload.ref_type} ${logger.colors.green(payload.ref)} at`
             break
         case 'ForkEvent':
             txt = 'forked'
             break
         case 'GollumEvent':
-            txt =
-                payload.pages[0].action +
-                ' the ' +
-                logger.colors.green(payload.pages[0].page_name) +
-                ' wiki page at'
+            txt = `${payload.pages[0].action} the ${logger.colors.green(
+                payload.pages[0].page_name
+            )} wiki page at`
             break
         case 'IssueCommentEvent':
-            txt = 'commented on issue ' + logger.colors.green('#' + payload.issue.number) + ' at'
+            txt = `commented on issue ${logger.colors.green(`#${payload.issue.number}`)} at`
             break
         case 'IssuesEvent':
-            txt =
-                payload.action + ' issue ' + logger.colors.green('#' + payload.issue.number) + ' at'
+            txt = `${payload.action} issue ${logger.colors.green(`#${payload.issue.number}`)} at`
             break
         case 'MemberEvent':
-            txt =
-                'added ' + logger.colors.green('@' + payload.member.login) + ' as a collaborator to'
+            txt = `added ${logger.colors.green(`@${payload.member.login}`)} as a collaborator to`
             break
         case 'PageBuildEvent':
             txt = 'builded a GitHub Page at'
@@ -189,23 +181,18 @@ Notifications.prototype.getMessage_ = function(event) {
             txt = 'open sourced'
             break
         case 'PullRequestEvent':
-            txt =
-                payload.action +
-                ' pull request ' +
-                logger.colors.green('#' + payload.number) +
-                ' at'
+            txt = `${payload.action} pull request ${logger.colors.green(`#${payload.number}`)} at`
             break
         case 'PullRequestReviewCommentEvent':
-            txt =
-                'commented on pull request ' +
-                logger.colors.green('#' + payload.pull_request.number) +
-                ' at'
+            txt = `commented on pull request ${logger.colors.green(
+                `#${payload.pull_request.number}`
+            )} at`
             break
         case 'PushEvent':
-            txt = 'pushed ' + logger.colors.green(payload.size) + ' commit(s) to'
+            txt = `pushed ${logger.colors.green(payload.size)} commit(s) to`
             break
         case 'ReleaseEvent':
-            txt = 'released ' + logger.colors.green(payload.release.tag_name) + ' at'
+            txt = `released ${logger.colors.green(payload.release.tag_name)} at`
             break
         case 'StatusEvent':
             txt = 'changed the status of a commit at'
@@ -214,7 +201,7 @@ Notifications.prototype.getMessage_ = function(event) {
             txt = 'starred'
             break
         default:
-            logger.error('event type not found: ' + logger.colors.red(type))
+            logger.error(`event type not found: ${logger.colors.red(type)}`)
             break
     }
 

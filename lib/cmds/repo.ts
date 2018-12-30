@@ -73,7 +73,7 @@ Repo.DETAILS = {
         U: ['--update'],
         u: ['--user'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         if (options.browser !== false) {
             options.browser = true
         }
@@ -91,9 +91,9 @@ Repo.TYPE_SOURCES = 'sources'
 // -- Commands -------------------------------------------------------------------------------------
 
 Repo.prototype.run = function(done) {
-    var instance = this,
-        options = instance.options,
-        user = options.loggedUser
+    const instance = this
+    const options = instance.options
+    let user = options.loggedUser
 
     instance.config = config
 
@@ -102,31 +102,28 @@ Repo.prototype.run = function(done) {
     }
 
     if (options.clone) {
-        hooks.invoke('repo.get', instance, function(afterHooksCallback) {
+        hooks.invoke('repo.get', instance, afterHooksCallback => {
             if (options.organization) {
                 user = options.organization
             } else if (options.user) {
                 user = options.user
             }
 
-            if (fs.existsSync(process.cwd() + '/' + options.repo)) {
+            if (fs.existsSync(`${process.cwd()}/${options.repo}`)) {
                 logger.error(
-                    "Can't clone " +
-                        logger.colors.green(user + '/' + options.repo) +
-                        '. ' +
-                        logger.colors.green(options.repo) +
-                        ' already exists in this directory.'
+                    `Can't clone ${logger.colors.green(
+                        `${user}/${options.repo}`
+                    )}. ${logger.colors.green(options.repo)} already exists in this directory.`
                 )
                 return
             }
 
-            instance.get(user, options.repo, function(err1, repo) {
+            instance.get(user, options.repo, (err1, repo) => {
                 if (err1) {
                     logger.error(
-                        "Can't clone " +
-                            logger.colors.green(user + '/' + options.repo) +
-                            '. ' +
+                        `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}. ${
                             JSON.parse(err1).message
+                        }`
                     )
                     return
                 }
@@ -136,10 +133,10 @@ Repo.prototype.run = function(done) {
                 var repoUrl
                 if (options.protocol) {
                     if (options.protocol === 'https') {
-                        repoUrl = 'https://github.com/' + user + '/' + options.repo + '.git'
+                        repoUrl = `https://github.com/${user}/${options.repo}.git`
                     }
                 } else {
-                    repoUrl = 'git@github.com:' + user + '/' + options.repo + '.git'
+                    repoUrl = `git@github.com:${user}/${options.repo}.git`
                 }
 
                 if (repo) {
@@ -152,8 +149,8 @@ Repo.prototype.run = function(done) {
     }
 
     if (options.delete && !options.label) {
-        hooks.invoke('repo.delete', instance, function(afterHooksCallback) {
-            logger.log('Deleting repo ' + logger.colors.green(options.user + '/' + options.delete))
+        hooks.invoke('repo.delete', instance, afterHooksCallback => {
+            logger.log(`Deleting repo ${logger.colors.green(`${options.user}/${options.delete}`)}`)
 
             if (testing) {
                 return _deleteHandler(true)
@@ -171,7 +168,7 @@ Repo.prototype.run = function(done) {
 
             function _deleteHandler(proceed) {
                 if (proceed) {
-                    instance.delete(options.user, options.delete, function(err) {
+                    instance.delete(options.user, options.delete, err => {
                         if (err) {
                             logger.error("Can't delete repo.")
                             return
@@ -189,7 +186,7 @@ Repo.prototype.run = function(done) {
     }
 
     if (options.fork) {
-        hooks.invoke('repo.fork', instance, function(afterHooksCallback) {
+        hooks.invoke('repo.fork', instance, afterHooksCallback => {
             if (options.organization) {
                 user = options.organization
             }
@@ -197,15 +194,14 @@ Repo.prototype.run = function(done) {
             options.repo = options.fork
 
             logger.log(
-                'Forking repo ' +
-                    logger.colors.green(options.user + '/' + options.repo) +
-                    ' on ' +
-                    logger.colors.green(user + '/' + options.repo)
+                `Forking repo ${logger.colors.green(
+                    `${options.user}/${options.repo}`
+                )} on ${logger.colors.green(`${user}/${options.repo}`)}`
             )
 
-            instance.fork(function(err1, repo) {
+            instance.fork((err1, repo) => {
                 if (err1) {
-                    logger.error("Can't fork. " + JSON.parse(err1).message)
+                    logger.error(`Can't fork. ${JSON.parse(err1).message}`)
                     return
                 }
 
@@ -230,17 +226,16 @@ Repo.prototype.run = function(done) {
         }
 
         if (options.delete) {
-            hooks.invoke('repo.deleteLabel', instance, function(afterHooksCallback) {
+            hooks.invoke('repo.deleteLabel', instance, afterHooksCallback => {
                 options.label = options.delete
 
                 logger.log(
-                    'Deleting label ' +
-                        logger.colors.green(options.label) +
-                        ' on ' +
-                        logger.colors.green(user + '/' + options.repo)
+                    `Deleting label ${logger.colors.green(options.label)} on ${logger.colors.green(
+                        `${user}/${options.repo}`
+                    )}`
                 )
 
-                instance.deleteLabel(user, function(err1) {
+                instance.deleteLabel(user, err1 => {
                     if (err1) {
                         logger.error("Can't delete label.")
                         return
@@ -252,21 +247,20 @@ Repo.prototype.run = function(done) {
                 })
             })
         } else if (options.list) {
-            hooks.invoke('repo.listLabels', instance, function(afterHooksCallback) {
+            hooks.invoke('repo.listLabels', instance, afterHooksCallback => {
                 if (options.page) {
                     logger.log(
-                        'Listing labels from page ' +
-                            logger.colors.green(options.page) +
-                            ' on ' +
-                            logger.colors.green(user + '/' + options.repo)
+                        `Listing labels from page ${logger.colors.green(
+                            options.page
+                        )} on ${logger.colors.green(`${user}/${options.repo}`)}`
                     )
                 } else {
                     logger.log(
-                        'Listing labels' + ' on ' + logger.colors.green(user + '/' + options.repo)
+                        `Listing labels on ${logger.colors.green(`${user}/${options.repo}`)}`
                     )
                 }
 
-                instance.listLabels(user, function(err1) {
+                instance.listLabels(user, err1 => {
                     if (err1) {
                         logger.error("Can't list labels.")
                         return
@@ -278,17 +272,16 @@ Repo.prototype.run = function(done) {
                 })
             })
         } else if (options.new) {
-            hooks.invoke('repo.createLabel', instance, function(afterHooksCallback) {
+            hooks.invoke('repo.createLabel', instance, afterHooksCallback => {
                 options.label = options.new
 
                 logger.log(
-                    'Creating label ' +
-                        logger.colors.green(options.label) +
-                        ' on ' +
-                        logger.colors.green(user + '/' + options.repo)
+                    `Creating label ${logger.colors.green(options.label)} on ${logger.colors.green(
+                        `${user}/${options.repo}`
+                    )}`
                 )
 
-                instance.createLabel(user, function(err1) {
+                instance.createLabel(user, err1 => {
                     if (err1) {
                         throw new Error(`Can't create label.\n${err1}`)
                     }
@@ -299,17 +292,16 @@ Repo.prototype.run = function(done) {
                 })
             })
         } else if (options.update) {
-            hooks.invoke('repo.updateLabel', instance, function(afterHooksCallback) {
+            hooks.invoke('repo.updateLabel', instance, afterHooksCallback => {
                 options.label = options.update
 
                 logger.log(
-                    'Updating label ' +
-                        logger.colors.green(options.label) +
-                        ' on ' +
-                        logger.colors.green(user + '/' + options.repo)
+                    `Updating label ${logger.colors.green(options.label)} on ${logger.colors.green(
+                        `${user}/${options.repo}`
+                    )}`
                 )
 
-                instance.updateLabel(user, function(err1) {
+                instance.updateLabel(user, err1 => {
                     if (err1) {
                         logger.error("Can't update label.")
                         return
@@ -334,14 +326,13 @@ Repo.prototype.run = function(done) {
 
         if (options.isTTY.out) {
             logger.log(
-                'Listing ' +
-                    logger.colors.green(options.type) +
-                    ' repos for ' +
-                    logger.colors.green(user)
+                `Listing ${logger.colors.green(options.type)} repos for ${logger.colors.green(
+                    user
+                )}`
             )
         }
 
-        instance.list(user, function(err) {
+        instance.list(user, err => {
             if (err) {
                 logger.error("Can't list repos.")
             }
@@ -351,7 +342,7 @@ Repo.prototype.run = function(done) {
     }
 
     if (options.new && !options.label) {
-        hooks.invoke('repo.new', instance, function(afterHooksCallback) {
+        hooks.invoke('repo.new', instance, afterHooksCallback => {
             options.repo = options.new
 
             if (options.organization) {
@@ -359,12 +350,12 @@ Repo.prototype.run = function(done) {
             }
 
             logger.log(
-                'Creating a new repo on ' + logger.colors.green(options.user + '/' + options.new)
+                `Creating a new repo on ${logger.colors.green(`${options.user}/${options.new}`)}`
             )
 
-            instance.new(function(err1, repo) {
+            instance.new((err1, repo) => {
                 if (err1) {
-                    logger.error("Can't create new repo. " + JSON.parse(err1.message).message)
+                    logger.error(`Can't create new repo. ${JSON.parse(err1.message).message}`)
                     return
                 }
 
@@ -383,24 +374,24 @@ Repo.prototype.run = function(done) {
 }
 
 Repo.prototype.browser = function(user, repo) {
-    !testing && openUrl(config.github_host + user + '/' + repo, { wait: false })
+    !testing && openUrl(`${config.github_host}${user}/${repo}`, { wait: false })
 }
 
 Repo.prototype.clone_ = function(user, repo, repo_url) {
-    logger.log('Cloning ' + logger.colors.green(user + '/' + repo))
+    logger.log(`Cloning ${logger.colors.green(`${user}/${repo}`)}`)
     git.clone(url.parse(repo_url).href, repo)
 }
 
 Repo.prototype.createLabel = function(user, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
+        user,
         color: options.color,
         name: options.new,
         repo: options.repo,
-        user: user,
     }
 
     console.log('payload', payload)
@@ -412,22 +403,22 @@ Repo.prototype.delete = function(user, repo, opt_callback) {
     var payload
 
     payload = {
-        user: user,
-        repo: repo,
+        user,
+        repo,
     }
 
     base.github.repos.delete(payload, opt_callback)
 }
 
 Repo.prototype.deleteLabel = function(user, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
+        user,
         name: options.delete,
         repo: options.repo,
-        user: user,
     }
 
     base.github.issues.deleteLabel(payload, opt_callback)
@@ -437,22 +428,22 @@ Repo.prototype.get = function(user, repo, opt_callback) {
     var payload
 
     payload = {
-        user: user,
-        repo: repo,
+        user,
+        repo,
     }
 
     base.github.repos.get(payload, opt_callback)
 }
 
 Repo.prototype.list = function(user, opt_callback) {
-    var instance = this,
-        method = 'getFromUser',
-        options = instance.options,
-        payload
+    const instance = this
+    let method = 'getFromUser'
+    const options = instance.options
+    let payload
 
     payload = {
+        user,
         type: options.type,
-        user: user,
         per_page: 100,
     }
 
@@ -470,16 +461,16 @@ Repo.prototype.list = function(user, opt_callback) {
         }
     }
 
-    base.github.repos[method](payload, function(err, repos) {
+    base.github.repos[method](payload, (err, repos) => {
         instance.listCallback_(err, repos, opt_callback)
     })
 }
 
 Repo.prototype.listCallback_ = function(err, repos, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        pos,
-        repo
+    const instance = this
+    const options = instance.options
+    let pos
+    let repo
 
     if (err && !options.all) {
         logger.error(logger.getErrorMessage(err))
@@ -502,19 +493,16 @@ Repo.prototype.listCallback_ = function(err, repos, opt_callback) {
                         logger.log(logger.colors.blue(repo.homepage))
                     }
 
-                    logger.log('last update ' + logger.getDuration(repo.updated_at))
+                    logger.log(`last update ${logger.getDuration(repo.updated_at)}`)
                 }
 
                 if (options.isTTY.out) {
                     logger.log(
-                        logger.colors.green(
-                            'forks: ' +
-                                repo.forks +
-                                ', stars: ' +
-                                repo.watchers +
-                                ', issues: ' +
+                        `${logger.colors.green(
+                            `forks: ${repo.forks}, stars: ${repo.watchers}, issues: ${
                                 repo.open_issues
-                        ) + '\n'
+                            }`
+                        )}\n`
                     )
                 }
             }
@@ -525,32 +513,32 @@ Repo.prototype.listCallback_ = function(err, repos, opt_callback) {
 }
 
 Repo.prototype.listLabels = function(user, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
+        user,
         page: options.page,
         per_page: options.per_page,
         repo: options.repo,
-        user: user,
     }
 
-    base.github.issues.getLabels(payload, function(err, labels) {
+    base.github.issues.getLabels(payload, (err, labels) => {
         instance.listLabelsCallback_(err, labels, opt_callback)
     })
 }
 
 Repo.prototype.listLabelsCallback_ = function(err, labels, opt_callback) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     if (err && !options.all) {
         logger.error(logger.getErrorMessage(err))
     }
 
     if (labels && labels.length > 0) {
-        labels.forEach(function(label) {
+        labels.forEach(label => {
             logger.log(logger.colors.yellow(label.name))
         })
 
@@ -559,9 +547,9 @@ Repo.prototype.listLabelsCallback_ = function(err, labels, opt_callback) {
 }
 
 Repo.prototype.fork = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
         user: options.user,
@@ -576,10 +564,10 @@ Repo.prototype.fork = function(opt_callback) {
 }
 
 Repo.prototype.new = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload,
-        method = 'create'
+    const instance = this
+    const options = instance.options
+    let payload
+    let method = 'create'
 
     options.description = options.description || ''
     options.gitignore = options.gitignore || ''
@@ -614,15 +602,15 @@ Repo.prototype.new = function(opt_callback) {
 }
 
 Repo.prototype.updateLabel = function(user, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
+        user,
         color: options.color,
         name: options.update,
         repo: options.repo,
-        user: user,
     }
 
     base.github.issues.updateLabel(payload, opt_callback)

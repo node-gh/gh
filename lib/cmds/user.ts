@@ -40,7 +40,7 @@ User.DETAILS = {
         L: ['--logout'],
         w: ['--whoami'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         options.login = true
     },
 }
@@ -48,17 +48,17 @@ User.DETAILS = {
 // -- Commands -------------------------------------------------------------------------------------
 
 User.prototype.run = function() {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     if (options.login) {
         if (User.hasCredentials()) {
-            logger.log("You're logged in as " + logger.colors.green(options.user))
+            logger.log(`You're logged in as ${logger.colors.green(options.user)}`)
         }
     }
 
     if (options.logout) {
-        logger.log('Logging out of user ' + logger.colors.green(options.user))
+        logger.log(`Logging out of user ${logger.colors.green(options.user)}`)
 
         !testing && User.logout()
     }
@@ -71,11 +71,9 @@ User.prototype.run = function() {
 // -- Static ---------------------------------------------------------------------------------------
 
 User.authorize = function() {
-    config = configs.getConfig()
-
     base.github.authenticate({
         type: 'oauth',
-        token: getCorrectToken(config),
+        token: getCorrectToken(configs.getConfig()),
     })
 }
 
@@ -110,9 +108,9 @@ User.createAuthorization = function(opt_callback) {
                 name: 'password',
             },
         ])
-        .then(function(answers) {
+        .then(answers => {
             var payload = {
-                note: 'Node GH (' + moment().format('MMMM Do YYYY, h:mm:ss a') + ')',
+                note: `Node GH (${moment().format('MMMM Do YYYY, h:mm:ss a')})`,
                 note_url: 'https://github.com/eduardolundgren/node-gh',
                 scopes: ['user', 'public_repo', 'repo', 'repo:status', 'delete_repo', 'gist'],
             }
@@ -123,8 +121,9 @@ User.createAuthorization = function(opt_callback) {
                 password: answers.password,
             })
 
-            base.github.authorization.create(payload, function(err, res) {
-                var isTwoFactorAuthentication = err && err.message && err.message.indexOf('OTP') > 0
+            base.github.authorization.create(payload, (err, res) => {
+                const isTwoFactorAuthentication =
+                    err && err.message && err.message.indexOf('OTP') > 0
 
                 if (isTwoFactorAuthentication) {
                     User.twoFactorAuthenticator_(payload, answers.user, opt_callback)
@@ -170,14 +169,14 @@ User.twoFactorAuthenticator_ = function(payload, user, opt_callback) {
                 name: 'otp',
             },
         ])
-        .then(function(factor) {
+        .then(factor => {
             if (!payload.headers) {
                 payload.headers = []
             }
 
             payload.headers['X-GitHub-OTP'] = factor.otp
 
-            base.github.authorization.create(payload, function(err, res) {
+            base.github.authorization.create(payload, (err, res) => {
                 User.authorizationCallback_(user, err, res)
                 opt_callback && opt_callback(err)
             })
@@ -187,12 +186,13 @@ User.twoFactorAuthenticator_ = function(payload, user, opt_callback) {
 function getCorrectToken(config) {
     if (process.env.CONTINUOUS_INTEGRATION) {
         return process.env.GH_TOKEN
-    } else if (process.env.NODE_ENV === 'testing') {
+    }
+    if (process.env.NODE_ENV === 'testing') {
         // Load your local token when generating test fixtures
         return JSON.parse(fs.readFileSync(userhome('.gh.json')).toString()).github_token
-    } else {
-        return config.github_token
     }
+
+    return config.github_token
 }
 
 exports.Impl = User

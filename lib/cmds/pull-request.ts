@@ -103,7 +103,7 @@ PullRequest.DETAILS = {
         t: ['--title'],
         u: ['--user'],
     },
-    payload: function(payload, options) {
+    payload(payload, options) {
         if (payload[0]) {
             options.fetch = true
         } else {
@@ -130,8 +130,8 @@ PullRequest.prototype.options = null
 PullRequest.prototype.issues = null
 
 PullRequest.prototype.run = function(done) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
     instance.config = config
 
@@ -200,15 +200,15 @@ PullRequest.prototype.run = function(done) {
 }
 
 PullRequest.prototype.addComplexityParamToPulls_ = function(pulls, opt_callback) {
-    var instance = this,
-        metrics,
-        operations,
-        options = instance.options
+    const instance = this
+    let metrics
+    let operations
+    const options = instance.options
 
-    operations = pulls.map(function(pull) {
+    operations = pulls.map(pull => {
         return function(callback) {
             options.number = pull.number
-            instance.getPullRequest_(function(err, pull2) {
+            instance.getPullRequest_((err, pull2) => {
                 if (!err) {
                     metrics = {
                         additions: pull2.additions,
@@ -224,26 +224,26 @@ PullRequest.prototype.addComplexityParamToPulls_ = function(pulls, opt_callback)
         }
     })
 
-    async.series(operations, function(err, results) {
+    async.series(operations, (err, results) => {
         opt_callback(err, results)
     })
 }
 
 PullRequest.prototype.browser = function(user, repo, number) {
     if (number) {
-        openUrl(config.github_host + user + '/' + repo + '/pull/' + number, { wait: false })
+        openUrl(`${config.github_host}${user}/${repo}/pull/${number}`, { wait: false })
     } else {
-        openUrl(config.github_host + user + '/' + repo + '/pulls', { wait: false })
+        openUrl(`${config.github_host}${user}/${repo}/pulls`, { wait: false })
     }
 }
 
 PullRequest.prototype.calculateComplexity_ = function(metrics) {
-    var complexity,
-        weightAddition = 2,
-        weightChangedFile = 2,
-        weightComment = 2,
-        weightDeletion = 2,
-        weightReviewComment = 1
+    let complexity
+    const weightAddition = 2
+    const weightChangedFile = 2
+    const weightComment = 2
+    const weightDeletion = 2
+    const weightReviewComment = 1
 
     complexity =
         metrics.additions * weightAddition +
@@ -256,14 +256,14 @@ PullRequest.prototype.calculateComplexity_ = function(metrics) {
 }
 
 PullRequest.prototype.close = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        operations,
-        pull
+    const instance = this
+    const options = instance.options
+    let operations
+    let pull
 
     operations = [
         function(callback) {
-            instance.getPullRequest_(function(err, data) {
+            instance.getPullRequest_((err, data) => {
                 if (!err) {
                     pull = data
                 }
@@ -286,26 +286,26 @@ PullRequest.prototype.close = function(opt_callback) {
         },
     ]
 
-    async.series(operations, function(err) {
+    async.series(operations, err => {
         opt_callback && opt_callback(err, pull)
     })
 }
 
 PullRequest.prototype.checkPullRequestIntegrity_ = function(originalError, user, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload,
-        pull
+    const instance = this
+    const options = instance.options
+    let payload
+    let pull
 
     payload = {
-        user: user,
+        user,
         repo: options.repo,
         state: PullRequest.STATE_OPEN,
     }
 
-    base.github.pullRequests.getAll(payload, function(err, pulls) {
+    base.github.pullRequests.getAll(payload, (err, pulls) => {
         if (!err) {
-            pulls.forEach(function(data) {
+            pulls.forEach(data => {
                 if (
                     data.base.ref === options.branch &&
                     data.head.ref === options.currentBranch &&
@@ -325,12 +325,12 @@ PullRequest.prototype.checkPullRequestIntegrity_ = function(originalError, user,
 }
 
 PullRequest.prototype.fetch = function(opt_type, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        headBranch,
-        repoUrl
+    const instance = this
+    const options = instance.options
+    let headBranch
+    let repoUrl
 
-    instance.getPullRequest_(function(err, pull) {
+    instance.getPullRequest_((err, pull) => {
         if (err) {
             opt_callback && opt_callback(err)
             return
@@ -350,10 +350,10 @@ PullRequest.prototype.fetch = function(opt_type, opt_callback) {
 }
 
 PullRequest.prototype.filterPullsSentByMe_ = function(pulls) {
-    var instance = this,
-        options = instance.options
+    const instance = this
+    const options = instance.options
 
-    pulls = pulls.filter(function(pull) {
+    pulls = pulls.filter(pull => {
         if (options.loggedUser === pull.user.login) {
             return pull
         }
@@ -363,15 +363,15 @@ PullRequest.prototype.filterPullsSentByMe_ = function(pulls) {
 }
 
 PullRequest.prototype.forward = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        operations,
-        submittedPull,
-        pull
+    const instance = this
+    const options = instance.options
+    let operations
+    let submittedPull
+    let pull
 
     operations = [
         function(callback) {
-            instance.fetch(PullRequest.FETCH_TYPE_SILENT, function(err, data) {
+            instance.fetch(PullRequest.FETCH_TYPE_SILENT, (err, data) => {
                 pull = data
                 callback(err)
             })
@@ -381,7 +381,7 @@ PullRequest.prototype.forward = function(opt_callback) {
             options.description = pull.body
             options.submittedUser = pull.user.login
 
-            instance.submit(options.fwd, function(err, data) {
+            instance.submit(options.fwd, (err, data) => {
                 if (err) {
                     callback(err)
                     return
@@ -395,15 +395,15 @@ PullRequest.prototype.forward = function(opt_callback) {
         },
     ]
 
-    async.series(operations, function(err) {
+    async.series(operations, err => {
         opt_callback && opt_callback(err, submittedPull)
     })
 }
 
 PullRequest.prototype.getPullRequest_ = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
         number: options.number,
@@ -427,18 +427,18 @@ PullRequest.prototype.getPullRequestNumberFromBranch_ = function(currentBranch, 
 }
 
 PullRequest.prototype.getPullsTemplateJson_ = function(pulls, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        branch,
-        branches,
-        json
+    const instance = this
+    const options = instance.options
+    let branch
+    let branches
+    let json
 
     branches = {}
     json = {
         branches: [],
     }
 
-    pulls.forEach(function(pull) {
+    pulls.forEach(pull => {
         branch = pull.base.ref
 
         if (!options.branch || options.branch === branch) {
@@ -447,7 +447,7 @@ PullRequest.prototype.getPullsTemplateJson_ = function(pulls, opt_callback) {
         }
     })
 
-    Object.keys(branches).forEach(function(branch) {
+    Object.keys(branches).forEach(branch => {
         json.branches.push({
             name: branch,
             pulls: branches[branch],
@@ -459,9 +459,9 @@ PullRequest.prototype.getPullsTemplateJson_ = function(pulls, opt_callback) {
 }
 
 PullRequest.prototype.printPullInfo_ = function(pull) {
-    var options = this.options
+    const options = this.options
 
-    var status = ''
+    let status = ''
 
     switch (pull.combinedStatus) {
         case 'success':
@@ -472,19 +472,12 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
             break
     }
 
-    var headline =
-        logger.colors.green('#' + pull.number) +
-        ' ' +
-        pull.title +
-        ' ' +
-        logger.colors.magenta('@' + pull.user.login) +
-        ' (' +
-        logger.getDuration(pull.created_at) +
-        ')' +
-        status
+    var headline = `${logger.colors.green(`#${pull.number}`)} ${pull.title} ${logger.colors.magenta(
+        `@${pull.user.login}`
+    )} (${logger.getDuration(pull.created_at)})${status}`
 
     if (options.link) {
-        headline += ' ' + logger.colors.blue(pull.html_url)
+        headline += ` ${logger.colors.blue(pull.html_url)}`
     }
 
     logger.log(headline)
@@ -494,29 +487,29 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
     }
 
     if (pull.mergeable_state === 'clean') {
-        logger.log('Mergeable (' + pull.mergeable_state + ')')
+        logger.log(`Mergeable (${pull.mergeable_state})`)
     } else if (pull.mergeable_state !== undefined) {
-        logger.warn('Not mergeable (' + pull.mergeable_state + ')')
+        logger.warn(`Not mergeable (${pull.mergeable_state})`)
     }
 
     if ((options.info || options.detailed) && pull.body) {
-        logger.log(pull.body + '\n')
+        logger.log(`${pull.body}\n`)
     }
 }
 
 PullRequest.prototype.get = function(user, repo, number, opt_callback) {
-    var pr = this,
-        payload
+    const pr = this
+    let payload
 
     payload = {
-        repo: repo,
-        user: user,
-        number: number,
+        repo,
+        user,
+        number,
     }
 
-    base.github.pullRequests.get(payload, function(err, pull) {
+    base.github.pullRequests.get(payload, (err, pull) => {
         if (err) {
-            logger.warn("Can't get pull request " + user + '/' + repo + '/' + number)
+            logger.warn(`Can't get pull request ${user}/${repo}/${number}`)
             return
         }
 
@@ -527,13 +520,13 @@ PullRequest.prototype.get = function(user, repo, number, opt_callback) {
 }
 
 PullRequest.prototype.list = function(user, repo, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        json,
-        operations,
-        payload,
-        pulls,
-        sort
+    const instance = this
+    let options = instance.options
+    let json
+    let operations
+    let payload
+    let pulls
+    let sort
 
     sort = options.sort
 
@@ -542,16 +535,16 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
     }
 
     payload = {
+        repo,
+        sort,
+        user,
         direction: options.direction,
-        repo: repo,
-        sort: sort,
         state: options.state,
-        user: user,
     }
 
     operations = [
         function(callback) {
-            base.github.pullRequests.getAll(payload, function(err, data) {
+            base.github.pullRequests.getAll(payload, (err, data) => {
                 pulls = []
 
                 if (!err) {
@@ -565,7 +558,7 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
                 if (err && err.code === 404) {
                     // some times a repo is found, but you can't listen its prs
                     // due to the repo being disabled (e.g., private repo with debt)
-                    logger.warn("Can't list pull requests for " + user + '/' + payload.repo)
+                    logger.warn(`Can't list pull requests for ${user}/${payload.repo}`)
                     callback()
                 } else {
                     callback(err)
@@ -575,7 +568,7 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
 
         function(callback) {
             if (options.sort && options.sort === PullRequest.SORT_COMPLEXITY) {
-                instance.addComplexityParamToPulls_(pulls, function(err, data) {
+                instance.addComplexityParamToPulls_(pulls, (err, data) => {
                     if (!err) {
                         pulls = instance.sortPullsByComplexity_(data)
                     }
@@ -591,15 +584,15 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
             var statusOperations = []
             var statusPayload
 
-            pulls.forEach(function(pull) {
-                statusOperations.push(function(callback) {
+            pulls.forEach(pull => {
+                statusOperations.push(callback => {
                     statusPayload = {
-                        repo: repo,
-                        user: user,
+                        repo,
+                        user,
                         sha: pull.head.sha,
                     }
 
-                    base.github.statuses.getCombined(statusPayload, function(err, data) {
+                    base.github.statuses.getCombined(statusPayload, (err, data) => {
                         pull.combinedStatus = data.state
 
                         callback(err)
@@ -607,13 +600,13 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
                 })
             })
 
-            async.series(statusOperations, function(err) {
+            async.series(statusOperations, err => {
                 callback(err)
             })
         },
 
         function(callback) {
-            instance.getPullsTemplateJson_(pulls, function(err, data) {
+            instance.getPullsTemplateJson_(pulls, (err, data) => {
                 if (!err) {
                     json = data
                 }
@@ -622,12 +615,12 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
         },
     ]
 
-    async.series(operations, function(err) {
+    async.series(operations, err => {
         if (!err && pulls.length) {
-            logger.log(logger.colors.yellow(user + '/' + repo))
+            logger.log(logger.colors.yellow(`${user}/${repo}`))
 
-            json.branches.forEach(function(branch) {
-                logger.log(branch.name + ' (' + branch.total + ')')
+            json.branches.forEach(branch => {
+                logger.log(`${branch.name} (${branch.total})`)
 
                 branch.pulls.forEach(instance.printPullInfo_, instance)
             })
@@ -638,10 +631,10 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
 }
 
 PullRequest.prototype.listFromAllRepositories = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload,
-        apiMethod
+    const instance = this
+    const options = instance.options
+    let payload
+    let apiMethod
 
     payload = {
         type: 'all',
@@ -656,11 +649,11 @@ PullRequest.prototype.listFromAllRepositories = function(opt_callback) {
         apiMethod = 'getAll'
     }
 
-    base.github.repos[apiMethod](payload, function(err, repositories) {
+    base.github.repos[apiMethod](payload, (err, repositories) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
-            repositories.forEach(function(repository) {
+            repositories.forEach(repository => {
                 instance.list(repository.owner.login, repository.name, opt_callback)
             })
         }
@@ -668,9 +661,9 @@ PullRequest.prototype.listFromAllRepositories = function(opt_callback) {
 }
 
 PullRequest.prototype.listFromAllOrgRepositories = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     payload = {
         type: 'all',
@@ -679,11 +672,11 @@ PullRequest.prototype.listFromAllOrgRepositories = function(opt_callback) {
         per_page: 100,
     }
 
-    base.github.repos.getFromOrg(payload, function(err, repositories) {
+    base.github.repos.getFromOrg(payload, (err, repositories) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
-            repositories.forEach(function(repository) {
+            repositories.forEach(repository => {
                 instance.list(repository.owner.login, repository.name, opt_callback)
             })
         }
@@ -691,9 +684,9 @@ PullRequest.prototype.listFromAllOrgRepositories = function(opt_callback) {
 }
 
 PullRequest.prototype.merge = function(opt_callback) {
-    var instance = this,
-        options = instance.options,
-        method = 'merge'
+    const instance = this
+    const options = instance.options
+    let method = 'merge'
 
     if (options.rebase) {
         method = 'rebase'
@@ -709,7 +702,7 @@ PullRequest.prototype.merge = function(opt_callback) {
 PullRequest.prototype.open = function(opt_callback) {
     var instance = this
 
-    instance.getPullRequest_(function(err, pull) {
+    instance.getPullRequest_((err, pull) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
@@ -719,9 +712,9 @@ PullRequest.prototype.open = function(opt_callback) {
 }
 
 PullRequest.prototype.setMergeCommentRequiredOptions_ = function(opt_callback) {
-    var options = this.options,
-        lastCommitSHA = git.getLastCommitSHA(),
-        changes = git.countUserAdjacentCommits()
+    const options = this.options
+    const lastCommitSHA = git.getLastCommitSHA()
+    const changes = git.countUserAdjacentCommits()
 
     options.currentSHA = lastCommitSHA
 
@@ -729,23 +722,25 @@ PullRequest.prototype.setMergeCommentRequiredOptions_ = function(opt_callback) {
         options.changes = changes
     }
 
-    options.pullHeadSHA = lastCommitSHA + '~' + changes
+    options.pullHeadSHA = `${lastCommitSHA}~${changes}`
 
     opt_callback && opt_callback()
 }
 
-PullRequest.prototype.sortPullsByComplexity_ = function(data) {
-    var instance = this,
-        options = instance.options
+PullRequest.prototype.sortPullsByComplexity_ = data => {
+    const instance = this
+    const options = instance.options
 
-    data.sort(function(a, b) {
+    data.sort((a, b) => {
         if (a.complexity > b.complexity) {
             return -1
-        } else if (a.complexity < b.complexity) {
-            return +1
-        } else {
-            return 0
         }
+
+        if (a.complexity < b.complexity) {
+            return +1
+        }
+
+        return 0
     })
 
     if (options.direction === PullRequest.DIRECTION_ASC) {
@@ -756,10 +751,10 @@ PullRequest.prototype.sortPullsByComplexity_ = function(data) {
 }
 
 PullRequest.prototype.submit = function(user, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        operations,
-        pullBranch
+    const instance = this
+    const options = instance.options
+    let operations
+    let pullBranch
 
     pullBranch = options.pullBranch || options.currentBranch
 
@@ -780,11 +775,11 @@ PullRequest.prototype.submit = function(user, opt_callback) {
             callback()
         },
         function(callback) {
-            var payload = {
+            var payload: any = {
+                user,
                 base: options.branch,
-                head: options.user + ':' + pullBranch,
+                head: `${options.user}:${pullBranch}`,
                 repo: options.repo,
-                user: user,
             }
 
             if (options.issue) {
@@ -798,7 +793,7 @@ PullRequest.prototype.submit = function(user, opt_callback) {
         },
     ]
 
-    async.series(operations, function(err, results) {
+    async.series(operations, (err, results) => {
         if (err) {
             instance.checkPullRequestIntegrity_(err, user, opt_callback)
         } else {
@@ -808,20 +803,20 @@ PullRequest.prototype.submit = function(user, opt_callback) {
 }
 
 PullRequest.prototype.updatePullRequest_ = function(title, opt_body, state, opt_callback) {
-    var instance = this,
-        options = instance.options,
-        payload
+    const instance = this
+    const options = instance.options
+    let payload
 
     if (opt_body) {
         opt_body = logger.applyReplacements(opt_body, config.replace)
     }
 
     payload = {
+        state,
+        title,
         body: opt_body,
         number: options.number,
         repo: options.repo,
-        state: state,
-        title: title,
         user: options.user,
     }
 
@@ -829,9 +824,9 @@ PullRequest.prototype.updatePullRequest_ = function(title, opt_body, state, opt_
 }
 
 PullRequest.prototype._fetchHandler = function() {
-    var instance = this,
-        options = this.options,
-        fetchType = PullRequest.FETCH_TYPE_CHECKOUT
+    const instance = this
+    const options = this.options
+    let fetchType = PullRequest.FETCH_TYPE_CHECKOUT
 
     if (options.merge) {
         fetchType = PullRequest.FETCH_TYPE_MERGE
@@ -839,9 +834,9 @@ PullRequest.prototype._fetchHandler = function() {
         fetchType = PullRequest.FETCH_TYPE_REBASE
     }
 
-    hooks.invoke('pull-request.fetch', instance, function(afterHooksCallback) {
-        var operation = '',
-            branch = options.pullBranch
+    hooks.invoke('pull-request.fetch', instance, afterHooksCallback => {
+        let operation = ''
+        let branch = options.pullBranch
 
         if (options.merge) {
             operation = ' and merging'
@@ -854,14 +849,12 @@ PullRequest.prototype._fetchHandler = function() {
         }
 
         logger.log(
-            'Fetching pull request ' +
-                logger.colors.green('#' + options.number) +
-                operation +
-                ' into branch ' +
-                logger.colors.green(branch)
+            `Fetching pull request ${logger.colors.green(
+                `#${options.number}`
+            )}${operation} into branch ${logger.colors.green(branch)}`
         )
 
-        instance.fetch(fetchType, function(err) {
+        instance.fetch(fetchType, err => {
             if (err) {
                 throw new Error(`Can't fetch pull request ${options.number}.`)
             }
@@ -872,21 +865,19 @@ PullRequest.prototype._fetchHandler = function() {
 }
 
 PullRequest.prototype._mergeHandler = function() {
-    var instance = this,
-        options = this.options,
-        operation = 'Merging'
+    const instance = this
+    const options = this.options
+    let operation = 'Merging'
 
-    hooks.invoke('pull-request.merge', instance, function(afterHooksCallback) {
+    hooks.invoke('pull-request.merge', instance, afterHooksCallback => {
         if (options.rebase) {
             operation = 'Rebasing'
         }
 
         logger.log(
-            operation +
-                ' pull request ' +
-                logger.colors.green('#' + options.number) +
-                ' into branch ' +
-                logger.colors.green(options.branch)
+            `${operation} pull request ${logger.colors.green(
+                `#${options.number}`
+            )} into branch ${logger.colors.green(options.branch)}`
         )
 
         instance.merge()
@@ -895,22 +886,19 @@ PullRequest.prototype._mergeHandler = function() {
 }
 
 PullRequest.prototype._fwdHandler = function() {
-    var instance = this,
-        options = this.options
+    const instance = this
+    const options = this.options
 
-    hooks.invoke('pull-request.fwd', instance, function(afterHooksCallback) {
+    hooks.invoke('pull-request.fwd', instance, afterHooksCallback => {
         logger.log(
-            'Forwarding pull request ' +
-                logger.colors.green('#' + options.number) +
-                ' to ' +
-                logger.colors.magenta('@' + options.fwd)
+            `Forwarding pull request ${logger.colors.green(
+                `#${options.number}`
+            )} to ${logger.colors.magenta(`@${options.fwd}`)}`
         )
 
-        instance.forward(function(err, pull) {
+        instance.forward((err, pull) => {
             if (err) {
-                logger.error(
-                    "Can't forward pull request " + options.number + ' to ' + options.fwd + '.'
-                )
+                logger.error(`Can't forward pull request ${options.number} to ${options.fwd}.`)
                 return
             }
 
@@ -925,15 +913,15 @@ PullRequest.prototype._fwdHandler = function() {
 }
 
 PullRequest.prototype._closeHandler = function(done) {
-    var instance = this,
-        options = this.options
+    const instance = this
+    const options = this.options
 
-    hooks.invoke('pull-request.close', instance, function(afterHooksCallback) {
-        logger.log('Closing pull request ' + logger.colors.green('#' + options.number))
+    hooks.invoke('pull-request.close', instance, afterHooksCallback => {
+        logger.log(`Closing pull request ${logger.colors.green(`#${options.number}`)}`)
 
-        instance.close(function(err, pull) {
+        instance.close((err, pull) => {
             if (err) {
-                logger.warn("Can't close pull request " + options.number + '.')
+                logger.warn(`Can't close pull request ${options.number}.`)
                 return
             }
 
@@ -949,11 +937,11 @@ PullRequest.prototype._closeHandler = function(done) {
 PullRequest.prototype._commentHandler = function(done) {
     var options = this.options
 
-    logger.log('Adding comment on pull request ' + logger.colors.green('#' + options.number))
+    logger.log(`Adding comment on pull request ${logger.colors.green(`#${options.number}`)}`)
 
-    this.issue.comment(function(err, pull) {
+    this.issue.comment((err, pull) => {
         if (err) {
-            logger.error("Can't comment on pull request " + options.number + '.')
+            logger.error(`Can't comment on pull request ${options.number}.`)
             return
         }
 
@@ -964,10 +952,10 @@ PullRequest.prototype._commentHandler = function(done) {
 }
 
 PullRequest.prototype._infoHandler = function(done) {
-    var instance = this,
-        options = this.options
+    const instance = this
+    const options = this.options
 
-    instance.get(options.user, options.repo, options.number, function(err) {
+    instance.get(options.user, options.repo, options.number, err => {
         if (err) {
             throw new Error(`Can't get pull requests.\n${err}`)
         }
@@ -977,9 +965,9 @@ PullRequest.prototype._infoHandler = function(done) {
 }
 
 PullRequest.prototype._listHandler = function(done) {
-    var instance = this,
-        options = this.options,
-        who
+    const instance = this
+    const options = this.options
+    let who
 
     options.sort = options.sort || PullRequest.SORT_CREATED
     options.direction = options.direction || PullRequest.DIRECTION_DESC
@@ -991,11 +979,9 @@ PullRequest.prototype._listHandler = function(done) {
             who = options.org
         }
 
-        logger.log(
-            'Listing all ' + options.state + ' pull requests for ' + logger.colors.green(who)
-        )
+        logger.log(`Listing all ${options.state} pull requests for ${logger.colors.green(who)}`)
 
-        instance.listFromAllRepositories(function(err) {
+        instance.listFromAllRepositories(err => {
             if (err) {
                 throw new Error(`Can't list all pull requests from repos.\n${err}`)
             }
@@ -1005,22 +991,18 @@ PullRequest.prototype._listHandler = function(done) {
     } else {
         if (options.me) {
             logger.log(
-                'Listing ' +
-                    options.state +
-                    ' pull requests sent by ' +
-                    logger.colors.green(options.loggedUser) +
-                    ' on ' +
-                    logger.colors.green(options.user + '/' + options.repo)
+                `Listing ${options.state} pull requests sent by ${logger.colors.green(
+                    options.loggedUser
+                )} on ${logger.colors.green(`${options.user}/${options.repo}`)}`
             )
         } else {
             logger.log(
-                'Listing ' +
-                    options.state +
-                    ' pull requests on ' +
-                    logger.colors.green(options.user + '/' + options.repo)
+                `Listing ${options.state} pull requests on ${logger.colors.green(
+                    `${options.user}/${options.repo}`
+                )}`
             )
         }
-        instance.list(options.user, options.repo, function(err) {
+        instance.list(options.user, options.repo, err => {
             if (err) {
                 throw new Error(`Can't list pull requests.\n${err}`)
             }
@@ -1031,15 +1013,15 @@ PullRequest.prototype._listHandler = function(done) {
 }
 
 PullRequest.prototype._openHandler = function(done) {
-    var instance = this,
-        options = this.options
+    const instance = this
+    const options = this.options
 
-    hooks.invoke('pull-request.open', instance, function(afterHooksCallback) {
-        logger.log('Opening pull request ' + logger.colors.green('#' + options.number))
+    hooks.invoke('pull-request.open', instance, afterHooksCallback => {
+        logger.log(`Opening pull request ${logger.colors.green(`#${options.number}`)}`)
 
-        instance.open(function(err, pull) {
+        instance.open((err, pull) => {
             if (err) {
-                logger.error("Can't open pull request " + options.number + '.')
+                logger.error(`Can't open pull request ${options.number}.`)
                 return
             }
 
@@ -1052,13 +1034,13 @@ PullRequest.prototype._openHandler = function(done) {
 }
 
 PullRequest.prototype._submitHandler = function(done) {
-    var instance = this,
-        options = this.options
+    const instance = this
+    const options = this.options
 
-    hooks.invoke('pull-request.submit', instance, function(afterHooksCallback) {
-        logger.log('Submitting pull request to ' + logger.colors.magenta('@' + options.submit))
+    hooks.invoke('pull-request.submit', instance, afterHooksCallback => {
+        logger.log(`Submitting pull request to ${logger.colors.magenta(`@${options.submit}`)}`)
 
-        instance.submit(options.submit, function(err, pull) {
+        instance.submit(options.submit, (err, pull) => {
             if (err) {
                 var cause = 'User Not Found'
 
@@ -1068,7 +1050,7 @@ PullRequest.prototype._submitHandler = function(done) {
                     cause = err.message ? err.message : JSON.stringify(err)
                 }
 
-                logger.error("Can't submit pull request. " + cause)
+                logger.error(`Can't submit pull request. ${cause}`)
             }
 
             if (pull) {

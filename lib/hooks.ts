@@ -22,9 +22,9 @@ exports.createContext = function(scope) {
 }
 
 exports.getHooksArrayFromPath_ = function(path, opt_config) {
-    var keys = path.split('.'),
-        key = keys.shift(),
-        hooks
+    const keys = path.split('.')
+    let key = keys.shift()
+    let hooks
 
     opt_config = opt_config || config
 
@@ -39,9 +39,9 @@ exports.getHooksArrayFromPath_ = function(path, opt_config) {
 }
 
 exports.getHooksFromPath = function(path) {
-    var hooks,
-        plugins = configs.getPlugins(),
-        pluginHooks = []
+    let hooks
+    const plugins = configs.getPlugins()
+    let pluginHooks = []
 
     // First, load all core hooks for the specified path.
     hooks = exports.getHooksArrayFromPath_(path)
@@ -49,7 +49,7 @@ exports.getHooksFromPath = function(path) {
     // Second, search all installed plugins and load the hooks for each into
     // core hooks array.
     process.env.NODE_ENV !== 'testing' &&
-        plugins.forEach(function(plugin) {
+        plugins.forEach(plugin => {
             var pluginConfig
 
             plugin = configs.getPluginBasename(plugin)
@@ -69,12 +69,12 @@ exports.getHooksFromPath = function(path) {
 }
 
 exports.invoke = function(path, scope, opt_callback) {
-    var after = exports.getHooksFromPath(path + '.after'),
-        before = exports.getHooksFromPath(path + '.before'),
-        beforeOperations,
-        afterOperations,
-        options = scope.options,
-        context
+    const after = exports.getHooksFromPath(`${path}.after`)
+    const before = exports.getHooksFromPath(`${path}.before`)
+    let beforeOperations
+    let afterOperations
+    const options = scope.options
+    let context
 
     if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
         opt_callback && opt_callback(_.noop)
@@ -89,7 +89,7 @@ exports.invoke = function(path, scope, opt_callback) {
         },
     ]
 
-    before.forEach(function(cmd) {
+    before.forEach(cmd => {
         beforeOperations.push(exports.wrapCommand_(cmd, context, 'before'))
     })
 
@@ -99,44 +99,44 @@ exports.invoke = function(path, scope, opt_callback) {
         },
     ]
 
-    after.forEach(function(cmd) {
+    after.forEach(cmd => {
         afterOperations.push(exports.wrapCommand_(cmd, context, 'after'))
     })
 
-    afterOperations.push(function(callback) {
-        process.env.NODEGH_HOOK_IS_LOCKED = false
+    afterOperations.push(callback => {
+        process.env.NODEGH_HOOK_IS_LOCKED = 'false'
         callback()
     })
 
-    process.env.NODEGH_HOOK_IS_LOCKED = true
+    process.env.NODEGH_HOOK_IS_LOCKED = 'true'
 
-    async.series(beforeOperations, function() {
+    async.series(beforeOperations, () => {
         opt_callback &&
-            opt_callback(function() {
+            opt_callback(() => {
                 async.series(afterOperations)
             })
     })
 }
 
 exports.setupPlugins_ = function(context, setupFn, opt_callback) {
-    var plugins = configs.getPlugins(),
-        operations = []
+    const plugins = configs.getPlugins()
+    const operations = []
 
-    plugins.forEach(function(plugin) {
+    plugins.forEach(plugin => {
         try {
             plugin = configs.getPlugin(plugin)
         } catch (e) {
-            logger.warn("Can't get " + plugin + ' plugin.')
+            logger.warn(`Can't get ${plugin} plugin.`)
         }
 
         if (plugin && plugin[setupFn]) {
-            operations.push(function(callback) {
+            operations.push(callback => {
                 plugin[setupFn](context, callback)
             })
         }
     })
 
-    async.series(operations, function() {
+    async.series(operations, () => {
         opt_callback && opt_callback()
     })
 }
@@ -155,9 +155,9 @@ exports.wrapCommand_ = function(cmd, context, when) {
         try {
             exec.execSyncInteractiveStream(raw, { cwd: process.cwd() })
         } catch (e) {
-            logger.debug('[' + when + ' hook failure]')
+            logger.debug(`[${when} hook failure]`)
         } finally {
-            logger.debug(logger.colors.cyan('[end of ' + when + ' hook]'))
+            logger.debug(logger.colors.cyan(`[end of ${when} hook]`))
         }
 
         callback && callback()
