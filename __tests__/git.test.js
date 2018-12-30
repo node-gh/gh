@@ -8,8 +8,8 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-var assert = require('assert'),
-    git = require('../lib/git')
+const assert = require('assert')
+const git = require('../dist/git')
 
 // -- Suites ---------------------------------------------------------------------------------------
 

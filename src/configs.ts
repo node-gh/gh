@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
-
 const fs = require('fs')
 const logger = require('./logger')
 const exec = require('./exec')
@@ -41,7 +39,7 @@ exports.getProjectConfigPath = function() {
 }
 
 exports.getUserHomePath = function() {
-    return process.env.NODE_ENV === 'testing' ? './lib/default.gh.json' : userhome('.gh.json')
+    return process.env.NODE_ENV === 'testing' ? '../default.gh.json' : userhome('.gh.json')
 }
 
 function getConfig(opt_plugin) {
@@ -123,7 +121,7 @@ exports.getGlobalConfig = function(opt_plugin) {
 }
 
 exports.getGlobalConfigPath = function() {
-    return path.join(__dirname, 'default.gh.json')
+    return path.join(__dirname, '../default.gh.json')
 }
 
 exports.removeGlobalConfig = function(key) {

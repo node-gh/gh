@@ -3,8 +3,7 @@
  * (see file: CONTRIBUTORS)
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
-export = {}
+export const hi = 'hi'
 
 // -- Requires -------------------------------------------------------------------------------------
 

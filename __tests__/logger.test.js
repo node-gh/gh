@@ -6,9 +6,9 @@
 
 'use strict'
 
-var rewire = require('rewire'),
-    assert = require('assert'),
-    logger = rewire('../lib/logger')
+const rewire = require('rewire')
+const assert = require('assert')
+const logger = rewire('../dist/logger')
 
 describe('Logger Module Tests', function() {
     it('should log debug', function() {

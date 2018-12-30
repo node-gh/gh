@@ -8,7 +8,7 @@
 
 var rewire = require('rewire'),
     assert = require('assert'),
-    version = rewire('../lib/cmds/version')
+    version = rewire('../dist/cmds/version')
 
 describe('Version Module Tests', function() {
     it('should load Version', function() {

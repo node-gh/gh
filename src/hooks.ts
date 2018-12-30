@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
+export const hi = 'hi'
 
 const async = require('async')
 const configs = require('./configs')

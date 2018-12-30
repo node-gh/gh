@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
-
 // -- Requires -------------------------------------------------------------------------------------
 
 const base = require('../base')
-const fs = require('fs')
+import fs = require('fs')
 const git = require('../git')
 const hooks = require('../hooks')
 const logger = require('../logger')

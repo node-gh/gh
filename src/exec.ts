@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
+export const hi = 'hi'
 
 const child_process = require('child_process')
 const logger = require('./logger')
