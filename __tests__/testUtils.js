@@ -56,6 +56,10 @@ function prepareTestFixtures(cmdName, argv) {
             name: 'Gists',
             flags: ['--new', '--fork', '--delete'],
         },
+        {
+            name: 'Milestone',
+            flags: ['--list'],
+        },
     ].filter(cmd => filterByCmdName(cmd, cmdName))
 
     const newCmdName = formatCmdName(cmds[0], argv)
