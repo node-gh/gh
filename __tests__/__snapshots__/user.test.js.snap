@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E: User Module Test List Current User \`gh user\` 1`] = `
+"You're logged in as protoEvangelion
+"
+`;
+
+exports[`E2E: User Module Test Logout Current User \`gh user --logout\` 1`] = `
+"Logging out of user protoEvangelion
+"
+`;
+
+exports[`E2E: User Module Test Show just the current username \`gh user --whoami\` 1`] = `
+"protoEvangelion
+"
+`;
