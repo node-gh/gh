@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
-var child_process = require('child_process'),
-    logger = require('./logger')
+const child_process = require('child_process')
+const logger = require('./logger')
 
 exports.spawnSync = function(cmd, args, options) {
     var exec

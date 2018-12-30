@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 // -- Requires -------------------------------------------------------------------------------------
 
-var logger = require('../logger')
+const logger = require('../logger')
 
 // -- Constructor ----------------------------------------------------------------------------------
 

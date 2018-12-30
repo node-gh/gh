@@ -4,20 +4,20 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 // -- Requires -------------------------------------------------------------------------------------
 
-var base = require('../base'),
-    fs = require('fs'),
-    git = require('../git'),
-    hooks = require('../hooks'),
-    logger = require('../logger'),
-    openUrl = require('opn'),
-    inquirer = require('inquirer'),
-    url = require('url'),
-    config = base.getConfig(),
-    testing = process.env.NODE_ENV === 'testing'
+const base = require('../base')
+const fs = require('fs')
+const git = require('../git')
+const hooks = require('../hooks')
+const logger = require('../logger')
+const openUrl = require('opn')
+const inquirer = require('inquirer')
+const url = require('url')
+const config = base.getConfig()
+const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 

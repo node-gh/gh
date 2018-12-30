@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
-var logger = {},
-    fs = require('fs'),
-    handlebars = require('handlebars'),
-    moment = require('moment'),
-    path = require('path'),
-    wrap = require('wordwrap').hard(0, 80),
-    colors = require('colors/safe'),
-    _ = require('lodash')
+const logger = {}
+const fs = require('fs')
+const handlebars = require('handlebars')
+const moment = require('moment')
+const path = require('path')
+const wrap = require('wordwrap').hard(0, 80)
+const colors = require('colors/safe')
+const _ = require('lodash')
 
 function stripHandlebarsNewLine(str) {
     return str.replace(/[\s\t\r\n](\{\{[#\/])/g, '$1')

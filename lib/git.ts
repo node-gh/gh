@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 const logger = require('./logger')
 const exec = require('./exec')

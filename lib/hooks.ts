@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
-var async = require('async'),
-    configs = require('./configs'),
-    exec = require('./exec'),
-    truncate = require('truncate'),
-    logger = require('./logger'),
-    config = configs.getConfig(true),
-    _ = require('lodash')
+const async = require('async')
+const configs = require('./configs')
+const exec = require('./exec')
+const truncate = require('truncate')
+const logger = require('./logger')
+const config = configs.getConfig(true)
+const _ = require('lodash')
 
 exports.createContext = function(scope) {
     return {

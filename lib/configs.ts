@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
-var fs = require('fs'),
-    logger = require('./logger'),
-    exec = require('./exec'),
-    path = require('path'),
-    userhome = require('userhome'),
-    which = require('which'),
-    cache = {},
-    plugins,
-    PLUGINS_PATH_KEY = 'plugins_path'
+const fs = require('fs')
+const logger = require('./logger')
+const exec = require('./exec')
+const path = require('path')
+const userhome = require('userhome')
+const which = require('which')
+const cache = {}
+const PLUGINS_PATH_KEY = 'plugins_path'
+let plugins
 
 // -- Config -------------------------------------------------------------------
 

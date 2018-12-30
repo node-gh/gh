@@ -4,19 +4,19 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 // -- Requires -------------------------------------------------------------------------------------
 
-var base = require('../base'),
-    configs = require('../configs'),
-    logger = require('../logger'),
-    fs = require('fs'),
-    inquirer = require('inquirer'),
-    moment = require('moment'),
-    userhome = require('userhome'),
-    config = configs.getConfig(),
-    testing = process.env.NODE_ENV === 'testing'
+const base = require('../base')
+const configs = require('../configs')
+const logger = require('../logger')
+const fs = require('fs')
+const inquirer = require('inquirer')
+const moment = require('moment')
+const userhome = require('userhome')
+const config = configs.getConfig()
+const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
