@@ -60,6 +60,9 @@ function prepareTestFixtures(cmdName, argv) {
             name: 'Milestone',
             flags: ['--list'],
         },
+        {
+            name: 'Notifications',
+        },
     ].filter(cmd => filterByCmdName(cmd, cmdName))
 
     const newCmdName = formatCmdName(cmds[0], argv)

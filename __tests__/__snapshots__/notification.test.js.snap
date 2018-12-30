@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E: Notification Module Test List Notifications \`gh nt\` 1`] = `
+"Listing activities on protoEvangelion/gh
+protoEvangelion/gh
+@protoEvangelion pushed 1 commit(s) to gh a year ago
+@protoEvangelion created branch test-milestone at gh a year ago
+@protoEvangelion pushed 1 commit(s) to gh a year ago
+"
+`;
