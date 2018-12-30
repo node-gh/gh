@@ -18,6 +18,7 @@
                 "trailingComma": "es5",
                 "useTabs": false
             }
-        ]
+        ],
+        "variable-name": false
     }
 }

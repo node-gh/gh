@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 function CmdAnonymizer(commandDetails, redaction) {
     this.last = null

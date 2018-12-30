@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 // -- Requires -------------------------------------------------------------------------------------
-var base = require('../base'),
-    configs = require('../configs'),
-    logger = require('../logger'),
-    config = base.getConfig()
+const base = require('../base')
+const configs = require('../configs')
+const logger = require('../logger')
+const config = base.getConfig()
 
 // -- Constructor ----------------------------------------------------------------------------------
 

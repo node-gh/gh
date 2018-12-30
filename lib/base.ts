@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 const configs = require('./configs')
 const fs = require('fs')
@@ -21,9 +21,7 @@ exports.clone = function(o) {
 // -- Utils --------------------------------------------------------------------
 
 exports.load = function() {
-    var config = configs.getConfig()
-
-    exports.github = setupGithubClient(config)
+    exports.github = setupGithubClient(configs.getConfig())
 }
 
 exports.asyncReadPackages = function(callback) {
@@ -37,13 +35,13 @@ exports.asyncReadPackages = function(callback) {
 
     fs.readFile(path.join(__dirname, '..', 'package.json'), async)
 
-    configs.getPlugins().forEach(function(plugin) {
+    configs.getPlugins().forEach(plugin => {
         fs.readFile(path.join(configs.getNodeModulesGlobalPath(), plugin, 'package.json'), async)
     })
 }
 
 exports.notifyVersion = function(pkg) {
-    var notifier = updateNotifier({ pkg: pkg })
+    var notifier = updateNotifier({ pkg })
 
     if (notifier.update) {
         notifier.notify()
@@ -55,7 +53,7 @@ exports.checkVersion = function() {
 }
 
 exports.expandAliases = function(options) {
-    var config = configs.getConfig()
+    const config = configs.getConfig()
 
     if (config.alias) {
         options.fwd = config.alias[options.fwd] || options.fwd
@@ -65,7 +63,7 @@ exports.expandAliases = function(options) {
 }
 
 exports.find = function(filepath, opt_pattern) {
-    return fs.readdirSync(filepath).filter(function(file) {
+    return fs.readdirSync(filepath).filter(file => {
         return (opt_pattern || /.*/).test(file)
     })
 }
@@ -78,6 +76,12 @@ exports.getUser = function() {
 exports.getConfig = configs.getConfig
 exports.writeGlobalConfig = configs.writeGlobalConfig
 
+interface IPaginate {
+    meta: {
+        link: string
+    }
+}
+
 function setupGithubClient(config) {
     const github = new Github({
         debug: false,
@@ -89,11 +93,11 @@ function setupGithubClient(config) {
 
     function paginate(method) {
         return function paginatedMethod(payload, cb) {
-            let results = []
+            let results = [] as any
 
             const getSubsequentPages = (link, pagesCb) => {
                 if (github.hasNextPage(link)) {
-                    github.getNextPage(link, (err, res) => {
+                    github.getNextPage(link, (err, res: IPaginate) => {
                         if (err) {
                             return pagesCb(err)
                         }
@@ -104,7 +108,7 @@ function setupGithubClient(config) {
                 pagesCb()
             }
 
-            method(payload, (err, res) => {
+            method(payload, (err, res: IPaginate) => {
                 if (err) {
                     return cb(err, null)
                 }

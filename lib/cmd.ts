@@ -4,20 +4,20 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 // -- Requires -------------------------------------------------------------------------------------
 
-var async = require('async'),
-    base = require('./base'),
-    configs = require('./configs'),
-    fs = require('fs'),
-    git = require('./git'),
-    logger = require('./logger'),
-    nopt = require('nopt'),
-    path = require('path'),
-    User = require('./cmds/user').Impl,
-    config = configs.getConfig()
+const async = require('async')
+const base = require('./base')
+const configs = require('./configs')
+const fs = require('fs')
+const git = require('./git')
+const logger = require('./logger')
+const nopt = require('nopt')
+const path = require('path')
+const User = require('./cmds/user').Impl
+const config = configs.getConfig()
 
 // -- Utils ----------------------------------------------------------------------------------------
 

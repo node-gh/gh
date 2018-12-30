@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
-var base = require('../base'),
-    logger = require('../logger')
+const base = require('../base')
+const logger = require('../logger')
 
 function Version() {}
 

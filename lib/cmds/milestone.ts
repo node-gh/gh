@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 // -- Requires -------------------------------------------------------------------------------------
 
-var async = require('async'),
-    base = require('../base'),
-    logger = require('../logger')
+const async = require('async')
+const base = require('../base')
+const logger = require('../logger')
 
 // -- Constructor ----------------------------------------------------------------------------------
 

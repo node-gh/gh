@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+export = {}
 
 // -- Requires -------------------------------------------------------------------------------------
 
-var base = require('../base'),
-    configs = require('../configs'),
-    logger = require('../logger'),
-    nopt = require('nopt'),
-    path = require('path'),
-    stream = require('stream'),
-    url = require('url')
+const base = require('../base')
+const configs = require('../configs')
+const logger = require('../logger')
+const nopt = require('nopt')
+const path = require('path')
+const stream = require('stream')
+const url = require('url')
 
 // -- Constructor ----------------------------------------------------------------------------------
 
