@@ -1167,7 +1167,7 @@ gh alias --remove zeno
 
 ## Config
 
-There are some pretty useful configurations that you can set on [.gh.json](lib/default.gh.json).
+There are some pretty useful configurations that you can set on [.gh.json](default.gh.json).
 This file can be found under home directory _(on MacOSx: `/Users/yourName/.gh.json` on Windows: `C:\\Users\yourName\.gh.json`)_.
 
 You can also set per-project configurations by adding a `.gh.json` file in your project's root folder and overriding existing keys.

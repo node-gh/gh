@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
+export const hi = 'hi'
 
 const request = require('request')
 const http = require('http')

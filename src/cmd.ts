@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
-
 // -- Requires -------------------------------------------------------------------------------------
+
+export const hi = 'hi'
 
 const async = require('async')
 const base = require('./base')

@@ -4,10 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
-
 const logger: any = {}
-const fs = require('fs')
+import fs = require('fs')
 const handlebars = require('handlebars')
 const moment = require('moment')
 const path = require('path')

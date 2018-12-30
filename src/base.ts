@@ -4,10 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
-
 const configs = require('./configs')
-const fs = require('fs')
+
+import fs = require('fs')
 const Github = require('github')
 const path = require('path')
 const updateNotifier = require('update-notifier')

@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
-
 function CmdAnonymizer(commandDetails, redaction) {
     this.last = null
     this.invoked = []

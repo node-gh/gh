@@ -47,7 +47,7 @@ describe('E2E: Pull Request Module Test', () => {
 })
 
 describe('Pull Requests Module Tests', function() {
-    const pullRequest = rewire('../lib/cmds/pull-request')
+    const pullRequest = rewire('../dist/cmds/pull-request')
 
     it('should fail to get pull request', function() {
         var pr = new pullRequest.Impl({

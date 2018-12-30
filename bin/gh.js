@@ -19,4 +19,4 @@ if (insane) {
     process.env.GH_VERBOSE_INSANE = 'true'
 }
 
-require('../dist/cmd.js').run()
+require('../lib/cmd.js').run()

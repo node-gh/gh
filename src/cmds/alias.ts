@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export = {}
-
 // -- Requires -------------------------------------------------------------------------------------
+export const hi = 'hi'
+
 const base = require('../base')
 const configs = require('../configs')
 const logger = require('../logger')

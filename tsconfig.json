@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
-        "importHelpers": true,
         "module": "commonjs",
         "moduleResolution": "node",
-        "target": "es2015"
+        "target": "es2015",
+        "outDir": "lib",
+        "rootDir": "src"
     }
 }
