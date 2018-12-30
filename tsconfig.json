@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "importHelpers": true,
+        "moduleResolution": "node",
+        "target": "es2015"
+    }
+}
