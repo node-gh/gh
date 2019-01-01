@@ -4,27 +4,26 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-const configs = require('./configs')
-
-import fs = require('fs')
-const Github = require('github')
-const path = require('path')
-const updateNotifier = require('update-notifier')
+import * as configs from './configs'
+import * as fs from 'fs'
+import * as Github from 'github'
+import * as path from 'path'
+import * as updateNotifier from 'update-notifier'
 
 // -- Config -------------------------------------------------------------------
 
-exports.clone = function(o) {
+export function clone(o) {
     return JSON.parse(JSON.stringify(o))
 }
 
 // -- Utils --------------------------------------------------------------------
 
-exports.load = function() {
-    exports.github = setupGithubClient(configs.getConfig())
-}
+export function load() {}
 
-exports.asyncReadPackages = function(callback) {
-    function async(err, data) {
+export const github = setupGithubClient(configs.getConfig())
+
+export function asyncReadPackages(callback) {
+    function read(err, data) {
         if (err) {
             throw err
         }
@@ -32,14 +31,14 @@ exports.asyncReadPackages = function(callback) {
         callback(JSON.parse(data))
     }
 
-    fs.readFile(path.join(__dirname, '..', 'package.json'), async)
+    fs.readFile(path.join(__dirname, '..', 'package.json'), read)
 
     configs.getPlugins().forEach(plugin => {
-        fs.readFile(path.join(configs.getNodeModulesGlobalPath(), plugin, 'package.json'), async)
+        fs.readFile(path.join(configs.getNodeModulesGlobalPath(), plugin, 'package.json'), read)
     })
 }
 
-exports.notifyVersion = function(pkg) {
+export function notifyVersion(pkg) {
     var notifier = updateNotifier({ pkg })
 
     if (notifier.update) {
@@ -47,11 +46,11 @@ exports.notifyVersion = function(pkg) {
     }
 }
 
-exports.checkVersion = function() {
-    exports.asyncReadPackages(exports.notifyVersion)
+export function checkVersion() {
+    asyncReadPackages(notifyVersion)
 }
 
-exports.expandAliases = function(options) {
+export function expandAliases(options) {
     const config = configs.getConfig()
 
     if (config.alias) {
@@ -61,19 +60,19 @@ exports.expandAliases = function(options) {
     }
 }
 
-exports.find = function(filepath, opt_pattern) {
+export function find(filepath, opt_pattern) {
     return fs.readdirSync(filepath).filter(file => {
         return (opt_pattern || /.*/).test(file)
     })
 }
 
-exports.getUser = function() {
+export function getUser() {
     return configs.getConfig().github_user
 }
 
 // Export some config methods to allow plugins to access them
-exports.getConfig = configs.getConfig
-exports.writeGlobalConfig = configs.writeGlobalConfig
+export const getConfig = configs.getConfig
+export const writeGlobalConfig = configs.writeGlobalConfig
 
 interface IPaginate {
     meta: {

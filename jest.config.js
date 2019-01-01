@@ -1,5 +1,5 @@
 module.exports = {
-    collectCoverageFrom: ['lib/**/*.js'],
+    collectCoverageFrom: ['lib/**/*.ts'],
     coverageDirectory: '<rootDir>/coverage/',
     coveragePathIgnorePatterns: ['node_modules'],
     coverageThreshold: {
@@ -10,7 +10,9 @@ module.exports = {
             lines: 3,
         },
     },
-    testMatch: ['**/?(*.)+(spec|test).js'],
+    preset: 'ts-jest',
+    testMatch: ['**/?(*.)+(spec|test).ts'],
     testPathIgnorePatterns: ['node_modules'],
+    testEnvironment: 'node',
     verbose: true,
 }

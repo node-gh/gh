@@ -4,21 +4,20 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
 // -- Requires -------------------------------------------------------------------------------------
 
-const async = require('async')
-const base = require('../base')
-const hooks = require('../hooks')
-const logger = require('../logger')
-const openUrl = require('opn')
+import * as async from 'async'
+import * as base from '../base'
+import * as hooks from '../hooks'
+import logger from '../logger'
+import * as openUrl from 'opn'
+import * as _ from 'lodash'
+
 const config = base.getConfig()
-const _ = require('lodash')
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Issue(options) {
+export default function Issue(options) {
     this.options = options
 
     if (!options.repo && !options.all) {
@@ -625,5 +624,3 @@ function trim(str) {
         .replace(/[\r\n]+/g, '\n')
         .trim()
 }
-
-exports.Impl = Issue

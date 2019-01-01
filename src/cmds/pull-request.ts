@@ -4,23 +4,22 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
 // -- Requires -------------------------------------------------------------------------------------
 
-const async = require('async')
-const base = require('../base')
-const git = require('../git')
-const hooks = require('../hooks')
-const logger = require('../logger')
-const openUrl = require('opn')
-const Issues = require('./issue').Impl
+import * as async from 'async'
+import * as base from '../base'
+import * as git from '../git'
+import * as hooks from '../hooks'
+import logger from '../logger'
+import openUrl from 'opn'
+import Issues from './issue'
+import * as _ from 'lodash'
+
 const config = base.getConfig()
-const _ = require('lodash')
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function PullRequest(options) {
+export default function PullRequest(options) {
     this.options = options
 
     if (!options.repo && !options.all) {
@@ -1064,5 +1063,3 @@ PullRequest.prototype._submitHandler = function(done) {
         })
     })
 }
-
-exports.Impl = PullRequest

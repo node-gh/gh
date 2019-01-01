@@ -4,28 +4,30 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-const fs = require('fs')
-const logger = require('./logger')
-const exec = require('./exec')
-const path = require('path')
-const userhome = require('userhome')
-const which = require('which')
+import * as fs from 'fs'
+import logger from './logger'
+import { spawnSync } from './exec'
+import * as path from 'path'
+import * as userhome from 'userhome'
+import * as which from 'which'
+
 let cache = {}
-const PLUGINS_PATH_KEY = 'plugins_path'
 let plugins
+
+export const PLUGINS_PATH_KEY = 'plugins_path'
 
 // -- Config -------------------------------------------------------------------
 
-exports.getNodeModulesGlobalPath = function() {
+export function getNodeModulesGlobalPath() {
     let result
-    let path = exports.getConfig()[PLUGINS_PATH_KEY]
+    let path = getConfig()[PLUGINS_PATH_KEY]
 
     if (path === undefined) {
-        result = exec.spawnSync('npm', ['root', '-g'])
+        result = spawnSync('npm', ['root', '-g'])
 
         if (result.stdout) {
             path = result.stdout
-            process.env.NODE_ENV !== 'testing' && exports.writeGlobalConfig(PLUGINS_PATH_KEY, path)
+            process.env.NODE_ENV !== 'testing' && writeGlobalConfig(PLUGINS_PATH_KEY, path)
         } else {
             logger.warn("Can't resolve plugins directory path.")
         }
@@ -34,21 +36,21 @@ exports.getNodeModulesGlobalPath = function() {
     return path
 }
 
-exports.getProjectConfigPath = function() {
+export function getProjectConfigPath() {
     return path.join(process.cwd(), '.gh.json')
 }
 
-exports.getUserHomePath = function() {
+export function getUserHomePath() {
     return process.env.NODE_ENV === 'testing' ? '../default.gh.json' : userhome('.gh.json')
 }
 
-function getConfig(opt_plugin) {
-    const globalConfig = exports.getGlobalConfig(opt_plugin)
+function resolveGhConfigs(opt_plugin) {
+    const globalConfig = getGlobalConfig(opt_plugin)
     let projectConfig
     const result = {}
 
     try {
-        projectConfig = JSON.parse(fs.readFileSync(exports.getProjectConfigPath()))
+        projectConfig = JSON.parse(fs.readFileSync(getProjectConfigPath()).toString())
 
         Object.keys(globalConfig).forEach(key => {
             result[key] = globalConfig[key]
@@ -70,11 +72,11 @@ function getConfig(opt_plugin) {
     }
 }
 
-exports.getConfig = function(opt_plugin) {
-    var config = cache[opt_plugin]
+export function getConfig(opt_plugin?: string) {
+    let config = cache[opt_plugin]
 
     if (!config) {
-        config = getConfig(opt_plugin)
+        config = resolveGhConfigs(opt_plugin)
         cache[opt_plugin] = config
     }
 
@@ -93,56 +95,53 @@ exports.getConfig = function(opt_plugin) {
     return config
 }
 
-exports.getGlobalConfig = function(opt_plugin) {
+export function getGlobalConfig(opt_plugin?: string) {
     let defaultConfig
     let configPath
     let userConfig
 
-    configPath = exports.getUserHomePath()
+    configPath = getUserHomePath()
 
     if (!fs.existsSync(configPath)) {
-        exports.createGlobalConfig()
+        createGlobalConfig()
     }
 
-    defaultConfig = JSON.parse(fs.readFileSync(exports.getGlobalConfigPath()))
-    userConfig = JSON.parse(fs.readFileSync(configPath))
+    defaultConfig = JSON.parse(fs.readFileSync(getGlobalConfigPath()).toString())
+    userConfig = JSON.parse(fs.readFileSync(configPath).toString())
 
     Object.keys(userConfig).forEach(key => {
         defaultConfig[key] = userConfig[key]
     })
 
     if (opt_plugin) {
-        exports.getPlugins().forEach(plugin => {
-            exports.addPluginConfig(defaultConfig, plugin)
+        getPlugins().forEach(plugin => {
+            addPluginConfig(defaultConfig, plugin)
         })
     }
 
     return defaultConfig
 }
 
-exports.getGlobalConfigPath = function() {
+export function getGlobalConfigPath() {
     return path.join(__dirname, '../default.gh.json')
 }
 
-exports.removeGlobalConfig = function(key) {
-    var config = exports.getGlobalConfig()
+export function removeGlobalConfig(key) {
+    var config = getGlobalConfig()
 
     delete config[key]
 
-    exports.saveJsonConfig(exports.getUserHomePath(), config)
+    saveJsonConfig(getUserHomePath(), config)
     cache = {}
 }
 
-exports.createGlobalConfig = function() {
-    exports.saveJsonConfig(
-        exports.getUserHomePath(),
-        JSON.parse(fs.readFileSync(exports.getGlobalConfigPath()))
-    )
+export function createGlobalConfig() {
+    saveJsonConfig(getUserHomePath(), JSON.parse(fs.readFileSync(getGlobalConfigPath()).toString()))
     cache = {}
 }
 
-exports.writeGlobalConfig = function(jsonPath, value) {
-    const config = exports.getGlobalConfig()
+export function writeGlobalConfig(jsonPath, value) {
+    const config = getGlobalConfig()
     let i
     let output
     let path
@@ -156,11 +155,11 @@ exports.writeGlobalConfig = function(jsonPath, value) {
         output = output[path[i]]
     }
 
-    exports.saveJsonConfig(exports.getUserHomePath(), config)
+    saveJsonConfig(getUserHomePath(), config)
     cache = {}
 }
 
-exports.saveJsonConfig = function(path, object) {
+export function saveJsonConfig(path, object) {
     const options = {
         mode: parseInt('0600', 8),
     }
@@ -168,27 +167,27 @@ exports.saveJsonConfig = function(path, object) {
     fs.writeFileSync(path, JSON.stringify(object, null, 4), options)
 }
 
-exports.writeGlobalConfigCredentials = function(user, token) {
-    const configPath = exports.getUserHomePath()
+export function writeGlobalConfigCredentials(user, token) {
+    const configPath = getUserHomePath()
 
-    exports.writeGlobalConfig('github_user', user)
-    exports.writeGlobalConfig('github_token', token)
+    writeGlobalConfig('github_user', user)
+    writeGlobalConfig('github_token', token)
     logger.log(`Writing GH config data: ${configPath}`)
 }
 
 // -- Plugins ------------------------------------------------------------------
 
-exports.addPluginConfig = function(config, plugin) {
+export function addPluginConfig(config, plugin) {
     let pluginConfig
     let userConfig
 
     try {
         // Always use the plugin name without prefix. To be safe removing "gh-"
         // prefix from passed plugin.
-        plugin = exports.getPluginBasename(plugin || process.env.NODEGH_PLUGIN)
+        plugin = getPluginBasename(plugin || process.env.NODEGH_PLUGIN)
 
         pluginConfig = require(path.join(
-            exports.getNodeModulesGlobalPath(),
+            getNodeModulesGlobalPath(),
             `gh-${plugin}`,
             'gh-plugin.json'
         ))
@@ -208,8 +207,8 @@ exports.addPluginConfig = function(config, plugin) {
     }
 }
 
-function getPlugins() {
-    var pluginsPath = exports.getNodeModulesGlobalPath()
+function resolvePlugins() {
+    var pluginsPath = getNodeModulesGlobalPath()
 
     if (pluginsPath === '') {
         return []
@@ -227,34 +226,32 @@ function getPlugins() {
     }
 }
 
-exports.getPlugins = function() {
+export function getPlugins() {
     if (!plugins) {
-        plugins = getPlugins()
+        plugins = resolvePlugins()
     }
 
     return plugins
 }
 
-exports.getPlugin = function(plugin) {
-    plugin = exports.getPluginBasename(plugin)
+export function getPlugin(plugin) {
+    plugin = getPluginBasename(plugin)
 
-    return require(exports.getPluginPath(`gh-${plugin}`))
+    return require(getPluginPath(`gh-${plugin}`))
 }
 
-exports.getPluginPath = function(plugin) {
+export function getPluginPath(plugin) {
     return fs.realpathSync(which.sync(plugin))
 }
 
-exports.getPluginBasename = function(plugin) {
+export function getPluginBasename(plugin) {
     return plugin && plugin.replace('gh-', '')
 }
 
-exports.isPluginIgnored = function(plugin) {
-    if (exports.getConfig().ignored_plugins.indexOf(exports.getPluginBasename(plugin)) > -1) {
+export function isPluginIgnored(plugin) {
+    if (getConfig().ignored_plugins.indexOf(getPluginBasename(plugin)) > -1) {
         return true
     }
 
     return false
 }
-
-exports.PLUGINS_PATH_KEY = PLUGINS_PATH_KEY

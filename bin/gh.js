@@ -11,6 +11,8 @@
 var verbose = process.argv.indexOf('--verbose') !== -1
 var insane = process.argv.indexOf('--insane') !== -1
 
+process.on('unhandledRejection', r => console.log(r))
+
 if (verbose || insane) {
     process.env.GH_VERBOSE = 'true'
 }

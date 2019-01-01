@@ -4,24 +4,23 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
+import * as async from 'async'
+import * as configs from './configs'
+import * as exec from './exec'
+import * as truncate from 'truncate'
+import logger from './logger'
+import * as _ from 'lodash'
 
-const async = require('async')
-const configs = require('./configs')
-const exec = require('./exec')
-const truncate = require('truncate')
-const logger = require('./logger')
-const config = configs.getConfig(true)
-const _ = require('lodash')
+const config = configs.getConfig()
 
-exports.createContext = function(scope) {
+export function createContext(scope) {
     return {
         options: scope.options,
         signature: config.signature,
     }
 }
 
-exports.getHooksArrayFromPath_ = function(path, opt_config) {
+export function getHooksArrayFromPath_(path, opt_config?: any) {
     const keys = path.split('.')
     let key = keys.shift()
     let hooks
@@ -38,13 +37,12 @@ exports.getHooksArrayFromPath_ = function(path, opt_config) {
     return Array.isArray(hooks) ? hooks : []
 }
 
-exports.getHooksFromPath = function(path) {
-    let hooks
+export function getHooksFromPath(path) {
     const plugins = configs.getPlugins()
     let pluginHooks = []
 
     // First, load all core hooks for the specified path.
-    hooks = exports.getHooksArrayFromPath_(path)
+    const hooks = getHooksArrayFromPath_(path)
 
     // Second, search all installed plugins and load the hooks for each into
     // core hooks array.
@@ -58,9 +56,7 @@ exports.getHooksFromPath = function(path) {
                 pluginConfig = config.plugins[plugin]
 
                 if (pluginConfig) {
-                    pluginHooks = pluginHooks.concat(
-                        exports.getHooksArrayFromPath_(path, pluginConfig)
-                    )
+                    pluginHooks = pluginHooks.concat(getHooksArrayFromPath_(path, pluginConfig))
                 }
             }
         })
@@ -68,9 +64,9 @@ exports.getHooksFromPath = function(path) {
     return hooks.concat(pluginHooks)
 }
 
-exports.invoke = function(path, scope, opt_callback) {
-    const after = exports.getHooksFromPath(`${path}.after`)
-    const before = exports.getHooksFromPath(`${path}.before`)
+export function invoke(path, scope, opt_callback) {
+    const after = getHooksFromPath(`${path}.after`)
+    const before = getHooksFromPath(`${path}.before`)
     let beforeOperations
     let afterOperations
     const options = scope.options
@@ -81,26 +77,26 @@ exports.invoke = function(path, scope, opt_callback) {
         return
     }
 
-    context = exports.createContext(scope)
+    context = createContext(scope)
 
     beforeOperations = [
         function(callback) {
-            exports.setupPlugins_(context, 'setupBeforeHooks', callback)
+            setupPlugins_(context, 'setupBeforeHooks', callback)
         },
     ]
 
     before.forEach(cmd => {
-        beforeOperations.push(exports.wrapCommand_(cmd, context, 'before'))
+        beforeOperations.push(wrapCommand_(cmd, context, 'before'))
     })
 
     afterOperations = [
         function(callback) {
-            exports.setupPlugins_(context, 'setupAfterHooks', callback)
+            setupPlugins_(context, 'setupAfterHooks', callback)
         },
     ]
 
     after.forEach(cmd => {
-        afterOperations.push(exports.wrapCommand_(cmd, context, 'after'))
+        afterOperations.push(wrapCommand_(cmd, context, 'after'))
     })
 
     afterOperations.push(callback => {
@@ -118,7 +114,7 @@ exports.invoke = function(path, scope, opt_callback) {
     })
 }
 
-exports.setupPlugins_ = function(context, setupFn, opt_callback) {
+export function setupPlugins_(context, setupFn, opt_callback) {
     const plugins = configs.getPlugins()
     const operations = []
 
@@ -141,7 +137,7 @@ exports.setupPlugins_ = function(context, setupFn, opt_callback) {
     })
 }
 
-exports.wrapCommand_ = function(cmd, context, when) {
+export function wrapCommand_(cmd, context, when) {
     return function(callback) {
         var raw = logger.compileTemplate(cmd, context)
 

@@ -6,17 +6,18 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-export const hi = 'hi'
+// export const hi = 'hi'
 
-const async = require('async')
-const base = require('./base')
-const configs = require('./configs')
-const fs = require('fs')
-const git = require('./git')
-const logger = require('./logger')
-const nopt = require('nopt')
-const path = require('path')
-const User = require('./cmds/user').Impl
+import * as async from 'async'
+import { checkVersion, clone, find, getUser, expandAliases, load } from './base'
+import * as configs from './configs'
+import * as fs from 'fs'
+import * as git from './git'
+import logger from './logger'
+import * as nopt from 'nopt'
+import * as path from 'path'
+import User from './cmds/user'
+
 const config = configs.getConfig()
 
 // -- Utils ----------------------------------------------------------------------------------------
@@ -41,37 +42,45 @@ function invokePayload(options, command, cooked, remain) {
     }
 }
 
-function findCommand(name) {
+async function resolveCmd(name) {
     let Command
-    let commandDir
-    let commandFiles
-    let commandPath
 
-    commandDir = path.join(__dirname, 'cmds')
-    commandPath = path.join(commandDir, `${name}.js`)
+    const commandDir = path.join(__dirname, 'cmds')
+    const commandPath = path.join(commandDir, `${name}.js`)
 
     if (fs.existsSync(commandPath)) {
-        Command = require(commandPath).Impl
+        Command = await import(commandPath)
     } else {
-        commandFiles = base.find(commandDir, /\.js$/i)
-        commandFiles.every(file => {
-            commandPath = path.join(commandDir, file)
-            Command = require(commandPath).Impl
+        const commandFiles = find(commandDir, /\.js$/i)
 
-            if (Command.DETAILS.alias === name) {
-                return false
+        const commandName = commandFiles.filter(file => {
+            switch (file) {
+                case 'milestone.js':
+                    if (name === 'ms') return true
+                    break
+                case 'notification.js':
+                    if (name === 'nt') return true
+                    break
+                case 'pull-request.js':
+                    if (name === 'pr') return true
+                    break
             }
 
-            Command = null
-            return true
+            if (file.startsWith(name)) {
+                return true
+            }
+
+            return false
         })
+
+        Command = await import(path.join(commandDir, commandName[0]))
     }
 
-    return Command
+    return Command.default
 }
 
-function loadCommand(name) {
-    let Command = findCommand(name)
+async function loadCommand(name) {
+    let Command = await resolveCmd(name)
     let plugin
 
     // If command was not found, check if it is registered as a plugin.
@@ -92,7 +101,7 @@ function loadCommand(name) {
     return Command
 }
 
-exports.setUp = function() {
+export function setUp() {
     let Command
     let iterative
     let options
@@ -102,12 +111,12 @@ exports.setUp = function() {
     let cooked = parsed.argv.cooked
 
     operations.push(callback => {
-        base.checkVersion()
+        checkVersion()
 
         callback()
     })
 
-    operations.push(callback => {
+    operations.push(async callback => {
         var module = remain[0]
 
         if (cooked[0] === '--version' || cooked[0] === '-v') {
@@ -116,11 +125,10 @@ exports.setUp = function() {
             module = 'help'
         }
 
-        Command = loadCommand(module)
-
-        if (!Command) {
-            logger.error('Command not found')
-            return
+        try {
+            Command = await loadCommand(module)
+        } catch (err) {
+            throw new Error(`Cannot find module ${module}\n${err}`)
         }
 
         options = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
@@ -140,14 +148,14 @@ exports.setUp = function() {
         }
     })
 
-    async.series(operations, () => {
+    async.series(operations, async () => {
         let iterativeValues
         const remoteUrl = git.getRemoteUrl(options.remote)
 
         options.isTTY = {}
         options.isTTY.in = Boolean(process.stdin.isTTY)
         options.isTTY.out = Boolean(process.stdout.isTTY)
-        options.loggedUser = base.getUser()
+        options.loggedUser = getUser()
         options.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
 
         if (!options.user) {
@@ -161,7 +169,7 @@ exports.setUp = function() {
         options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
         options.currentBranch = options.currentBranch || git.getCurrentBranch()
 
-        base.expandAliases(options)
+        expandAliases(options)
         options.github_host = config.github_host
         options.github_gist_host = config.github_gist_host
 
@@ -170,8 +178,8 @@ exports.setUp = function() {
         // present, assume [undefined] in order to initialize the loop.
         iterativeValues = options[iterative] || [undefined]
 
-        iterativeValues.forEach(value => {
-            options = base.clone(options)
+        iterativeValues.forEach(async value => {
+            options = clone(options)
 
             // Value can be undefined when the command doesn't have a iterative
             // option.
@@ -180,22 +188,22 @@ exports.setUp = function() {
             invokePayload(options, Command, cooked, remain)
 
             if (process.env.NODE_ENV === 'testing') {
-                const { prepareTestFixtures } = require('../__tests__/testUtils')
+                const prepareTestFixtures = await import('../__tests__/testUtils')
 
-                new Command(options).run(prepareTestFixtures(Command.name, cooked))
+                await new Command(options).run(prepareTestFixtures(Command.name, cooked))
             } else {
-                new Command(options).run()
+                await new Command(options).run()
             }
         })
     })
 }
 
-exports.run = function() {
+export function run() {
     if (!fs.existsSync(configs.getUserHomePath())) {
         configs.createGlobalConfig()
     }
 
-    base.load()
+    load()
     configs.getConfig()
 
     // If configs.PLUGINS_PATH_KEY is undefined, try to cache it before proceeding.

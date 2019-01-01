@@ -4,15 +4,13 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
 // -- Requires -------------------------------------------------------------------------------------
 
-const logger = require('../logger')
+import logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Hello(options) {
+export default function Hello(options) {
     this.options = options
 }
 
@@ -47,5 +45,3 @@ Hello.prototype.run = function() {
 Hello.prototype.world = function() {
     logger.log('hello world :)')
 }
-
-exports.Impl = Hello

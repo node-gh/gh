@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
+import * as child_process from 'child_process'
+import logger from './logger'
 
-const child_process = require('child_process')
-const logger = require('./logger')
-
-exports.spawnSync = function(cmd, args, options) {
+export function spawnSync(cmd, args, options?: object) {
     var exec
 
     logger.debug(`spawnSync: ${cmd} ${args.join(' ')}`)
@@ -28,7 +26,7 @@ exports.spawnSync = function(cmd, args, options) {
     }
 }
 
-exports.spawnSyncStream = function(cmd, args, options) {
+export function spawnSyncStream(cmd, args, options?: any) {
     let proc
     let err
 
@@ -53,7 +51,7 @@ exports.spawnSyncStream = function(cmd, args, options) {
     return proc
 }
 
-exports.execSync = function(cmd, options) {
+export function execSync(cmd, options) {
     if (!options) {
         options = {}
     }
@@ -65,7 +63,7 @@ exports.execSync = function(cmd, options) {
     return child_process.execSync(cmd, options)
 }
 
-exports.execSyncInteractiveStream = function(cmd, options) {
+export function execSyncInteractiveStream(cmd, options) {
     if (!options) {
         options = {}
     }

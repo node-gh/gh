@@ -4,15 +4,14 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
+import logger from './logger'
+import * as exec from './exec'
 
-const logger = require('./logger')
-const exec = require('./exec')
 const git_command = process.env.GH_GIT_COMMAND || 'git'
 
 const testing = process.env.NODE_ENV === 'testing'
 
-exports.checkout = function(branch, newBranch) {
+export function checkout(branch, newBranch?: string) {
     var args = ['checkout', branch]
 
     if (newBranch) {
@@ -22,7 +21,7 @@ exports.checkout = function(branch, newBranch) {
     return !testing && exec.spawnSyncStream(git_command, args)
 }
 
-exports.clone = function(url, folder) {
+export function clone(url, folder) {
     var args = ['clone', url]
 
     if (folder) {
@@ -32,7 +31,7 @@ exports.clone = function(url, folder) {
     return !testing && exec.spawnSyncStream(git_command, args)
 }
 
-exports._merge = function(branch, type) {
+export function _merge(branch, type) {
     try {
         const args = [type, branch]
 
@@ -45,15 +44,15 @@ exports._merge = function(branch, type) {
     }
 }
 
-exports.merge = function(branch) {
+export function merge(branch) {
     return !testing && this._merge(branch, 'merge')
 }
 
-exports.rebase = function(branch) {
+export function rebase(branch) {
     return !testing && this._merge(branch, 'rebase')
 }
 
-exports.push = function(remote, branch) {
+export function push(remote, branch) {
     var args = ['push', remote]
 
     if (branch) {
@@ -63,17 +62,17 @@ exports.push = function(remote, branch) {
     return !testing && exec.spawnSyncStream(git_command, args)
 }
 
-exports.fetch = function(repoUrl, headBranch, pullBranch) {
+export function fetch(repoUrl, headBranch, pullBranch) {
     var args = ['fetch', repoUrl, `${headBranch}:${pullBranch}`, '--no-tags']
 
     return !testing && exec.spawnSyncStream(git_command, args)
 }
 
-exports.countUserAdjacentCommits = function() {
+export function countUserAdjacentCommits() {
     let git
     let params
     let commits = 0
-    const user = exports.getConfig('user.name')
+    const user = getConfig('user.name')
     let author
 
     do {
@@ -94,7 +93,7 @@ exports.countUserAdjacentCommits = function() {
     return commits
 }
 
-exports.deleteBranch = function(branch) {
+export function deleteBranch(branch) {
     if (testing) {
         return
     }
@@ -108,11 +107,11 @@ exports.deleteBranch = function(branch) {
     return git.stdout
 }
 
-exports.findRoot = function() {
+export function findRoot() {
     return exec.spawnSync(git_command, ['rev-parse', '--show-toplevel']).stdout
 }
 
-exports.getCommitMessage = function(branch, number) {
+export function getCommitMessage(branch, number) {
     let git
     const params = ['log']
 
@@ -138,7 +137,7 @@ exports.getCommitMessage = function(branch, number) {
     return git.stdout
 }
 
-exports.getConfig = function(key) {
+export function getConfig(key) {
     var git = exec.spawnSync(git_command, ['config', '--get', key])
 
     if (git.status !== 0) {
@@ -148,7 +147,7 @@ exports.getConfig = function(key) {
     return git.stdout
 }
 
-exports.getCurrentBranch = function() {
+export function getCurrentBranch() {
     var git = exec.spawnSync(git_command, ['symbolic-ref', '--short', 'HEAD'])
 
     if (git.status !== 0) {
@@ -159,11 +158,11 @@ exports.getCurrentBranch = function() {
     return git.stdout
 }
 
-exports.getLastCommitMessage = function(branch) {
-    return exports.getCommitMessage(branch, 1)
+export function getLastCommitMessage(branch) {
+    return getCommitMessage(branch, 1)
 }
 
-exports.getLastCommitSHA = function() {
+export function getLastCommitSHA() {
     var git = exec.spawnSync(git_command, ['rev-parse', '--short', 'HEAD'])
 
     if (git.status !== 0) {
@@ -173,36 +172,36 @@ exports.getLastCommitSHA = function() {
     return git.stdout
 }
 
-exports.getRemoteUrl = function(remote) {
+export function getRemoteUrl(remote) {
     try {
-        return exports.getConfig(`remote.${remote}.url`)
+        return getConfig(`remote.${remote}.url`)
     } catch (e) {
         logger.debug("Can't get remote URL.")
         return
     }
 }
 
-exports.getRepoFromRemoteURL = function(url) {
-    var parsed = exports.parseRemoteUrl(url)
+export function getRepoFromRemoteURL(url) {
+    var parsed = parseRemoteUrl(url)
 
     return parsed && parsed[1]
 }
 
-exports.getUserFromRemoteUrl = function(url) {
-    var parsed = exports.parseRemoteUrl(url)
+export function getUserFromRemoteUrl(url) {
+    var parsed = parseRemoteUrl(url)
 
     return parsed && parsed[0]
 }
 
-exports.getRepo = function(remote) {
-    return exports.getRepoFromRemoteURL(exports.getRemoteUrl(remote))
+export function getRepo(remote) {
+    return getRepoFromRemoteURL(getRemoteUrl(remote))
 }
 
-exports.getUser = function(remote) {
-    return exports.getUserFromRemoteUrl(exports.getRemoteUrl(remote))
+export function getUser(remote) {
+    return getUserFromRemoteUrl(getRemoteUrl(remote))
 }
 
-exports.parseRemoteUrl = function(url) {
+export function parseRemoteUrl(url) {
     var parsed = /[\/:]([\w-]+)\/(.*?)(?:\.git)?$/.exec(url)
 
     if (parsed) {
