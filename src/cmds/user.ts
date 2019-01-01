@@ -4,23 +4,22 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
 // -- Requires -------------------------------------------------------------------------------------
 
-const base = require('../base')
-const configs = require('../configs')
-const logger = require('../logger')
-const fs = require('fs')
-const inquirer = require('inquirer')
-const moment = require('moment')
-const userhome = require('userhome')
+import * as base from '../base'
+import * as configs from '../configs'
+import logger from '../logger'
+import * as fs from 'fs'
+import inquirer from 'inquirer'
+import * as moment from 'moment'
+import userhome from 'userhome'
+
 const config = configs.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function User(options) {
+export default function User(options) {
     this.options = options
 }
 
@@ -194,5 +193,3 @@ function getCorrectToken(config) {
 
     return config.github_token
 }
-
-exports.Impl = User

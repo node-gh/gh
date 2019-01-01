@@ -5,16 +5,16 @@
  */
 
 // -- Requires -------------------------------------------------------------------------------------
-export const hi = 'hi'
 
-const base = require('../base')
-const configs = require('../configs')
-const logger = require('../logger')
+import * as base from '../base'
+import * as configs from '../configs'
+import logger from '../logger'
+
 const config = base.getConfig()
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Alias(options) {
+export default function Alias(options) {
     this.options = options
 }
 
@@ -98,5 +98,3 @@ Alias.prototype.remove = function() {
 
     configs.writeGlobalConfig('alias', config.alias)
 }
-
-exports.Impl = Alias

@@ -3,18 +3,18 @@
  * (see file: CONTRIBUTORS)
  * SPDX-License-Identifier: BSD-3-Clause
  */
-export const hi = 'hi'
 
 // -- Requires -------------------------------------------------------------------------------------
 
-const async = require('async')
-const base = require('../base')
-const logger = require('../logger')
+import * as async from 'async'
+import * as base from '../base'
+import logger from '../logger'
+
 const printed = {}
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Notifications(options) {
+export default function Notifications(options) {
     this.options = options
 
     if (!options.repo) {
@@ -206,5 +206,3 @@ Notifications.prototype.getMessage_ = function(event) {
 
     return txt
 }
-
-exports.Impl = Notifications

@@ -4,21 +4,20 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
 // -- Requires -------------------------------------------------------------------------------------
 
-const base = require('../base')
-const hooks = require('../hooks')
-const inquirer = require('inquirer')
-const logger = require('../logger')
-const openUrl = require('opn')
+import * as base from '../base'
+import * as hooks from '../hooks'
+import * as inquirer from 'inquirer'
+import logger from '../logger'
+import * as openUrl from 'opn'
+
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Gists(options) {
+export default function Gists(options) {
     this.options = options
 }
 
@@ -257,5 +256,3 @@ Gists.prototype.new = function(name, content, opt_callback) {
 
     base.github.gists.create(payload, opt_callback)
 }
-
-exports.Impl = Gists

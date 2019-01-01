@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
+import * as base from '../base'
+import logger from '../logger'
 
-const base = require('../base')
-const logger = require('../logger')
-
-function Version() {}
+export default function Version() {}
 
 Version.DETAILS = {
     alias: 'v',
@@ -23,5 +21,3 @@ Version.prototype.run = function() {
 Version.prototype.printVersion = function(pkg) {
     logger.log(`${pkg.name} ${pkg.version}`)
 }
-
-exports.Impl = Version

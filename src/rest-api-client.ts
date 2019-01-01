@@ -4,13 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
-const request = require('request')
-const http = require('http')
-const url = require('url')
-const lodash = require('lodash')
-const logger = require('./logger')
+import * as request from 'request'
+import * as http from 'http'
+import * as url from 'url'
+import * as lodash from 'lodash'
+import logger from './logger'
 
 class RestApiClient {
     options

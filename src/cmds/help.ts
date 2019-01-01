@@ -4,21 +4,19 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
 // -- Requires -------------------------------------------------------------------------------------
 
-const base = require('../base')
-const configs = require('../configs')
-const logger = require('../logger')
-const nopt = require('nopt')
-const path = require('path')
-const stream = require('stream')
-const url = require('url')
+import * as base from '../base'
+import * as configs from '../configs'
+import logger from '../logger'
+import * as nopt from 'nopt'
+import * as path from 'path'
+import * as stream from 'stream'
+import * as url from 'url'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Help() {
+export default function Help() {
     this.options = nopt(Help.DETAILS.options, Help.DETAILS.shorthands, process.argv, 2)
 }
 
@@ -38,9 +36,8 @@ Help.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Help.prototype.run = function() {
+Help.prototype.run = async function() {
     const instance = this
-    const commands = []
     const cmdDir = path.join(__dirname, '../cmds/')
     const files = base.find(cmdDir, /\.js$/)
     let filter
@@ -68,42 +65,51 @@ Help.prototype.run = function() {
         filter = options.argv.remain[1]
     }
 
-    files.forEach(dir => {
-        const cmd = require(path.resolve(cmdDir, dir))
-        const alias = cmd.Impl.DETAILS.alias || ''
-        let flags = []
-        const name = path.basename(dir, '.js').replace(/^gh-/, '')
-        let offset = 20 - alias.length - name.length
+    const commands = await Promise.all(
+        files.map(async dir => {
+            let cmd = await import(path.resolve(cmdDir, dir))
 
-        if (offset < 1) {
-            offset = 1
-        }
+            let flags = []
 
-        if (offset !== 1 && alias.length === 0) {
-            offset += 2
-        }
+            if (cmd.default) {
+                cmd = cmd.default
+            } else {
+                cmd = cmd.Impl
+            }
 
-        if (filter && filter !== alias && filter !== name) {
-            return
-        }
+            const alias = cmd.DETAILS.alias || ''
+            const name = path.basename(dir, '.js').replace(/^gh-/, '')
+            let offset = 20 - alias.length - name.length
 
-        if (filter || options.all) {
-            flags = instance.groupOptions_(cmd.Impl.DETAILS)
-            offset = 1
-        }
+            if (offset < 1) {
+                offset = 1
+            }
 
-        commands.push({
-            alias,
-            flags,
-            name,
-            description: cmd.Impl.DETAILS.description,
-            offset: ' '.repeat(offset + 1),
+            if (offset !== 1 && alias.length === 0) {
+                offset += 2
+            }
+
+            if (filter && filter !== alias && filter !== name) {
+                return
+            }
+
+            if (filter || options.all) {
+                flags = instance.groupOptions_(cmd.DETAILS)
+                offset = 1
+            }
+
+            return {
+                alias,
+                flags,
+                name,
+                description: cmd.DETAILS.description,
+                offset: ' '.repeat(offset + 1),
+            }
         })
-    })
+    )
 
     if (filter && commands.length === 0) {
-        logger.error(`No manual entry for ${filter}`)
-        return
+        throw new Error(`No manual entry for ${filter}`)
     }
 
     logger.log(this.listCommands_(commands))
@@ -141,7 +147,8 @@ Help.prototype.listFlags_ = function(command) {
 }
 
 Help.prototype.listCommands_ = function(commands) {
-    let content = 'usage: gh <command> [payload] [--flags] [--verbose] [--no-hooks]\n\n'
+    let content =
+        'usage: gh <command> [payload] [--flags] [--verbose] [--no-color] [--no-hooks]\n\n'
     let pos
     let command
 
@@ -263,5 +270,3 @@ Help.prototype.isCommand_ = function(details, option) {
 
     return false
 }
-
-exports.Impl = Help

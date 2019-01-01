@@ -8,7 +8,7 @@
 
 const rewire = require('rewire')
 const assert = require('assert')
-const logger = rewire('../dist/logger')
+const logger = rewire('../lib/logger')
 
 describe('Logger Module Tests', function() {
     it('should log debug', function() {

@@ -4,14 +4,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-const logger: any = {}
-import fs = require('fs')
-const handlebars = require('handlebars')
-const moment = require('moment')
-const path = require('path')
-const wrap = require('wordwrap').hard(0, 80)
-const colors = require('colors/safe')
-const _ = require('lodash')
+let logger: any = {}
+
+import * as fs from 'fs'
+import * as handlebars from 'handlebars'
+import * as moment from 'moment'
+import * as path from 'path'
+import * as wordwrap from 'wordwrap'
+import * as colors from 'colors/safe'
+import * as _ from 'lodash'
+
+const wrap = wordwrap.hard(0, 80)
 
 function stripHandlebarsNewLine(str) {
     return str.replace(/[\s\t\r\n](\{\{[#\/])/g, '$1')
@@ -228,4 +231,4 @@ if (process.argv.indexOf('--no-color') !== -1 || process.env.NODE_ENV === 'testi
     )
 }
 
-module.exports = logger
+export default logger

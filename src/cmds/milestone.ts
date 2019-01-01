@@ -4,17 +4,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-export const hi = 'hi'
-
 // -- Requires -------------------------------------------------------------------------------------
 
-const async = require('async')
-const base = require('../base')
-const logger = require('../logger')
+import * as async from 'async'
+import * as base from '../base'
+import logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Milestone(options) {
+export default function Milestone(options) {
     this.options = options
 
     if (options.organization) {
@@ -149,5 +147,3 @@ Milestone.prototype.listFromAllRepositories = function(opt_callback) {
         async.series(operations, opt_callback)
     })
 }
-
-exports.Impl = Milestone

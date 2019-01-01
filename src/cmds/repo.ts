@@ -6,20 +6,21 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-const base = require('../base')
-import fs = require('fs')
-const git = require('../git')
-const hooks = require('../hooks')
-const logger = require('../logger')
-const openUrl = require('opn')
-const inquirer = require('inquirer')
-const url = require('url')
+import * as base from '../base'
+import * as fs from 'fs'
+import * as git from '../git'
+import * as hooks from '../hooks'
+import logger from '../logger'
+import * as openUrl from 'opn'
+import * as inquirer from 'inquirer'
+import * as url from 'url'
+
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-function Repo(options) {
+export default function Repo(options) {
     this.options = options
 }
 
@@ -613,5 +614,3 @@ Repo.prototype.updateLabel = function(user, opt_callback) {
 
     base.github.issues.updateLabel(payload, opt_callback)
 }
-
-exports.Impl = Repo

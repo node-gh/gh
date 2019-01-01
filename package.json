@@ -70,6 +70,8 @@
         ]
     },
     "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc --watch",
         "commit": "git-cz",
         "format": "prettier 'lib/**/*.js' && prettier 'bin/*.js'",
         "env:test": "cross-env NODE_ENV=testing GH_USER=protoEvangelion GH_TOKEN=0001",
@@ -107,6 +109,7 @@
         "@semantic-release/git": "~7.0.3",
         "@semantic-release/github": "~5.0.4",
         "@semantic-release/npm": "~5.0.4",
+        "@types/jest": "^23.3.11",
         "@types/node": "^10.12.18",
         "@zeit/ncc": "^0.8.1",
         "babel-cli": "~6.26.0",
@@ -121,6 +124,7 @@
         "pretty-quick": "~1.8.0",
         "rewire": "~2.3.4",
         "semantic-release": "~15.9.9",
+        "ts-jest": "^23.10.5",
         "tslint": "^5.12.0",
         "tslint-config-airbnb": "^5.11.1",
         "tslint-config-prettier": "^1.17.0",

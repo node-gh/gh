@@ -6,6 +6,8 @@ module.exports = {
     prepareTestFixtures,
 }
 
+export default prepareTestFixtures
+
 function runCmd(cmd) {
     try {
         var result = execSync(cmd, { cwd: process.cwd() })
