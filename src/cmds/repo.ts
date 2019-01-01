@@ -6,14 +6,14 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as base from '../base'
 import * as fs from 'fs'
+import * as inquirer from 'inquirer'
+import * as openUrl from 'opn'
+import * as url from 'url'
+import * as base from '../base'
 import * as git from '../git'
 import * as hooks from '../hooks'
-import * as openUrl from 'opn'
-import * as inquirer from 'inquirer'
-import * as url from 'url'
-import logger from '../logger'
+import * as logger from '../logger'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'

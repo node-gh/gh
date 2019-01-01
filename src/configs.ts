@@ -8,8 +8,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as userhome from 'userhome'
 import * as which from 'which'
-import { spawnSync } from './exec'
-import logger from './logger'
+import * as exec from './exec'
+import * as logger from './logger'
 
 let cache = {}
 let plugins
@@ -23,7 +23,7 @@ export function getNodeModulesGlobalPath() {
     let path = getConfig()[PLUGINS_PATH_KEY]
 
     if (path === undefined) {
-        result = spawnSync('npm', ['root', '-g'])
+        result = exec.spawnSync('npm', ['root', '-g'])
 
         if (result.stdout) {
             path = result.stdout

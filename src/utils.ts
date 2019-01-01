@@ -1,4 +1,4 @@
-import { upperFirst, isArray, isPlainObject, map, mapValues } from 'lodash'
+import { isArray, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
 
 const nockBack = nock.back

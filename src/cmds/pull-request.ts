@@ -7,13 +7,13 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as async from 'async'
+import { startsWith } from 'lodash'
+import * as openUrl from 'opn'
 import * as base from '../base'
 import * as git from '../git'
 import * as hooks from '../hooks'
-import * as openUrl from 'opn'
-import * as _ from 'lodash'
+import * as logger from '../logger'
 import Issues from './issue'
-import logger from '../logger'
 
 const config = base.getConfig()
 
@@ -420,7 +420,7 @@ PullRequest.prototype.getBranchNameFromPullNumber_ = function(number) {
 }
 
 PullRequest.prototype.getPullRequestNumberFromBranch_ = function(currentBranch, prefix) {
-    if (currentBranch && _.startsWith(currentBranch, prefix)) {
+    if (currentBranch && startsWith(currentBranch, prefix)) {
         return currentBranch.replace(prefix, '')
     }
 }

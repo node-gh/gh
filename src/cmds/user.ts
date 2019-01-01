@@ -6,13 +6,13 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as base from '../base'
-import * as configs from '../configs'
 import * as fs from 'fs'
 import * as inquirer from 'inquirer'
 import * as moment from 'moment'
 import * as userhome from 'userhome'
-import logger from '../logger'
+import * as base from '../base'
+import * as configs from '../configs'
+import * as logger from '../logger'
 
 const config = configs.getConfig()
 const testing = process.env.NODE_ENV === 'testing'

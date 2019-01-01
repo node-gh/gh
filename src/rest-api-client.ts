@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import * as request from 'request'
 import * as http from 'http'
+import { merge } from 'lodash'
+import * as request from 'request'
 import * as url from 'url'
-import * as lodash from 'lodash'
-import logger from './logger'
+import * as logger from './logger'
 
 class RestApiClient {
     options
@@ -24,7 +24,7 @@ class RestApiClient {
     }
 
     constructor(options) {
-        options = lodash.merge(this.DEFAULT_CONFIG, options)
+        options = merge(this.DEFAULT_CONFIG, options)
         this.options = options
     }
 
@@ -80,7 +80,7 @@ class RestApiClient {
         }
 
         if (params) {
-            p = lodash.merge(p, params)
+            p = merge(p, params)
         }
 
         this.authorize(p)

@@ -6,13 +6,13 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as base from '../base'
-import * as configs from '../configs'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import * as stream from 'stream'
 import * as url from 'url'
-import logger from '../logger'
+import * as base from '../base'
+import * as configs from '../configs'
+import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 

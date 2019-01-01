@@ -4,15 +4,18 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-let logger: any = {}
-
+import * as color from 'colors/safe'
 import * as fs from 'fs'
 import * as handlebars from 'handlebars'
 import * as moment from 'moment'
 import * as path from 'path'
 import * as wordwrap from 'wordwrap'
-import * as colors from 'colors/safe'
-import * as _ from 'lodash'
+
+if (process.env.NODE_ENV === 'testing' || process.env.COLOR === 'false') {
+    color.disable()
+}
+
+export const colors = color
 
 const wrap = wordwrap.hard(0, 80)
 
@@ -20,56 +23,51 @@ function stripHandlebarsNewLine(str) {
     return str.replace(/[\s\t\r\n](\{\{[#\/])/g, '$1')
 }
 
-logger.debug = function() {
+export function debug(...args) {
     if (!process.env.GH_VERBOSE) {
         return
     }
 
-    if (typeof arguments[0] === 'string') {
-        arguments[0] = `DEBUG: ${arguments[0]}`
-        console.log.apply(this, arguments)
+    if (typeof args[0] === 'string') {
+        args[0] = `DEBUG: ${args[0]}`
+        console.log(...args)
         return
     }
 
-    console.log('DEBUG:')
-    console.log.apply(this, arguments)
+    console.log('DEBUG:', ...args)
 }
 
-logger.insane = function() {
+export function insane(...args) {
     if (!process.env.GH_VERBOSE_INSANE) {
         return
     }
 
-    console.log.apply(this, arguments)
+    console.log(...args)
 }
 
-logger.error = function() {
-    if (typeof arguments[0] === 'string') {
-        arguments[0] = `fatal: ${arguments[0]}`
+export function error(...args) {
+    if (typeof args[0] === 'string') {
+        args[0] = `fatal: ${args[0]}`
     }
 
-    console.error.apply(this, arguments)
+    console.error(...args)
     process.exit(1)
 }
 
-logger.warn = function() {
-    arguments[0] = `warning: ${arguments[0]}`
-    console.error.apply(this, arguments)
+export function warn(...args) {
+    args[0] = `warning: ${args[0]}`
+    console.error(...args)
 }
 
-logger.log = function() {
-    console.log.apply(this, arguments)
+export function log(...args) {
+    console.log(...args)
 }
 
-logger.getDuration = function(start, opt_end) {
-    if (opt_end === undefined) {
-        opt_end = Date.now()
-    }
-
+export function getDuration(start, opt_end = Date.now()) {
     return moment.duration(moment(start).diff(opt_end)).humanize(true)
 }
 
-logger.applyReplacements = function(output, replaceMap) {
+export function applyReplacements(output, replaceMap?: object) {
     var regexPattern
 
     for (regexPattern in replaceMap) {
@@ -81,7 +79,7 @@ logger.applyReplacements = function(output, replaceMap) {
     return output
 }
 
-logger.getErrorMessage = function(err) {
+export function getErrorMessage(err) {
     var msg
 
     // General normalizer
@@ -120,17 +118,17 @@ logger.getErrorMessage = function(err) {
     return err.message.replace('Command failed: fatal: ', '').trim()
 }
 
-logger.compileTemplate = function(source, map) {
+export function compileTemplate(source, map) {
     var template = handlebars.compile(source)
 
-    return logger.applyReplacements(template(map))
+    return applyReplacements(template(map))
 }
 
-logger.logTemplate = function(source, map) {
-    console.log(logger.compileTemplate(source, map || {}))
+export function logTemplate(source, map) {
+    console.log(compileTemplate(source, map || {}))
 }
 
-logger.logTemplateFile = function(file, map) {
+export function logTemplateFile(file, map) {
     let templatePath
     let source
 
@@ -142,16 +140,16 @@ logger.logTemplateFile = function(file, map) {
 
     source = fs.readFileSync(templatePath).toString()
 
-    logger.logTemplate(stripHandlebarsNewLine(source), map)
+    logTemplate(stripHandlebarsNewLine(source), map)
 }
 
-logger.registerHelper = function(name, callback) {
+export function registerHelper(name, callback) {
     handlebars.registerHelper(name, callback)
 }
 
-logger.registerHelpers_ = function() {
+export function registerHelpers_() {
     handlebars.registerHelper('date', date => {
-        return logger.getDuration(date)
+        return getDuration(date)
     })
 
     handlebars.registerHelper('compareLink', function() {
@@ -213,22 +211,4 @@ logger.registerHelpers_ = function() {
     })
 }
 
-logger.registerHelpers_()
-
-logger.colors = colors
-
-if (process.argv.indexOf('--no-color') !== -1 || process.env.NODE_ENV === 'testing') {
-    logger.colors = _.reduce(
-        _.keys(logger.colors.styles),
-        (memo, color) => {
-            memo[color] = function returnValue(value) {
-                return value
-            }
-
-            return memo
-        },
-        {}
-    )
-}
-
-export default logger
+registerHelpers_()

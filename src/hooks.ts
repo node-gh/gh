@@ -5,11 +5,11 @@
  */
 
 import * as async from 'async'
+import { noop } from 'lodash'
+import * as truncate from 'truncate'
 import * as configs from './configs'
 import * as exec from './exec'
-import * as truncate from 'truncate'
-import * as _ from 'lodash'
-import logger from './logger'
+import * as logger from './logger'
 
 const config = configs.getConfig()
 
@@ -73,7 +73,7 @@ export function invoke(path, scope, opt_callback) {
     let context
 
     if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
-        opt_callback && opt_callback(_.noop)
+        opt_callback && opt_callback(noop)
         return
     }
 

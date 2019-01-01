@@ -8,7 +8,7 @@
 
 import * as base from '../base'
 import * as configs from '../configs'
-import logger from '../logger'
+import * as logger from '../logger'
 
 const config = base.getConfig()
 
