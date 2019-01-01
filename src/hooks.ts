@@ -8,8 +8,8 @@ import * as async from 'async'
 import * as configs from './configs'
 import * as exec from './exec'
 import * as truncate from 'truncate'
-import logger from './logger'
 import * as _ from 'lodash'
+import logger from './logger'
 
 const config = configs.getConfig()
 

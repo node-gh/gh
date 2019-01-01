@@ -1,51 +1,9 @@
-const { execSync } = require('child_process')
-const { upperFirst } = require('lodash')
+import { upperFirst, isArray, isPlainObject, map, mapValues } from 'lodash'
+import * as nock from 'nock'
 
-module.exports = {
-    runCmd,
-    prepareTestFixtures,
-}
+const nockBack = nock.back
 
-export default prepareTestFixtures
-
-function runCmd(cmd) {
-    try {
-        var result = execSync(cmd, { cwd: process.cwd() })
-    } catch (error) {
-        throw new Error(error.output.toString())
-    }
-
-    return result.toString()
-}
-
-function concatUpper(one, two) {
-    return `${one}${upperFirst(two)}`
-}
-
-function formatCmdName(cmd, argv) {
-    if (argv.length === 1) {
-        return cmd.name
-    }
-
-    return cmd.flags.reduce((flagName, current) => {
-        if (flagName) {
-            return flagName
-        }
-
-        if (argv.includes(current)) {
-            return concatUpper(cmd.name, current.slice(2))
-        }
-    }, null)
-}
-
-function filterByCmdName(cmd, cmdName) {
-    return cmd.name === cmdName
-}
-
-function prepareTestFixtures(cmdName, argv) {
-    const nockBack = require('nock').back
-    const { isArray, isPlainObject, map, mapValues } = require('lodash')
-
+export function prepareTestFixtures(cmdName, argv) {
     let id = 0
 
     // These should only include the flags that you need for e2e tests
@@ -76,6 +34,10 @@ function prepareTestFixtures(cmdName, argv) {
         {
             name: 'User',
             flags: ['--logout', '--whoami'],
+        },
+        {
+            name: 'Version',
+            flags: ['--version'],
         },
     ].filter(cmd => filterByCmdName(cmd, cmdName))
 
@@ -157,4 +119,28 @@ function prepareTestFixtures(cmdName, argv) {
     function before(scope) {
         scope.filteringPath = () => stripAccessToken(scope.path)
     }
+}
+
+function filterByCmdName(cmd, cmdName) {
+    return cmd.name === cmdName
+}
+
+function formatCmdName(cmd, argv) {
+    if (argv.length === 1) {
+        return cmd.name
+    }
+
+    return cmd.flags.reduce((flagName, current) => {
+        if (flagName) {
+            return flagName
+        }
+
+        if (argv.includes(current)) {
+            return concatUpper(cmd.name, current.slice(2))
+        }
+    }, null)
+}
+
+function concatUpper(one, two) {
+    return `${one}${upperFirst(two)}`
 }

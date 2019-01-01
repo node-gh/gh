@@ -13,7 +13,6 @@ import { checkVersion, clone, find, getUser, expandAliases, load } from './base'
 import * as configs from './configs'
 import * as fs from 'fs'
 import * as git from './git'
-import logger from './logger'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import User from './cmds/user'
@@ -188,7 +187,7 @@ export function setUp() {
             invokePayload(options, Command, cooked, remain)
 
             if (process.env.NODE_ENV === 'testing') {
-                const prepareTestFixtures = await import('../__tests__/testUtils')
+                const { prepareTestFixtures } = await import('./utils')
 
                 await new Command(options).run(prepareTestFixtures(Command.name, cooked))
             } else {

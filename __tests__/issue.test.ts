@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-const { runCmd } = require('./testUtils')
+import { runCmd } from './testUtils'
 
 describe('E2E: Issues Module Test', () => {
     it('List Issues `gh is`', done => {

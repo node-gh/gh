@@ -5,11 +5,11 @@
  */
 
 import * as fs from 'fs'
-import logger from './logger'
-import { spawnSync } from './exec'
 import * as path from 'path'
 import * as userhome from 'userhome'
 import * as which from 'which'
+import { spawnSync } from './exec'
+import logger from './logger'
 
 let cache = {}
 let plugins

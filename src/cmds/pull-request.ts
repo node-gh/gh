@@ -10,10 +10,10 @@ import * as async from 'async'
 import * as base from '../base'
 import * as git from '../git'
 import * as hooks from '../hooks'
-import logger from '../logger'
-import openUrl from 'opn'
-import Issues from './issue'
+import * as openUrl from 'opn'
 import * as _ from 'lodash'
+import Issues from './issue'
+import logger from '../logger'
 
 const config = base.getConfig()
 
