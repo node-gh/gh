@@ -16,8 +16,8 @@ branches:
         - type != push
 
 script:
+    - npm run-script build
     - npm run-script test:ci
-    - npm link
 
 jobs:
     include:
