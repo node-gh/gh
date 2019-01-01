@@ -24,7 +24,9 @@ jobs:
     include:
         - stage: release
           node_js: lts/*
-          script: npx semantic-release
+          script:
+              - npm run-script build
+              - npx semantic-release
 
 stages:
     - test
