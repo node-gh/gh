@@ -1,9 +1,12 @@
-- [Reporting Bugs](#reporting-bugs)
-- [Testing](#testing)
-- [Committing](#committing)
-  - [Optional Plugins to install for your code editor](#optional-plugins-to-install-for-your-code-editor)
-    - [Prettier (formatter primarily for JS files)](#prettier-formatter-primarily-for-js-files)
-    - [ESlint (linter)](#eslint-linter)
+-   [Reporting Bugs](#reporting-bugs)
+-   [Writing Code](#writing-code)
+    -   [Building](#building)
+    -   [Adding new commands](#adding-new-commands)
+-   [Testing](#testing)
+-   [Committing](#committing)
+    -   [Optional Plugins to install for your code editor for a better developer experience](#optional-plugins-to-install-for-your-code-editor-for-a-better-developer-experience)
+        -   [Prettier](#prettier)
+        -   [TSlint (linter)](#tslint-linter)
 
 ## Reporting Bugs
 
@@ -13,6 +16,25 @@
 4.  Print the output of `npm list -g --depth=0 | grep gh`
 5.  Try the command that failed with `--verbose` to print debugging messages
 6.  Report the exit code of the gh process: `echo $?` after termination
+
+## Writing Code
+
+### Building
+
+Since this is a **TypeScript** project, we have to compile the code before running it.
+
+To run **incrementally** in watch mode:
+
+-   `npm run build:watch`
+
+To run **once**:
+
+-   `npm run build`
+
+### Adding new commands
+
+-   Copy and edit the content of [Hello World](https://github.com/node-gh/gh/blob/master/src/cmds/hello.ts) example
+-   Add instructions in [README](https://github.com/node-gh/gh/blob/master/README.md)
 
 ## Testing
 
@@ -32,27 +54,20 @@ Please verify that your tests pass & minimum coverage levels are met when contri
 
 -   If you want more info on the commit process, we follow [Angular's Commit Convention](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular#readme)
 
-Contribute new commands to this project by copying and editing the content of [Hello World](https://github.com/node-gh/gh/blob/master/lib/cmds/hello.js) example.
-
-### Optional Plugins to install for your code editor
+### Optional Plugins to install for your code editor for a better developer experience
 
 -   Even if you don't install these plugins, your commits will automatically be formatted
--   These are only recommendations for a better developer experience
 
-#### Prettier (formatter primarily for JS files)
+#### Prettier
 
-> Prettier is an opinionated code formatter. https://prettier.io/playground/
+> Prettier is an opinionated code formatter
 
--   User Guide: https://github.com/prettier/prettier
--   VS Code Editor Plugin: https://github.com/prettier/prettier-vscode
--   Vim Plugin: https://github.com/prettier/vim-prettier
--   Sublime: https://packagecontrol.io/packages/JsPrettier
+-   [User Guide](https://prettier.io/)
+-   [Editor plugin links](https://prettier.io/docs/en/editors.html)
 
-#### ESlint (linter)
+#### TSlint (linter)
 
-> ESlint is a pluggable linting utility for JavaScript
+> TSlint is a pluggable linting utility for TypeScript
 
--   User Guide: https://eslint.org/docs/user-guide/getting-started#configuration
--   VS Code Editor Plugin: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
--   Vim Plugin: https://github.com/vim-syntastic/syntastic/tree/master/syntax_checkers/javascript
--   Sublime: https://github.com/roadhump/SublimeLinter-eslint
+-   [User Guide](https://palantir.github.io/tslint/)
+-   [Editor plugin links](https://palantir.github.io/tslint/usage/third-party-tools)
