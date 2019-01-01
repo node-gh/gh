@@ -8,9 +8,7 @@ import { runCmd } from './testUtils'
 
 describe('E2E: Version Module Test', () => {
     it('Check Current version `gh --version`', done => {
-        expect(runCmd('bin/gh.js --version')).toEqual(
-            expect.stringMatching(/gh [0-9]\.[0-9]+\.[0-9]+/)
-        )
+        expect(runCmd('gh --version')).toEqual(expect.stringMatching(/gh [0-9]\.[0-9]+\.[0-9]+/))
         done()
     })
 })

@@ -8,7 +8,7 @@ import { runCmd } from './testUtils'
 
 describe('E2E: Milestone Module Test', () => {
     it('List Milestones `gh ms --list`', done => {
-        expect(runCmd('bin/gh.js ms --list')).toMatchSnapshot()
+        expect(runCmd('gh ms --list')).toMatchSnapshot()
         done()
     })
 })

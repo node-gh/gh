@@ -8,17 +8,17 @@ import { runCmd } from './testUtils'
 
 describe('E2E: User Module Test', () => {
     it('List Current User `gh user`', done => {
-        expect(runCmd('bin/gh.js user')).toMatchSnapshot()
+        expect(runCmd('gh user')).toMatchSnapshot()
         done()
     })
 
     it('Logout Current User `gh user --logout`', done => {
-        expect(runCmd('bin/gh.js user --logout')).toMatchSnapshot()
+        expect(runCmd('gh user --logout')).toMatchSnapshot()
         done()
     })
 
     it('Show just the current username `gh user --whoami`', done => {
-        expect(runCmd('bin/gh.js user --whoami')).toMatchSnapshot()
+        expect(runCmd('gh user --whoami')).toMatchSnapshot()
         done()
     })
 })
