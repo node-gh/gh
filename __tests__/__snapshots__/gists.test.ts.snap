@@ -8,7 +8,7 @@ https://gist.github.com/027b64c22a5e8d1bf16bc2cfede77e43
 `;
 
 exports[`E2E: Gist Module Test Delete gists \`gh gi --delete 027b64c22a5e8d1bf16bc2cfede77e43 --delete 1ad5b3b35fe6906e8980c0fd7522e2d6\` 1`] = `
-"Deleting gist /027b64c22a5e8d1bf16bc2cfede77e43
+"Deleting gist /1ad5b3b35fe6906e8980c0fd7522e2d6
 Deleting gist /1ad5b3b35fe6906e8980c0fd7522e2d6
 "
 `;

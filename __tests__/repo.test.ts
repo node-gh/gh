@@ -4,9 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
-
-const { runCmd } = require('./testUtils')
+import { runCmd } from './testUtils'
 
 describe('E2E: Repo Module Test', () => {
     it('List Repos `gh re --list`', done => {

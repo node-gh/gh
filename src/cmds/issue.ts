@@ -9,9 +9,9 @@
 import * as async from 'async'
 import * as base from '../base'
 import * as hooks from '../hooks'
-import logger from '../logger'
 import * as openUrl from 'opn'
 import * as _ from 'lodash'
+import logger from '../logger'
 
 const config = base.getConfig()
 

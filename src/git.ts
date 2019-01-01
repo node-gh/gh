@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import logger from './logger'
 import * as exec from './exec'
+import logger from './logger'
 
 const git_command = process.env.GH_GIT_COMMAND || 'git'
 
