@@ -6,11 +6,11 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as base from '../base'
-import * as hooks from '../hooks'
 import * as inquirer from 'inquirer'
 import * as openUrl from 'opn'
-import logger from '../logger'
+import * as base from '../base'
+import * as hooks from '../hooks'
+import * as logger from '../logger'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'

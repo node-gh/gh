@@ -5,7 +5,7 @@
  */
 
 import * as exec from './exec'
-import logger from './logger'
+import * as logger from './logger'
 
 const git_command = process.env.GH_GIT_COMMAND || 'git'
 

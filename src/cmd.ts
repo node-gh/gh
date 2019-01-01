@@ -9,13 +9,13 @@
 // export const hi = 'hi'
 
 import * as async from 'async'
-import { checkVersion, clone, find, getUser, expandAliases, load } from './base'
-import * as configs from './configs'
 import * as fs from 'fs'
-import * as git from './git'
 import * as nopt from 'nopt'
 import * as path from 'path'
+import { checkVersion, clone, expandAliases, find, getUser, load } from './base'
 import User from './cmds/user'
+import * as configs from './configs'
+import * as git from './git'
 
 const config = configs.getConfig()
 
@@ -41,7 +41,45 @@ function invokePayload(options, command, cooked, remain) {
     }
 }
 
-async function resolveCmd(name) {
+async function resolveCmd(name, commandDir) {
+    const commandFiles = find(commandDir, /\.js$/i)
+
+    const commandName = commandFiles.filter(file => {
+        switch (file) {
+            case 'milestone.js':
+                if (name === 'ms') return true
+                break
+            case 'notification.js':
+                if (name === 'nt') return true
+                break
+            case 'pull-request.js':
+                if (name === 'pr') return true
+                break
+        }
+
+        if (file.startsWith(name)) {
+            return true
+        }
+
+        return false
+    })[0]
+
+    if (commandName) {
+        return await import(path.join(commandDir, commandName))
+    }
+
+    return resolvePlugin(name)
+}
+
+function resolvePlugin(name) {
+    // If plugin command exists, register the executed plugin name on
+    // process.env. This may simplify core plugin infrastructure.
+    process.env.NODEGH_PLUGIN = name
+
+    return { default: configs.getPlugin(name).Impl }
+}
+
+async function loadCommand(name) {
     let Command
 
     const commandDir = path.join(__dirname, 'cmds')
@@ -50,54 +88,10 @@ async function resolveCmd(name) {
     if (fs.existsSync(commandPath)) {
         Command = await import(commandPath)
     } else {
-        const commandFiles = find(commandDir, /\.js$/i)
-
-        const commandName = commandFiles.filter(file => {
-            switch (file) {
-                case 'milestone.js':
-                    if (name === 'ms') return true
-                    break
-                case 'notification.js':
-                    if (name === 'nt') return true
-                    break
-                case 'pull-request.js':
-                    if (name === 'pr') return true
-                    break
-            }
-
-            if (file.startsWith(name)) {
-                return true
-            }
-
-            return false
-        })
-
-        Command = await import(path.join(commandDir, commandName[0]))
+        Command = await resolveCmd(name, commandDir)
     }
 
     return Command.default
-}
-
-async function loadCommand(name) {
-    let Command = await resolveCmd(name)
-    let plugin
-
-    // If command was not found, check if it is registered as a plugin.
-    if (!Command) {
-        try {
-            plugin = configs.getPlugin(name)
-        } catch (e) {
-            return null
-        }
-
-        Command = plugin.Impl
-
-        // If plugin command exists, register the executed plugin name on
-        // process.env. This may simplify core plugin infrastructure.
-        process.env.NODEGH_PLUGIN = name
-    }
-
-    return Command
 }
 
 export function setUp() {

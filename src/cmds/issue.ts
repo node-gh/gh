@@ -7,11 +7,11 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as async from 'async'
+import { isArray } from 'lodash'
+import * as openUrl from 'opn'
 import * as base from '../base'
 import * as hooks from '../hooks'
-import * as openUrl from 'opn'
-import * as _ from 'lodash'
-import logger from '../logger'
+import * as logger from '../logger'
 
 const config = base.getConfig()
 
@@ -584,7 +584,7 @@ function formatIssues(issues, showDetailed) {
                     `
                 }
 
-                if (_.isArray(issue.labels) && issue.labels.length > 0) {
+                if (isArray(issue.labels) && issue.labels.length > 0) {
                     const labels = issue.labels.map(label => label.name)
                     const labelHeading = labels.length > 1 ? 'labels: ' : 'label: '
 

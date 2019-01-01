@@ -5,7 +5,7 @@
  */
 
 import * as child_process from 'child_process'
-import logger from './logger'
+import * as logger from './logger'
 
 export function spawnSync(cmd, args, options?: object) {
     var exec

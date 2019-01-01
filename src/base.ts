@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import * as configs from './configs'
 import * as fs from 'fs'
 import * as Github from 'github'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
+import * as configs from './configs'
 
 // -- Config -------------------------------------------------------------------
+
+const config = configs.getConfig()
 
 export function clone(o) {
     return JSON.parse(JSON.stringify(o))
@@ -20,7 +22,7 @@ export function clone(o) {
 
 export function load() {}
 
-export const github = setupGithubClient(configs.getConfig())
+export const github = setupGithubClient(config)
 
 export function asyncReadPackages(callback) {
     function read(err, data) {
@@ -51,8 +53,6 @@ export function checkVersion() {
 }
 
 export function expandAliases(options) {
-    const config = configs.getConfig()
-
     if (config.alias) {
         options.fwd = config.alias[options.fwd] || options.fwd
         options.submit = config.alias[options.submit] || options.submit
@@ -67,7 +67,7 @@ export function find(filepath, opt_pattern) {
 }
 
 export function getUser() {
-    return configs.getConfig().github_user
+    return config.github_user
 }
 
 // Export some config methods to allow plugins to access them

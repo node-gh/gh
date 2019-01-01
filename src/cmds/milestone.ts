@@ -8,7 +8,7 @@
 
 import * as async from 'async'
 import * as base from '../base'
-import logger from '../logger'
+import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 

@@ -5,7 +5,7 @@
  */
 
 import * as base from '../base'
-import logger from '../logger'
+import * as logger from '../logger'
 
 export default function Version() {}
 
