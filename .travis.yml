@@ -17,6 +17,7 @@ branches:
 
 script:
     - npm run-script build
+    - npm link
     - npm run-script test:ci
 
 jobs:

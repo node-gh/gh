@@ -8,7 +8,7 @@ import { runCmd } from './testUtils'
 
 describe('E2E: Notification Module Test', () => {
     it('List Notifications `gh nt`', done => {
-        expect(runCmd('bin/gh.js nt')).toMatchSnapshot()
+        expect(runCmd('gh nt')).toMatchSnapshot()
         done()
     })
 })

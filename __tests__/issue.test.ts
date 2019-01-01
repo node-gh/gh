@@ -8,39 +8,37 @@ import { runCmd } from './testUtils'
 
 describe('E2E: Issues Module Test', () => {
     it('List Issues `gh is`', done => {
-        expect(runCmd('bin/gh.js is')).toMatchSnapshot()
+        expect(runCmd('gh is')).toMatchSnapshot()
         done()
     })
 
     it('Create a new issue `gh is -N -t "Node GH rocks!" -L bug,question,test`', done => {
-        expect(runCmd(`bin/gh.js is -N -t "Node GH rocks!" -L bug,question,test`)).toMatchSnapshot()
+        expect(runCmd(`gh is -N -t "Node GH rocks!" -L bug,question,test`)).toMatchSnapshot()
         done()
     })
 
     it('Comment on Issues `gh is 1 -c "test"`', done => {
-        expect(runCmd(`bin/gh.js is 1 -c "test"`)).toMatchSnapshot()
+        expect(runCmd(`gh is 1 -c "test"`)).toMatchSnapshot()
         done()
     })
 
     it('Open Issue `gh is 1 -o`', done => {
-        expect(runCmd(`bin/gh.js is 1 -o`)).toMatchSnapshot()
+        expect(runCmd(`gh is 1 -o`)).toMatchSnapshot()
         done()
     })
 
     it('Close Issue `gh is 1 -C`', done => {
-        expect(runCmd(`bin/gh.js is 1 -C`)).toMatchSnapshot()
+        expect(runCmd(`gh is 1 -C`)).toMatchSnapshot()
         done()
     })
 
     it('Search Issues `gh is -s hi`', done => {
-        expect(runCmd(`bin/gh.js is -s 'hi'`)).toMatchSnapshot()
+        expect(runCmd(`gh is -s 'hi'`)).toMatchSnapshot()
         done()
     })
 
     it(`Search Issues \`gh is --assign -A ${process.env.GH_USER} --number 1\``, done => {
-        expect(
-            runCmd(`bin/gh.js is --assign -A ${process.env.GH_USER} --number 1`)
-        ).toMatchSnapshot()
+        expect(runCmd(`gh is --assign -A ${process.env.GH_USER} --number 1`)).toMatchSnapshot()
         done()
     })
 })
