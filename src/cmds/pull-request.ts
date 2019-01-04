@@ -473,7 +473,7 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
 
     var headline = `${logger.colors.green(`#${pull.number}`)} ${pull.title} ${logger.colors.magenta(
         `@${pull.user.login}`
-    )} (${logger.getDuration(pull.created_at)})${status}`
+    )} (${logger.getDuration(pull.created_at)})${status} ${logger.colors.green(`${pull.combinedLabels}`)}`
 
     if (options.link) {
         headline += ` ${logger.colors.blue(pull.html_url)}`
@@ -600,6 +600,37 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
             })
 
             async.series(statusOperations, err => {
+                callback(err)
+            })
+        },
+
+        function(callback) {
+            var labelOperations = []
+            var labelPayload
+
+            pulls.forEach(pull => {
+                labelOperations.push(callback => {
+                    labelPayload = {
+                        repo,
+                        user,
+                        number: pull.number,
+                    }
+
+                    base.github.issues.getIssueLabels(labelPayload, (err, data) => {
+                        var combinedLabels = ''
+
+                        data.forEach(label => {
+                            combinedLabels += '[' + label.name + ']'
+                        })
+
+                        pull.combinedLabels = combinedLabels
+
+                        callback(err)
+                    })
+                })
+            })
+
+            async.series(labelOperations, err => {
                 callback(err)
             })
         },
