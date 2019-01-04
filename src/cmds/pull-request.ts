@@ -473,7 +473,9 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
 
     var headline = `${logger.colors.green(`#${pull.number}`)} ${pull.title} ${logger.colors.magenta(
         `@${pull.user.login}`
-    )} (${logger.getDuration(pull.created_at)})${status} ${logger.colors.green(`${pull.combinedLabels}`)}`
+    )} (${logger.getDuration(pull.created_at)})${status} ${logger.colors.green(
+        `${pull.combinedLabels}`
+    )}`
 
     if (options.link) {
         headline += ` ${logger.colors.blue(pull.html_url)}`
