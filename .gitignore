@@ -6,4 +6,4 @@ coverage
 # flame graphs dir
 /flame
 .env
-lib
+/lib
