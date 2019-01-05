@@ -12,6 +12,11 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
+    it('List PRs `gh pr --detailed`', done => {
+        expect(runCmd('gh pr  --detailed')).toMatchSnapshot()
+        done()
+    })
+
     it('Get PR Info `gh pr --info 50`', done => {
         expect(runCmd('gh pr --info 50')).toMatchSnapshot()
         done()
