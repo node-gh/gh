@@ -89,10 +89,10 @@ Milestone.prototype.list = function(user, repo, opt_callback) {
 
     payload = {
         repo,
-        user,
+        owner: user,
     }
 
-    base.github.issues.getAllMilestones(payload, (err, milestones) => {
+    base.github.issues.listMilestonesForRepo(payload, (err, milestones: any) => {
         if (err && !options.all) {
             throw new Error(logger.getErrorMessage(err))
         }
@@ -128,7 +128,7 @@ Milestone.prototype.listFromAllRepositories = function(opt_callback) {
 
     payload = {
         type: 'all',
-        user: options.user,
+        owner: options.user,
     }
 
     if (options.organization) {

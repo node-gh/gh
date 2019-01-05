@@ -14,6 +14,7 @@ import * as hooks from '../hooks'
 import * as logger from '../logger'
 
 const config = base.getConfig()
+const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
@@ -100,83 +101,74 @@ Issue.STATE_OPEN = 'open'
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Issue.prototype.run = function(done) {
+Issue.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
+    const userRepo = logger.colors.green(`${options.user}/${options.repo}`)
+    const number = logger.colors.green(`#${options.number}`)
 
     instance.config = config
 
     options.state = options.state || Issue.STATE_OPEN
 
     if (options.assign) {
-        hooks.invoke('issue.assign', instance, afterHooksCallback => {
-            const user = options.user || options.loggedUser
-
+        hooks.invoke('issue.assign', instance, async afterHooksCallback => {
             logger.log(
-                `Assigning issue ${logger.colors.green(
-                    `#${options.number}`
-                )} on ${logger.colors.green(`${user}/${options.repo}`)} to ${logger.colors.green(
+                `Assigning issue ${number} on ${userRepo} to ${logger.colors.magenta(
                     options.assignee
                 )}`
             )
 
-            instance.assign((err, issue) => {
-                if (err) {
-                    logger.error("Can't assign issue.")
-                    return
-                }
+            try {
+                var { data } = await instance.assign()
+            } catch (err) {
+                throw new Error(`Can't assign issue.\n${err}`)
+            }
 
-                logger.log(issue.html_url)
+            logger.log(logger.colors.cyan(data.html_url))
 
-                afterHooksCallback()
+            afterHooksCallback()
 
-                done && done()
-            })
+            done && done()
         })
     }
 
     if (options.browser) {
-        process.env.NODE_ENV !== 'testing' &&
-            instance.browser(options.user, options.repo, options.number)
+        !testing && instance.browser(options.user, options.repo, options.number)
     }
 
     if (options.close) {
-        hooks.invoke('issue.close', instance, afterHooksCallback => {
+        hooks.invoke('issue.close', instance, async afterHooksCallback => {
             options.state = Issue.STATE_CLOSED
 
-            logger.log(
-                `Closing issue ${logger.colors.green(
-                    `#${options.number}`
-                )} on ${logger.colors.green(`${options.user}/${options.repo}`)}`
-            )
+            logger.log(`Closing issue ${number} on ${userRepo}`)
 
-            instance.close((err, issue) => {
-                if (err) {
-                    logger.error("Can't close issue.")
-                    return
-                }
+            try {
+                var { data } = await instance.close()
+            } catch (err) {
+                throw new Error(`Can't close issue.\n${err}`)
+            }
 
-                logger.log(issue.html_url)
+            logger.log(logger.colors.cyan(data.html_url))
 
-                afterHooksCallback()
+            afterHooksCallback()
 
-                done && done()
-            })
+            done && done()
         })
     }
 
     if (options.comment) {
-        logger.log(`Adding comment on issue ${logger.colors.green(`#${options.number}`)}`)
+        logger.log(`Adding comment on issue ${number} on ${userRepo}`)
 
-        instance.comment((err, issue) => {
-            if (err) {
-                throw new Error(`Can't add comment.\n${err}`)
-            }
+        try {
+            var { data } = await instance.comment()
+        } catch (err) {
+            throw new Error(`Can't add comment.\n${err}`)
+        }
 
-            logger.log(issue.html_url)
+        logger.log(logger.colors.cyan(data.html_url))
 
-            done && done()
-        })
+        done && done()
     }
 
     if (options.list) {
@@ -194,28 +186,21 @@ Issue.prototype.run = function(done) {
                 }
             })
         } else {
-            logger.log(
-                `Listing ${logger.colors.green(options.state)} issues on ${logger.colors.green(
-                    `${options.user}/${options.repo}`
-                )}`
-            )
+            logger.log(`Listing ${logger.colors.green(options.state)} issues on ${userRepo}`)
 
-            instance.list(options.user, options.repo, err => {
-                if (err) {
-                    logger.error(`Can't list issues on ${options.user}/${options.repo}`)
-                    return
-                }
-
-                done && done()
-            })
+            try {
+                await instance.list(options.user, options.repo)
+            } catch (err) {
+                throw new Error(logger.getErrorMessage(err))
+            }
+            console.log('DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            done && done()
         }
     }
 
     if (options.new) {
         hooks.invoke('issue.new', instance, afterHooksCallback => {
-            logger.log(
-                `Creating a new issue on ${logger.colors.green(`${options.user}/${options.repo}`)}`
-            )
+            logger.log(`Creating a new issue on ${userRepo}`)
 
             instance.new((err, issue) => {
                 if (err) {
@@ -237,11 +222,7 @@ Issue.prototype.run = function(done) {
 
     if (options.open) {
         hooks.invoke('issue.open', instance, afterHooksCallback => {
-            logger.log(
-                `Opening issue ${logger.colors.green(
-                    `#${options.number}`
-                )} on ${logger.colors.green(`${options.user}/${options.repo}`)}`
-            )
+            logger.log(`Opening issue ${number} on ${userRepo}`)
 
             instance.open((err, issue) => {
                 if (err) {
@@ -267,9 +248,7 @@ Issue.prototype.run = function(done) {
 
             logger.log(`Searching for ${query} in issues for ${logger.colors.green(user)}\n`)
         } else {
-            logger.log(
-                `Searching for ${query} in issues for ${logger.colors.green(`${user}/${repo}`)}\n`
-            )
+            logger.log(`Searching for ${query} in issues for ${userRepo}\n`)
         }
 
         instance.search(user, repo, err => {
@@ -277,7 +256,7 @@ Issue.prototype.run = function(done) {
                 if (options.all) {
                     logger.error(`Can't search issues for ${user}`)
                 } else {
-                    logger.error(`Can't search issues on ${user}/${repo}`)
+                    logger.error(`Can't search issues on ${userRepo}`)
                 }
 
                 return
@@ -288,16 +267,12 @@ Issue.prototype.run = function(done) {
     }
 }
 
-Issue.prototype.assign = function(opt_callback) {
-    var instance = this
+Issue.prototype.assign = async function() {
+    const instance = this
 
-    instance.getIssue_((err, issue) => {
-        if (err) {
-            opt_callback && opt_callback(err)
-        } else {
-            instance.editIssue_(issue.title, Issue.STATE_OPEN, opt_callback)
-        }
-    })
+    const issue = await instance.getIssue_()
+
+    return await instance.editIssue_(issue.title, Issue.STATE_OPEN)
 }
 
 Issue.prototype.browser = function(user, repo, number) {
@@ -305,22 +280,18 @@ Issue.prototype.browser = function(user, repo, number) {
         number = ''
     }
 
-    openUrl(`${config.github_host}${user}/${repo}/issues/${number}`, { wait: false })
+    openUrl(`${config.github_host}/${user}/${repo}/issues/${number}`, { wait: false })
 }
 
-Issue.prototype.close = function(opt_callback) {
+Issue.prototype.close = async function() {
     var instance = this
 
-    instance.getIssue_((err, issue) => {
-        if (err) {
-            opt_callback && opt_callback(err)
-        } else {
-            instance.editIssue_(issue.title, Issue.STATE_CLOSED, opt_callback)
-        }
-    })
+    const issue = await instance.getIssue_()
+
+    return await instance.editIssue_(issue.title, Issue.STATE_CLOSED)
 }
 
-Issue.prototype.comment = function(opt_callback) {
+Issue.prototype.comment = async function() {
     const instance = this
     let options = instance.options
     let body
@@ -332,13 +303,13 @@ Issue.prototype.comment = function(opt_callback) {
         body,
         number: options.number,
         repo: options.repo,
-        user: options.user,
+        owner: options.user,
     }
 
-    base.github.issues.createComment(payload, opt_callback)
+    return await base.github.issues.createComment(payload)
 }
 
-Issue.prototype.editIssue_ = function(title, state, opt_callback) {
+Issue.prototype.editIssue_ = async function(title, state) {
     const instance = this
     const options = instance.options
     let payload
@@ -353,13 +324,13 @@ Issue.prototype.editIssue_ = function(title, state, opt_callback) {
         assignee: options.assignee,
         milestone: options.milestone,
         repo: options.repo,
-        user: options.user,
+        owner: options.user,
     }
 
-    base.github.issues.edit(payload, opt_callback)
+    return await base.github.issues.update(payload)
 }
 
-Issue.prototype.getIssue_ = function(opt_callback) {
+Issue.prototype.getIssue_ = async function() {
     const instance = this
     const options = instance.options
     let payload
@@ -367,13 +338,13 @@ Issue.prototype.getIssue_ = function(opt_callback) {
     payload = {
         number: options.number,
         repo: options.repo,
-        user: options.user,
+        owner: options.user,
     }
 
-    base.github.issues.getRepoIssue(payload, opt_callback)
+    return await base.github.issues.get(payload)
 }
 
-Issue.prototype.list = function(user, repo, opt_callback) {
+Issue.prototype.list = async function(user, repo) {
     const instance = this
     const options = instance.options
     const operations = []
@@ -383,7 +354,7 @@ Issue.prototype.list = function(user, repo, opt_callback) {
 
     payload = {
         repo,
-        user,
+        owner: user,
         labels: options.label,
         state: options.state,
     }
@@ -396,12 +367,12 @@ Issue.prototype.list = function(user, repo, opt_callback) {
 
     if (options.milestone) {
         operations.push(callback => {
-            base.github.issues.getAllMilestones(
+            base.github.issues.listMilestonesForRepo(
                 {
                     repo,
-                    user,
+                    owner: user,
                 },
-                (err, results) => {
+                (err, results: any) => {
                     if (err) {
                         logger.warn(err.message)
                     }
@@ -424,31 +395,21 @@ Issue.prototype.list = function(user, repo, opt_callback) {
         payload.assignee = options.assignee
     }
 
-    operations.push(callback => {
-        base.github.issues.repoIssues(payload, callback)
+    const { data } = await base.github.issues.listForRepo(payload)
+
+    const issues = data.map(result => {
+        if (result) {
+            return result
+        }
     })
 
-    async.series(operations, (err, results) => {
-        if (err && !options.all) {
-            logger.error(logger.getErrorMessage(err))
-        }
+    if (issues && issues.length > 0) {
+        const formattedIssues = formatIssues(issues, options.detailed)
 
-        const issues = results[0].map(result => {
-            if (result) {
-                return result
-            }
-        })
-
-        if (issues && issues.length > 0) {
-            const formattedIssues = formatIssues(issues, options.detailed, options.date)
-
-            logger.log(formattedIssues)
-        } else {
-            logger.log('No issues.')
-        }
-
-        opt_callback && opt_callback(err)
-    })
+        logger.log(formattedIssues)
+    } else {
+        logger.log('No issues.')
+    }
 }
 
 Issue.prototype.listFromAllRepositories = function(opt_callback) {
@@ -458,15 +419,19 @@ Issue.prototype.listFromAllRepositories = function(opt_callback) {
 
     payload = {
         type: 'all',
-        user: options.user,
+        username: options.user,
     }
 
-    base.github.repos.getAll(payload, (err, repositories) => {
+    base.github.repos.listForUser(payload, (err, repositories: any) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
-            repositories.forEach(repository => {
-                instance.list(repository.owner.login, repository.name, opt_callback)
+            repositories.forEach(async repository => {
+                try {
+                    await instance.list(repository.owner.login, repository.name)
+                } catch (err) {
+                    throw new Error(logger.getErrorMessage(err))
+                }
             })
         }
     })
@@ -493,7 +458,7 @@ Issue.prototype.new = function(opt_callback) {
         assignee: options.assignee,
         repo: options.repo,
         title: options.title,
-        user: options.user,
+        owner: options.user,
         labels: options.label,
     }
 

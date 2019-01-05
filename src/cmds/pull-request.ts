@@ -310,12 +310,12 @@ PullRequest.prototype.checkPullRequestIntegrity_ = function(originalError, user,
     let pull
 
     payload = {
-        user,
+        owner: user,
         repo: options.repo,
         state: PullRequest.STATE_OPEN,
     }
 
-    base.github.pullRequests.getAll(payload, (err, pulls) => {
+    base.github.pulls.list(payload, (err, pulls: any) => {
         if (!err) {
             pulls.forEach(data => {
                 if (
@@ -420,10 +420,10 @@ PullRequest.prototype.getPullRequest_ = function(opt_callback) {
     payload = {
         number: options.number,
         repo: options.repo,
-        user: options.user,
+        owner: options.user,
     }
 
-    base.github.pullRequests.get(payload, opt_callback)
+    base.github.pulls.get(payload, opt_callback)
 }
 
 PullRequest.prototype.getBranchNameFromPullNumber_ = function(number) {
@@ -672,11 +672,11 @@ PullRequest.prototype.get = function(user, repo, number, opt_callback) {
 
     payload = {
         repo,
-        user,
         number,
+        owner: user,
     }
 
-    base.github.pullRequests.get(payload, (err, pull) => {
+    base.github.pulls.get(payload, (err, pull) => {
         if (err) {
             logger.warn(`Can't get pull request ${user}/${repo}/${number}`)
             return
@@ -706,14 +706,14 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
     payload = {
         repo,
         sort,
-        user,
+        owner: user,
         direction: options.direction,
         state: options.state,
     }
 
     operations = [
         function(callback) {
-            base.github.pullRequests.getAll(payload, (err, data) => {
+            base.github.pulls.list(payload, (err: NodeJS.ErrnoException, data) => {
                 pulls = []
 
                 if (!err) {
@@ -724,7 +724,7 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
                     }
                 }
 
-                if (err && err.code === 404) {
+                if (err && err.code === '404') {
                     // some times a repo is found, but you can't listen its prs
                     // due to the repo being disabled (e.g., private repo with debt)
                     logger.warn(`Can't list pull requests for ${user}/${payload.repo}`)
@@ -757,11 +757,11 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
                 statusOperations.push(callback => {
                     statusPayload = {
                         repo,
-                        user,
-                        sha: pull.head.sha,
+                        owner: user,
+                        ref: pull.head.sha,
                     }
 
-                    base.github.statuses.getCombined(statusPayload, (err, data) => {
+                    base.github.repos.getCombinedStatusForRef(statusPayload, (err, data: any) => {
                         pull.combinedStatus = data.state
 
                         callback(err)
@@ -811,41 +811,18 @@ PullRequest.prototype.listFromAllRepositories = function(opt_callback) {
 
     payload = {
         type: 'all',
-        user: options.user,
+        owner: options.user,
         per_page: 100,
     }
 
     if (options.org) {
-        apiMethod = 'getFromOrg'
+        apiMethod = 'listForOrg'
         payload.org = options.org
     } else {
-        apiMethod = 'getAll'
+        apiMethod = 'listForUser'
     }
 
     base.github.repos[apiMethod](payload, (err, repositories) => {
-        if (err) {
-            opt_callback && opt_callback(err)
-        } else {
-            repositories.forEach(repository => {
-                instance.list(repository.owner.login, repository.name, opt_callback)
-            })
-        }
-    })
-}
-
-PullRequest.prototype.listFromAllOrgRepositories = function(opt_callback) {
-    const instance = this
-    const options = instance.options
-    let payload
-
-    payload = {
-        type: 'all',
-        user: options.user,
-        org: options.org,
-        per_page: 100,
-    }
-
-    base.github.repos.getFromOrg(payload, (err, repositories) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
@@ -957,11 +934,11 @@ PullRequest.prototype.submit = function(user, opt_callback) {
 
             if (options.issue) {
                 payload.issue = options.issue
-                base.github.pullRequests.createFromIssue(payload, callback)
+                base.github.pulls.createFromIssue(payload, callback)
             } else {
                 payload.body = options.description
                 payload.title = options.title
-                base.github.pullRequests.create(payload, callback)
+                base.github.pulls.create(payload, callback)
             }
         },
     ]
@@ -990,10 +967,10 @@ PullRequest.prototype.updatePullRequest_ = function(title, opt_body, state, opt_
         body: opt_body,
         number: options.number,
         repo: options.repo,
-        user: options.user,
+        owner: options.user,
     }
 
-    base.github.pullRequests.update(payload, opt_callback)
+    base.github.pulls.update(payload, opt_callback)
 }
 
 PullRequest.prototype._fetchHandler = function() {

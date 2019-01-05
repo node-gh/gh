@@ -5,7 +5,7 @@
  */
 
 import * as fs from 'fs'
-import * as Github from 'github'
+import * as Github from '@octokit/rest'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
 import * as configs from './configs'
@@ -74,61 +74,54 @@ export function getUser() {
 export const getConfig = configs.getConfig
 export const writeGlobalConfig = configs.writeGlobalConfig
 
-interface IPaginate {
-    meta: {
-        link: string
-    }
-}
-
 function setupGithubClient(config) {
+    const baseUrl =
+        config.github_host === 'https://github.com' ? 'https://api.github.com' : config.github_host
+
     const github = new Github({
-        debug: false,
-        host: config.api.host,
-        protocol: config.api.protocol,
-        version: config.api.version,
-        pathPrefix: config.api.pathPrefix,
+        baseUrl,
     })
 
-    function paginate(method) {
-        return function paginatedMethod(payload, cb) {
-            let results = [] as any
+    // function paginate(method) {
+    //     return function paginatedMethod(payload, cb) {
+    //         let results = [] as any
 
-            const getSubsequentPages = (link, pagesCb) => {
-                if (github.hasNextPage(link)) {
-                    github.getNextPage(link, (err, res: IPaginate) => {
-                        if (err) {
-                            return pagesCb(err)
-                        }
-                        results = res
-                        return getSubsequentPages(res.meta.link, pagesCb)
-                    })
-                }
-                pagesCb()
-            }
+    //         const getSubsequentPages = (link, pagesCb) => {
+    //             if (github.hasNextPage(link)) {
+    //                 github.getNextPage(link, (err, res: IPaginate) => {
+    //                     if (err) {
+    //                         return pagesCb(err)
+    //                     }
+    //                     results = res
+    //                     return getSubsequentPages(res.meta.link, pagesCb)
+    //                 })
+    //             }
+    //             pagesCb()
+    //         }
 
-            method(payload, (err, res: IPaginate) => {
-                if (err) {
-                    return cb(err, null)
-                }
+    //         method(payload, (err, res: IPaginate) => {
+    //             if (err) {
+    //                 return cb(err, null)
+    //             }
 
-                if (!Array.isArray(res)) {
-                    return cb(err, res)
-                }
+    //             if (!Array.isArray(res)) {
+    //                 return cb(err, res)
+    //             }
 
-                results = res
+    //             results = res
 
-                getSubsequentPages(res.meta.link, err => {
-                    cb(err, results)
-                })
-            })
-        }
-    }
+    //             getSubsequentPages(res.meta.link, err => {
+    //                 cb(err, results)
+    //             })
+    //         })
+    //     }
+    // }
 
-    for (let key in github.repos) {
-        if (typeof github.repos[key] === 'function') {
-            github.repos[key] = paginate(github.repos[key])
-        }
-    }
+    // for (let key in github.repos) {
+    //     if (typeof github.repos[key] === 'function') {
+    //         github.repos[key] = paginate(github.repos[key])
+    //     }
+    // }
 
     return github
 }

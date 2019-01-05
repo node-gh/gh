@@ -76,12 +76,7 @@ User.authorize = function() {
     })
 }
 
-User.authorizationCallback_ = function(user, err, res) {
-    if (err) {
-        logger.error(err)
-        return
-    }
-
+User.writeToken = function(user, res) {
     if (res.token) {
         configs.writeGlobalConfigCredentials(user, res.token)
 
@@ -91,47 +86,47 @@ User.authorizationCallback_ = function(user, err, res) {
     logger.log('Authentication succeed.')
 }
 
-User.createAuthorization = function(opt_callback) {
+User.createAuthorization = async function() {
     logger.log("First we need authorization to use GitHub's API. Login with your GitHub account.")
 
-    inquirer
-        .prompt([
-            {
-                type: 'input',
-                message: 'Enter your GitHub user',
-                name: 'user',
-            },
-            {
-                type: 'password',
-                message: 'Enter your GitHub password',
-                name: 'password',
-            },
-        ])
-        .then(answers => {
-            var payload = {
-                note: `Node GH (${moment().format('MMMM Do YYYY, h:mm:ss a')})`,
-                note_url: 'https://github.com/eduardolundgren/node-gh',
-                scopes: ['user', 'public_repo', 'repo', 'repo:status', 'delete_repo', 'gist'],
-            }
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter your GitHub user',
+            name: 'user',
+        },
+        {
+            type: 'password',
+            message: 'Enter your GitHub password',
+            name: 'password',
+        },
+    ])
 
-            base.github.authenticate({
-                type: 'basic',
-                username: answers.user,
-                password: answers.password,
-            })
+    const payload = {
+        note: `Node GH (${moment().format('MMMM Do YYYY, h:mm:ss a')})`,
+        note_url: 'https://github.com/node-gh/gh',
+        scopes: ['user', 'public_repo', 'repo', 'repo:status', 'delete_repo', 'gist'],
+    }
 
-            base.github.authorization.create(payload, (err, res) => {
-                const isTwoFactorAuthentication =
-                    err && err.message && err.message.indexOf('OTP') > 0
+    base.github.authenticate({
+        type: 'basic',
+        username: answers.user,
+        password: answers.password,
+    })
 
-                if (isTwoFactorAuthentication) {
-                    User.twoFactorAuthenticator_(payload, answers.user, opt_callback)
-                } else {
-                    User.authorizationCallback_(answers.user, err, res)
-                    opt_callback && opt_callback(err)
-                }
-            })
-        })
+    try {
+        const result = await base.github.oauthAuthorizations.createAuthorization(payload)
+
+        User.writeToken(answers.user, result)
+    } catch (err) {
+        const isTwoFactorAuthentication = err && err.message && err.message.indexOf('OTP') > 0
+
+        if (isTwoFactorAuthentication) {
+            User.twoFactorAuthenticator_(payload, answers.user)
+        } else {
+            throw new Error(`Error creating a token on GitHub\n${err}`)
+        }
+    }
 }
 
 User.hasCredentials = function() {
@@ -145,12 +140,11 @@ User.hasCredentials = function() {
     return false
 }
 
-User.login = function(opt_callback) {
+User.login = async function() {
     if (User.hasCredentials()) {
         User.authorize()
-        opt_callback && opt_callback()
     } else {
-        User.createAuthorization(opt_callback)
+        await User.createAuthorization()
     }
 }
 
@@ -159,27 +153,24 @@ User.logout = function() {
     configs.removeGlobalConfig('github_token')
 }
 
-User.twoFactorAuthenticator_ = function(payload, user, opt_callback) {
-    inquirer
-        .prompt([
-            {
-                type: 'input',
-                message: 'Enter your two-factor code',
-                name: 'otp',
-            },
-        ])
-        .then(factor => {
-            if (!payload.headers) {
-                payload.headers = []
-            }
+User.twoFactorAuthenticator_ = async function(payload, user) {
+    const factor = await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter your two-factor code',
+            name: 'otp',
+        },
+    ])
 
-            payload.headers['X-GitHub-OTP'] = factor.otp
+    if (!payload.headers) {
+        payload.headers = []
+    }
 
-            base.github.authorization.create(payload, (err, res) => {
-                User.authorizationCallback_(user, err, res)
-                opt_callback && opt_callback(err)
-            })
-        })
+    payload.headers['X-GitHub-OTP'] = factor.otp
+
+    const results = await base.github.oauthAuthorizations.createAuthorization(payload)
+
+    User.writeToken(user, results)
 }
 
 function getCorrectToken(config) {

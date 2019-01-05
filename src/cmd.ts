@@ -135,7 +135,9 @@ export function setUp() {
         if (module === 'help') {
             callback()
         } else {
-            User.login(callback)
+            await User.login()
+
+            callback()
         }
     })
 
