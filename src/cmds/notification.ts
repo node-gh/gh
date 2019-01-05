@@ -79,11 +79,11 @@ Notifications.prototype.latest = function(opt_watch, done) {
     operations = [
         function(callback) {
             payload = {
-                user: options.user,
+                owner: options.user,
                 repo: options.repo,
             }
 
-            base.github.events.getFromRepo(payload, (err, data) => {
+            base.github.activity.listNotificationsForRepo(payload, (err, data) => {
                 if (!err) {
                     listEvents = data
                 }

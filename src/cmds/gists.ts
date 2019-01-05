@@ -185,7 +185,7 @@ Gists.prototype.browser = function(gist) {
 
 Gists.prototype.delete = function(id, opt_callback) {
     var payload = {
-        id,
+        gist_id: id,
     }
 
     base.github.gists.delete(payload, opt_callback)
@@ -193,7 +193,7 @@ Gists.prototype.delete = function(id, opt_callback) {
 
 Gists.prototype.fork = function(id, opt_callback) {
     var payload = {
-        id,
+        gist_id: id,
     }
 
     base.github.gists.fork(payload, opt_callback)
@@ -202,10 +202,10 @@ Gists.prototype.fork = function(id, opt_callback) {
 Gists.prototype.list = function(user, opt_callback) {
     const instance = this
     const payload = {
-        user,
+        username: user,
     }
 
-    base.github.gists.getFromUser(payload, (err, gists) => {
+    base.github.gists.listPublicForUser(payload, (err, gists) => {
         instance.listCallback_(err, gists, opt_callback)
     })
 }

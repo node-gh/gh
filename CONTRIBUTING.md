@@ -1,9 +1,9 @@
 -   [Reporting Bugs](#reporting-bugs)
 -   [Writing Code](#writing-code)
+    -   [Committing](#committing)
     -   [Building](#building)
     -   [Adding new commands](#adding-new-commands)
 -   [Testing](#testing)
--   [Committing](#committing)
     -   [Optional Plugins to install for your code editor for a better developer experience](#optional-plugins-to-install-for-your-code-editor-for-a-better-developer-experience)
         -   [Prettier](#prettier)
         -   [TSlint (linter)](#tslint-linter)
@@ -18,6 +18,16 @@
 6.  Report the exit code of the gh process: `echo $?` after termination
 
 ## Writing Code
+
+### Committing
+
+1.  Remove the installed version from NPM: `[sudo] npm rm -g gh`
+2.  Fork the project and clone it locally: `git clone git@github.com:<your-username>/gh.git`
+3.  Go to the package folder and create a symlink: `[sudo] npm link`
+4.  Then you can run commands normally `gh ...`
+5.  To commit run `npm run commit` which will take you through a nice interactive semantic commit process
+
+-   If you want more info on the commit process, we follow [Angular's Commit Convention](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular#readme)
 
 ### Building
 
@@ -48,16 +58,6 @@ Please verify that your tests pass & minimum coverage levels are met when contri
 -   `npm test` Run all tests
 -   `npm run test:watch` Run all tests in watch mode
 -   `npm run test:coverage` Run all tests with coverage
-
-## Committing
-
-1.  Remove the installed version from NPM: `[sudo] npm rm -g gh`
-2.  Fork the project and clone it locally: `git clone git@github.com:<your-username>/gh.git`
-3.  Go to the package folder and create a symlink: `[sudo] npm link`
-4.  Then you can run commands normally `gh ...`
-5.  To commit run `npm run commit` which will take you through a nice interactive semantic commit process
-
--   If you want more info on the commit process, we follow [Angular's Commit Convention](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular#readme)
 
 ### Optional Plugins to install for your code editor for a better developer experience
 

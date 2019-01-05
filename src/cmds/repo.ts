@@ -187,7 +187,7 @@ Repo.prototype.run = function(done) {
     }
 
     if (options.fork) {
-        hooks.invoke('repo.fork', instance, afterHooksCallback => {
+        hooks.invoke('repo.fork', instance, async afterHooksCallback => {
             if (options.organization) {
                 user = options.organization
             }
@@ -200,22 +200,21 @@ Repo.prototype.run = function(done) {
                 )} on ${logger.colors.green(`${user}/${options.repo}`)}`
             )
 
-            instance.fork((err1, repo) => {
-                if (err1) {
-                    logger.error(`Can't fork. ${JSON.parse(err1).message}`)
-                    return
-                }
+            try {
+                var repo = await instance.fork()
+            } catch (err) {
+                throw new Error(`Can't fork. ${JSON.parse(err).message}`)
+            }
 
-                logger.log(repo.html_url)
+            logger.log(repo.html_url)
 
-                if (repo && options.clone) {
-                    instance.clone_(options.loggedUser, options.repo, repo.ssh_url)
-                }
+            if (repo && options.clone) {
+                instance.clone_(options.loggedUser, options.repo, repo.ssh_url)
+            }
 
-                afterHooksCallback()
+            afterHooksCallback()
 
-                done && done()
-            })
+            done && done()
         })
     }
 
@@ -393,7 +392,7 @@ Repo.prototype.createLabel = function(user, opt_callback) {
     let payload
 
     payload = {
-        user,
+        owner: user,
         color: options.color,
         name: options.new,
         repo: options.repo,
@@ -408,8 +407,8 @@ Repo.prototype.delete = function(user, repo, opt_callback) {
     var payload
 
     payload = {
-        user,
         repo,
+        owner: user,
     }
 
     base.github.repos.delete(payload, opt_callback)
@@ -421,7 +420,7 @@ Repo.prototype.deleteLabel = function(user, opt_callback) {
     let payload
 
     payload = {
-        user,
+        owner: user,
         name: options.delete,
         repo: options.repo,
     }
@@ -433,8 +432,8 @@ Repo.prototype.get = function(user, repo, opt_callback) {
     var payload
 
     payload = {
-        user,
         repo,
+        owner: user,
     }
 
     base.github.repos.get(payload, opt_callback)
@@ -447,7 +446,7 @@ Repo.prototype.list = function(user, opt_callback) {
     let payload
 
     payload = {
-        user,
+        owner: user,
         type: options.type,
         per_page: 100,
     }
@@ -523,13 +522,13 @@ Repo.prototype.listLabels = function(user, opt_callback) {
     let payload
 
     payload = {
-        user,
+        owner: user,
         page: options.page,
         per_page: options.per_page,
         repo: options.repo,
     }
 
-    base.github.issues.getLabels(payload, (err, labels) => {
+    base.github.issues.listLabelsForRepo(payload, (err, labels) => {
         instance.listLabelsCallback_(err, labels, opt_callback)
     })
 }
@@ -551,13 +550,13 @@ Repo.prototype.listLabelsCallback_ = function(err, labels, opt_callback) {
     }
 }
 
-Repo.prototype.fork = function(opt_callback) {
+Repo.prototype.fork = async function() {
     const instance = this
     const options = instance.options
     let payload
 
     payload = {
-        user: options.user,
+        owner: options.user,
         repo: options.repo,
     }
 
@@ -565,7 +564,7 @@ Repo.prototype.fork = function(opt_callback) {
         payload.organization = options.organization
     }
 
-    base.github.repos.fork(payload, opt_callback)
+    return await base.github.repos.createFork(payload)
 }
 
 Repo.prototype.new = function(opt_callback) {
@@ -612,7 +611,7 @@ Repo.prototype.updateLabel = function(user, opt_callback) {
     let payload
 
     payload = {
-        user,
+        owner: user,
         color: options.color,
         name: options.update,
         repo: options.repo,
