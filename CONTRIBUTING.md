@@ -23,6 +23,10 @@
 
 Since this is a **TypeScript** project, we have to compile the code before running it.
 
+First, if you haven't already done so, run npm install:
+
+-   `npm install`
+
 To run **incrementally** in watch mode:
 
 -   `npm run build:watch`
