@@ -3,6 +3,6 @@
 exports[`E2E: Milestone Module Test List Milestones \`gh ms --list\` 1`] = `
 "Listing milestones on protoEvangelion/gh
  Milestone 2 milestone 2 description @open (due 5 months ago)
- Milestone 1 milestone 1 description @open (due 5 months ago)
+ Milestone 1 milestone 1 description @open (due 6 months ago)
 "
 `;
