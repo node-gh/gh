@@ -149,19 +149,14 @@ Help.prototype.listFlags_ = function(command) {
 Help.prototype.listCommands_ = function(commands) {
     let content =
         'usage: gh <command> [payload] [--flags] [--verbose] [--no-color] [--no-hooks]\n\n'
-    let pos
-    let command
 
     content += 'List of available commands:\n'
 
-    for (pos in commands) {
-        if (commands.hasOwnProperty(pos)) {
-            command = commands[pos]
+    commands.forEach(command => {
+        if (command && command.hasOwnProperty('alias')) {
             content += '  '
 
-            if (command.alias) {
-                content += `${logger.colors.magenta(command.alias)}, `
-            }
+            content += `${logger.colors.magenta(command.alias)}, `
 
             content += `${logger.colors.magenta(command.name)}${command.offset}${
                 command.description
@@ -169,7 +164,7 @@ Help.prototype.listCommands_ = function(commands) {
 
             content += this.listFlags_(command)
         }
-    }
+    })
 
     content += `\n(*) Flags that can execute an action.\n'gh help' lists available commands.\n'gh help -a' lists all available subcommands.`
 

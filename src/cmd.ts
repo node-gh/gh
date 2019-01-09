@@ -6,8 +6,6 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-// export const hi = 'hi'
-
 import * as async from 'async'
 import * as fs from 'fs'
 import * as nopt from 'nopt'
