@@ -193,7 +193,7 @@ Issue.prototype.run = async function(done) {
             } catch (err) {
                 throw new Error(logger.getErrorMessage(err))
             }
-            console.log('DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
             done && done()
         }
     }

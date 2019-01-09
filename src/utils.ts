@@ -6,6 +6,7 @@
 
 import { isArray, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
+import * as zlib from 'zlib'
 
 export function getCurrentFolderName(): string {
     const cwdArr = process
@@ -109,19 +110,38 @@ export function prepareTestFixtures(cmdName, argv) {
         return value
     }
 
+    function decodeBuffer(fixture) {
+        // Decode the hex buffer that nock made
+        const response = isArray(fixture.response) ? fixture.response.join('') : fixture.response
+
+        try {
+            const decoded = Buffer.from(response, 'hex')
+            var unzipped = zlib.gunzipSync(decoded).toString('utf-8')
+        } catch (err) {
+            throw new Error(`Error decoding nock hex:\n${err}`)
+        }
+
+        return JSON.parse(unzipped)
+    }
+
     function afterRecord(fixtures) {
         const normalizedFixtures = fixtures.map(fixture => {
-            // delete fixture.rawHeaders
-
             fixture.path = stripAccessToken(fixture.path)
+            fixture.response = decodeBuffer(fixture)
 
-            // if (isArray(fixture.response)) {
-            //     fixture.response = fixture.response.slice(0, 3).map(res => {
-            //         return mapValues(res, normalize)
-            //     })
-            // } else {
-            //     fixture.response = mapValues(fixture.response, normalize)
-            // }
+            if (isArray(fixture.response)) {
+                fixture.response = fixture.response.slice(0, 3).map(res => {
+                    return mapValues(res, normalize)
+                })
+            } else {
+                fixture.response = mapValues(fixture.response, normalize)
+            }
+
+            // Re-gzip to keep the octokittens happy
+            const stringified = JSON.stringify(fixture.response)
+            const zipped = zlib.gzipSync(stringified)
+
+            fixture.response = zipped
 
             return fixture
         })
