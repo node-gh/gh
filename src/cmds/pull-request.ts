@@ -475,19 +475,28 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
 
     function generateOneColumnTable() {
         const table = new Table()
+        const colSpan = parseInt(((terminalCols * 0.25) * (terminalCols - 20) / 100) + '');
 
         let tableHead = [
-            { content: '#', hAlign: 'center' }, 'Author', 'Opened', { content: 'Status', hAlign: 'center' },
+            { content: '#', hAlign: 'center', colSpan },
+            { content: 'Author', colSpan },
+            { content: 'Opened', colSpan },
+            { content: 'Status', hAlign: 'center', colSpan },
         ]
 
         table.push(tableHead)
 
         pulls.forEach(pull => {
-            const {createdTime, number, prInfo, user, status} = getColorizedFields(pull, terminalCols - 20)
+            const {createdTime, number, prInfo, user, status} = getColorizedFields(pull, terminalCols - 10)
 
             table.push(
-                [{ content: number, hAlign: 'center' }, user, createdTime, { content: status, hAlign: 'center' }],
-                [ { content: prInfo, colSpan: 4 } ],
+                [
+                    { content: number, hAlign: 'center', colSpan },
+                    { content: user, colSpan },
+                    { content: createdTime, colSpan },
+                    { content: status, hAlign: 'center' , colSpan }
+                ],
+                [ { content: prInfo, colSpan: colSpan * 4 } ],
             )
 
         })
