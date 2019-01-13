@@ -4,6 +4,8 @@ npm-debug.log
 .DS_Store
 coverage
 # flame graphs dir
-/flame
+flame
 .env
-/lib
+lib
+.vscode
+!.vscode/launch.json

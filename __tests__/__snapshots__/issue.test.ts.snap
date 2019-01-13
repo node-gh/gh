@@ -1,31 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`E2E: Issues Module Test Assign Issues \`gh is --assign -A protoEvangelion --number 1\` 1`] = `
+"Assigning issue #1 on protoEvangelion/gh to protoEvangelion
+https://github.com/protoEvangelion/gh/issues/1
+"
+`;
+
 exports[`E2E: Issues Module Test Close Issue \`gh is 1 -C\` 1`] = `
 "Closing issue #1 on protoEvangelion/gh
 https://github.com/protoEvangelion/gh/issues/1
 "
 `;
 
-exports[`E2E: Issues Module Test Comment on Issues \`gh is 1 -c "test"\` 1`] = `
-"Adding comment on issue #1
+exports[`E2E: Issues Module Test Comment on Issues \`gh is 1 -c "comment"\` 1`] = `
+"Adding comment on issue #1 on protoEvangelion/gh
 https://github.com/protoEvangelion/gh/issues/1#issuecomment-000000001
 "
 `;
 
 exports[`E2E: Issues Module Test Create a new issue \`gh is -N -t "Node GH rocks!" -L bug,question,test\` 1`] = `
 "Creating a new issue on protoEvangelion/gh
-https://github.com/protoEvangelion/gh/issues/49
-[hook] gh is --browser  --user protoEvangelion --repo gh --number 49
+https://github.com/protoEvangelion/gh/issues/88
+[hook] gh is --browser  --user protoEvangelion --repo gh --number 88
 "
 `;
 
 exports[`E2E: Issues Module Test List Issues \`gh is\` 1`] = `
 "Listing open issues on protoEvangelion/gh
-#57 Add clear success confirmation when deleting gists @protoEvangelion (a year ago)
+#77 'Node GH rocks!' @protoEvangelion (a year ago)
 
-#55 pr title @protoEvangelion (a year ago)
+#76 test2 @protoEvangelion (a year ago)
 
-#49 Node GH rocks! @protoEvangelion (a year ago)
+#74 test @protoEvangelion (a year ago)
 "
 `;
 
@@ -37,6 +43,18 @@ https://github.com/protoEvangelion/gh/issues/1
 
 exports[`E2E: Issues Module Test Search Issues \`gh is -s hi\` 1`] = `
 "Searching for hi in issues for protoEvangelion/gh
+
+#72 hi @protoEvangelion (a year ago)
+
+#65 hi @protoEvangelion (a year ago)
+
+#63 hi @protoEvangelion (a year ago)
+
+#62 hi @protoEvangelion (a year ago)
+
+#61 hi @protoEvangelion (a year ago)
+
+#60 hi @protoEvangelion (a year ago)
 
 #19 hi @protoEvangelion (a year ago)
 

@@ -1,10 +1,10 @@
 [
     {
         "scope": "https://api.github.com:443",
-        "method": "post",
-        "path": "/repos/protoevangelion/gh/issues/1/comments?",
+        "method": "POST",
+        "path": "/repos/protoEvangelion/gh/issues/1/comments?",
         "body": {
-            "body": "test"
+            "body": "comment"
         },
         "status": 201,
         "response": {
@@ -18,7 +18,7 @@
                 "id": 1002,
                 "node_id": 1003,
                 "avatar_url": "https://avatars3.githubusercontent.com/u/000000001?v=4",
-                "gravatar_id": 1004,
+                "gravatar_id": "",
                 "url": "https://api.github.com/users/protoEvangelion",
                 "html_url": "https://github.com/protoEvangelion",
                 "followers_url": "https://api.github.com/users/protoEvangelion/followers",
@@ -36,7 +36,59 @@
             "created_at": "2017-10-10T16:00:00Z",
             "updated_at": "2017-10-10T16:00:00Z",
             "author_association": "OWNER",
-            "body": "test"
-        }
+            "body": "comment"
+        },
+        "rawHeaders": [
+            "Server",
+            "GitHub.com",
+            "Date",
+            "Sun, 13 Jan 2019 06:01:55 GMT",
+            "Content-Type",
+            "application/json; charset=utf-8",
+            "Content-Length",
+            "1419",
+            "Connection",
+            "close",
+            "Status",
+            "201 Created",
+            "X-RateLimit-Limit",
+            "5000",
+            "X-RateLimit-Remaining",
+            "4973",
+            "X-RateLimit-Reset",
+            "1547361548",
+            "Cache-Control",
+            "private, max-age=60, s-maxage=60",
+            "Vary",
+            "Accept, Authorization, Cookie, X-GitHub-OTP",
+            "ETag",
+            "\"9380dfcd483353c5f3477247d0d8f386\"",
+            "X-OAuth-Scopes",
+            "user, public_repo, repo, repo:status, delete_repo, gist",
+            "X-Accepted-OAuth-Scopes",
+            "",
+            "Location",
+            "https://api.github.com/repos/protoEvangelion/gh/issues/comments/453804790",
+            "X-GitHub-Media-Type",
+            "github.v3; format=json",
+            "Access-Control-Expose-Headers",
+            "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type",
+            "Access-Control-Allow-Origin",
+            "*",
+            "Strict-Transport-Security",
+            "max-age=31536000; includeSubdomains; preload",
+            "X-Frame-Options",
+            "deny",
+            "X-Content-Type-Options",
+            "nosniff",
+            "X-XSS-Protection",
+            "1; mode=block",
+            "Referrer-Policy",
+            "origin-when-cross-origin, strict-origin-when-cross-origin",
+            "Content-Security-Policy",
+            "default-src 'none'",
+            "X-GitHub-Request-Id",
+            "C7AA:0F0E:3E69B9:8ED23D:5C3AD452"
+        ]
     }
 ]

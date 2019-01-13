@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-'use strict'
+import { run } from './cmd'
 
 const verbose = process.argv.indexOf('--verbose') !== -1
 const insane = process.argv.indexOf('--insane') !== -1
@@ -21,4 +21,4 @@ if (insane) {
     process.env.GH_VERBOSE_INSANE = 'true'
 }
 
-require('../lib/cmd.js').run()
+run()

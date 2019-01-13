@@ -22,6 +22,9 @@ export default function Help() {
 
 // -- Constants ------------------------------------------------------------------------------------
 
+// allows to run program as js or ts
+const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
+
 Help.DETAILS = {
     description: 'List all commands and options available.',
     options: {
@@ -39,14 +42,15 @@ Help.DETAILS = {
 Help.prototype.run = async function() {
     const instance = this
     const cmdDir = path.join(__dirname, '../cmds/')
-    const files = base.find(cmdDir, /\.js$/)
+    const reg = new RegExp(`.${extension}$`)
+    const files = base.find(cmdDir, reg)
     let filter
     const options = this.options
     let plugins
 
     // Remove help from command list
-    files.splice(files.indexOf('help.js'), 1)
-    files.splice(files.indexOf('version.js'), 1)
+    files.splice(files.indexOf(`help.${extension}`), 1)
+    files.splice(files.indexOf(`version.${extension}`), 1)
 
     // Get external plugins
     plugins = configs.getPlugins()
@@ -78,7 +82,7 @@ Help.prototype.run = async function() {
             }
 
             const alias = cmd.DETAILS.alias || ''
-            const name = path.basename(dir, '.js').replace(/^gh-/, '')
+            const name = path.basename(dir, `.${extension}`).replace(/^gh-/, '')
             let offset = 20 - alias.length - name.length
 
             if (offset < 1) {
