@@ -463,10 +463,37 @@ PullRequest.prototype.getPullsTemplateJson_ = function(pulls, opt_callback) {
 }
 
 PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
+    const terminalCols = process.stdout.columns
     const options = this.options
     const showDetails = options.info || options.detailed
 
-    logger.log(generateTable())
+    if (terminalCols > 75) {
+        logger.log(generateTable())
+    } else {
+        logger.log(generateOneColumnTable());
+    }
+
+    function generateOneColumnTable() {
+        const table = new Table()
+
+        let tableHead = [
+            { content: '#', hAlign: 'center' }, 'Author', 'Opened', { content: 'Status', hAlign: 'center' },
+        ]
+
+        table.push(tableHead)
+
+        pulls.forEach(pull => {
+            const {createdTime, number, prInfo, user, status} = getColorizedFields(pull, terminalCols - 20)
+
+            table.push(
+                [{ content: number, hAlign: 'center' }, user, createdTime, { content: status, hAlign: 'center' }],
+                [ { content: prInfo, colSpan: 4 } ],
+            )
+
+        })
+
+        return table.toString()
+    }
 
     function generateTable() {
         const tableWidths = getColWidths()
@@ -494,15 +521,7 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         table.push(tableHead)
 
         pulls.forEach(pull => {
-            const createdTime = logger.getDuration(pull.created_at)
-            const number = logger.colors.green(`#${pull.number}`)
-            const prInfo = formatPrInfo(pull, tableWidths[1] - 5)
-            const user = logger.colors.magenta(`@${pull.user.login}`)
-
-            const status =
-                pull.combinedStatus === 'success'
-                    ? logger.colors.green('✓')
-                    : logger.colors.red('✗')
+            const {createdTime, number, prInfo, user, status} = getColorizedFields(pull, tableWidths[1] - 5)
 
             table.push([
                 { content: number, hAlign: 'center' },
@@ -516,13 +535,27 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         return table.toString()
     }
 
+    function  getColorizedFields(pull, length) {
+        const createdTime = logger.getDuration(pull.created_at)
+        const number = logger.colors.green(`#${pull.number}`)
+        const prInfo = formatPrInfo(pull, length)
+        const user = logger.colors.magenta(`@${pull.user.login}`)
+
+        const status =
+            pull.combinedStatus === 'success'
+                ? logger.colors.green('✓')
+                : logger.colors.red('✗')
+
+        return { createdTime, number, prInfo, user, status }
+    }
+
     function getColWidths() {
         const authorCol = 21
         const dateCol = 15
         const noCol = 9
         const statusCol = 8
 
-        const currentColsWidth = testing ? 100 : process.stdout.columns
+        const currentColsWidth = testing ? 100 : terminalCols
         const titleCol = currentColsWidth - authorCol - dateCol - noCol - statusCol - 7
 
         return [noCol, titleCol, authorCol, dateCol, statusCol].map(col => Math.floor(col))
