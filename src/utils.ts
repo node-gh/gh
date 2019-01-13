@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { isArray, isPlainObject, map, mapValues, upperFirst } from 'lodash'
+import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
 import * as zlib from 'zlib'
 
@@ -111,14 +111,16 @@ export function prepareTestFixtures(cmdName, argv) {
     }
 
     function decodeBuffer(fixture) {
-        // Decode the hex buffer that nock made
         const response = isArray(fixture.response) ? fixture.response.join('') : fixture.response
 
-        try {
-            const decoded = Buffer.from(response, 'hex')
-            var unzipped = zlib.gunzipSync(decoded).toString('utf-8')
-        } catch (err) {
-            throw new Error(`Error decoding nock hex:\n${err}`)
+        if (!isObject(response)) {
+            try {
+                // Decode the hex buffer that nock made
+                const decoded = Buffer.from(response, 'hex')
+                var unzipped = zlib.gunzipSync(decoded).toString('utf-8')
+            } catch (err) {
+                throw new Error(`Error decoding nock hex:\n${err}`)
+            }
         }
 
         return JSON.parse(unzipped)
@@ -126,22 +128,35 @@ export function prepareTestFixtures(cmdName, argv) {
 
     function afterRecord(fixtures) {
         const normalizedFixtures = fixtures.map(fixture => {
-            fixture.path = stripAccessToken(fixture.path)
-            fixture.response = decodeBuffer(fixture)
+            const isGzipped = fixture.rawHeaders.includes('gzip')
+            let res = fixture.response
 
-            if (isArray(fixture.response)) {
-                fixture.response = fixture.response.slice(0, 3).map(res => {
+            fixture.path = stripAccessToken(fixture.path)
+            fixture.rawHeaders = fixture.rawHeaders.map(header => stripAccessToken(header))
+
+            if (isGzipped) {
+                res = decodeBuffer(fixture)
+            }
+
+            if (isArray(res)) {
+                res = res.slice(0, 3).map(res => {
                     return mapValues(res, normalize)
                 })
             } else {
-                fixture.response = mapValues(fixture.response, normalize)
+                res = mapValues(res, normalize)
             }
 
-            // Re-gzip to keep the octokittens happy
-            const stringified = JSON.stringify(fixture.response)
-            const zipped = zlib.gzipSync(stringified)
+            if (isGzipped) {
+                try {
+                    // Re-gzip to keep the octokittens happy
+                    const stringified = JSON.stringify(res)
+                    var zipped = zlib.gzipSync(stringified)
+                } catch (err) {
+                    throw new Error(`Error re-gzipping nock ==> ${err}`)
+                }
+            }
 
-            fixture.response = zipped
+            fixture.response = zipped || res
 
             return fixture
         })
@@ -150,7 +165,7 @@ export function prepareTestFixtures(cmdName, argv) {
     }
 
     function stripAccessToken(path) {
-        return path.replace(/access_token(.*?)(&|$)/, '')
+        return path.replace(/access_token(.*?)(&|$)/gi, '')
     }
 
     function before(scope) {

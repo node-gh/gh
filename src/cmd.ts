@@ -17,6 +17,9 @@ import * as git from './git'
 
 const config = configs.getConfig()
 
+// allows to run program as js or ts
+const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
+
 // -- Utils ----------------------------------------------------------------------------------------
 
 function hasCommandInOptions(commands, options) {
@@ -40,17 +43,18 @@ function invokePayload(options, command, cooked, remain) {
 }
 
 async function resolveCmd(name, commandDir) {
-    const commandFiles = find(commandDir, /\.js$/i)
+    const reg = new RegExp(`.${extension}$`, 'i')
+    const commandFiles = find(commandDir, reg)
 
     const commandName = commandFiles.filter(file => {
         switch (file) {
-            case 'milestone.js':
+            case `milestone.${extension}`:
                 if (name === 'ms') return true
                 break
-            case 'notification.js':
+            case `notification.${extension}`:
                 if (name === 'nt') return true
                 break
-            case 'pull-request.js':
+            case `pull-request.${extension}`:
                 if (name === 'pr') return true
                 break
         }
@@ -81,7 +85,7 @@ async function loadCommand(name) {
     let Command
 
     const commandDir = path.join(__dirname, 'cmds')
-    const commandPath = path.join(commandDir, `${name}.js`)
+    const commandPath = path.join(commandDir, `${name}.${extension}`)
 
     if (fs.existsSync(commandPath)) {
         Command = await import(commandPath)

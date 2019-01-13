@@ -6,7 +6,6 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as async from 'async'
 import { isArray } from 'lodash'
 import * as openUrl from 'opn'
 import * as base from '../base'
@@ -172,70 +171,64 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.list) {
-        if (options.all) {
-            logger.log(
-                `Listing ${logger.colors.green(options.state)} issues for ${logger.colors.green(
-                    options.user
-                )}`
-            )
+        try {
+            if (options.all) {
+                logger.log(
+                    `Listing ${logger.colors.green(options.state)} issues for ${logger.colors.green(
+                        options.user
+                    )}`
+                )
 
-            instance.listFromAllRepositories(err => {
-                if (err) {
-                    logger.error(`Can't list issues for ${options.user}.`)
-                    return
-                }
-            })
-        } else {
-            logger.log(`Listing ${logger.colors.green(options.state)} issues on ${userRepo}`)
+                await instance.listFromAllRepositories()
+            } else {
+                logger.log(`Listing ${logger.colors.green(options.state)} issues on ${userRepo}`)
 
-            try {
                 await instance.list(options.user, options.repo)
-            } catch (err) {
-                throw new Error(logger.getErrorMessage(err))
             }
-
-            done && done()
+        } catch (err) {
+            throw new Error(`Error listing issues\n${err}`)
         }
+
+        done && done()
     }
 
     if (options.new) {
-        hooks.invoke('issue.new', instance, afterHooksCallback => {
+        hooks.invoke('issue.new', instance, async afterHooksCallback => {
             logger.log(`Creating a new issue on ${userRepo}`)
 
-            instance.new((err, issue) => {
-                if (err) {
-                    throw new Error(`Can't create new issue.\n${err}`)
-                }
+            try {
+                var { data } = await instance.new()
+            } catch (err) {
+                throw new Error(`Can't create issue.\n${err}`)
+            }
 
-                if (issue) {
-                    options.number = issue.number
-                }
+            if (data) {
+                options.number = data.number
+            }
 
-                logger.log(issue.html_url)
+            logger.log(data.html_url)
 
-                afterHooksCallback()
+            afterHooksCallback()
 
-                done && done()
-            })
+            done && done()
         })
     }
 
     if (options.open) {
-        hooks.invoke('issue.open', instance, afterHooksCallback => {
+        hooks.invoke('issue.open', instance, async afterHooksCallback => {
             logger.log(`Opening issue ${number} on ${userRepo}`)
 
-            instance.open((err, issue) => {
-                if (err) {
-                    logger.error("Can't open issue.")
-                    return
-                }
+            try {
+                var { data } = await instance.open()
+            } catch (err) {
+                throw new Error(`Can't close issue.\n${err}`)
+            }
 
-                logger.log(issue.html_url)
+            logger.log(data.html_url)
 
-                afterHooksCallback()
+            afterHooksCallback()
 
-                done && done()
-            })
+            done && done()
         })
     }
 
@@ -251,19 +244,13 @@ Issue.prototype.run = async function(done) {
             logger.log(`Searching for ${query} in issues for ${userRepo}\n`)
         }
 
-        instance.search(user, repo, err => {
-            if (err) {
-                if (options.all) {
-                    logger.error(`Can't search issues for ${user}`)
-                } else {
-                    logger.error(`Can't search issues on ${userRepo}`)
-                }
+        try {
+            await instance.search(user, repo)
+        } catch (err) {
+            throw new Error(`Can't search issues for ${userRepo}: \n${err}`)
+        }
 
-                return
-            }
-
-            done && done()
-        })
+        done && done()
     }
 }
 
@@ -319,12 +306,12 @@ Issue.prototype.editIssue_ = async function(title, state) {
     payload = {
         state,
         title,
-        labels: options.label,
-        number: options.number,
         assignee: options.assignee,
+        labels: options.label,
         milestone: options.milestone,
-        repo: options.repo,
+        number: options.number,
         owner: options.user,
+        repo: options.repo,
     }
 
     return await base.github.issues.update(payload)
@@ -347,48 +334,33 @@ Issue.prototype.getIssue_ = async function() {
 Issue.prototype.list = async function(user, repo) {
     const instance = this
     const options = instance.options
-    const operations = []
     let payload
-
-    options.label = options.label || ''
 
     payload = {
         repo,
         owner: user,
-        labels: options.label,
         state: options.state,
+    }
+
+    if (options.label) {
+        payload.label = options.label
     }
 
     if (options['no-milestone']) {
         payload.milestone = 'none'
-    } else if (options.milestone) {
-        payload.milestone = options.milestone
     }
 
     if (options.milestone) {
-        operations.push(callback => {
-            base.github.issues.listMilestonesForRepo(
-                {
-                    repo,
-                    owner: user,
-                },
-                (err, results: any) => {
-                    if (err) {
-                        logger.warn(err.message)
-                    }
-
-                    results.some(milestone => {
-                        if (options.milestone === milestone.title) {
-                            logger.debug(`Milestone ${milestone.title} number: ${milestone.number}`)
-                            payload.milestone = milestone.number
-                            return true
-                        }
-                    })
-
-                    callback()
-                }
-            )
+        const milestones = await base.github.issues.listMilestonesForRepo({
+            repo,
+            owner: user,
         })
+
+        const milestoneNumber = milestones.data
+            .filter(milestone => options.milestone === milestone.title)
+            .map(milestone => milestone.number)[0]
+
+        payload.milestone = `${milestoneNumber}`
     }
 
     if (options.assignee) {
@@ -397,11 +369,7 @@ Issue.prototype.list = async function(user, repo) {
 
     const { data } = await base.github.issues.listForRepo(payload)
 
-    const issues = data.map(result => {
-        if (result) {
-            return result
-        }
-    })
+    const issues = data.filter(result => Boolean(result))
 
     if (issues && issues.length > 0) {
         const formattedIssues = formatIssues(issues, options.detailed)
@@ -412,7 +380,7 @@ Issue.prototype.list = async function(user, repo) {
     }
 }
 
-Issue.prototype.listFromAllRepositories = function(opt_callback) {
+Issue.prototype.listFromAllRepositories = async function() {
     const instance = this
     const options = instance.options
     let payload
@@ -422,26 +390,17 @@ Issue.prototype.listFromAllRepositories = function(opt_callback) {
         username: options.user,
     }
 
-    base.github.repos.listForUser(payload, (err, repositories: any) => {
-        if (err) {
-            opt_callback && opt_callback(err)
-        } else {
-            repositories.forEach(async repository => {
-                try {
-                    await instance.list(repository.owner.login, repository.name)
-                } catch (err) {
-                    throw new Error(logger.getErrorMessage(err))
-                }
-            })
-        }
-    })
+    const repositories: any = await base.github.repos.listForUser(payload)
+
+    for (const repo of repositories.data) {
+        await instance.list(repo.owner.login, repo.name)
+    }
 }
 
-Issue.prototype.new = function(opt_callback) {
+Issue.prototype.new = async function() {
     const instance = this
     const options = instance.options
     let body
-    let payload
 
     if (options.message) {
         body = logger.applyReplacements(options.message, config.replace)
@@ -453,7 +412,7 @@ Issue.prototype.new = function(opt_callback) {
         options.label = []
     }
 
-    payload = {
+    const payload = {
         body,
         assignee: options.assignee,
         repo: options.repo,
@@ -462,28 +421,22 @@ Issue.prototype.new = function(opt_callback) {
         labels: options.label,
     }
 
-    base.github.issues.create(payload, opt_callback)
+    return await base.github.issues.create(payload)
 }
 
-Issue.prototype.open = function(opt_callback) {
+Issue.prototype.open = async function() {
     var instance = this
 
-    instance.getIssue_((err, issue) => {
-        if (err) {
-            opt_callback && opt_callback(err)
-        } else {
-            instance.editIssue_(issue.title, Issue.STATE_OPEN, opt_callback)
-        }
-    })
+    const issue = await instance.getIssue_()
+
+    return await instance.editIssue_(issue.title, Issue.STATE_OPEN)
 }
 
-Issue.prototype.search = function(user, repo, opt_callback, options) {
+Issue.prototype.search = async function(user, repo) {
     const instance = this
-    const operations = []
+    const options = instance.options
     let query = ['type:issue']
     let payload
-
-    options = instance.options || options
 
     options.label = options.label || ''
 
@@ -502,31 +455,15 @@ Issue.prototype.search = function(user, repo, opt_callback, options) {
         type: 'Issues',
     }
 
-    operations.push(callback => {
-        base.github.search.issues(payload, callback)
-    })
+    const { data } = await base.github.search.issues(payload)
 
-    async.series(operations, (err, results) => {
-        if (err && !options.all) {
-            logger.error(logger.getErrorMessage(err))
-        }
+    if (data.items && data.items.length > 0) {
+        const formattedIssues = formatIssues(data.items, options.detailed)
 
-        const issues = results[0].items.map(result => {
-            if (result) {
-                return result
-            }
-        })
-
-        if (issues && issues.length > 0) {
-            var formattedIssues = formatIssues(issues, options.detailed, options.date)
-
-            logger.log(formattedIssues)
-        } else {
-            logger.log('Could not find any issues matching your query.')
-        }
-
-        opt_callback && opt_callback(err, formattedIssues)
-    })
+        logger.log(formattedIssues)
+    } else {
+        logger.log('Could not find any issues matching your query.')
+    }
 }
 
 function formatIssues(issues, showDetailed, dateFormatter?: string) {

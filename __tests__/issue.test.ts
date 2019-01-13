@@ -12,33 +12,33 @@ describe('E2E: Issues Module Test', () => {
         done()
     })
 
-    xit('Create a new issue `gh is -N -t "Node GH rocks!" -L bug,question,test`', done => {
+    it(`Assign Issues \`gh is --assign -A ${process.env.GH_USER} --number 1\``, done => {
+        expect(runCmd(`gh is --assign -A ${process.env.GH_USER} --number 1`)).toMatchSnapshot()
+        done()
+    })
+
+    it('Create a new issue `gh is -N -t "Node GH rocks!" -L bug,question,test`', done => {
         expect(runCmd(`gh is -N -t "Node GH rocks!" -L bug,question,test`)).toMatchSnapshot()
         done()
     })
 
-    xit('Comment on Issues `gh is 1 -c "test"`', done => {
-        expect(runCmd(`gh is 1 -c "test"`)).toMatchSnapshot()
+    it('Comment on Issues `gh is 1 -c "comment"`', done => {
+        expect(runCmd(`gh is 1 -c "comment"`)).toMatchSnapshot()
         done()
     })
 
-    xit('Open Issue `gh is 1 -o`', done => {
+    it('Open Issue `gh is 1 -o`', done => {
         expect(runCmd(`gh is 1 -o`)).toMatchSnapshot()
         done()
     })
 
-    xit('Close Issue `gh is 1 -C`', done => {
+    it('Close Issue `gh is 1 -C`', done => {
         expect(runCmd(`gh is 1 -C`)).toMatchSnapshot()
         done()
     })
 
-    xit('Search Issues `gh is -s hi`', done => {
+    it('Search Issues `gh is -s hi`', done => {
         expect(runCmd(`gh is -s 'hi'`)).toMatchSnapshot()
-        done()
-    })
-
-    xit(`Assign Issues \`gh is --assign -A ${process.env.GH_USER} --number 1\``, done => {
-        expect(runCmd(`gh is --assign -A ${process.env.GH_USER} --number 1`)).toMatchSnapshot()
         done()
     })
 })
