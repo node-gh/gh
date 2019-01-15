@@ -463,49 +463,15 @@ PullRequest.prototype.getPullsTemplateJson_ = function(pulls, opt_callback) {
 }
 
 PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
-    const terminalCols = process.stdout.columns
     const options = this.options
     const showDetails = options.info || options.detailed
 
-    if (terminalCols > 75) {
-        logger.log(generateTable())
-    } else {
-        logger.log(generateOneColumnTable());
-    }
+    logger.log(generateTable())
 
-    function generateOneColumnTable() {
-        const table = new Table()
-        const colSpan = parseInt(((terminalCols * 0.25) * (terminalCols - 20) / 100) + '');
+    function generateTable(): void {
+        const isCompact = process.stdout.columns < 100 && !testing
 
-        let tableHead = [
-            { content: '#', hAlign: 'center', colSpan },
-            { content: 'Author', colSpan },
-            { content: 'Opened', colSpan },
-            { content: 'Status', hAlign: 'center', colSpan },
-        ]
-
-        table.push(tableHead)
-
-        pulls.forEach(pull => {
-            const {createdTime, number, prInfo, user, status} = getColorizedFields(pull, terminalCols - 10)
-
-            table.push(
-                [
-                    { content: number, hAlign: 'center', colSpan },
-                    { content: user, colSpan },
-                    { content: createdTime, colSpan },
-                    { content: status, hAlign: 'center' , colSpan }
-                ],
-                [ { content: prInfo, colSpan: colSpan * 4 } ],
-            )
-
-        })
-
-        return table.toString()
-    }
-
-    function generateTable() {
-        const tableWidths = getColWidths()
+        const tableWidths = getColWidths(isCompact)
 
         const table = new Table({
             colWidths: tableWidths,
@@ -519,6 +485,10 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
             'Status',
         ]
 
+        if (isCompact) {
+            tableHead = remove2ndItem(tableHead)
+        }
+
         tableHead = tableHead.map(heading => {
             if (typeof heading === 'string') {
                 return logger.colors.red(heading)
@@ -530,55 +500,86 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         table.push(tableHead)
 
         pulls.forEach(pull => {
-            const {createdTime, number, prInfo, user, status} = getColorizedFields(pull, tableWidths[1] - 5)
+            const { createdTime, number, prInfo, user, status } = getColorizedFields(
+                pull,
+                isCompact ? getTotalWidth() : tableWidths[1]
+            )
 
-            table.push([
+            const body = [
                 { content: number, hAlign: 'center' },
                 prInfo,
                 user,
                 createdTime,
                 { content: status, hAlign: 'center' },
-            ])
+            ]
+
+            if (isCompact) {
+                table.push(remove2ndItem(body))
+
+                const titleLabel = showDetails ? '' : logger.colors.blue('Title:')
+
+                table.push([{ colSpan: 4, content: `${titleLabel} ${prInfo}\n`.trim() }])
+            } else {
+                table.push(body)
+            }
         })
 
         return table.toString()
     }
 
-    function  getColorizedFields(pull, length) {
+    function getColorizedFields(pull, length) {
         const createdTime = logger.getDuration(pull.created_at)
         const number = logger.colors.green(`#${pull.number}`)
         const prInfo = formatPrInfo(pull, length)
         const user = logger.colors.magenta(`@${pull.user.login}`)
 
         const status =
-            pull.combinedStatus === 'success'
-                ? logger.colors.green('✓')
-                : logger.colors.red('✗')
+            pull.combinedStatus === 'success' ? logger.colors.green('✓') : logger.colors.red('✗')
 
         return { createdTime, number, prInfo, user, status }
     }
 
-    function getColWidths() {
-        const authorCol = 21
+    function getTotalWidth(): number {
+        const padding = 6
+        const terminalCols = process.stdout.columns - padding
+        return testing ? 100 : terminalCols
+    }
+
+    function getColWidths(compact: boolean): number[] {
+        const totalWidth = getTotalWidth()
         const dateCol = 15
         const noCol = 9
         const statusCol = 8
 
-        const currentColsWidth = testing ? 100 : terminalCols
-        const titleCol = currentColsWidth - authorCol - dateCol - noCol - statusCol - 7
+        const authorCol = compact ? totalWidth - dateCol - noCol - statusCol : 21
+        const titleCol = totalWidth - authorCol - dateCol - noCol - statusCol
 
-        return [noCol, titleCol, authorCol, dateCol, statusCol].map(col => Math.floor(col))
+        let colWidths = [noCol, titleCol, authorCol, dateCol, statusCol]
+
+        if (compact) {
+            colWidths = remove2ndItem(colWidths)
+        }
+
+        return colWidths.map(col => Math.floor(col))
     }
 
     function formatPrInfo(pull, length) {
-        const title = wrap(length)(pull.title)
-        let info = title
+        const paddedLength = length - 5
+        const title = wrap(paddedLength)(pull.title)
+
+        const labels = pull.labels.length > 0 && pull.labels.map(label => label.name).join(', ')
+        const singularOrPlural = labels && pull.labels.length > 1 ? 's' : ''
+        const formattedLabels = labels
+            ? logger.colors.yellow(`\nLabel${singularOrPlural}: ${labels}`)
+            : ''
+
+        let info = `${title}${formattedLabels}`
 
         if (showDetails) {
             marked.setOptions({
                 renderer: new TerminalRenderer({
                     reflowText: true,
-                    width: length,
+                    width: paddedLength,
                 }),
             })
 
@@ -586,6 +587,8 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
                 ${logger.colors.blue('Title:')}
 
                 ${title}
+
+                ${formattedLabels.split('\n')[1] || ''}
 
                 ${logger.colors.blue('Body:')}
 
@@ -604,6 +607,10 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
             .replace(/  +/gm, '')
             .replace(/(\n\n\n)/gm, '\n')
             .trim()
+    }
+
+    function remove2ndItem(arr: any[]): any[] {
+        return [arr[0], ...arr.slice(2)]
     }
 }
 
