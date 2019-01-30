@@ -119,6 +119,9 @@ gh pull-request
 | `-S`, `--state`    | _Optional_   | [`open`, `closed`]                                                 |
 | `-u`, `--user`     | _Optional_   | `String`                                                           |
 
+`user` is owner of the repository, it is the authenticated user by default.
+`remote` is the name of the remote configuration in a git directory, i.e. origin, upstream. Therefore, it only makes sense when this command is run in a git directory. 
+
 #### Examples
 
 -   **Shortcut** for listing open pull requests for the current repository.
@@ -149,6 +152,11 @@ gh pr --list --all --org github
 
 ```
 gh pr --list --me
+```
+-   List open pull requests in node-gh/gh repository.
+
+```
+gh pr --list --user node-gh --repo gh
 ```
 
 -   List open pull requests with link and content.
