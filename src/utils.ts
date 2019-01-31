@@ -52,9 +52,11 @@ export function prepareTestFixtures(cmdName, argv) {
     })
 
     return () =>
-        nockPromise.then(({ nockDone }) => nockDone()).catch(err => {
-            throw new Error(`Nock ==> ${err}`)
-        })
+        nockPromise
+            .then(({ nockDone }) => nockDone())
+            .catch(err => {
+                throw new Error(`Nock ==> ${err}`)
+            })
 
     /* --- Normalization Functions --- */
 
@@ -69,7 +71,7 @@ export function prepareTestFixtures(cmdName, argv) {
             return map(value, normalize)
         }
 
-        if (key.includes('_at')) {
+        if (key.includes('_at') || key.includes('_on')) {
             return '2017-10-10T16:00:00Z'
         }
 
