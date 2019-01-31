@@ -11,7 +11,9 @@ import * as moment from 'moment'
 import * as path from 'path'
 import * as wordwrap from 'wordwrap'
 
-if (process.env.NODE_ENV === 'testing' || process.env.COLOR === 'false') {
+const testing = process.env.NODE_ENV === 'testing'
+
+if (testing || process.env.COLOR === 'false') {
     color.disable()
 }
 
@@ -63,7 +65,10 @@ export function log(...args) {
     console.log(...args)
 }
 
-export function getDuration(start, opt_end = Date.now()) {
+export function getDuration(start, opt_end?) {
+    if (!opt_end) {
+        opt_end = testing ? '2018-10-10T16:00:00Z' : Date.now()
+    }
     return moment.duration(moment(start).diff(opt_end)).humanize(true)
 }
 
