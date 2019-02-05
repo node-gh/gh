@@ -5,15 +5,18 @@
  */
 
 import { runCmd } from './testUtils'
+import * as stripAnsi from 'strip-ansi'
 
 describe('E2E: Pull Request Module Test', () => {
     it('List PRs `gh pr`', done => {
-        expect(runCmd('gh pr')).toMatchSnapshot()
+        // strip ansi characters so it doesn't fail on Travis
+        expect(stripAnsi(runCmd('gh pr'))).toMatchSnapshot()
         done()
     })
 
     it('List PRs `gh pr --detailed`', done => {
-        expect(runCmd('gh pr  --detailed')).toMatchSnapshot()
+        // strip ansi characters so it doesn't fail on Travis
+        expect(stripAnsi(runCmd('gh pr  --detailed'))).toMatchSnapshot()
         done()
     })
 

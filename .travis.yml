@@ -5,6 +5,9 @@ node_js:
     - '8'
     - 'lts/*'
     - 'node'
+os:
+    - linux
+    - osx
 env:
     - FORCE_COLOR=true
 
@@ -16,6 +19,7 @@ branches:
         - type != push
 
 script:
+    - git config --global user.name "Ryan Garant"
     - npm run-script build
     - npm link
     - npm run-script test:ci

@@ -52,7 +52,7 @@
 
 -   We support the node versions that the Node.js organization supports which as of now is Node v6 & up.
 
-<p><img src="https://raw.githubusercontent.com/nodejs/Release/master/schedule.png" alt="LTS Schedule"/></p>
+<p><img src="https://github.com/nodejs/Release/blob/master/schedule.svg" alt="LTS Schedule"/></p>
 
 ## Available commands
 
@@ -121,7 +121,7 @@ gh pull-request
 | `--link`           | _Optional_   | `Boolean`                                                          |
 
 `user` is owner of the repository, it is the authenticated user by default.
-`remote` is the name of the remote configuration in a git directory, i.e. origin, upstream. Therefore, it only makes sense when this command is run in a git directory. 
+`remote` is the name of the remote configuration in a git directory, i.e. origin, upstream. Therefore, it only makes sense when this command is run in a git directory.
 
 #### Examples
 
@@ -155,6 +155,7 @@ gh pr --list --all --org github
 ```
 gh pr --list --me
 ```
+
 -   List open pull requests in node-gh/gh repository.
 
 ```
