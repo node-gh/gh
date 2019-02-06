@@ -468,16 +468,23 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
 
     logger.log(generateTable())
 
-    function generateTable(): void {
+    function generateTable(): string {
         const isCompact = process.stdout.columns < 100 && !testing
 
         const tableWidths = getColWidths(isCompact)
 
         const table = new Table({
             colWidths: tableWidths,
-        })
+        }) as Table.HorizontalTable
 
-        let tableHead = [
+        type TCell = (
+            | string
+            | {
+                  content: string
+                  hAlign: Table.HorizontalAlignment
+              })[]
+
+        let tableHead: TCell = [
             { content: '#', hAlign: 'center' },
             showDetails ? 'Details' : 'Title',
             'Author',
@@ -505,7 +512,7 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
                 isCompact ? getTotalWidth() : tableWidths[1]
             )
 
-            const body = [
+            const body: TCell = [
                 { content: number, hAlign: 'center' },
                 prInfo,
                 user,
