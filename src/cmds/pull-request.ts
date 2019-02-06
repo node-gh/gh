@@ -7,7 +7,7 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as async from 'async'
-import * as Table from 'cli-table2'
+import * as Table from 'cli-table3'
 import { startsWith } from 'lodash'
 import * as marked from 'marked'
 import * as TerminalRenderer from 'marked-terminal'
