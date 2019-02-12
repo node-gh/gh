@@ -29,7 +29,7 @@ First, if you haven't already done so, run npm install:
 
 To run **incrementally** in watch mode:
 
--   `npm run build:watch`
+-   `npm run dev`
 
 To run **once**:
 

@@ -59,6 +59,7 @@ PullRequest.DETAILS = {
         browser: Boolean,
         close: Boolean,
         comment: String,
+        date: String,
         description: String,
         detailed: Boolean,
         direction: String,
@@ -509,7 +510,8 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         pulls.forEach(pull => {
             const { createdTime, number, prInfo, user, status } = getColorizedFields(
                 pull,
-                isCompact ? getTotalWidth() : tableWidths[1]
+                isCompact ? getTotalWidth() : tableWidths[1],
+                options.date
             )
 
             const body: TCell = [
@@ -534,8 +536,8 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         return table.toString()
     }
 
-    function getColorizedFields(pull, length) {
-        const createdTime = logger.getDuration(pull.created_at)
+    function getColorizedFields(pull, length, dateFormatter) {
+        const createdTime = logger.getDuration(pull.created_at, dateFormatter)
         const number = logger.colors.green(`#${pull.number}`)
         const prInfo = formatPrInfo(pull, length)
         const user = logger.colors.magenta(`@${pull.user.login}`)
@@ -637,7 +639,7 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
 
     var headline = `${logger.colors.green(`#${pull.number}`)} ${pull.title} ${logger.colors.magenta(
         `@${pull.user.login}`
-    )} (${logger.getDuration(pull.created_at)})${status}`
+    )} (${logger.getDuration(pull.created_at, options.date)})${status}`
 
     if (options.link) {
         headline += ` ${logger.colors.blue(pull.html_url)}`

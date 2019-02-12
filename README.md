@@ -112,6 +112,7 @@ gh pull-request
 | `-m`, `--me`       | _Optional_   | `Boolean`                                                          |
 | `-d`, `--detailed` | _Optional_   | `Boolean`                                                          |
 | `--direction`      | _Optional_   | [`asc`, `desc`]                                                    |
+| `--date`           | _Optional_   | `String`                                                           |
 | `-b`, `--branch`   | _Optional_   | `String`                                                           |
 | `--remote`         | _Optional_   | `String`                                                           |
 | `-r`, `--repo`     | _Optional_   | `String`                                                           |
@@ -196,6 +197,12 @@ gh pr --list --sort complexity
 
 ```
 gh pr --list --link
+```
+
+-   List open pull requests with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+
+```
+gh pr --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
 ### 3. Fetch
@@ -411,6 +418,7 @@ gh notification
 | `--remote`       | _Optional_   | `String`  |
 | `-r`, `--repo`   | _Optional_   | `String`  |
 | `-u`, `--user`   | _Optional_   | `String`  |
+| `--date`         | _Optional_   | `String`  |
 
 #### Examples
 
@@ -424,6 +432,12 @@ gh nt
 
 ```
 gh nt --latest --user eduardolundgren --repo node-gh
+```
+
+-   Diplay notifications with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+
+```
+gh nt --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
 ### 2. Watch
@@ -570,6 +584,7 @@ gh is 1 --close --user eduardolundgren
 | `-l`, `--list`      | **Required** | `Boolean`            |
 | `-a`, `--all`       | _Optional_   | `Boolean`            |
 | `-A`, `--assignee`  | _Optional_   | `String`             |
+| `--date`            | _Optional_   | `String`             |
 | `-d`, `--detailed`  | _Optional_   | `Boolean`            |
 | `-L`, `--label`     | _Optional_   | `String`             |
 | `-M`, `--milestone` | _Optional_   | [`Number`, `String`] |
@@ -608,6 +623,12 @@ gh is --list --detailed
 
 ```
 gh is --list --state closed
+```
+
+-   List issues with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+
+```
+gh is --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
 -   List issues filtered by milestone.
@@ -755,6 +776,7 @@ gh re --browser --user eduardolundgren --repo node-gh
 | `-d`, `--detailed` | _Optional_   | `Boolean`                                       |
 | `-u`, `--user`     | _Optional_   | `String`                                        |
 | `-t`, `--type`     | _Optional_   | [`all`, `owner`, `public`, `private`, `member`] |
+| `--date`           | _Optional_   | `String`                                        |
 
 #### Examples
 
@@ -774,6 +796,12 @@ gh re --list --type private
 
 ```
 gh re --list --user zenorocha
+```
+
+-   List open repositories with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+
+```
+gh re --list --detailed --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
 ### 3. Create
@@ -1010,6 +1038,7 @@ gh gi --browser --id 5991877
 | -------------- | ------------ | --------- |
 | `-l`, `--list` | **Required** | `Boolean` |
 | `-u`, `--user` | _Optional_   | `String`  |
+| `--date`       | _Optional_   | `String`  |
 
 #### Examples
 
@@ -1023,6 +1052,12 @@ gh gi --list
 
 ```
 gh gi --list --user brunocoelho
+```
+
+-   List gists with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+
+```
+gh gi --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
 ### 3. Create
