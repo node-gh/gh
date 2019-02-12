@@ -23,9 +23,10 @@
 
 Since this is a **TypeScript** project, we have to compile the code before running it.
 
-First, if you haven't already done so, run npm install:
+First, if you haven't already done so, install dependencies and create a sym link:
 
 -   `npm install`
+-   `[sudo] npm link`
 
 To run **incrementally** in watch mode:
 
