@@ -75,7 +75,7 @@
     },
     "scripts": {
         "build": "tsc",
-        "build:watch": "tsc --watch",
+        "dev": "tsc --watch",
         "commit": "git-cz",
         "format": "prettier 'lib/**/*.js' && prettier 'bin/*.js'",
         "env:test": "cross-env NODE_ENV=testing GH_USER=protoEvangelion GH_TOKEN=0001",

@@ -33,6 +33,7 @@ Milestone.DETAILS = {
     commands: ['list'],
     options: {
         all: Boolean,
+        date: String,
         organization: String,
         list: Boolean,
     },
@@ -102,7 +103,9 @@ Milestone.prototype.list = function(user, repo, opt_callback) {
 
         if (milestones && milestones.length > 0) {
             milestones.forEach(milestone => {
-                const due = milestone.due_on ? logger.getDuration(milestone.due_on) : 'n/a'
+                const due = milestone.due_on
+                    ? logger.getDuration(milestone.due_on, options.date)
+                    : 'n/a'
                 const description = milestone.description || ''
                 const title = logger.colors.green(milestone.title)
                 const state = logger.colors.magenta(`@${milestone.state} (due ${due})`)

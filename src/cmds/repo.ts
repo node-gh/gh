@@ -34,6 +34,7 @@ Repo.DETAILS = {
         browser: Boolean,
         clone: Boolean,
         color: String,
+        date: String,
         delete: String,
         description: String,
         detailed: Boolean,
@@ -492,7 +493,7 @@ Repo.prototype.listCallback_ = function(err, repos, opt_callback) {
                         logger.log(logger.colors.blue(repo.homepage))
                     }
 
-                    logger.log(`last update ${logger.getDuration(repo.updated_at)}`)
+                    logger.log(`last update ${logger.getDuration(repo.updated_at, options.date)}`)
                 }
 
                 if (options.isTTY.out) {

@@ -29,6 +29,7 @@ Notifications.DETAILS = {
     description: 'Provides a set of util commands to work with Notifications.',
     commands: ['latest', 'watch'],
     options: {
+        date: String,
         latest: Boolean,
         remote: String,
         repo: String,
@@ -121,7 +122,10 @@ Notifications.prototype.latest = function(opt_watch, done) {
                 logger.log(
                     `${logger.colors.magenta(`@${event.actor.login}`)} ${
                         event.txt
-                    } ${logger.colors.cyan(options.repo)} ${logger.getDuration(event.created_at)}`
+                    } ${logger.colors.cyan(options.repo)} ${logger.getDuration(
+                        event.created_at,
+                        options.date
+                    )}`
                 )
             })
         }

@@ -31,6 +31,7 @@ Gists.DETAILS = {
     options: {
         browser: Boolean,
         content: String,
+        date: String,
         delete: [String, Array],
         description: String,
         fork: String,
@@ -219,11 +220,9 @@ Gists.prototype.listCallback_ = function(err, gists, opt_callback) {
 
     if (gists && gists.length > 0) {
         gists.forEach(gist => {
-            logger.log(
-                `${logger.colors.yellow(`${gist.owner.login}/${gist.id}`)} ${logger.getDuration(
-                    gist.updated_at
-                )}`
-            )
+            const duration = logger.getDuration(gist.updated_at, options.date)
+
+            logger.log(`${logger.colors.yellow(`${gist.owner.login}/${gist.id}`)} ${duration}`)
 
             if (gist.description) {
                 logger.log(gist.description)

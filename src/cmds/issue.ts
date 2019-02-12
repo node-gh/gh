@@ -39,6 +39,7 @@ Issue.DETAILS = {
         browser: Boolean,
         close: Boolean,
         comment: String,
+        date: String,
         detailed: Boolean,
         label: String,
         list: Boolean,
@@ -439,7 +440,7 @@ Issue.prototype.list = function(user, repo, opt_callback) {
         })
 
         if (issues && issues.length > 0) {
-            const formattedIssues = formatIssues(issues, options.detailed)
+            const formattedIssues = formatIssues(issues, options.detailed, options.date)
 
             logger.log(formattedIssues)
         } else {
@@ -552,7 +553,7 @@ Issue.prototype.search = function(user, repo, opt_callback, options) {
         })
 
         if (issues && issues.length > 0) {
-            var formattedIssues = formatIssues(issues, options.detailed)
+            var formattedIssues = formatIssues(issues, options.detailed, options.date)
 
             logger.log(formattedIssues)
         } else {
@@ -563,7 +564,7 @@ Issue.prototype.search = function(user, repo, opt_callback, options) {
     })
 }
 
-function formatIssues(issues, showDetailed) {
+function formatIssues(issues, showDetailed, dateFormatter?: string) {
     issues.sort((a, b) => {
         return a.number > b.number ? -1 : 1
     })
@@ -572,7 +573,7 @@ function formatIssues(issues, showDetailed) {
         const formattedIssuesArr = issues.map(issue => {
             const issueNumber = logger.colors.green(`#${issue.number}`)
             const issueUser = logger.colors.magenta(`@${issue.user.login}`)
-            const issueDate = `(${logger.getDuration(issue.created_at)})`
+            const issueDate = `(${logger.getDuration(issue.created_at, dateFormatter)})`
 
             let formattedIssue = `${issueNumber} ${issue.title} ${issueUser} ${issueDate}`
 
