@@ -794,7 +794,7 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
             logger.log(logger.colors.yellow(`${user}/${repo}`))
 
             json.branches.forEach((branch, index, arr) => {
-                logger.log(`${branch.name} (${branch.total})`)
+                logger.log(`${logger.colors.blue('Branch:')} ${branch.name} (${branch.total})`)
 
                 if (config.pretty_print) {
                     instance.printPullsInfoTable_(branch.pulls)
