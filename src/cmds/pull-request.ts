@@ -784,7 +784,7 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
         if (!err && pulls.length) {
             logger.log(logger.colors.yellow(`${user}/${repo}`))
 
-            json.branches.forEach(branch => {
+            json.branches.forEach((branch, index, arr) => {
                 logger.log(`${branch.name} (${branch.total})`)
 
                 if (config.pretty_print) {
@@ -792,7 +792,15 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
                 } else {
                     branch.pulls.forEach(instance.printPullInfo_, instance)
                 }
+
+                if (options.all && index !== arr.length - 1) {
+                    logger.log('')
+                }
             })
+
+            if (options.all) {
+                logger.log('')
+            }
         }
 
         opt_callback && opt_callback(err)
