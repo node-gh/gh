@@ -635,10 +635,9 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
 
     switch (pull.combinedStatus) {
         case 'success':
-            status = logger.colors.green(' ✓')
-            break
         case 'failure':
-            status = logger.colors.red(' ✗')
+        case 'error':
+            status = ` ${STATUSES[pull.combinedStatus]}`
             break
     }
 
