@@ -22,6 +22,13 @@ import Issues from './issue'
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
 
+const STATUSES = {
+    error: logger.colors.red('!'),
+    failure: logger.colors.red('✗'),
+    pending: logger.colors.yellow('-'),
+    success: logger.colors.green('✓'),
+}
+
 // -- Constructor ----------------------------------------------------------------------------------
 
 export default function PullRequest(options) {
@@ -541,9 +548,7 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
         const number = logger.colors.green(`#${pull.number}`)
         const prInfo = formatPrInfo(pull, length)
         const user = logger.colors.magenta(`@${pull.user.login}`)
-
-        const status =
-            pull.combinedStatus === 'success' ? logger.colors.green('✓') : logger.colors.red('✗')
+        const status = STATUSES[pull.combinedStatus]
 
         return { createdTime, number, prInfo, user, status }
     }
