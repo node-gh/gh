@@ -20,7 +20,7 @@ exports[`E2E: Pull Request Module Test Get PR Info \`gh pr --info 50\` 1`] = `
 exports[`E2E: Pull Request Module Test List PRs \`gh pr --detailed\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
-master (1)
+Branch: master (1)
 ┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
 │    #    │ Details                                       │ Author              │ Opened        │ Status │
 ├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
@@ -40,7 +40,7 @@ master (1)
 exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
-master (1)
+Branch: master (1)
 ┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
 │    #    │ Title                                         │ Author              │ Opened        │ Status │
 ├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
