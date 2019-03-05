@@ -51,7 +51,7 @@ Repo.DETAILS = {
         private: Boolean,
         protocol: String,
         repo: String,
-        type: ['all', 'forks', 'member', 'owner', 'public', 'private', 'sources'],
+        type: ['all', 'forks', 'member', 'owner', 'public', 'private', 'source'],
         update: String,
         user: String,
     },
