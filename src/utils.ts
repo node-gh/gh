@@ -161,11 +161,11 @@ function concatUpper(one, two) {
     return `${one}${upperFirst(two)}`
 }
 
-export function getCurrentDirName() {
+export function getCurrentFolderName(): string {
     const cwdArr = process
         .cwd()
         .toString()
         .split('/')
-    const dirName = cwdArr[cwdArr.length - 1]
-    return dirName
+
+    return cwdArr[cwdArr.length - 1]
 }

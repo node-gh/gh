@@ -14,7 +14,7 @@ import * as base from '../base'
 import * as git from '../git'
 import * as hooks from '../hooks'
 import * as logger from '../logger'
-import { getCurrentDirName } from '../utils'
+import { getCurrentFolderName } from '../utils'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
@@ -344,8 +344,9 @@ Repo.prototype.run = function(done) {
 
     if (options.new !== undefined && !options.label) {
         if (!options.new.trim()) {
-            options.repo, (options.new = getCurrentDirName())
+            options.new = getCurrentFolderName()
         }
+
         hooks.invoke('repo.new', instance, afterHooksCallback => {
             options.repo = options.new
 
