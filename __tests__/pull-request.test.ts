@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { runCmd } from './testUtils'
 import * as stripAnsi from 'strip-ansi'
+import { runCmd } from './runCmd'
 
 describe('E2E: Pull Request Module Test', () => {
     it('List PRs `gh pr`', done => {

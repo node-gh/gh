@@ -14,6 +14,9 @@ script:
     - npm run-script build
     - npm link
     - npm run-script test:ci
+    - export NODE_ENV=production
+    - npm install --production
+    - gh
 
 jobs:
     include:
