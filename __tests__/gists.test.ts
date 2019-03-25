@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { runCmd } from './testUtils'
+import { runCmd } from './runCmd'
 
 describe('E2E: Gist Module Test', () => {
     it('List Gists `gh gi`', done => {

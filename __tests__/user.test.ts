@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { runCmd } from './testUtils'
+import { runCmd } from './runCmd'
 
 describe('E2E: User Module Test', () => {
     it('List Current User `gh user`', done => {
