@@ -179,7 +179,7 @@ export function setUp() {
             invokePayload(options, Command, cooked, remain)
 
             if (process.env.NODE_ENV === 'testing') {
-                const { prepareTestFixtures } = await import('./utils')
+                const { prepareTestFixtures } = await import('./test-utils')
 
                 await new Command(options).run(prepareTestFixtures(Command.name, cooked))
             } else {
