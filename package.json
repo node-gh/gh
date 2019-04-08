@@ -98,7 +98,7 @@
         "handlebars": "4.0.13",
         "inquirer": "6.2.1",
         "lodash": "4.17.11",
-        "marked": "0.6.1",
+        "marked": "0.6.2",
         "marked-terminal": "3.2.0",
         "moment": "2.23.0",
         "nopt": "3.0.6",
