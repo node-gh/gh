@@ -167,12 +167,19 @@ export function saveJsonConfig(path, object) {
     fs.writeFileSync(path, JSON.stringify(object, null, 4), options)
 }
 
-export function writeGlobalConfigCredentials(user, token) {
+export function writeGlobalConfigCredentials(user, token): void {
     const configPath = getUserHomePath()
 
-    writeGlobalConfig('github_user', user)
-    writeGlobalConfig('github_token', token)
     logger.log(`Writing GH config data: ${configPath}`)
+
+    try {
+        writeGlobalConfig('github_user', user)
+        writeGlobalConfig('github_token', token)
+    } catch (err) {
+        throw new Error(`Error writing credentials to global config\n${err}`)
+    }
+
+    logger.log('Authentication succeed. Token written to global config.')
 }
 
 // -- Plugins ------------------------------------------------------------------

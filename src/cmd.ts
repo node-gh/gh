@@ -11,9 +11,9 @@ import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import { checkVersion, clone, expandAliases, find, getUser, load } from './base'
-import User from './cmds/user'
 import * as configs from './configs'
 import * as git from './git'
+import { getGitHubInstance } from './GitHub'
 
 const config = configs.getConfig()
 
@@ -105,6 +105,10 @@ export function setUp() {
     let remain = parsed.argv.remain
     let cooked = parsed.argv.cooked
 
+    //
+
+    //
+
     operations.push(callback => {
         checkVersion()
 
@@ -135,14 +139,6 @@ export function setUp() {
 
         options.number = options.number || [remain[1]]
         options.remote = options.remote || config.default_remote
-
-        if (module === 'help') {
-            callback()
-        } else {
-            await User.login()
-
-            callback()
-        }
     })
 
     async.series(operations, async () => {
@@ -184,12 +180,14 @@ export function setUp() {
 
             invokePayload(options, Command, cooked, remain)
 
+            const GitHub = await getGitHubInstance()
+
             if (process.env.NODE_ENV === 'testing') {
                 const { prepareTestFixtures } = await import('./test-utils')
 
-                await new Command(options).run(prepareTestFixtures(Command.name, cooked))
+                await new Command(options, GitHub).run(prepareTestFixtures(Command.name, cooked))
             } else {
-                await new Command(options).run()
+                await new Command(options, GitHub).run()
             }
         })
     })
