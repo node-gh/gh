@@ -6,14 +6,15 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as async from 'async'
 import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
-import { checkVersion, clone, expandAliases, find, getUser, load } from './base'
+import * as updateNotifier from 'update-notifier'
+import { clone, expandAliases, find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
 import { getGitHubInstance } from './GitHub'
+import { getGlobalPackageJson } from './utils'
 
 const config = configs.getConfig()
 
@@ -96,109 +97,103 @@ async function loadCommand(name) {
     return Command.default
 }
 
-export function setUp() {
+function notifyVersion() {
+    var notifier = updateNotifier({ pkg: getGlobalPackageJson() })
+
+    if (notifier.update) {
+        notifier.notify()
+    }
+}
+
+export async function setUp() {
     let Command
     let iterative
     let options
-    const operations = []
     const parsed = nopt(process.argv)
     let remain = parsed.argv.remain
     let cooked = parsed.argv.cooked
 
-    //
+    let module = remain[0]
 
-    //
+    notifyVersion()
 
-    operations.push(callback => {
-        checkVersion()
+    if (cooked[0] === '--version' || cooked[0] === '-v') {
+        module = 'version'
+    } else if (!remain.length || cooked.indexOf('-h') >= 0 || cooked.indexOf('--help') >= 0) {
+        module = 'help'
+    }
 
-        callback()
-    })
+    try {
+        Command = await loadCommand(module)
+    } catch (err) {
+        throw new Error(`Cannot find module ${module}\n${err}`)
+    }
 
-    operations.push(async callback => {
-        var module = remain[0]
+    options = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 
-        if (cooked[0] === '--version' || cooked[0] === '-v') {
-            module = 'version'
-        } else if (!remain.length || cooked.indexOf('-h') >= 0 || cooked.indexOf('--help') >= 0) {
-            module = 'help'
+    iterative = Command.DETAILS.iterative
+
+    cooked = options.argv.cooked
+    remain = options.argv.remain
+
+    options.number = options.number || [remain[1]]
+    options.remote = options.remote || config.default_remote
+
+    let iterativeValues
+    const remoteUrl = git.getRemoteUrl(options.remote)
+
+    options.isTTY = {}
+    options.isTTY.in = Boolean(process.stdin.isTTY)
+    options.isTTY.out = Boolean(process.stdout.isTTY)
+    options.loggedUser = getUser()
+    options.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
+
+    if (!options.user) {
+        if (options.repo || options.all) {
+            options.user = options.loggedUser
+        } else {
+            options.user = process.env.GH_USER || options.remoteUser || options.loggedUser
         }
+    }
 
-        try {
-            Command = await loadCommand(module)
-        } catch (err) {
-            throw new Error(`Cannot find module ${module}\n${err}`)
+    options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
+    options.currentBranch = options.currentBranch || git.getCurrentBranch()
+
+    expandAliases(options)
+    options.github_host = config.github_host
+    options.github_gist_host = config.github_gist_host
+
+    // Try to retrieve iterative values from iterative option key,
+    // e.g. option['number'] === [1,2,3]. If iterative option key is not
+    // present, assume [undefined] in order to initialize the loop.
+    iterativeValues = options[iterative] || [undefined]
+
+    iterativeValues.forEach(async value => {
+        options = clone(options)
+
+        // Value can be undefined when the command doesn't have a iterative
+        // option.
+        options[iterative] = value
+
+        invokePayload(options, Command, cooked, remain)
+
+        const GitHub = await getGitHubInstance()
+
+        if (process.env.NODE_ENV === 'testing') {
+            const { prepareTestFixtures } = await import('./utils')
+
+            await new Command(options, GitHub).run(prepareTestFixtures(Command.name, cooked))
+        } else {
+            await new Command(options, GitHub).run()
         }
-
-        options = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
-
-        iterative = Command.DETAILS.iterative
-
-        cooked = options.argv.cooked
-        remain = options.argv.remain
-
-        options.number = options.number || [remain[1]]
-        options.remote = options.remote || config.default_remote
-    })
-
-    async.series(operations, async () => {
-        let iterativeValues
-        const remoteUrl = git.getRemoteUrl(options.remote)
-
-        options.isTTY = {}
-        options.isTTY.in = Boolean(process.stdin.isTTY)
-        options.isTTY.out = Boolean(process.stdout.isTTY)
-        options.loggedUser = getUser()
-        options.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
-
-        if (!options.user) {
-            if (options.repo || options.all) {
-                options.user = options.loggedUser
-            } else {
-                options.user = process.env.GH_USER || options.remoteUser || options.loggedUser
-            }
-        }
-
-        options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
-        options.currentBranch = options.currentBranch || git.getCurrentBranch()
-
-        expandAliases(options)
-        options.github_host = config.github_host
-        options.github_gist_host = config.github_gist_host
-
-        // Try to retrieve iterative values from iterative option key,
-        // e.g. option['number'] === [1,2,3]. If iterative option key is not
-        // present, assume [undefined] in order to initialize the loop.
-        iterativeValues = options[iterative] || [undefined]
-
-        iterativeValues.forEach(async value => {
-            options = clone(options)
-
-            // Value can be undefined when the command doesn't have a iterative
-            // option.
-            options[iterative] = value
-
-            invokePayload(options, Command, cooked, remain)
-
-            const GitHub = await getGitHubInstance()
-
-            if (process.env.NODE_ENV === 'testing') {
-                const { prepareTestFixtures } = await import('./test-utils')
-
-                await new Command(options, GitHub).run(prepareTestFixtures(Command.name, cooked))
-            } else {
-                await new Command(options, GitHub).run()
-            }
-        })
     })
 }
 
-export function run() {
+export async function run() {
     if (!fs.existsSync(configs.getUserHomePath())) {
         configs.createGlobalConfig()
     }
 
-    load()
     configs.getConfig()
 
     // If configs.PLUGINS_PATH_KEY is undefined, try to cache it before proceeding.
@@ -209,7 +204,7 @@ export function run() {
     try {
         process.env.GH_PATH = path.join(__dirname, '../')
 
-        this.setUp()
+        await setUp()
     } catch (e) {
         console.error(e.stack || e)
     }

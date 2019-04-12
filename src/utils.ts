@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import { readFileSync } from 'fs'
 import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
+import { join } from 'path'
 import * as zlib from 'zlib'
 
 export function getCurrentFolderName(): string {
@@ -18,6 +20,12 @@ export function getCurrentFolderName(): string {
 }
 
 const nockBack = nock.back
+
+export function getGlobalPackageJson() {
+    const configFile = readFileSync(join(process.cwd(), 'package.json'))
+
+    return JSON.parse(configFile.toString())
+}
 
 export function prepareTestFixtures(cmdName, argv) {
     let id = 0

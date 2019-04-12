@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import * as base from '../base'
 import * as logger from '../logger'
+import { getGlobalPackageJson } from '../utils'
 
 export default function Version() {}
 
@@ -15,9 +15,9 @@ Version.DETAILS = {
 }
 
 Version.prototype.run = function() {
-    base.asyncReadPackages(this.printVersion)
+    printVersion(getGlobalPackageJson)
 }
 
-Version.prototype.printVersion = function(pkg) {
+function printVersion(pkg) {
     logger.log(`${pkg.name} ${pkg.version}`)
 }

@@ -5,8 +5,6 @@
  */
 
 import * as fs from 'fs'
-import * as path from 'path'
-import * as updateNotifier from 'update-notifier'
 import * as configs from './configs'
 
 // -- Config -------------------------------------------------------------------
@@ -20,34 +18,6 @@ export function clone(o) {
 // -- Utils --------------------------------------------------------------------
 
 export function load() {}
-
-export function asyncReadPackages(callback) {
-    function read(err, data) {
-        if (err) {
-            throw err
-        }
-
-        callback(JSON.parse(data))
-    }
-
-    fs.readFile(path.join(__dirname, '..', 'package.json'), read)
-
-    configs.getPlugins().forEach(plugin => {
-        fs.readFile(path.join(configs.getNodeModulesGlobalPath(), plugin, 'package.json'), read)
-    })
-}
-
-export function notifyVersion(pkg) {
-    var notifier = updateNotifier({ pkg })
-
-    if (notifier.update) {
-        notifier.notify()
-    }
-}
-
-export function checkVersion() {
-    asyncReadPackages(notifyVersion)
-}
 
 export function expandAliases(options) {
     if (config.alias) {
