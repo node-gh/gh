@@ -17,8 +17,9 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Issue(options) {
+export default function Issue(options, GitHub) {
     this.options = options
+    this.GitHub = GitHub
 
     if (!options.repo && !options.all) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
@@ -293,7 +294,7 @@ Issue.prototype.comment = async function() {
         owner: options.user,
     }
 
-    return await base.github.issues.createComment(payload)
+    return await instance.GitHub.issues.createComment(payload)
 }
 
 Issue.prototype.editIssue_ = async function(title, state) {
@@ -314,7 +315,7 @@ Issue.prototype.editIssue_ = async function(title, state) {
         repo: options.repo,
     }
 
-    return await base.github.issues.update(payload)
+    return await instance.GitHub.issues.update(payload)
 }
 
 Issue.prototype.getIssue_ = async function() {
@@ -328,7 +329,7 @@ Issue.prototype.getIssue_ = async function() {
         owner: options.user,
     }
 
-    return await base.github.issues.get(payload)
+    return await instance.GitHub.issues.get(payload)
 }
 
 Issue.prototype.list = async function(user, repo) {
@@ -351,7 +352,7 @@ Issue.prototype.list = async function(user, repo) {
     }
 
     if (options.milestone) {
-        const milestones = await base.github.issues.listMilestonesForRepo({
+        const milestones = await instance.GitHub.issues.listMilestonesForRepo({
             repo,
             owner: user,
         })
@@ -367,7 +368,7 @@ Issue.prototype.list = async function(user, repo) {
         payload.assignee = options.assignee
     }
 
-    const { data } = await base.github.issues.listForRepo(payload)
+    const { data } = await instance.GitHub.issues.listForRepo(payload)
 
     const issues = data.filter(result => Boolean(result))
 
@@ -390,7 +391,7 @@ Issue.prototype.listFromAllRepositories = async function() {
         username: options.user,
     }
 
-    const repositories: any = await base.github.repos.listForUser(payload)
+    const repositories: any = await instance.GitHub.repos.listForUser(payload)
 
     for (const repo of repositories.data) {
         await instance.list(repo.owner.login, repo.name)
@@ -421,7 +422,7 @@ Issue.prototype.new = async function() {
         labels: options.label,
     }
 
-    return await base.github.issues.create(payload)
+    return await instance.GitHub.issues.create(payload)
 }
 
 Issue.prototype.open = async function() {
@@ -455,7 +456,7 @@ Issue.prototype.search = async function(user, repo) {
         type: 'Issues',
     }
 
-    const { data } = await base.github.search.issues(payload)
+    const { data } = await instance.GitHub.search.issues(payload)
 
     if (data.items && data.items.length > 0) {
         const formattedIssues = formatIssues(data.items, options.detailed)

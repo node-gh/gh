@@ -5,7 +5,6 @@
  */
 
 import * as fs from 'fs'
-import * as Github from '@octokit/rest'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
 import * as configs from './configs'
@@ -21,8 +20,6 @@ export function clone(o) {
 // -- Utils --------------------------------------------------------------------
 
 export function load() {}
-
-export const github = setupGithubClient(config)
 
 export function asyncReadPackages(callback) {
     function read(err, data) {
