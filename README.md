@@ -478,7 +478,7 @@ gh issue
 | `-N`, `--new`      | **Required** | `Boolean` |
 | `-t`, `--title`    | **Required** | `String`  |
 | `-A`, `--assignee` | _Optional_   | `String`  |
-| `-L`, `--label`    | _Optional_   | `String`  |
+| `-L`, `--labels`   | _Optional_   | `String`  |
 | `-m`, `--message`  | _Optional_   | `String`  |
 | `--remote`         | _Optional_   | `String`  |
 | `-r`, `--repo`     | _Optional_   | `String`  |
@@ -501,7 +501,7 @@ gh is --new --title 'Node GH rocks!' --message 'Body with **Markdown** support' 
 -   Create a new issue with labels.
 
 ```
-gh is --new --title 'Node GH rocks!' --label bug,question,test
+gh is --new --title 'Node GH rocks!' --labels bug,question,test
 ```
 
 -   Create a new issue and assign it to someone.
@@ -586,7 +586,7 @@ gh is 1 --close --user eduardolundgren
 | `-A`, `--assignee`  | _Optional_   | `String`             |
 | `--date`            | _Optional_   | `String`             |
 | `-d`, `--detailed`  | _Optional_   | `Boolean`            |
-| `-L`, `--label`     | _Optional_   | `String`             |
+| `-L`, `--labels`    | _Optional_   | `String`             |
 | `-M`, `--milestone` | _Optional_   | [`Number`, `String`] |
 | `--remote`          | _Optional_   | `String`             |
 | `-r`, `--repo`      | _Optional_   | `String`             |
@@ -640,7 +640,7 @@ gh is --list --milestone 1
 -   List issues that contains labels `todo` and `bug`.
 
 ```
-gh is --list --label todo,bug
+gh is --list --labels todo,bug
 ```
 
 -   List all issues on a certain repository.

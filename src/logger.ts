@@ -65,16 +65,14 @@ export function log(...args) {
     console.log(...args)
 }
 
-export function getDuration(start, formatter?) {
+export function getDuration(start: Date, opt_end?: Date): string {
     if (testing) {
-        return moment(start).from('2018-10-10T16:00:00Z')
+        opt_end = new Date('December 17, 2013')
+    } else {
+        opt_end = new Date()
     }
 
-    if (formatter) {
-        return moment(start).format(formatter)
-    }
-
-    return moment(start).fromNow()
+    return moment.duration(moment(start).diff(opt_end)).humanize(true)
 }
 
 export function applyReplacements(output, replaceMap?: object) {
