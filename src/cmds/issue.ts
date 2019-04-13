@@ -42,7 +42,7 @@ Issue.DETAILS = {
         comment: String,
         date: String,
         detailed: Boolean,
-        label: String,
+        labels: [String],
         list: Boolean,
         link: Boolean,
         message: String,
@@ -65,7 +65,7 @@ Issue.DETAILS = {
         C: ['--close'],
         c: ['--comment'],
         d: ['--detailed'],
-        L: ['--label'],
+        L: ['--labels'],
         k: ['--link'],
         l: ['--list'],
         m: ['--message'],
@@ -302,13 +302,11 @@ Issue.prototype.editIssue_ = async function(title, state) {
     const options = instance.options
     let payload
 
-    options.label = options.label || []
-
     payload = {
         state,
         title,
         assignee: options.assignee,
-        labels: options.label,
+        labels: options.labels || [],
         milestone: options.milestone,
         number: options.number,
         owner: options.user,
@@ -343,8 +341,8 @@ Issue.prototype.list = async function(user, repo) {
         state: options.state,
     }
 
-    if (options.label) {
-        payload.label = options.label
+    if (options.labels) {
+        payload.labels = options.labels
     }
 
     if (options['no-milestone']) {
@@ -352,12 +350,12 @@ Issue.prototype.list = async function(user, repo) {
     }
 
     if (options.milestone) {
-        const milestones = await instance.GitHub.issues.listMilestonesForRepo({
+        const { data } = await instance.GitHub.issues.listMilestonesForRepo({
             repo,
             owner: user,
         })
 
-        const milestoneNumber = milestones.data
+        const milestoneNumber = data
             .filter(milestone => options.milestone === milestone.title)
             .map(milestone => milestone.number)[0]
 
@@ -384,9 +382,8 @@ Issue.prototype.list = async function(user, repo) {
 Issue.prototype.listFromAllRepositories = async function() {
     const instance = this
     const options = instance.options
-    let payload
 
-    payload = {
+    const payload = {
         type: 'all',
         username: options.user,
     }
@@ -407,10 +404,10 @@ Issue.prototype.new = async function() {
         body = logger.applyReplacements(options.message, config.replace)
     }
 
-    if (options.label) {
-        options.label = options.label.split(',')
+    if (options.labels) {
+        options.labels = options.labels.split(',')
     } else {
-        options.label = []
+        options.labels = []
     }
 
     const payload = {
@@ -419,7 +416,7 @@ Issue.prototype.new = async function() {
         repo: options.repo,
         title: options.title,
         owner: options.user,
-        labels: options.label,
+        labels: options.labels,
     }
 
     return await instance.GitHub.issues.create(payload)
@@ -439,8 +436,6 @@ Issue.prototype.search = async function(user, repo) {
     let query = ['type:issue']
     let payload
 
-    options.label = options.label || ''
-
     if (!options.all && repo) {
         query.push(`repo:${repo}`)
     }
@@ -453,10 +448,9 @@ Issue.prototype.search = async function(user, repo) {
 
     payload = {
         q: query.join(' '),
-        type: 'Issues',
     }
 
-    const { data } = await instance.GitHub.search.issues(payload)
+    const { data } = await instance.GitHub.search.issuesAndPullRequests(payload)
 
     if (data.items && data.items.length > 0) {
         const formattedIssues = formatIssues(data.items, options.detailed)
