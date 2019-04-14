@@ -160,21 +160,20 @@ export function writeGlobalConfig(jsonPath, value) {
 }
 
 export function saveJsonConfig(path, object) {
-    const options = {
-        mode: parseInt('0600', 8),
-    }
-
-    fs.writeFileSync(path, JSON.stringify(object, null, 4), options)
+    fs.writeFileSync(path, JSON.stringify(object, null, 4))
 }
 
 export function writeGlobalConfigCredentials(user, token): void {
     const configPath = getUserHomePath()
+    const config = JSON.parse(fs.readFileSync(configPath).toString())
 
     logger.log(`Writing GH config data: ${configPath}`)
 
     try {
-        writeGlobalConfig('github_user', user)
-        writeGlobalConfig('github_token', token)
+        config.github_user = user
+        config.github_token = token
+
+        saveJsonConfig(configPath, config)
     } catch (err) {
         throw new Error(`Error writing credentials to global config\n${err}`)
     }

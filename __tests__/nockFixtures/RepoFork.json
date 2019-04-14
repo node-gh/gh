@@ -1,9 +1,9 @@
 [
     {
         "scope": "https://api.github.com:443",
-        "method": "post",
-        "path": "/repos/prettier/prettier/forks?",
-        "body": {},
+        "method": "POST",
+        "path": "/repos/prettier/prettier/forks",
+        "body": "",
         "status": 202,
         "response": {
             "id": 1000,
@@ -82,7 +82,7 @@
             "size": 27810,
             "stargazers_count": 0,
             "watchers_count": 0,
-            "language": null,
+            "language": "JavaScript",
             "has_issues": false,
             "has_projects": true,
             "has_downloads": true,
@@ -91,6 +91,7 @@
             "forks_count": 0,
             "mirror_url": null,
             "archived": false,
+            "disabled": false,
             "open_issues_count": 0,
             "license": {
                 "key": "mit",
@@ -182,7 +183,7 @@
                 "clone_url": "https://github.com/prettier/prettier.git",
                 "svn_url": "https://github.com/prettier/prettier",
                 "homepage": "https://prettier.io",
-                "size": 27810,
+                "size": 29160,
                 "stargazers_count": 42,
                 "watchers_count": 42,
                 "language": "JavaScript",
@@ -194,6 +195,7 @@
                 "forks_count": 42,
                 "mirror_url": null,
                 "archived": false,
+                "disabled": false,
                 "open_issues_count": 42,
                 "license": {
                     "key": "mit",
@@ -202,9 +204,9 @@
                     "url": "https://api.github.com/licenses/mit",
                     "node_id": 1011
                 },
-                "forks": 1520,
-                "open_issues": 487,
-                "watchers": 29363,
+                "forks": 1702,
+                "open_issues": 609,
+                "watchers": 31347,
                 "default_branch": "master"
             },
             "source": {
@@ -281,7 +283,7 @@
                 "clone_url": "https://github.com/prettier/prettier.git",
                 "svn_url": "https://github.com/prettier/prettier",
                 "homepage": "https://prettier.io",
-                "size": 27810,
+                "size": 29160,
                 "stargazers_count": 42,
                 "watchers_count": 42,
                 "language": "JavaScript",
@@ -293,6 +295,7 @@
                 "forks_count": 42,
                 "mirror_url": null,
                 "archived": false,
+                "disabled": false,
                 "open_issues_count": 42,
                 "license": {
                     "key": "mit",
@@ -301,13 +304,57 @@
                     "url": "https://api.github.com/licenses/mit",
                     "node_id": 1017
                 },
-                "forks": 1520,
-                "open_issues": 487,
-                "watchers": 29363,
+                "forks": 1702,
+                "open_issues": 609,
+                "watchers": 31347,
                 "default_branch": "master"
             },
             "network_count": 42,
             "subscribers_count": 42
-        }
+        },
+        "rawHeaders": [
+            "Server",
+            "GitHub.com",
+            "Date",
+            "Sun, 14 Apr 2019 04:59:16 GMT",
+            "Content-Type",
+            "application/json; charset=utf-8",
+            "Content-Length",
+            "15245",
+            "Connection",
+            "close",
+            "Status",
+            "202 Accepted",
+            "X-RateLimit-Limit",
+            "5000",
+            "X-RateLimit-Remaining",
+            "4974",
+            "X-RateLimit-Reset",
+            "1555221556",
+            "X-OAuth-Scopes",
+            "user, public_repo, repo, repo:status, delete_repo, gist",
+            "X-Accepted-OAuth-Scopes",
+            "",
+            "X-GitHub-Media-Type",
+            "github.v3; format=json",
+            "Access-Control-Expose-Headers",
+            "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type",
+            "Access-Control-Allow-Origin",
+            "*",
+            "Strict-Transport-Security",
+            "max-age=31536000; includeSubdomains; preload",
+            "X-Frame-Options",
+            "deny",
+            "X-Content-Type-Options",
+            "nosniff",
+            "X-XSS-Protection",
+            "1; mode=block",
+            "Referrer-Policy",
+            "origin-when-cross-origin, strict-origin-when-cross-origin",
+            "Content-Security-Policy",
+            "default-src 'none'",
+            "X-GitHub-Request-Id",
+            "CBFA:4536:EE782C:1E7D067:5CB2BE24"
+        ]
     }
 ]

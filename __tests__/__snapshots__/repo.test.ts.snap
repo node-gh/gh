@@ -9,12 +9,13 @@ https://github.com/protoEvangelion/foo
 
 exports[`E2E: Repo Module Test Delete repo \`gh re --delete foo\` 1`] = `
 "Deleting repo protoEvangelion/foo
+Successfully deleted repo.
 "
 `;
 
 exports[`E2E: Repo Module Test Fork a repo \`gh re --fork prettier --user prettier\` 1`] = `
-"Forking repo prettier/prettier on /prettier
-https://github.com/protoEvangelion/prettier
+"Forking repo prettier/prettier into protoEvangelion/prettier
+Successfully forked: https://github.com/protoEvangelion/prettier
 "
 `;
 
@@ -22,5 +23,13 @@ exports[`E2E: Repo Module Test List Repos \`gh re --list\` 1`] = `
 "protoEvangelion/100-days-of-code
 protoEvangelion/adopt-a-family
 protoEvangelion/alloy-ui
+"
+`;
+
+exports[`E2E: Repo Module Test List labels on a repo \`gh re --label --list --repo gh\` 1`] = `
+"Listing labels on protoEvangelion/gh
+--user
+duplicate
+enhancement
 "
 `;

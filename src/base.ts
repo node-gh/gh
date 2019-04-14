@@ -34,7 +34,7 @@ export function find(filepath, opt_pattern) {
 }
 
 export function getUser() {
-    return config.github_user
+    return config.github_user || process.env.GH_USER
 }
 
 // Export some config methods to allow plugins to access them
