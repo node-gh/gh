@@ -17,8 +17,9 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Gists(options) {
+export default function Gists(options, GitHub) {
     this.options = options
+    this.GitHub = GitHub
 }
 
 // -- Constants ------------------------------------------------------------------------------------
@@ -184,19 +185,23 @@ Gists.prototype.browser = function(gist) {
 }
 
 Gists.prototype.delete = function(id, opt_callback) {
+    const instance = this
+
     var payload = {
         gist_id: id,
     }
 
-    base.github.gists.delete(payload, opt_callback)
+    instance.GitHub.gists.delete(payload, opt_callback)
 }
 
 Gists.prototype.fork = function(id, opt_callback) {
+    const instance = this
+
     var payload = {
         gist_id: id,
     }
 
-    base.github.gists.fork(payload, opt_callback)
+    instance.GitHub.gists.fork(payload, opt_callback)
 }
 
 Gists.prototype.list = function(user, opt_callback) {
@@ -205,7 +210,7 @@ Gists.prototype.list = function(user, opt_callback) {
         username: user,
     }
 
-    base.github.gists.listPublicForUser(payload, (err, gists) => {
+    instance.GitHub.gists.listPublicForUser(payload, (err, gists) => {
         instance.listCallback_(err, gists, opt_callback)
     })
 }
@@ -253,5 +258,5 @@ Gists.prototype.new = function(name, content, opt_callback) {
         public: !options.private,
     }
 
-    base.github.gists.create(payload, opt_callback)
+    instance.GitHub.gists.create(payload, opt_callback)
 }

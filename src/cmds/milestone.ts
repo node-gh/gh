@@ -7,13 +7,13 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as async from 'async'
-import * as base from '../base'
 import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Milestone(options) {
+export default function Milestone(options, GitHub) {
     this.options = options
+    this.GitHub = GitHub
 
     if (options.organization) {
         options.all = true
@@ -92,7 +92,7 @@ Milestone.prototype.list = function(user, repo, opt_callback) {
         owner: user,
     }
 
-    base.github.issues.listMilestonesForRepo(payload, (err, milestones: any) => {
+    instance.GitHub.issues.listMilestonesForRepo(payload, (err, milestones: any) => {
         if (err && !options.all) {
             throw new Error(logger.getErrorMessage(err))
         }
@@ -136,7 +136,7 @@ Milestone.prototype.listFromAllRepositories = function(opt_callback) {
         payload.org = options.organization
     }
 
-    base.github.repos[op](payload, (err, repositories) => {
+    instance.GitHub.repos[op](payload, (err, repositories) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {

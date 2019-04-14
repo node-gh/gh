@@ -53,7 +53,7 @@ export function prepareTestFixtures(cmdName, argv) {
         },
         {
             name: 'Repo',
-            flags: ['--list', '--new', '--fork', '--delete'],
+            flags: ['--label', '--list', '--new', '--fork', '--delete'],
         },
         {
             name: 'User',
@@ -63,7 +63,7 @@ export function prepareTestFixtures(cmdName, argv) {
             name: 'Version',
             flags: ['--version'],
         },
-    ].filter(cmd => filterByCmdName(cmd, cmdName))
+    ].filter(cmd => cmd.name === cmdName)
 
     const newCmdName = formatCmdName(cmds[0], argv)
 
@@ -179,10 +179,6 @@ export function prepareTestFixtures(cmdName, argv) {
     function before(scope) {
         scope.filteringPath = () => stripAccessToken(scope.path)
     }
-}
-
-function filterByCmdName(cmd, cmdName) {
-    return cmd.name === cmdName
 }
 
 function formatCmdName(cmd, argv) {

@@ -56,11 +56,14 @@ function getSavedToken(): string {
 }
 
 async function createNewOathToken(): Promise<string | undefined> {
-    let octokit
-
     logger.log(`In order to use GitHub's API, you will need to login with your GitHub account.`)
 
-    const answers = await inquirer.prompt([
+    interface Answers {
+        username: string
+        password: string
+    }
+
+    const answers: Answers = await inquirer.prompt([
         {
             type: 'input',
             message: 'Enter your GitHub user',
@@ -71,34 +74,25 @@ async function createNewOathToken(): Promise<string | undefined> {
             message: 'Enter your GitHub password',
             name: 'password',
         },
-        {
-            type: 'confirm',
-            message: 'Do you have 2FA enabled on your GitHub account?',
-            name: '2FAEnabled',
-        },
     ])
 
-    if (answers['2FAEnabled']) {
-        octokit = new Octokit({
-            auth: {
-                username: answers.username,
-                password: answers.password,
-                async on2fa() {
-                    const { code } = await inquirer.prompt([
-                        {
-                            type: 'input',
-                            message: 'Enter your Two-factor GitHub authenticator code',
-                            name: 'code',
-                        },
-                    ])
+    const octokit = new Octokit({
+        auth: {
+            username: answers.username,
+            password: answers.password,
+            async on2fa() {
+                const { code } = await inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: 'Enter your Two-factor GitHub authenticator code',
+                        name: 'code',
+                    },
+                ])
 
-                    return code
-                },
+                return code
             },
-        })
-    } else {
-        octokit = new Octokit({ auth: `${answers.username}:${answers.password}` })
-    }
+        },
+    })
 
     const payload = {
         note: `Node GH (${moment().format('MMMM Do YYYY, h:mm:ss a')})`,
@@ -113,7 +107,7 @@ async function createNewOathToken(): Promise<string | undefined> {
     }
 
     if (data.token) {
-        writeGlobalConfigCredentials(answers.user, data.token)
+        writeGlobalConfigCredentials(answers.username, data.token)
 
         return data.token
     }

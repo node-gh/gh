@@ -7,15 +7,15 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as async from 'async'
-import * as base from '../base'
 import * as logger from '../logger'
 
 const printed = {}
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Notifications(options) {
+export default function Notifications(options, GitHub) {
     this.options = options
+    this.GitHub = GitHub
 
     if (!options.repo) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
@@ -83,7 +83,7 @@ Notifications.prototype.latest = function(opt_watch, done) {
                 repo: options.repo,
             }
 
-            base.github.activity.listNotificationsForRepo(payload, (err, data) => {
+            instance.GitHub.activity.listNotificationsForRepo(payload, (err, data) => {
                 if (!err) {
                     listEvents = data
                 }

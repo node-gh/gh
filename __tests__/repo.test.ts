@@ -17,6 +17,11 @@ describe('E2E: Repo Module Test', () => {
         done()
     })
 
+    it('List labels on a repo `gh re --label --list --repo gh`', done => {
+        expect(runCmd('gh re --label --list --repo gh')).toMatchSnapshot()
+        done()
+    })
+
     it('Fork a repo `gh re --fork prettier --user prettier`', done => {
         expect(runCmd('gh re --fork prettier --user prettier')).toMatchSnapshot()
         done()

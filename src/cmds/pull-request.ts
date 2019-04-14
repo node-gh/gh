@@ -31,14 +31,15 @@ const STATUSES = {
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function PullRequest(options) {
+export default function PullRequest(options, GitHub) {
     this.options = options
+    this.GitHub = GitHub
 
     if (!options.repo && !options.all) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
     }
 
-    this.issue = new Issues(options)
+    this.issue = new Issues(options, GitHub)
 }
 
 // -- Constants ------------------------------------------------------------------------------------
@@ -315,7 +316,7 @@ PullRequest.prototype.checkPullRequestIntegrity_ = function(originalError, user,
         state: PullRequest.STATE_OPEN,
     }
 
-    base.github.pulls.list(payload, (err, pulls: any) => {
+    instance.GitHub.pulls.list(payload, (err, pulls: any) => {
         if (!err) {
             pulls.forEach(data => {
                 if (
@@ -423,7 +424,7 @@ PullRequest.prototype.getPullRequest_ = function(opt_callback) {
         owner: options.user,
     }
 
-    base.github.pulls.get(payload, opt_callback)
+    instance.GitHub.pulls.get(payload, opt_callback)
 }
 
 PullRequest.prototype.getBranchNameFromPullNumber_ = function(number) {
@@ -667,6 +668,7 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
 }
 
 PullRequest.prototype.get = function(user, repo, number, opt_callback) {
+    const instance = this
     const pr = this
     let payload
 
@@ -676,7 +678,7 @@ PullRequest.prototype.get = function(user, repo, number, opt_callback) {
         owner: user,
     }
 
-    base.github.pulls.get(payload, (err, pull) => {
+    instance.GitHub.pulls.get(payload, (err, pull) => {
         if (err) {
             logger.warn(`Can't get pull request ${user}/${repo}/${number}`)
             return
@@ -713,7 +715,7 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
 
     operations = [
         function(callback) {
-            base.github.pulls.list(payload, (err: NodeJS.ErrnoException, data) => {
+            instance.GitHub.pulls.list(payload, (err: NodeJS.ErrnoException, data) => {
                 pulls = []
 
                 if (!err) {
@@ -761,11 +763,14 @@ PullRequest.prototype.list = function(user, repo, opt_callback) {
                         ref: pull.head.sha,
                     }
 
-                    base.github.repos.getCombinedStatusForRef(statusPayload, (err, data: any) => {
-                        pull.combinedStatus = data.state
+                    instance.GitHub.repos.getCombinedStatusForRef(
+                        statusPayload,
+                        (err, data: any) => {
+                            pull.combinedStatus = data.state
 
-                        callback(err)
-                    })
+                            callback(err)
+                        }
+                    )
                 })
             })
 
@@ -822,7 +827,7 @@ PullRequest.prototype.listFromAllRepositories = function(opt_callback) {
         apiMethod = 'listForUser'
     }
 
-    base.github.repos[apiMethod](payload, (err, repositories) => {
+    instance.GitHub.repos[apiMethod](payload, (err, repositories) => {
         if (err) {
             opt_callback && opt_callback(err)
         } else {
@@ -934,11 +939,11 @@ PullRequest.prototype.submit = function(user, opt_callback) {
 
             if (options.issue) {
                 payload.issue = options.issue
-                base.github.pulls.createFromIssue(payload, callback)
+                instance.GitHub.pulls.createFromIssue(payload, callback)
             } else {
                 payload.body = options.description
                 payload.title = options.title
-                base.github.pulls.create(payload, callback)
+                instance.GitHub.pulls.create(payload, callback)
             }
         },
     ]
@@ -970,7 +975,7 @@ PullRequest.prototype.updatePullRequest_ = function(title, opt_body, state, opt_
         owner: options.user,
     }
 
-    base.github.pulls.update(payload, opt_callback)
+    instance.GitHub.pulls.update(payload, opt_callback)
 }
 
 PullRequest.prototype._fetchHandler = function() {
