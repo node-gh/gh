@@ -56,20 +56,49 @@ function getSavedToken(): string {
 }
 
 async function createNewOathToken(): Promise<string | undefined> {
+    let octokit
+
     logger.log(`In order to use GitHub's API, you will need to login with your GitHub account.`)
 
     const answers = await inquirer.prompt([
         {
             type: 'input',
             message: 'Enter your GitHub user',
-            name: 'user',
+            name: 'username',
         },
         {
             type: 'password',
             message: 'Enter your GitHub password',
             name: 'password',
         },
+        {
+            type: 'confirm',
+            message: 'Do you have 2FA enabled on your GitHub account?',
+            name: '2FAEnabled',
+        },
     ])
+
+    if (answers['2FAEnabled']) {
+        octokit = new Octokit({
+            auth: {
+                username: answers.username,
+                password: answers.password,
+                async on2fa() {
+                    const { code } = await inquirer.prompt([
+                        {
+                            type: 'input',
+                            message: 'Enter your Two-factor GitHub authenticator code',
+                            name: 'code',
+                        },
+                    ])
+
+                    return code
+                },
+            },
+        })
+    } else {
+        octokit = new Octokit({ auth: `${answers.username}:${answers.password}` })
+    }
 
     const payload = {
         note: `Node GH (${moment().format('MMMM Do YYYY, h:mm:ss a')})`,
@@ -77,45 +106,17 @@ async function createNewOathToken(): Promise<string | undefined> {
         scopes: ['user', 'public_repo', 'repo', 'repo:status', 'delete_repo', 'gist'],
     }
 
-    let response
-
     try {
-        response = await new Octokit().oauthAuthorizations.createAuthorization(payload)
+        var { data } = await octokit.oauthAuthorizations.createAuthorization(payload)
     } catch (err) {
-        const isTwoFactorAuthentication = err && err.message && err.message.indexOf('OTP') > 0
-
-        if (isTwoFactorAuthentication) {
-            response = await twoFactorAuthenticator(payload)
-        } else {
-            throw new Error(`Error creating GitHub token\n${err}`)
-        }
+        throw new Error(`Error creating GitHub token\n${err.message}`)
     }
 
-    if (response.data.token) {
-        writeGlobalConfigCredentials(answers.user, response.data.token)
+    if (data.token) {
+        writeGlobalConfigCredentials(answers.user, data.token)
 
-        return response.data.token
+        return data.token
     }
 
     logger.log(`Was not able to retrieve token from GitHub's api`)
-}
-
-async function twoFactorAuthenticator(
-    payload
-): Promise<Octokit.Response<Octokit.OauthAuthorizationsCreateAuthorizationResponse>> {
-    const factor = await inquirer.prompt([
-        {
-            type: 'input',
-            message: 'Enter your two-factor code',
-            name: 'otp',
-        },
-    ])
-
-    if (!payload.headers) {
-        payload.headers = []
-    }
-
-    payload.headers['X-GitHub-OTP'] = factor.otp
-
-    return await new Octokit().oauthAuthorizations.createAuthorization(payload)
 }
