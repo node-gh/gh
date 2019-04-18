@@ -19,14 +19,6 @@ export function clone(o) {
 
 export function load() {}
 
-export function expandAliases(options) {
-    if (config.alias) {
-        options.fwd = config.alias[options.fwd] || options.fwd
-        options.submit = config.alias[options.submit] || options.submit
-        options.user = config.alias[options.user] || options.user
-    }
-}
-
 export function find(filepath, opt_pattern) {
     return fs.readdirSync(filepath).filter(file => {
         return (opt_pattern || /.*/).test(file)

@@ -24,7 +24,6 @@
     -   [Repo](#repo)
     -   [Gists](#gists)
     -   [User](#user)
-    -   [Alias](#alias)
 -   [Config](#config)
 -   [Plugins](#plugins)
 -   [Team](#team)
@@ -1158,63 +1157,6 @@ gh user --logout
 
 ```
 gh user --whoami
-```
-
-## Alias
-
-```
-gh alias
-```
-
-> **Alias:** `gh al`
-
-### 1. List
-
-| Option         | Usage        | Type      |
-| -------------- | ------------ | --------- |
-| `-l`, `--list` | **Required** | `Boolean` |
-
-#### Examples
-
--   **Shortcut** for listing aliases.
-
-```
-gh alias
-```
-
--   List aliases.
-
-```
-gh alias --list
-```
-
-### 2. Add
-
-| Option         | Usage        | Type     |
-| -------------- | ------------ | -------- |
-| `-a`, `--add`  | **Required** | `String` |
-| `-u`, `--user` | **Required** | `String` |
-
-#### Examples
-
--   Create alias for username.
-
-```
-gh alias --add zeno --user zenorocha
-```
-
-### 3. Remove
-
-| Option           | Usage        | Type     |
-| ---------------- | ------------ | -------- |
-| `-r`, `--remove` | **Required** | `String` |
-
-#### Examples
-
--   Remove alias.
-
-```
-gh alias --remove zeno
 ```
 
 ## Config
