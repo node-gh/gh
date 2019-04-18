@@ -7,6 +7,7 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as configs from '../configs'
+import { getGitHubInstance, tokenExists } from '../GitHub'
 import * as logger from '../logger'
 
 const testing = process.env.NODE_ENV === 'testing'
@@ -40,13 +41,17 @@ User.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-User.prototype.run = function() {
+User.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
 
     if (options.login) {
-        if (options.user && options.token) {
+        if (tokenExists()) {
             logger.log(`You're logged in as ${logger.colors.green(options.user)}`)
+        } else {
+            await getGitHubInstance()
+
+            done && done()
         }
     }
 

@@ -8,6 +8,7 @@ import * as Octokit from '@octokit/rest'
 import * as fs from 'fs'
 import * as inquirer from 'inquirer'
 import * as moment from 'moment'
+import { join } from 'path'
 import * as userhome from 'userhome'
 import { getConfig, writeGlobalConfigCredentials } from './configs'
 import * as logger from './logger'
@@ -24,10 +25,10 @@ export async function getGitHubInstance(): Promise<Octokit> {
 export async function getToken(): Promise<string> {
     let token
 
-    if (tokenExists()) {
-        token = getSavedToken()
-    } else {
+    if (!tokenExists()) {
         token = await createNewOathToken()
+    } else {
+        token = getSavedToken()
     }
 
     if (token) {
@@ -37,7 +38,11 @@ export async function getToken(): Promise<string> {
     process.exit(1)
 }
 
-function tokenExists(): boolean {
+export function tokenExists(): boolean {
+    if (process.env.GENERATE_NEW_TOKEN) {
+        return false
+    }
+
     return (
         (config.github_token && config.github_user) || (process.env.GH_TOKEN && process.env.GH_USER)
     )
@@ -107,7 +112,11 @@ async function createNewOathToken(): Promise<string | undefined> {
     }
 
     if (data.token) {
-        writeGlobalConfigCredentials(answers.username, data.token)
+        writeGlobalConfigCredentials(
+            answers.username,
+            data.token,
+            process.env.GENERATE_NEW_TOKEN && join(__dirname, '../__tests__/auth.json')
+        )
 
         return data.token
     }

@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import { getGlobalPackageJson } from '../configs'
 import * as logger from '../logger'
-import { getGlobalPackageJson } from '../utils'
 
 export default function Version() {}
 

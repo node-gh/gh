@@ -4,10 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { readFileSync } from 'fs'
 import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
-import { join } from 'path'
 import * as zlib from 'zlib'
 
 export function getCurrentFolderName(): string {
@@ -20,12 +18,6 @@ export function getCurrentFolderName(): string {
 }
 
 const nockBack = nock.back
-
-export function getGlobalPackageJson() {
-    const configFile = readFileSync(join(process.cwd(), 'package.json'))
-
-    return JSON.parse(configFile.toString())
-}
 
 export function prepareTestFixtures(cmdName, argv) {
     let id = 0
@@ -57,7 +49,7 @@ export function prepareTestFixtures(cmdName, argv) {
         },
         {
             name: 'User',
-            flags: ['--logout', '--whoami'],
+            flags: ['--login', '--logout', '--whoami'],
         },
         {
             name: 'Version',
@@ -93,6 +85,10 @@ export function prepareTestFixtures(cmdName, argv) {
 
         if (isArray(value) && isPlainObject(value[0])) {
             return map(value, normalize)
+        }
+
+        if (key.includes('token')) {
+            return '234lkj23l4kj234lkj234lkj234lkj23l4kj234l'
         }
 
         if (key.includes('_at')) {
@@ -134,10 +130,13 @@ export function prepareTestFixtures(cmdName, argv) {
         return JSON.parse(unzipped)
     }
 
+    // This only executes when first recording the request, but not on subsequent requests
     function afterRecord(fixtures) {
         const normalizedFixtures = fixtures.map(fixture => {
             const isGzipped = fixture.rawHeaders.includes('gzip')
             let res = fixture.response
+
+            fixture.body.note = 'Hello from the inside!'
 
             fixture.path = stripAccessToken(fixture.path)
             fixture.rawHeaders = fixture.rawHeaders.map(header => stripAccessToken(header))
@@ -178,6 +177,16 @@ export function prepareTestFixtures(cmdName, argv) {
 
     function before(scope) {
         scope.filteringPath = () => stripAccessToken(scope.path)
+        scope.filteringRequestBody = (body, aRecordedBody) => {
+            if (body.includes('note')) {
+                body = JSON.parse(body)
+                body.note = aRecordedBody.note
+
+                return body
+            }
+
+            return body
+        }
     }
 }
 

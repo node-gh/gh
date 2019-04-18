@@ -13,6 +13,7 @@ import * as openUrl from 'opn'
 import * as url from 'url'
 import * as base from '../base'
 import * as git from '../git'
+import { getGitHubInstance } from '../GitHub'
 import * as hooks from '../hooks'
 import * as logger from '../logger'
 import { getCurrentFolderName } from '../utils'
@@ -22,9 +23,8 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Repo(options, GitHub: Octokit) {
+export default function Repo(options) {
     this.options = options
-    this.GitHub = GitHub
 }
 
 // -- Constants ------------------------------------------------------------------------------------
@@ -99,6 +99,7 @@ Repo.prototype.run = async function(done) {
     let user = options.loggedUser
 
     instance.config = config
+    instance.GitHub = await getGitHubInstance()
 
     if (options.browser) {
         instance.browser(options.user, options.repo)
