@@ -10,7 +10,7 @@ import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
-import { clone, expandAliases, find, getUser } from './base'
+import { clone, find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
 
@@ -157,7 +157,6 @@ export async function setUp() {
     options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
     options.currentBranch = options.currentBranch || git.getCurrentBranch()
 
-    expandAliases(options)
     options.github_host = config.github_host
     options.github_gist_host = config.github_gist_host
 
