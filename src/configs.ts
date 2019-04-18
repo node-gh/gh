@@ -36,6 +36,12 @@ export function getNodeModulesGlobalPath() {
     return path
 }
 
+export function getGlobalPackageJson() {
+    const configFile = fs.readFileSync(path.join(__dirname, '../package.json'))
+
+    return JSON.parse(configFile.toString())
+}
+
 export function getProjectConfigPath() {
     return path.join(process.cwd(), '.gh.json')
 }
@@ -163,9 +169,15 @@ export function saveJsonConfig(path, object) {
     fs.writeFileSync(path, JSON.stringify(object, null, 4))
 }
 
-export function writeGlobalConfigCredentials(user, token): void {
-    const configPath = getUserHomePath()
-    const config = JSON.parse(fs.readFileSync(configPath).toString())
+export function writeGlobalConfigCredentials(user, token, path): void {
+    const configPath = path || getUserHomePath()
+
+    let config
+    if (fs.existsSync(configPath)) {
+        config = JSON.parse(fs.readFileSync(configPath).toString())
+    } else {
+        config = JSON.parse(fs.readFileSync('../default.gh.json').toString())
+    }
 
     logger.log(`Writing GH config data: ${configPath}`)
 

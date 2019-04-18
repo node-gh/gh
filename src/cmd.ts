@@ -13,8 +13,6 @@ import * as updateNotifier from 'update-notifier'
 import { clone, expandAliases, find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
-import { getGitHubInstance } from './GitHub'
-import { getGlobalPackageJson } from './utils'
 
 const config = configs.getConfig()
 
@@ -98,7 +96,7 @@ async function loadCommand(name) {
 }
 
 function notifyVersion() {
-    var notifier = updateNotifier({ pkg: getGlobalPackageJson() })
+    var notifier = updateNotifier({ pkg: configs.getGlobalPackageJson() })
 
     if (notifier.update) {
         notifier.notify()
@@ -177,14 +175,12 @@ export async function setUp() {
 
         invokePayload(options, Command, cooked, remain)
 
-        const GitHub = await getGitHubInstance()
-
         if (process.env.NODE_ENV === 'testing') {
             const { prepareTestFixtures } = await import('./utils')
 
-            await new Command(options, GitHub).run(prepareTestFixtures(Command.name, cooked))
+            await new Command(options).run(prepareTestFixtures(Command.name, cooked))
         } else {
-            await new Command(options, GitHub).run()
+            await new Command(options).run()
         }
     })
 }
