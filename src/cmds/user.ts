@@ -9,6 +9,7 @@
 import * as configs from '../configs'
 import { getGitHubInstance, tokenExists } from '../GitHub'
 import * as logger from '../logger'
+import { hasCmdInOptions } from '../utils'
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -34,9 +35,6 @@ User.DETAILS = {
         L: ['--logout'],
         w: ['--whoami'],
     },
-    payload(payload, options) {
-        options.login = true
-    },
 }
 
 // -- Commands -------------------------------------------------------------------------------------
@@ -44,6 +42,10 @@ User.DETAILS = {
 User.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
+
+    if (!hasCmdInOptions(User.DETAILS.commands, options)) {
+        options.login = true
+    }
 
     if (options.login) {
         if (tokenExists()) {

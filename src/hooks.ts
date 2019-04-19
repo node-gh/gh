@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import * as async from 'async'
-import { noop } from 'lodash'
 import * as truncate from 'truncate'
 import * as configs from './configs'
 import * as exec from './exec'
@@ -44,8 +42,7 @@ export function getHooksFromPath(path) {
     // First, load all core hooks for the specified path.
     const hooks = getHooksArrayFromPath_(path)
 
-    // Second, search all installed plugins and load the hooks for each into
-    // core hooks array.
+    // Second, search all installed plugins and load the hooks for each into core hooks array.
     process.env.NODE_ENV !== 'testing' &&
         plugins.forEach(plugin => {
             var pluginConfig
@@ -64,57 +61,73 @@ export function getHooksFromPath(path) {
     return hooks.concat(pluginHooks)
 }
 
-export function invoke(path, scope, opt_callback) {
+export function afterHooks(path, scope) {
+    const after = getHooksFromPath(`${path}.after`)
+    const options = scope.options
+
+    if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
+        return
+    }
+
+    const context = createContext(scope)
+
+    setupPlugins_(context, 'setupAfterHooks')
+
+    after.forEach(cmd => {
+        wrapCommand_(cmd, context, 'after')
+    })
+
+    process.env.NODEGH_HOOK_IS_LOCKED = 'true'
+}
+
+export function beforeHooks(path, scope) {
+    const before = getHooksFromPath(`${path}.before`)
+    const options = scope.options
+
+    if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
+        return
+    }
+
+    const context = createContext(scope)
+
+    setupPlugins_(context, 'setupBeforeHooks')
+
+    before.forEach(cmd => {
+        wrapCommand_(cmd, context, 'before')
+    })
+}
+
+export async function invoke(path, scope, cmd_callback) {
     const after = getHooksFromPath(`${path}.after`)
     const before = getHooksFromPath(`${path}.before`)
-    let beforeOperations
-    let afterOperations
     const options = scope.options
     let context
 
     if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
-        opt_callback && opt_callback(noop)
         return
     }
 
     context = createContext(scope)
 
-    beforeOperations = [
-        function(callback) {
-            setupPlugins_(context, 'setupBeforeHooks', callback)
-        },
-    ]
+    setupPlugins_(context, 'setupBeforeHooks')
 
     before.forEach(cmd => {
-        beforeOperations.push(wrapCommand_(cmd, context, 'before'))
+        wrapCommand_(cmd, context, 'before')
     })
 
-    afterOperations = [
-        function(callback) {
-            setupPlugins_(context, 'setupAfterHooks', callback)
-        },
-    ]
+    // run cmd
+    cmd_callback && (await cmd_callback())
+
+    setupPlugins_(context, 'setupAfterHooks')
 
     after.forEach(cmd => {
-        afterOperations.push(wrapCommand_(cmd, context, 'after'))
-    })
-
-    afterOperations.push(callback => {
-        process.env.NODEGH_HOOK_IS_LOCKED = 'false'
-        callback()
+        wrapCommand_(cmd, context, 'after')
     })
 
     process.env.NODEGH_HOOK_IS_LOCKED = 'true'
-
-    async.series(beforeOperations, () => {
-        opt_callback &&
-            opt_callback(() => {
-                async.series(afterOperations)
-            })
-    })
 }
 
-export function setupPlugins_(context, setupFn, opt_callback) {
+export function setupPlugins_(context, setupFn) {
     const plugins = configs.getPlugins()
     const operations = []
 
@@ -132,30 +145,23 @@ export function setupPlugins_(context, setupFn, opt_callback) {
         }
     })
 
-    async.series(operations, () => {
-        opt_callback && opt_callback()
-    })
+    operations.forEach(fn => fn && fn())
 }
 
 export function wrapCommand_(cmd, context, when) {
-    return function(callback) {
-        var raw = logger.compileTemplate(cmd, context)
+    var raw = logger.compileTemplate(cmd, context)
 
-        if (!raw) {
-            callback && callback()
-            return
-        }
+    if (!raw) {
+        return
+    }
 
-        logger.log(logger.colors.cyan('[hook]'), truncate(raw.trim(), 120))
+    logger.log(logger.colors.cyan('[hook]'), truncate(raw.trim(), 120))
 
-        try {
-            exec.execSyncInteractiveStream(raw, { cwd: process.cwd() })
-        } catch (e) {
-            logger.debug(`[${when} hook failure]`)
-        } finally {
-            logger.debug(logger.colors.cyan(`[end of ${when} hook]`))
-        }
-
-        callback && callback()
+    try {
+        exec.execSyncInteractiveStream(raw, { cwd: process.cwd() })
+    } catch (e) {
+        logger.debug(`[${when} hook failure]`)
+    } finally {
+        logger.debug(logger.colors.cyan(`[end of ${when} hook]`))
     }
 }

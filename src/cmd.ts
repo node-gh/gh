@@ -10,7 +10,7 @@ import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
-import { clone, find, getUser } from './base'
+import { find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
 
@@ -21,25 +21,25 @@ const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
 
 // -- Utils ----------------------------------------------------------------------------------------
 
-function hasCommandInOptions(commands, options) {
-    if (commands) {
-        return commands.some(c => {
-            return options[c] !== undefined
-        })
-    }
+// function hasCommandInOptions(commands, options) {
+//     if (commands) {
+//         return commands.some(c => {
+//             return options[c] !== undefined
+//         })
+//     }
 
-    return false
-}
+//     return false
+// }
 
-function invokePayload(options, command, cooked, remain) {
-    var payload
+// function invokePayload(options, command, cooked, remain) {
+//     var payload
 
-    if (command.DETAILS.payload && !hasCommandInOptions(command.DETAILS.commands, options)) {
-        payload = remain.concat()
-        payload.shift()
-        command.DETAILS.payload(payload, options)
-    }
-}
+//     if (command.DETAILS.payload && !hasCommandInOptions(command.DETAILS.commands, options)) {
+//         payload = remain.concat()
+//         payload.shift()
+//         command.DETAILS.payload(payload, options)
+//     }
+// }
 
 async function resolveCmd(name, commandDir) {
     const reg = new RegExp(`.${extension}$`, 'i')
@@ -105,7 +105,6 @@ function notifyVersion() {
 
 export async function setUp() {
     let Command
-    let iterative
     let options
     const parsed = nopt(process.argv)
     let remain = parsed.argv.remain
@@ -129,15 +128,12 @@ export async function setUp() {
 
     options = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 
-    iterative = Command.DETAILS.iterative
-
     cooked = options.argv.cooked
     remain = options.argv.remain
 
     options.number = options.number || [remain[1]]
     options.remote = options.remote || config.default_remote
 
-    let iterativeValues
     const remoteUrl = git.getRemoteUrl(options.remote)
 
     options.isTTY = {}
@@ -160,28 +156,13 @@ export async function setUp() {
     options.github_host = config.github_host
     options.github_gist_host = config.github_gist_host
 
-    // Try to retrieve iterative values from iterative option key,
-    // e.g. option['number'] === [1,2,3]. If iterative option key is not
-    // present, assume [undefined] in order to initialize the loop.
-    iterativeValues = options[iterative] || [undefined]
+    if (process.env.NODE_ENV === 'testing') {
+        const { prepareTestFixtures } = await import('./utils')
 
-    iterativeValues.forEach(async value => {
-        options = clone(options)
-
-        // Value can be undefined when the command doesn't have a iterative
-        // option.
-        options[iterative] = value
-
-        invokePayload(options, Command, cooked, remain)
-
-        if (process.env.NODE_ENV === 'testing') {
-            const { prepareTestFixtures } = await import('./utils')
-
-            await new Command(options).run(prepareTestFixtures(Command.name, cooked))
-        } else {
-            await new Command(options).run()
-        }
-    })
+        await new Command(options).run(prepareTestFixtures(Command.name, cooked))
+    } else {
+        await new Command(options).run()
+    }
 }
 
 export async function run() {

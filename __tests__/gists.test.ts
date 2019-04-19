@@ -22,10 +22,10 @@ describe('E2E: Gist Module Test', () => {
         done()
     })
 
-    it('Delete gists `gh gi --delete 027b64c22a5e8d1bf16bc2cfede77e43 --delete 1ad5b3b35fe6906e8980c0fd7522e2d6`', done => {
+    it('Delete gists `gh gi --delete 5250d21093b46bd0665c2e8656d16bd2 --delete 30e5d3c69a6997617ab69d07b733105e`', done => {
         expect(
             runCmd(
-                'gh gi --delete 027b64c22a5e8d1bf16bc2cfede77e43 --delete 1ad5b3b35fe6906e8980c0fd7522e2d6'
+                'yes | gh gi --delete 5250d21093b46bd0665c2e8656d16bd2 --delete 30e5d3c69a6997617ab69d07b733105e'
             )
         ).toMatchSnapshot()
         done()

@@ -16,6 +16,8 @@ let plugins
 
 export const PLUGINS_PATH_KEY = 'plugins_path'
 
+const testing = process.env.NODE_ENV === 'testing'
+
 // -- Config -------------------------------------------------------------------
 
 export function getNodeModulesGlobalPath() {
@@ -27,7 +29,7 @@ export function getNodeModulesGlobalPath() {
 
         if (result.stdout) {
             path = result.stdout
-            process.env.NODE_ENV !== 'testing' && writeGlobalConfig(PLUGINS_PATH_KEY, path)
+            !testing && writeGlobalConfig(PLUGINS_PATH_KEY, path)
         } else {
             logger.warn("Can't resolve plugins directory path.")
         }
@@ -47,7 +49,7 @@ export function getProjectConfigPath() {
 }
 
 export function getUserHomePath() {
-    return process.env.NODE_ENV === 'testing' ? '../default.gh.json' : userhome('.gh.json')
+    return userhome('.gh.json')
 }
 
 function resolveGhConfigs(opt_plugin) {
@@ -103,17 +105,17 @@ export function getConfig(opt_plugin?: string) {
 
 export function getGlobalConfig(opt_plugin?: string) {
     let defaultConfig
-    let configPath
     let userConfig
 
-    configPath = getUserHomePath()
+    const configPath = getUserHomePath()
+    const globalPath = getGlobalConfigPath()
 
     if (!fs.existsSync(configPath)) {
         createGlobalConfig()
     }
 
-    defaultConfig = JSON.parse(fs.readFileSync(getGlobalConfigPath()).toString())
-    userConfig = JSON.parse(fs.readFileSync(configPath).toString())
+    defaultConfig = JSON.parse(fs.readFileSync(globalPath).toString())
+    userConfig = JSON.parse(fs.readFileSync(testing ? globalPath : configPath).toString())
 
     Object.keys(userConfig).forEach(key => {
         defaultConfig[key] = userConfig[key]

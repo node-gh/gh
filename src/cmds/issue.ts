@@ -11,6 +11,7 @@ import * as openUrl from 'opn'
 import * as base from '../base'
 import * as hooks from '../hooks'
 import * as logger from '../logger'
+import { hasCmdInOptions } from '../utils'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
@@ -79,21 +80,6 @@ Issue.DETAILS = {
         t: ['--title'],
         u: ['--user'],
     },
-    payload(payload, options) {
-        if (payload[0]) {
-            if (/^\d+$/.test(payload[0])) {
-                options.browser = true
-                options.number = payload[0]
-                return
-            }
-
-            options.new = true
-            options.title = options.title || payload[0]
-            options.message = options.message || payload[1]
-        } else {
-            options.list = true
-        }
-    },
 }
 
 Issue.STATE_CLOSED = 'closed'
@@ -110,6 +96,24 @@ Issue.prototype.run = async function(done) {
     instance.config = config
 
     options.state = options.state || Issue.STATE_OPEN
+
+    if (!hasCmdInOptions(Issue.DETAILS.commands, options)) {
+        const payload = options.remain && options.remain.slice(1)
+
+        if (payload[0]) {
+            if (/^\d+$/.test(payload[0])) {
+                options.browser = true
+                options.number = payload[0]
+                return
+            }
+
+            options.new = true
+            options.title = options.title || payload[0]
+            options.message = options.message || payload[1]
+        } else {
+            options.list = true
+        }
+    }
 
     if (options.assign) {
         hooks.invoke('issue.assign', instance, async afterHooksCallback => {

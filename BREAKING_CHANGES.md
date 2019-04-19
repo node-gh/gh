@@ -16,6 +16,7 @@
 -   Updated error handling
 -   Clearer logging messages
 -   Deeper end to end test coverage of critical code paths like authentication
+-   Remove gist paste deprecation warning
 
 ### Issues
 

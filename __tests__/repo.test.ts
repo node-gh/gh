@@ -28,7 +28,7 @@ describe('E2E: Repo Module Test', () => {
     })
 
     it('Delete repo `gh re --delete foo`', done => {
-        expect(runCmd('gh re --delete foo')).toMatchSnapshot()
+        expect(runCmd('printf "y" | gh re --delete foo')).toMatchSnapshot()
         done()
     })
 })

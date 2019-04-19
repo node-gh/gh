@@ -17,6 +17,16 @@ export function getCurrentFolderName(): string {
     return cwdArr[cwdArr.length - 1]
 }
 
+export function hasCmdInOptions(commands, options) {
+    if (commands) {
+        return commands.some(c => {
+            return options[c] !== undefined
+        })
+    }
+
+    return false
+}
+
 const nockBack = nock.back
 
 export function prepareTestFixtures(cmdName, argv) {
@@ -136,7 +146,9 @@ export function prepareTestFixtures(cmdName, argv) {
             const isGzipped = fixture.rawHeaders.includes('gzip')
             let res = fixture.response
 
-            fixture.body.note = 'Hello from the inside!'
+            if (fixture.body.note) {
+                fixture.body.note = 'Hello from the inside!'
+            }
 
             fixture.path = stripAccessToken(fixture.path)
             fixture.rawHeaders = fixture.rawHeaders.map(header => stripAccessToken(header))
@@ -182,7 +194,7 @@ export function prepareTestFixtures(cmdName, argv) {
                 body = JSON.parse(body)
                 body.note = aRecordedBody.note
 
-                return body
+                return JSON.stringify(body)
             }
 
             return body

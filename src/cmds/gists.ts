@@ -9,8 +9,10 @@
 import * as inquirer from 'inquirer'
 import * as openUrl from 'opn'
 import * as base from '../base'
-import * as hooks from '../hooks'
+import { getGitHubInstance } from '../GitHub'
+import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
+import { hasCmdInOptions } from '../utils'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
@@ -27,7 +29,6 @@ export default function Gists(options, GitHub) {
 Gists.DETAILS = {
     alias: 'gi',
     description: 'Provides a set of util commands to work with Gists.',
-    iterative: 'delete',
     commands: ['browser', 'delete', 'fork', 'list', 'new'],
     options: {
         browser: Boolean,
@@ -54,22 +55,19 @@ Gists.DETAILS = {
         p: ['--private'],
         u: ['--user'],
     },
-    payload(payload, options) {
-        options.list = true
-    },
 }
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Gists.prototype.run = function(done) {
+Gists.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
 
     instance.config = config
+    instance.GitHub = await getGitHubInstance()
 
-    if (options.paste) {
-        logger.error('Sorry, this functionality was removed.')
-        return
+    if (!hasCmdInOptions(Gists.DETAILS.commands, options)) {
+        options.list = true
     }
 
     if (options.browser) {
@@ -77,106 +75,88 @@ Gists.prototype.run = function(done) {
     }
 
     if (options.delete) {
-        hooks.invoke('gists.delete', instance, afterHooksCallback => {
-            logger.log(
-                `Deleting gist ${logger.colors.green(`${options.loggedUser}/${options.delete}`)}`
-            )
+        options.delete
 
-            if (testing) {
-                return _deleteHandler(true, afterHooksCallback)
-            }
+        for (const gist_id of options.delete) {
+            logger.log(`Deleting gist ${logger.colors.green(`${options.loggedUser}/${gist_id}`)}`)
 
-            inquirer
-                .prompt([
-                    {
-                        type: 'input',
-                        message: 'Are you sure? This action CANNOT be undone. [y/N]',
-                        name: 'confirmation',
-                    },
-                ])
-                .then(answers =>
-                    _deleteHandler(answers.confirmation.toLowerCase() === 'y', afterHooksCallback)
-                )
+            const answers = await inquirer.prompt([
+                {
+                    type: 'input',
+                    message: 'Are you sure? This action CANNOT be undone. [y/N]',
+                    name: 'confirmation',
+                },
+            ])
 
-            function _deleteHandler(proceed, cb) {
-                if (proceed) {
-                    instance.delete(options.delete, err => {
-                        if (err) {
-                            logger.error("Can't delete gist.")
-                            return
-                        }
+            beforeHooks('gists.delete', instance)
 
-                        cb && cb()
+            await _deleteHandler(answers.confirmation.toLowerCase() === 'y', gist_id, instance)
 
-                        done && done()
-                    })
-                } else {
-                    logger.log('Not deleted.')
-                }
-            }
-        })
+            afterHooks('gists.delete', instance)
+        }
+
+        done && done()
     }
 
     if (options.fork) {
-        hooks.invoke('gists.fork', instance, afterHooksCallback => {
-            logger.log(`Forking gist on ${logger.colors.green(options.loggedUser)}`)
+        beforeHooks('gists.fork', instance)
 
-            instance.fork(options.fork, (err, gist) => {
-                if (err) {
-                    logger.error(JSON.parse(err.message).message)
-                    return
-                }
+        logger.log(`Forking gist on ${logger.colors.green(options.loggedUser)}`)
 
-                logger.log(gist.html_url)
-                afterHooksCallback()
+        try {
+            var { data } = await instance.fork(options.fork)
+        } catch (err) {
+            throw new Error(`Cannot fork gist.\n${err}`)
+        }
 
-                done && done()
-            })
-        })
+        logger.log(data.html_url)
+
+        done && done()
+
+        afterHooks('gists.fork', instance)
     }
 
     if (options.list) {
         logger.log(`Listing gists for ${logger.colors.green(options.user)}`)
 
-        instance.list(options.user, err => {
-            if (err) {
-                logger.error(`Can't list gists for ${options.user}.`)
-                return
-            }
+        try {
+            var { data } = await instance.list(options.user)
+        } catch (err) {
+            throw new Error(`Can't list gists for ${options.user}.`)
+        }
 
-            done && done()
-        })
+        instance.listCallback_(data)
+
+        done && done()
     }
 
     if (options.new) {
-        hooks.invoke('gists.new', instance, afterHooksCallback => {
-            const privacy = options.private ? 'private' : 'public'
+        const privacy = options.private ? 'private' : 'public'
 
-            options.new = options.new
+        options.new = options.new
 
-            logger.log(
-                `Creating ${logger.colors.magenta(privacy)} gist on ${logger.colors.green(
-                    options.loggedUser
-                )}`
-            )
+        beforeHooks('gists.new', instance)
 
-            instance.new(options.new, options.content, (err, gist) => {
-                if (gist) {
-                    options.id = gist.id
-                }
+        logger.log(
+            `Creating ${logger.colors.magenta(privacy)} gist on ${logger.colors.green(
+                options.loggedUser
+            )}`
+        )
 
-                if (err) {
-                    logger.error(`Can't create gist. ${JSON.parse(err.message).message}`)
-                    return
-                }
+        try {
+            var { data } = await instance.new(options.new, options.content)
+        } catch (err) {
+            throw new Error(`Can't create gist.\n${err}`)
+        }
 
-                logger.log(gist.html_url)
+        if (data) {
+            options.id = data.id
+            logger.log(data.html_url)
+        }
 
-                afterHooksCallback()
+        done && done()
 
-                done && done()
-            })
-        })
+        afterHooks('gists.new', instance)
     }
 }
 
@@ -184,45 +164,35 @@ Gists.prototype.browser = function(gist) {
     openUrl(config.github_gist_host + gist, { wait: false })
 }
 
-Gists.prototype.delete = function(id, opt_callback) {
+Gists.prototype.delete = function(id) {
     const instance = this
-
-    var payload = {
+    const payload = {
         gist_id: id,
     }
 
-    instance.GitHub.gists.delete(payload, opt_callback)
+    return instance.GitHub.gists.delete(payload)
 }
 
-Gists.prototype.fork = function(id, opt_callback) {
+Gists.prototype.fork = function(id) {
     const instance = this
 
-    var payload = {
+    const payload = {
         gist_id: id,
     }
 
-    instance.GitHub.gists.fork(payload, opt_callback)
+    return instance.GitHub.gists.fork(payload)
 }
 
-Gists.prototype.list = function(user, opt_callback) {
+Gists.prototype.list = function(user) {
     const instance = this
     const payload = {
         username: user,
     }
 
-    instance.GitHub.gists.listPublicForUser(payload, (err, gists) => {
-        instance.listCallback_(err, gists, opt_callback)
-    })
+    return instance.GitHub.gists.listPublicForUser(payload)
 }
 
-Gists.prototype.listCallback_ = function(err, gists, opt_callback) {
-    const instance = this
-    const options = instance.options
-
-    if (err && !options.all) {
-        logger.error(logger.getErrorMessage(err))
-    }
-
+Gists.prototype.listCallback_ = function(gists) {
     if (gists && gists.length > 0) {
         gists.forEach(gist => {
             const duration = logger.getDuration(gist.updated_at, options.date)
@@ -235,16 +205,13 @@ Gists.prototype.listCallback_ = function(err, gists, opt_callback) {
 
             logger.log(`${logger.colors.blue(gist.html_url)}\n`)
         })
-
-        opt_callback && opt_callback(err)
     }
 }
 
-Gists.prototype.new = function(name, content, opt_callback) {
+Gists.prototype.new = function(name, content) {
     const instance = this
-    const file = {}
     const options = instance.options
-    let payload
+    let file = {}
 
     options.description = options.description || ''
 
@@ -252,11 +219,25 @@ Gists.prototype.new = function(name, content, opt_callback) {
         content,
     }
 
-    payload = {
+    const payload = {
         description: options.description,
         files: file,
         public: !options.private,
     }
 
-    instance.GitHub.gists.create(payload, opt_callback)
+    return instance.GitHub.gists.create(payload)
+}
+
+async function _deleteHandler(proceed, gist_id, instance) {
+    if (proceed) {
+        try {
+            var { status } = await instance.delete(gist_id)
+        } catch (err) {
+            throw new Error(`Can't delete gist: ${gist_id}.`)
+        }
+
+        status === 204 && logger.log(`Successfully deleted gist: ${gist_id}`)
+    } else {
+        logger.log('Not deleted.')
+    }
 }

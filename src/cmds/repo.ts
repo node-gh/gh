@@ -14,9 +14,9 @@ import * as url from 'url'
 import * as base from '../base'
 import * as git from '../git'
 import { getGitHubInstance } from '../GitHub'
-import * as hooks from '../hooks'
+import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
-import { getCurrentFolderName } from '../utils'
+import { getCurrentFolderName, hasCmdInOptions } from '../utils'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
@@ -76,11 +76,6 @@ Repo.DETAILS = {
         U: ['--update'],
         u: ['--user'],
     },
-    payload(payload, options) {
-        if (options.browser !== false && options.argv.cooked.length === 1) {
-            options.browser = true
-        }
-    },
 }
 
 Repo.TYPE_ALL = 'all'
@@ -101,119 +96,119 @@ Repo.prototype.run = async function(done) {
     instance.config = config
     instance.GitHub = await getGitHubInstance()
 
+    if (
+        !hasCmdInOptions(Repo.DETAILS.commands, options) &&
+        options.browser !== false &&
+        options.argv.cooked.length === 1
+    ) {
+        options.browser = true
+    }
+
     if (options.browser) {
         instance.browser(options.user, options.repo)
     } else if (options.clone && !options.new) {
-        hooks.invoke('repo.get', instance, async afterHooksCallback => {
-            if (options.organization) {
-                user = options.organization
-            } else if (options.user) {
-                user = options.user
-            }
+        beforeHooks('repo.get', instance)
 
-            if (fs.existsSync(`${process.cwd()}/${options.repo}`)) {
-                logger.error(
-                    `Can't clone ${logger.colors.green(
-                        `${user}/${options.repo}`
-                    )}. ${logger.colors.green(options.repo)} already exists in this directory.`
-                )
-                return
-            }
+        if (options.organization) {
+            user = options.organization
+        } else if (options.user) {
+            user = options.user
+        }
 
-            try {
-                var { data } = await instance.get(user, options.repo)
-            } catch (err) {
-                throw new Error(
-                    `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}. ${
-                        JSON.parse(err).message
-                    }\n${err}`
-                )
-            }
-
-            logger.log(data.html_url)
-
-            let repoUrl
-
-            if (options.protocol) {
-                if (options.protocol === 'https') {
-                    repoUrl = `https://github.com/${user}/${options.repo}.git`
-                }
-            } else {
-                repoUrl = `git@github.com:${user}/${options.repo}.git`
-            }
-
-            if (data) {
-                instance.clone_(user, options.repo, repoUrl)
-            }
-
-            afterHooksCallback()
-        })
-    } else if (options.delete && !options.label) {
-        hooks.invoke('repo.delete', instance, async afterHooksCallback => {
-            logger.log(`Deleting repo ${logger.colors.green(`${options.user}/${options.delete}`)}`)
-
-            if (testing) {
-                return deleteHandler(true)
-            }
-
-            const answers = await inquirer.prompt([
-                {
-                    type: 'input',
-                    message: 'Are you sure? This action CANNOT be undone. [y/N]',
-                    name: 'confirmation',
-                },
-            ])
-
-            await deleteHandler(answers.confirmation.toLowerCase() === 'y')
-
-            async function deleteHandler(proceed) {
-                if (proceed) {
-                    try {
-                        const { status } = await instance.delete(options.user, options.delete)
-
-                        status === 204 && logger.log('Successfully deleted repo.')
-                    } catch (err) {
-                        logger.error(`Can't delete repo.\n${err}`)
-                    }
-
-                    afterHooksCallback()
-
-                    done && done()
-                } else {
-                    logger.log('Not deleted.')
-                }
-            }
-        })
-    } else if (options.fork) {
-        hooks.invoke('repo.fork', instance, async afterHooksCallback => {
-            if (options.organization) {
-                user = options.organization
-            }
-
-            options.repo = options.fork
-
-            logger.log(
-                `Forking repo ${logger.colors.green(
-                    `${options.user}/${options.repo}`
-                )} into ${logger.colors.green(`${user}/${options.repo}`)}`
+        if (fs.existsSync(`${process.cwd()}/${options.repo}`)) {
+            logger.error(
+                `Can't clone ${logger.colors.green(
+                    `${user}/${options.repo}`
+                )}. ${logger.colors.green(options.repo)} already exists in this directory.`
             )
+            return
+        }
 
+        try {
+            var { data } = await instance.get(user, options.repo)
+        } catch (err) {
+            throw new Error(
+                `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}. ${
+                    JSON.parse(err).message
+                }\n${err}`
+            )
+        }
+
+        logger.log(data.html_url)
+
+        let repoUrl
+
+        if (options.protocol) {
+            if (options.protocol === 'https') {
+                repoUrl = `https://github.com/${user}/${options.repo}.git`
+            }
+        } else {
+            repoUrl = `git@github.com:${user}/${options.repo}.git`
+        }
+
+        if (data) {
+            instance.clone_(user, options.repo, repoUrl)
+        }
+
+        afterHooks('repo.get', instance)
+    } else if (options.delete && !options.label) {
+        beforeHooks('repo.delete', instance)
+
+        logger.log(`Deleting repo ${logger.colors.green(`${options.user}/${options.delete}`)}`)
+
+        const answers = await inquirer.prompt([
+            {
+                type: 'input',
+                message: 'Are you sure? This action CANNOT be undone. [y/N]',
+                name: 'confirmation',
+            },
+        ])
+
+        if (answers.confirmation.toLowerCase() === 'y') {
             try {
-                var { data } = await instance.fork()
+                const { status } = await instance.delete(options.user, options.delete)
+
+                status === 204 && logger.log('Successfully deleted repo.')
             } catch (err) {
-                throw new Error(`Can't fork. ${err}`)
+                logger.error(`Can't delete repo.\n${err}`)
             }
-
-            logger.log(`Successfully forked: ${data.html_url}`)
-
-            if (data && options.clone) {
-                instance.clone_(user, options.repo, data.ssh_url)
-            }
-
-            afterHooksCallback()
 
             done && done()
-        })
+
+            afterHooks('repo.delete', instance)
+        } else {
+            logger.log('Not deleted.')
+        }
+    } else if (options.fork) {
+        beforeHooks('repo.fork', instance)
+
+        if (options.organization) {
+            user = options.organization
+        }
+
+        options.repo = options.fork
+
+        logger.log(
+            `Forking repo ${logger.colors.green(
+                `${options.user}/${options.repo}`
+            )} into ${logger.colors.green(`${user}/${options.repo}`)}`
+        )
+
+        try {
+            var { data } = await instance.fork()
+        } catch (err) {
+            throw new Error(`Can't fork. ${err}`)
+        }
+
+        logger.log(`Successfully forked: ${data.html_url}`)
+
+        if (data && options.clone) {
+            instance.clone_(user, options.repo, data.ssh_url)
+        }
+
+        done && done()
+
+        afterHooks('repo.fork', instance)
     } else if (options.label) {
         if (options.organization) {
             user = options.organization
@@ -222,96 +217,94 @@ Repo.prototype.run = async function(done) {
         }
 
         if (options.delete) {
-            hooks.invoke('repo.deleteLabel', instance, async afterHooksCallback => {
-                options.label = options.delete
+            beforeHooks('repo.deleteLabel', instance)
 
-                logger.log(
-                    `Deleting label ${logger.colors.green(options.label)} on ${logger.colors.green(
-                        `${user}/${options.repo}`
-                    )}`
-                )
+            options.label = options.delete
 
-                try {
-                    var { status } = await instance.deleteLabel(user)
-                } catch (err) {
-                    throw new Error(`Can't delete label.\n${err}`)
-                }
+            logger.log(
+                `Deleting label ${logger.colors.green(options.label)} on ${logger.colors.green(
+                    `${user}/${options.repo}`
+                )}`
+            )
 
-                status === 204 && logger.log('Successful.')
+            try {
+                var { status } = await instance.deleteLabel(user)
+            } catch (err) {
+                throw new Error(`Can't delete label.\n${err}`)
+            }
 
-                afterHooksCallback()
+            status === 204 && logger.log('Successful.')
 
-                done && done()
-            })
+            done && done()
+
+            afterHooks('repo.deleteLabel', instance)
         } else if (options.list) {
-            hooks.invoke('repo.listLabels', instance, async afterHooksCallback => {
-                if (options.page) {
-                    logger.log(
-                        `Listing labels from page ${logger.colors.green(
-                            options.page
-                        )} on ${logger.colors.green(`${user}/${options.repo}`)}`
-                    )
-                } else {
-                    logger.log(
-                        `Listing labels on ${logger.colors.green(`${user}/${options.repo}`)}`
-                    )
-                }
+            beforeHooks('repo.listLabels', instance)
 
-                try {
-                    var { data } = await instance.listLabels(user)
-                } catch (err) {
-                    throw new Error(`Can't list labels\n${err}`)
-                }
+            if (options.page) {
+                logger.log(
+                    `Listing labels from page ${logger.colors.green(
+                        options.page
+                    )} on ${logger.colors.green(`${user}/${options.repo}`)}`
+                )
+            } else {
+                logger.log(`Listing labels on ${logger.colors.green(`${user}/${options.repo}`)}`)
+            }
 
-                data.forEach(label => logger.log(logger.colors.yellow(label.name)))
+            try {
+                var { data } = await instance.listLabels(user)
+            } catch (err) {
+                throw new Error(`Can't list labels\n${err}`)
+            }
 
-                afterHooksCallback()
+            data.forEach(label => logger.log(logger.colors.yellow(label.name)))
 
-                done && done()
-            })
+            done && done()
+
+            afterHooks('repo.listLabels', instance)
         } else if (options.new) {
-            hooks.invoke('repo.createLabel', instance, async afterHooksCallback => {
-                options.label = options.new
+            beforeHooks('repo.createLabel', instance)
 
-                logger.log(
-                    `Creating label ${logger.colors.green(options.label)} on ${logger.colors.green(
-                        `${user}/${options.repo}`
-                    )}`
-                )
+            options.label = options.new
 
-                try {
-                    const { data } = await instance.createLabel(user)
-                    console.log('data', data)
-                } catch (err) {
-                    throw new Error(`Can't create label.\n${err}`)
-                }
+            logger.log(
+                `Creating label ${logger.colors.green(options.label)} on ${logger.colors.green(
+                    `${user}/${options.repo}`
+                )}`
+            )
 
-                afterHooksCallback()
+            try {
+                const { data } = await instance.createLabel(user)
+                console.log('data', data)
+            } catch (err) {
+                throw new Error(`Can't create label.\n${err}`)
+            }
 
-                done && done()
-            })
+            done && done()
+
+            beforeHooks('repo.createLabel', instance)
         } else if (options.update) {
-            hooks.invoke('repo.updateLabel', instance, async afterHooksCallback => {
-                options.label = options.update
+            beforeHooks('repo.updateLabel', instance)
 
-                logger.log(
-                    `Updating label ${logger.colors.green(options.label)} on ${logger.colors.green(
-                        `${user}/${options.repo}`
-                    )}`
-                )
+            options.label = options.update
 
-                try {
-                    var { status } = await instance.updateLabel(user)
-                } catch (err) {
-                    throw new Error(`Can't update label.\n${err}`)
-                }
+            logger.log(
+                `Updating label ${logger.colors.green(options.label)} on ${logger.colors.green(
+                    `${user}/${options.repo}`
+                )}`
+            )
 
-                status === 200 && logger.log('Success')
+            try {
+                var { status } = await instance.updateLabel(user)
+            } catch (err) {
+                throw new Error(`Can't update label.\n${err}`)
+            }
 
-                afterHooksCallback()
+            status === 200 && logger.log('Success')
 
-                done && done()
-            })
+            done && done()
+
+            beforeHooks('repo.updateLabel', instance)
         }
     } else if (options.list && !options.label) {
         if (options.organization) {
@@ -345,33 +338,33 @@ Repo.prototype.run = async function(done) {
             options.new = getCurrentFolderName()
         }
 
-        hooks.invoke('repo.new', instance, async afterHooksCallback => {
-            options.repo = options.new
+        beforeHooks('repo.new', instance)
 
-            if (options.organization) {
-                options.user = options.organization
-            }
+        options.repo = options.new
 
-            logger.log(
-                `Creating a new repo on ${logger.colors.green(`${options.user}/${options.new}`)}`
-            )
+        if (options.organization) {
+            options.user = options.organization
+        }
 
-            try {
-                var { data } = await instance.new()
-            } catch (err) {
-                throw new Error(`Can't create new repo.\n${err}`)
-            }
+        logger.log(
+            `Creating a new repo on ${logger.colors.green(`${options.user}/${options.new}`)}`
+        )
 
-            logger.log(data.html_url)
+        try {
+            var { data } = await instance.new()
+        } catch (err) {
+            throw new Error(`Can't create new repo.\n${err}`)
+        }
 
-            if (data && options.clone) {
-                instance.clone_(options.user, options.repo, data.ssh_url)
-            }
+        logger.log(data.html_url)
 
-            afterHooksCallback()
+        if (data && options.clone) {
+            instance.clone_(options.user, options.repo, data.ssh_url)
+        }
 
-            done && done()
-        })
+        done && done()
+
+        afterHooks('repo.new', instance)
     }
 }
 
