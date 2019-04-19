@@ -21,3 +21,7 @@
 ### Issues
 
 -   `--label` flag is now `--labels`
+
+### Milestons
+
+-   Stabilize milestones listing implementation

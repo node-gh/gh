@@ -6,7 +6,7 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as async from 'async'
+import { getGitHubInstance } from '../github'
 import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
@@ -29,7 +29,6 @@ export default function Milestone(options, GitHub) {
 Milestone.DETAILS = {
     alias: 'ms',
     description: 'Provides a set of util commands to work with Milestones.',
-    iterative: 'number',
     commands: ['list'],
     options: {
         all: Boolean,
@@ -42,47 +41,42 @@ Milestone.DETAILS = {
         o: ['--organization'],
         l: ['--list'],
     },
-    payload(payload, options) {
-        options.list = true
-    },
 }
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Milestone.prototype.run = function(done) {
+Milestone.prototype.run = async function run(done) {
     const instance = this
     const options = instance.options
 
-    if (options.list) {
-        if (options.all) {
-            logger.log(
-                `Listing milestones for ${logger.colors.green(
-                    options.organization || options.user
-                )}`
-            )
+    instance.GitHub = await getGitHubInstance()
 
-            instance.listFromAllRepositories(err => {
-                if (err) {
-                    throw new Error(`Can't list milestones for ${options.user}.\n${err}`)
-                }
-            })
-        } else {
-            const userRepo = `${options.user}/${options.repo}`
+    if (options.all) {
+        logger.log(
+            `Listing milestones for ${logger.colors.green(options.organization || options.user)}`
+        )
 
-            logger.log(`Listing milestones on ${logger.colors.green(userRepo)}`)
-
-            instance.list(options.user, options.repo, err => {
-                if (err) {
-                    throw new Error(`Can't list milestones on ${userRepo}\n${err}`)
-                }
-
-                done && done()
-            })
+        try {
+            await instance.listFromAllRepositories()
+        } catch (err) {
+            throw new Error(`Can't list milestones for ${options.user}.\n${err}`)
         }
+    } else {
+        const userRepo = `${options.user}/${options.repo}`
+
+        logger.log(`Listing milestones on ${logger.colors.green(userRepo)}`)
+
+        try {
+            await instance.list(options.user, options.repo)
+        } catch (err) {
+            throw new Error(`Can't list milestones on ${userRepo}\n${err}`)
+        }
+
+        done && done()
     }
 }
 
-Milestone.prototype.list = function(user, repo, opt_callback) {
+Milestone.prototype.list = async function(user, repo) {
     const instance = this
     const options = instance.options
     let payload
@@ -90,40 +84,33 @@ Milestone.prototype.list = function(user, repo, opt_callback) {
     payload = {
         repo,
         owner: user,
+        sort: 'due_on',
     }
 
-    instance.GitHub.issues.listMilestonesForRepo(payload, (err, milestones: any) => {
-        if (err && !options.all) {
-            throw new Error(logger.getErrorMessage(err))
-        }
+    try {
+        var { data } = await instance.GitHub.issues.listMilestonesForRepo(payload)
+    } catch (err) {
+        throw new Error(logger.getErrorMessage(err))
+    }
 
-        milestones.sort((a, b) => {
-            return a.due_on > b.due_on ? -1 : 1
+    if (data && data.length > 0) {
+        data.forEach(milestone => {
+            const due = milestone.due_on ? logger.getDuration(milestone.due_on) : 'n/a'
+            const description = milestone.description || ''
+            const title = logger.colors.green(milestone.title)
+            const state = logger.colors.magenta(`@${milestone.state} (due ${due})`)
+            const prefix = options.all ? logger.colors.blue(`${user}/${repo} `) : ''
+
+            logger.log(`${prefix} ${title} ${description} ${state}`)
         })
-
-        if (milestones && milestones.length > 0) {
-            milestones.forEach(milestone => {
-                const due = milestone.due_on
-                    ? logger.getDuration(milestone.due_on, options.date)
-                    : 'n/a'
-                const description = milestone.description || ''
-                const title = logger.colors.green(milestone.title)
-                const state = logger.colors.magenta(`@${milestone.state} (due ${due})`)
-                const prefix = options.all ? logger.colors.blue(`${user}/${repo} `) : ''
-
-                logger.log(`${prefix} ${title} ${description} ${state}`)
-            })
-        }
-
-        opt_callback && opt_callback(err)
-    })
+    }
 }
 
-Milestone.prototype.listFromAllRepositories = function(opt_callback) {
+Milestone.prototype.listFromAllRepositories = async function() {
     const instance = this
     const options = instance.options
-    const operations = []
-    let op = 'getAll'
+
+    let operation = 'list'
     let payload
 
     payload = {
@@ -132,21 +119,13 @@ Milestone.prototype.listFromAllRepositories = function(opt_callback) {
     }
 
     if (options.organization) {
-        op = 'getFromOrg'
+        operation = 'listForOrg'
         payload.org = options.organization
     }
 
-    instance.GitHub.repos[op](payload, (err, repositories) => {
-        if (err) {
-            opt_callback && opt_callback(err)
-        } else {
-            repositories.forEach(repository => {
-                operations.push(callback => {
-                    instance.list(repository.owner.login, repository.name, callback)
-                })
-            })
-        }
+    const { data } = await instance.GitHub.repos[operation](payload)
 
-        async.series(operations, opt_callback)
-    })
+    for (const repo of data) {
+        await instance.list(repo.owner.login, repo.name)
+    }
 }
