@@ -24,6 +24,7 @@
     -   [Repo](#repo)
     -   [Gists](#gists)
     -   [User](#user)
+    -   [Milestone](#milestone)
 -   [Config](#config)
 -   [Plugins](#plugins)
 -   [Team](#team)
@@ -1157,6 +1158,44 @@ gh user --logout
 
 ```
 gh user --whoami
+```
+
+## Milestones
+
+```
+gh milestone
+```
+
+> **Alias:** `gh ms`
+
+### 1. List
+
+| Option                 | Usage        | Type      |
+| ---------------------- | ------------ | --------- |
+| `-l`, `--list`         | **Required** | `Boolean` |
+| `-u`, `--user`         | _Required_   | `String`  |
+| `-a`, `--all`          | _Required_   | `Boolean` |
+| `-r`, `--repo`         | _Optional_   | `String`  |
+| `-o`, `--organization` | _Optional_   | `String`  |
+
+#### Examples
+
+-   **Shortcut** for listing milestones for a specific repo.
+
+```
+gh ms
+```
+
+-   Listing milestones for a specific repo & user.
+
+```
+gh ms --list --user node-gh --repo gh
+```
+
+-   Listing all milestones for a specific organization.
+
+```
+gh ms --list --all --organization node-gh
 ```
 
 ## Config
