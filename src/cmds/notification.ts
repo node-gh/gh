@@ -13,9 +13,8 @@ const printed = {}
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Notifications(options, GitHub) {
+export default function Notifications(options) {
     this.options = options
-    this.GitHub = GitHub
 
     if (!options.repo) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')

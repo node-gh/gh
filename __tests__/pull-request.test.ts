@@ -35,7 +35,7 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it('Close PR `gh pr 50 --close`', done => {
+    it.only('Close PR `gh pr 50 --close`', done => {
         expect(runCmd('gh pr 50 --close')).toMatchSnapshot()
         done()
     })

@@ -11,9 +11,8 @@ import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Milestone(options, GitHub) {
+export default function Milestone(options) {
     this.options = options
-    this.GitHub = GitHub
 
     if (options.organization) {
         options.all = true
@@ -45,7 +44,7 @@ Milestone.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Milestone.prototype.run = async function run(done) {
+Milestone.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
 
