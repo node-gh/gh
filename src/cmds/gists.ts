@@ -194,7 +194,7 @@ Gists.prototype.list = function(user) {
 Gists.prototype.listCallback_ = function(gists) {
     if (gists && gists.length > 0) {
         gists.forEach(gist => {
-            const duration = logger.getDuration(gist.updated_at, options.date)
+            const duration = logger.getDuration(gist.updated_at, this.options.date)
 
             logger.log(`${logger.colors.yellow(`${gist.owner.login}/${gist.id}`)} ${duration}`)
 
