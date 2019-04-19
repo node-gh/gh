@@ -19,9 +19,8 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Issue(options, GitHub) {
+export default function Issue(options) {
     this.options = options
-    this.GitHub = GitHub
 
     if (!options.repo && !options.all) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')

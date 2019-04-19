@@ -19,9 +19,8 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Gists(options, GitHub) {
+export default function Gists(options) {
     this.options = options
-    this.GitHub = GitHub
 }
 
 // -- Constants ------------------------------------------------------------------------------------
