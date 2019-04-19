@@ -18,7 +18,14 @@
             "request": "launch",
             "env": { "NODE_ENV": "testing", "GH_USER": "protoEvangelion", "GH_TOKEN": "0001" },
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "is"],
+            "args": [
+                "${workspaceFolder}/src/debug.ts",
+                "gi",
+                "--new",
+                "hello",
+                "--content",
+                "Hello World\\!"
+            ],
             "console": "integratedTerminal"
         }
     ]
