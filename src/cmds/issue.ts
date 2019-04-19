@@ -9,7 +9,8 @@
 import { isArray } from 'lodash'
 import * as openUrl from 'opn'
 import * as base from '../base'
-import * as hooks from '../hooks'
+import { getGitHubInstance } from '../github'
+import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 import { hasCmdInOptions } from '../utils'
 
@@ -94,13 +95,14 @@ Issue.prototype.run = async function(done) {
     const number = logger.colors.green(`#${options.number}`)
 
     instance.config = config
+    instance.GitHub = await getGitHubInstance()
 
     options.state = options.state || Issue.STATE_OPEN
 
     if (!hasCmdInOptions(Issue.DETAILS.commands, options)) {
-        const payload = options.remain && options.remain.slice(1)
+        const payload = options.remain && options.remain.concat().slice(1)
 
-        if (payload[0]) {
+        if (payload && payload[0]) {
             if (/^\d+$/.test(payload[0])) {
                 options.browser = true
                 options.number = payload[0]
@@ -116,25 +118,23 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.assign) {
-        hooks.invoke('issue.assign', instance, async afterHooksCallback => {
-            logger.log(
-                `Assigning issue ${number} on ${userRepo} to ${logger.colors.magenta(
-                    options.assignee
-                )}`
-            )
+        beforeHooks('issue.assign', instance)
 
-            try {
-                var { data } = await instance.assign()
-            } catch (err) {
-                throw new Error(`Can't assign issue.\n${err}`)
-            }
+        logger.log(
+            `Assigning issue ${number} on ${userRepo} to ${logger.colors.magenta(options.assignee)}`
+        )
 
-            logger.log(logger.colors.cyan(data.html_url))
+        try {
+            var { data } = await instance.assign()
+        } catch (err) {
+            throw new Error(`Can't assign issue.\n${err}`)
+        }
 
-            afterHooksCallback()
+        logger.log(logger.colors.cyan(data.html_url))
 
-            done && done()
-        })
+        done && done()
+
+        afterHooks('issue.assign', instance)
     }
 
     if (options.browser) {
@@ -142,23 +142,23 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.close) {
-        hooks.invoke('issue.close', instance, async afterHooksCallback => {
-            options.state = Issue.STATE_CLOSED
+        beforeHooks('issue.close', instance)
 
-            logger.log(`Closing issue ${number} on ${userRepo}`)
+        options.state = Issue.STATE_CLOSED
 
-            try {
-                var { data } = await instance.close()
-            } catch (err) {
-                throw new Error(`Can't close issue.\n${err}`)
-            }
+        logger.log(`Closing issue ${number} on ${userRepo}`)
 
-            logger.log(logger.colors.cyan(data.html_url))
+        try {
+            var { data } = await instance.close()
+        } catch (err) {
+            throw new Error(`Can't close issue.\n${err}`)
+        }
 
-            afterHooksCallback()
+        logger.log(logger.colors.cyan(data.html_url))
 
-            done && done()
-        })
+        done && done()
+
+        afterHooks('issue.close', instance)
     }
 
     if (options.comment) {
@@ -198,43 +198,43 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.new) {
-        hooks.invoke('issue.new', instance, async afterHooksCallback => {
-            logger.log(`Creating a new issue on ${userRepo}`)
+        beforeHooks('issue.new', instance)
 
-            try {
-                var { data } = await instance.new()
-            } catch (err) {
-                throw new Error(`Can't create issue.\n${err}`)
-            }
+        logger.log(`Creating a new issue on ${userRepo}`)
 
-            if (data) {
-                options.number = data.number
-            }
+        try {
+            var { data } = await instance.new()
+        } catch (err) {
+            throw new Error(`Can't create issue.\n${err}`)
+        }
 
-            logger.log(data.html_url)
+        if (data) {
+            options.number = data.number
+        }
 
-            afterHooksCallback()
+        logger.log(data.html_url)
 
-            done && done()
-        })
+        done && done()
+
+        afterHooks('issue.new', instance)
     }
 
     if (options.open) {
-        hooks.invoke('issue.open', instance, async afterHooksCallback => {
-            logger.log(`Opening issue ${number} on ${userRepo}`)
+        beforeHooks('issue.open', instance)
 
-            try {
-                var { data } = await instance.open()
-            } catch (err) {
-                throw new Error(`Can't close issue.\n${err}`)
-            }
+        logger.log(`Opening issue ${number} on ${userRepo}`)
 
-            logger.log(data.html_url)
+        try {
+            var { data } = await instance.open()
+        } catch (err) {
+            throw new Error(`Can't close issue.\n${err}`)
+        }
 
-            afterHooksCallback()
+        logger.log(data.html_url)
 
-            done && done()
-        })
+        done && done()
+
+        afterHooks('issue.open', instance)
     }
 
     if (options.search) {
@@ -283,7 +283,7 @@ Issue.prototype.close = async function() {
     return await instance.editIssue_(issue.title, Issue.STATE_CLOSED)
 }
 
-Issue.prototype.comment = async function() {
+Issue.prototype.comment = function() {
     const instance = this
     let options = instance.options
     let body
@@ -293,15 +293,15 @@ Issue.prototype.comment = async function() {
 
     payload = {
         body,
-        number: options.number,
+        issue_number: options.number,
         repo: options.repo,
         owner: options.user,
     }
 
-    return await instance.GitHub.issues.createComment(payload)
+    return instance.GitHub.issues.createComment(payload)
 }
 
-Issue.prototype.editIssue_ = async function(title, state) {
+Issue.prototype.editIssue_ = function(title, state) {
     const instance = this
     const options = instance.options
     let payload
@@ -312,26 +312,26 @@ Issue.prototype.editIssue_ = async function(title, state) {
         assignee: options.assignee,
         labels: options.labels || [],
         milestone: options.milestone,
-        number: options.number,
+        issue_number: options.number,
         owner: options.user,
         repo: options.repo,
     }
 
-    return await instance.GitHub.issues.update(payload)
+    return instance.GitHub.issues.update(payload)
 }
 
-Issue.prototype.getIssue_ = async function() {
+Issue.prototype.getIssue_ = function() {
     const instance = this
     const options = instance.options
     let payload
 
     payload = {
-        number: options.number,
+        issue_number: options.number,
         repo: options.repo,
         owner: options.user,
     }
 
-    return await instance.GitHub.issues.get(payload)
+    return instance.GitHub.issues.get(payload)
 }
 
 Issue.prototype.list = async function(user, repo) {
@@ -399,7 +399,7 @@ Issue.prototype.listFromAllRepositories = async function() {
     }
 }
 
-Issue.prototype.new = async function() {
+Issue.prototype.new = function() {
     const instance = this
     const options = instance.options
     let body
@@ -423,7 +423,7 @@ Issue.prototype.new = async function() {
         labels: options.labels,
     }
 
-    return await instance.GitHub.issues.create(payload)
+    return instance.GitHub.issues.create(payload)
 }
 
 Issue.prototype.open = async function() {
