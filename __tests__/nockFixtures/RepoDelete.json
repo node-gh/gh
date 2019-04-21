@@ -1,10 +1,1 @@
-[
-    {
-        "scope": "https://api.github.com:443",
-        "method": "delete",
-        "path": "/repos/protoEvangelion/foo?",
-        "body": "",
-        "status": 204,
-        "response": {}
-    }
-]
+[{"scope":"https://api.github.com:443","method":"delete","path":"/repos/protoEvangelion/foo?","body":"","status":204,"response":{}}]
