@@ -251,7 +251,7 @@ Omitting `--number` will try to guess the pull number from branch name e.g. `pr-
 
 #### Examples
 
--   Merge or rebase pull request into a branch.
+-   Merge or rebase pull request into a local branch.
 
 ```
 gh pr 1 --fetch --merge

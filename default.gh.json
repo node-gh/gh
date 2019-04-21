@@ -54,12 +54,6 @@
                     "gh pr {{options.number}} --close"
                 ]
             },
-            "merge": {
-                "before": [],
-                "after": [
-                    "gh pr {{options.number}} --user {{options.user}} --repo {{options.repo}} --comment 'Thank you, pull request merged!{{#if options.changes}} [See changes here.]({{compareLink}}){{/if}}'"
-                ]
-            },
             "open": {
                 "before": [],
                 "after": []
