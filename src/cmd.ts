@@ -21,26 +21,6 @@ const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
 
 // -- Utils ----------------------------------------------------------------------------------------
 
-// function hasCommandInOptions(commands, options) {
-//     if (commands) {
-//         return commands.some(c => {
-//             return options[c] !== undefined
-//         })
-//     }
-
-//     return false
-// }
-
-// function invokePayload(options, command, cooked, remain) {
-//     var payload
-
-//     if (command.DETAILS.payload && !hasCommandInOptions(command.DETAILS.commands, options)) {
-//         payload = remain.concat()
-//         payload.shift()
-//         command.DETAILS.payload(payload, options)
-//     }
-// }
-
 async function resolveCmd(name, commandDir) {
     const reg = new RegExp(`.${extension}$`, 'i')
     const commandFiles = find(commandDir, reg)
