@@ -9,7 +9,18 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "is"],
+            "args": [
+                "${workspaceFolder}/src/debug.ts",
+                "pr",
+                "-s",
+                "protoEvangelion",
+                "-b",
+                "octokit-1behind",
+                "-t",
+                "pr title",
+                "-D",
+                "pr description"
+            ],
             "console": "integratedTerminal"
         },
         {
