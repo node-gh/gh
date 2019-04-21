@@ -28,6 +28,12 @@ https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
 "
 `;
 
+exports[`E2E: Pull Request Module Test Fwd PR to another user \`gh pr 97 --fwd node-gh-bot\` 1`] = `
+"Forwarding pull request #97 to @node-gh-bot
+https://github.com/node-gh-bot/gh/pull/3
+"
+`;
+
 exports[`E2E: Pull Request Module Test Get PR Info \`gh pr --info 50\` 1`] = `
 "#50 pr2 @protoEvangelion (in 4 years)
 "
@@ -53,6 +59,20 @@ Branch: master (1)
 "
 `;
 
+exports[`E2E: Pull Request Module Test List PRs & sorty by complexity \`gh pr --list --sort complexity\` 1`] = `
+"Listing open pull requests on protoEvangelion/gh
+protoEvangelion/gh
+Branch: master (2)
+┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
+│    #    │ Title                                         │ Author              │ Opened        │ Status │
+├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
+│   #50   │ pr2                                           │ @protoEvangelion    │ in 5 years    │   ✓    │
+├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
+│   #40   │ My pr title                                   │ @protoEvangelion    │ in 5 years    │   ✓    │
+└─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
+"
+`;
+
 exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
@@ -65,9 +85,9 @@ Branch: master (1)
 "
 `;
 
-exports[`E2E: Pull Request Module Test Open PR \`gh pr 50 --open\` 1`] = `
-"Opening pull request #50
-https://github.com/protoEvangelion/gh/pull/50
+exports[`E2E: Pull Request Module Test Open PR \`gh pr 40 --open\` 1`] = `
+"Opening pull request #40
+https://github.com/protoEvangelion/gh/pull/40
 "
 `;
 
@@ -75,5 +95,13 @@ exports[`E2E: Pull Request Module Test Submit PR \`gh pr -s protoEvangelion -b m
 "Submitting pull request to @protoEvangelion
 https://github.com/protoEvangelion/gh/pull/97
 [hook] gh pr --browser  --user protoEvangelion --repo gh --number 97
+"
+`;
+
+exports[`E2E: Pull Request Module Test Works with passing in multiple number flags \`gh pr --open --number 40 --number 50\` 1`] = `
+"Opening pull request #40
+https://github.com/protoEvangelion/gh/pull/40
+Opening pull request #50
+https://github.com/protoEvangelion/gh/pull/50
 "
 `;

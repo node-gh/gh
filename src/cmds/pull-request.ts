@@ -149,73 +149,82 @@ PullRequest.prototype.run = async function(done) {
         }
     }
 
-    options.number =
-        options.number ||
-        instance.getPullRequestNumberFromBranch_(
-            options.currentBranch,
-            config.pull_branch_name_prefix
-        )
+    const numbers = [...options.number]
 
-    options.pullBranch = instance.getBranchNameFromPullNumber_(options.number)
-    options.state = options.state || PullRequest.STATE_OPEN
-
-    if (!options.pullBranch && (options.close || options.fetch || options.merge)) {
-        logger.error("You've invoked a method that requires an issue number.")
-    }
-
-    if (options.browser && !testing) {
-        instance.browser(options.user, options.repo, options.number)
-    }
-
-    if (!options.list) {
-        options.branch = options.branch || config.default_branch
-    }
-
-    if (options.close) {
-        try {
-            await instance._closeHandler()
-        } catch (err) {
-            throw new Error(`Error closing PR\n${err}`)
-        }
-    }
-
-    if (options.comment) {
-        await instance._commentHandler()
-    }
-
-    if (options.fetch) {
-        await instance._fetchHandler()
-    }
-
-    if (options.fwd === '') {
-        options.fwd = config.default_pr_forwarder
-    }
-
-    if (options.fwd) {
-        await this._fwdHandler()
-    }
-
-    if (options.info) {
-        await this._infoHandler()
-    }
-
-    if (options.list) {
-        await this._listHandler()
-    }
-
-    if (options.open) {
-        await this._openHandler()
-    }
-
-    if (options.submit === '') {
-        options.submit = config.default_pr_reviewer
-    }
-
-    if (options.submit) {
-        await this._submitHandler()
+    for (const number of numbers) {
+        await main(number)
     }
 
     done && done()
+
+    // main logic to iterate on when number flag is passed in > 1
+    async function main(number) {
+        options.number =
+            number ||
+            instance.getPullRequestNumberFromBranch_(
+                options.currentBranch,
+                config.pull_branch_name_prefix
+            )
+
+        options.pullBranch = instance.getBranchNameFromPullNumber_(number)
+        options.state = options.state || PullRequest.STATE_OPEN
+
+        if (!options.pullBranch && (options.close || options.fetch || options.merge)) {
+            logger.error("You've invoked a method that requires an issue number.")
+        }
+
+        if (options.browser && !testing) {
+            instance.browser(options.user, options.repo, number)
+        }
+
+        if (!options.list) {
+            options.branch = options.branch || config.default_branch
+        }
+
+        if (options.close) {
+            try {
+                await instance._closeHandler()
+            } catch (err) {
+                throw new Error(`Error closing PR\n${err}`)
+            }
+        }
+
+        if (options.comment) {
+            await instance._commentHandler()
+        }
+
+        if (options.fetch) {
+            await instance._fetchHandler()
+        }
+
+        if (options.fwd === '') {
+            options.fwd = config.default_pr_forwarder
+        }
+
+        if (options.fwd) {
+            await instance._fwdHandler()
+        }
+
+        if (options.info) {
+            await instance._infoHandler()
+        }
+
+        if (options.list) {
+            await instance._listHandler()
+        }
+
+        if (options.open) {
+            await instance._openHandler()
+        }
+
+        if (options.submit === '') {
+            options.submit = config.default_pr_reviewer
+        }
+
+        if (options.submit) {
+            await instance._submitHandler()
+        }
+    }
 }
 
 PullRequest.prototype.addComplexityParamToPulls_ = async function(pulls) {
@@ -241,12 +250,15 @@ PullRequest.prototype.addComplexityParamToPulls_ = async function(pulls) {
             }
 
             pull.complexity = instance.calculateComplexity_(metrics)
+
+            return pull
         })
     )
 }
 
 PullRequest.prototype.browser = function(user, repo, number) {
     if (number) {
+        const hey = `${config.github_host}/${user}/${repo}/pull/${number}`
         openUrl(`${config.github_host}/${user}/${repo}/pull/${number}`, { wait: false })
     } else {
         openUrl(`${config.github_host}/${user}/${repo}/pulls`, { wait: false })
@@ -378,7 +390,11 @@ PullRequest.prototype.forward = async function() {
     const instance = this
     const options = instance.options
 
-    const { data: pull } = await instance.fetch(PullRequest.FETCH_TYPE_SILENT)
+    try {
+        var pull = await instance.fetch(PullRequest.FETCH_TYPE_SILENT)
+    } catch (err) {
+        throw new Error(`Error fetching PR\${err}`)
+    }
 
     options.title = pull.title
     options.description = pull.body
@@ -703,7 +719,7 @@ PullRequest.prototype.list = async function(user, repo) {
             throw new Error(`Error sorting by complexity\n${err}`)
         }
 
-        pulls = instance.sortPullsByComplexity_(pulls)
+        pulls = instance.sortPullsByComplexity_(pulls, options.direction)
     }
 
     pulls = await Promise.all(
@@ -804,11 +820,11 @@ PullRequest.prototype.setMergeCommentRequiredOptions_ = function() {
     options.pullHeadSHA = `${lastCommitSHA}~${changes}`
 }
 
-PullRequest.prototype.sortPullsByComplexity_ = data => {
+PullRequest.prototype.sortPullsByComplexity_ = function(pulls, direction) {
     const instance = this
     const options = instance.options
 
-    data.sort((a, b) => {
+    pulls.sort((a, b) => {
         if (a.complexity > b.complexity) {
             return -1
         }
@@ -820,11 +836,11 @@ PullRequest.prototype.sortPullsByComplexity_ = data => {
         return 0
     })
 
-    if (options.direction === PullRequest.DIRECTION_ASC) {
-        data.reverse()
+    if (direction === PullRequest.DIRECTION_ASC) {
+        pulls.reverse()
     }
 
-    return data
+    return pulls
 }
 
 PullRequest.prototype.submit = async function(user) {
@@ -946,8 +962,7 @@ PullRequest.prototype._fwdHandler = async function() {
     )
 
     try {
-        // data from submitting pr
-        var { data: pull } = await instance.forward()
+        var pull = await instance.forward()
     } catch (err) {
         throw new Error(`Can't forward pull request ${options.number} to ${options.fwd}.\n${err}`)
     }
@@ -994,7 +1009,7 @@ PullRequest.prototype._commentHandler = async function() {
     try {
         var { data } = await instance.comment()
     } catch (err) {
-        throw new Error(`Can't comment on pull request ${options.number}.`)
+        throw new Error(`Can't comment on pull request ${options.number}.\n${err}`)
     }
 
     logger.log(data.html_url)

@@ -165,43 +165,43 @@ export function registerHelpers_() {
     handlebars.registerHelper('compareLink', function() {
         const { github_host, user, repo, pullHeadSHA, currentSHA } = this.options
 
-        return `${github_host}${user}/${repo}/compare/${pullHeadSHA}...${currentSHA}`
+        return `${github_host}/${user}/${repo}/compare/${pullHeadSHA}...${currentSHA}`
     })
 
     handlebars.registerHelper('forwardedLink', function() {
         const { github_host, fwd, repo, forwardedPull } = this.options
 
-        return `${github_host}${fwd}/${repo}/pull/${forwardedPull}`
+        return `${github_host}/${fwd}/${repo}/pull/${forwardedPull}`
     })
 
     handlebars.registerHelper('link', function() {
         const { github_host, user, repo, number } = this.options
 
-        return `${github_host}${user}/${repo}/pull/${number}`
+        return `${github_host}/${user}/${repo}/pull/${number}`
     })
 
     handlebars.registerHelper('submittedLink', function() {
         const { github_host, submit, repo, submittedPull } = this.options
 
-        return `${github_host}${submit}/${repo}/pull/${submittedPull}`
+        return `${github_host}/${submit}/${repo}/pull/${submittedPull}`
     })
 
     handlebars.registerHelper('issueLink', function() {
         const { github_host, user, repo, number } = this.options
 
-        return `${github_host}${user}/${repo}/issues/${number}`
+        return `${github_host}/${user}/${repo}/issues/${number}`
     })
 
     handlebars.registerHelper('gistLink', function() {
         const { github_gist_host, loggedUser, id } = this.options
 
-        return `${github_gist_host}${loggedUser}/${id}`
+        return `${github_gist_host}/${loggedUser}/${id}`
     })
 
     handlebars.registerHelper('repoLink', function() {
         const { github_gist_host, user, repo } = this.options
 
-        return `${github_gist_host}${user}/${repo}`
+        return `${github_gist_host}/${user}/${repo}`
     })
 
     handlebars.registerHelper('wordwrap', (text, padding, stripNewLines) => {

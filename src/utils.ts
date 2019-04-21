@@ -44,6 +44,7 @@ export function prepareTestFixtures(cmdName, argv) {
                 '--detailed',
                 '--info',
                 '--fetch',
+                '--fwd',
                 '--comment',
                 '--open',
                 '--close',

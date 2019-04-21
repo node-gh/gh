@@ -9,17 +9,7 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": [
-                "${workspaceFolder}/src/debug.ts",
-                "pr",
-                "--browser",
-                "--user",
-                "protoEvangelion",
-                "--repo",
-                "gh",
-                "--number",
-                "97"
-            ],
+            "args": ["${workspaceFolder}/src/debug.ts", "pr", "97"],
             "console": "integratedTerminal"
         },
         {
@@ -28,17 +18,7 @@
             "request": "launch",
             "env": { "NODE_ENV": "testing", "GH_USER": "protoEvangelion", "GH_TOKEN": "0001" },
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": [
-                "${workspaceFolder}/src/debug.ts",
-                "pr",
-                "--browser",
-                "--user",
-                "protoEvangelion",
-                "--repo",
-                "gh",
-                "--number",
-                "97"
-            ],
+            "args": ["${workspaceFolder}/src/debug.ts", "pr", "--list", "--sort", "complexity"],
             "console": "integratedTerminal"
         }
     ]

@@ -14,6 +14,12 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
+    it('List PRs & sorty by complexity `gh pr --list --sort complexity`', done => {
+        // strip ansi characters so it doesn't fail on Travis
+        expect(stripAnsi(runCmd('gh pr --list --sort complexity'))).toMatchSnapshot()
+        done()
+    })
+
     it('List Detailed PRs `gh pr --detailed`', done => {
         // strip ansi characters so it doesn't fail on Travis
         expect(stripAnsi(runCmd('gh pr  --detailed'))).toMatchSnapshot()
@@ -30,8 +36,8 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    xit('Fwd PR to another user `gh pr 55 --fwd node-gh-bot`', done => {
-        expect(runCmd('gh pr 55 --fwd node-gh-bot')).toMatchSnapshot()
+    it('Fwd PR to another user `gh pr 97 --fwd node-gh-bot`', done => {
+        expect(runCmd('gh pr 97 --fwd node-gh-bot')).toMatchSnapshot()
         done()
     })
 
@@ -45,8 +51,13 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it('Open PR `gh pr 50 --open`', done => {
-        expect(runCmd('gh pr 50 --open')).toMatchSnapshot()
+    it('Open PR `gh pr 40 --open`', done => {
+        expect(runCmd('gh pr 40 --open')).toMatchSnapshot()
+        done()
+    })
+
+    it('Works with passing in multiple number flags `gh pr --open --number 40 --number 50`', done => {
+        expect(runCmd('gh pr --open --number 40 --number 50')).toMatchSnapshot()
         done()
     })
 
