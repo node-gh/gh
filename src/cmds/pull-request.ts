@@ -227,7 +227,7 @@ PullRequest.prototype.addComplexityParamToPulls_ = async function(pulls) {
             try {
                 var { data } = await instance.getPullRequest_()
             } catch (err) {
-                throw new Error(`Error getting PR:\n${err}`)
+                throw new Error(`Error getting PR\n${err}`)
             }
 
             const metrics = {
@@ -245,9 +245,9 @@ PullRequest.prototype.addComplexityParamToPulls_ = async function(pulls) {
 
 PullRequest.prototype.browser = function(user, repo, number) {
     if (number) {
-        openUrl(`${config.github_host}${user}/${repo}/pull/${number}`, { wait: false })
+        openUrl(`${config.github_host}/${user}/${repo}/pull/${number}`, { wait: false })
     } else {
-        openUrl(`${config.github_host}${user}/${repo}/pulls`, { wait: false })
+        openUrl(`${config.github_host}/${user}/${repo}/pulls`, { wait: false })
     }
 }
 
@@ -313,7 +313,11 @@ PullRequest.prototype.checkPullRequestIntegrity_ = async function(originalError,
         state: PullRequest.STATE_OPEN,
     }
 
-    const { data: pulls } = await instance.GitHub.pulls.list(payload)
+    try {
+        var { data: pulls } = await instance.GitHub.pulls.list(payload)
+    } catch (err) {
+        throw new Error(`Error listings PRs\n${err}`)
+    }
 
     pulls.forEach(data => {
         if (
@@ -395,7 +399,7 @@ PullRequest.prototype.getPullRequest_ = function() {
 }
 
 PullRequest.prototype.getBranchNameFromPullNumber_ = function(number) {
-    if (number) {
+    if (number && number[0] !== undefined) {
         return config.pull_branch_name_prefix + number
     }
 }
@@ -678,7 +682,7 @@ PullRequest.prototype.list = async function(user, repo) {
             // due to the repo being disabled (e.g., private repo with debt)
             logger.warn(`Can't list pull requests for ${user}/${payload.repo}`)
         } else {
-            throw new Error(`Error listing pulls:\n${err}`)
+            throw new Error(`Error listing pulls\n${err}`)
         }
     }
 
@@ -694,7 +698,7 @@ PullRequest.prototype.list = async function(user, repo) {
         try {
             pulls = await instance.addComplexityParamToPulls_(pulls)
         } catch (err) {
-            throw new Error(`Error sorting by complexity:\n${err}`)
+            throw new Error(`Error sorting by complexity\n${err}`)
         }
 
         pulls = instance.sortPullsByComplexity_(pulls)
@@ -851,14 +855,14 @@ PullRequest.prototype.submit = async function(user) {
         } else {
             payload.body = options.description
             payload.title = options.title
-            console.log('payload.title!!!!!!', payload)
+
             var { data } = await instance.GitHub.pulls.create(payload)
         }
     } catch (err) {
         var { originalError, pull } = await instance.checkPullRequestIntegrity_(err, user)
 
         if (originalError) {
-            throw new Error(`Error submitting PR:\n${err}`)
+            throw new Error(`Error submitting PR\n${err}`)
         }
     }
 
@@ -1092,7 +1096,7 @@ PullRequest.prototype._submitHandler = async function(done) {
     logger.log(`Submitting pull request to ${logger.colors.magenta(`@${options.submit}`)}`)
 
     try {
-        var { data: pull } = await instance.submit(options.submit)
+        var pull = await instance.submit(options.submit)
     } catch (err) {
         throw new Error(`Can't submit pull request\n${err}`)
     }
@@ -1100,8 +1104,6 @@ PullRequest.prototype._submitHandler = async function(done) {
     if (pull) {
         options.submittedPull = pull.number
     }
-
-    console.log(pull)
 
     logger.log(pull.html_url)
 
