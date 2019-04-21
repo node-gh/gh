@@ -173,14 +173,14 @@ PullRequest.prototype.run = async function(done) {
 
     if (options.close) {
         try {
-            await instance._closeHandler(done)
+            await instance._closeHandler()
         } catch (err) {
             throw new Error(`Error closing PR\n${err}`)
         }
     }
 
     if (options.comment) {
-        await instance._commentHandler(done)
+        await instance._commentHandler()
     }
 
     if (options.fetch) {
@@ -196,15 +196,15 @@ PullRequest.prototype.run = async function(done) {
     }
 
     if (options.info) {
-        await this._infoHandler(done)
+        await this._infoHandler()
     }
 
     if (options.list) {
-        await this._listHandler(done)
+        await this._listHandler()
     }
 
     if (options.open) {
-        await this._openHandler(done)
+        await this._openHandler()
     }
 
     if (options.submit === '') {
@@ -212,8 +212,10 @@ PullRequest.prototype.run = async function(done) {
     }
 
     if (options.submit) {
-        await this._submitHandler(done)
+        await this._submitHandler()
     }
+
+    done && done()
 }
 
 PullRequest.prototype.addComplexityParamToPulls_ = async function(pulls) {
@@ -889,7 +891,7 @@ PullRequest.prototype.updatePullRequest_ = function(title, opt_body, state) {
     return instance.GitHub.pulls.update(payload)
 }
 
-PullRequest.prototype._fetchHandler = async function(done) {
+PullRequest.prototype._fetchHandler = async function() {
     const instance = this
     const options = this.options
 
@@ -929,11 +931,9 @@ PullRequest.prototype._fetchHandler = async function(done) {
     }
 
     afterHooks('pull-request.fetch', instance)
-
-    done && done()
 }
 
-PullRequest.prototype._fwdHandler = async function(done) {
+PullRequest.prototype._fwdHandler = async function() {
     const instance = this
     const options = this.options
 
@@ -964,7 +964,7 @@ PullRequest.prototype._fwdHandler = async function(done) {
     afterHooks('pull-request.fwd', instance)
 }
 
-PullRequest.prototype._closeHandler = async function(done) {
+PullRequest.prototype._closeHandler = async function() {
     const instance = this
     const options = this.options
 
@@ -983,11 +983,9 @@ PullRequest.prototype._closeHandler = async function(done) {
     instance.setMergeCommentRequiredOptions_()
 
     afterHooks('pull-request.close', instance)
-
-    done && done()
 }
 
-PullRequest.prototype._commentHandler = async function(done) {
+PullRequest.prototype._commentHandler = async function() {
     const instance = this
     const options = instance.options
 
@@ -1000,11 +998,9 @@ PullRequest.prototype._commentHandler = async function(done) {
     }
 
     logger.log(data.html_url)
-
-    done && done()
 }
 
-PullRequest.prototype._infoHandler = async function(done) {
+PullRequest.prototype._infoHandler = async function() {
     const instance = this
     const options = this.options
 
@@ -1013,11 +1009,9 @@ PullRequest.prototype._infoHandler = async function(done) {
     } catch (err) {
         throw new Error(`Can't get pull requests.\n${err}`)
     }
-
-    done && done()
 }
 
-PullRequest.prototype._listHandler = async function(done) {
+PullRequest.prototype._listHandler = async function() {
     const instance = this
     const options = this.options
     let who
@@ -1039,8 +1033,6 @@ PullRequest.prototype._listHandler = async function(done) {
         } catch (err) {
             throw new Error(`Can't list all pull requests from repos.\n${err}`)
         }
-
-        done && done()
     } else {
         if (options.me) {
             logger.log(
@@ -1061,12 +1053,10 @@ PullRequest.prototype._listHandler = async function(done) {
         } catch (err) {
             throw new Error(`Can't list pull requests.\n${err}`)
         }
-
-        done && done()
     }
 }
 
-PullRequest.prototype._openHandler = async function(done) {
+PullRequest.prototype._openHandler = async function() {
     const instance = this
     const options = this.options
 
@@ -1082,12 +1072,10 @@ PullRequest.prototype._openHandler = async function(done) {
 
     logger.log(data.html_url)
 
-    done && done()
-
     afterHooks('pull-request.open', instance)
 }
 
-PullRequest.prototype._submitHandler = async function(done) {
+PullRequest.prototype._submitHandler = async function() {
     const instance = this
     const options = this.options
 
@@ -1110,6 +1098,4 @@ PullRequest.prototype._submitHandler = async function(done) {
     instance.setMergeCommentRequiredOptions_()
 
     afterHooks('pull-request.submit', instance)
-
-    done && done()
 }

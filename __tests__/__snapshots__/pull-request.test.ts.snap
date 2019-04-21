@@ -33,14 +33,14 @@ exports[`E2E: Pull Request Module Test Get PR Info \`gh pr --info 50\` 1`] = `
 "
 `;
 
-exports[`E2E: Pull Request Module Test List PRs \`gh pr --detailed\` 1`] = `
+exports[`E2E: Pull Request Module Test List Detailed PRs \`gh pr --detailed\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
 Branch: master (1)
 ┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
 │    #    │ Details                                       │ Author              │ Opened        │ Status │
 ├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
-│   #55   │ Title:                                        │ @protoEvangelion    │ a year ago    │   ✓    │
+│   #55   │ Title:                                        │ @protoEvangelion    │ in 4 years    │   ✓    │
 │         │                                               │                     │               │        │
 │         │ pr title                                      │                     │               │        │
 │         │                                               │                     │               │        │

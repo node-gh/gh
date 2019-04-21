@@ -132,8 +132,6 @@ Issue.prototype.run = async function(done) {
         logger.log(logger.colors.cyan(data.html_url))
 
         afterHooks('issue.assign', instance)
-
-        done && done()
     }
 
     if (options.browser) {
@@ -156,8 +154,6 @@ Issue.prototype.run = async function(done) {
         logger.log(logger.colors.cyan(data.html_url))
 
         afterHooks('issue.close', instance)
-
-        done && done()
     }
 
     if (options.comment) {
@@ -170,8 +166,6 @@ Issue.prototype.run = async function(done) {
         }
 
         logger.log(logger.colors.cyan(data.html_url))
-
-        done && done()
     }
 
     if (options.list) {
@@ -192,8 +186,6 @@ Issue.prototype.run = async function(done) {
         } catch (err) {
             throw new Error(`Error listing issues\n${err}`)
         }
-
-        done && done()
     }
 
     if (options.new) {
@@ -214,8 +206,6 @@ Issue.prototype.run = async function(done) {
         logger.log(data.html_url)
 
         afterHooks('issue.new', instance)
-
-        done && done()
     }
 
     if (options.open) {
@@ -232,8 +222,6 @@ Issue.prototype.run = async function(done) {
         logger.log(data.html_url)
 
         afterHooks('issue.open', instance)
-
-        done && done()
     }
 
     if (options.search) {
@@ -253,9 +241,9 @@ Issue.prototype.run = async function(done) {
         } catch (err) {
             throw new Error(`Can't search issues for ${userRepo}: \n${err}`)
         }
-
-        done && done()
     }
+
+    done && done()
 }
 
 Issue.prototype.assign = async function() {

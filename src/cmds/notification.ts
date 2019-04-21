@@ -56,7 +56,7 @@ Notifications.prototype.run = function(done) {
         logger.log(
             `Listing activities on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
-        instance.latest(false, done)
+        instance.latest(false)
     }
 
     if (options.watch) {
@@ -65,9 +65,11 @@ Notifications.prototype.run = function(done) {
         )
         instance.watch()
     }
+
+    done && done()
 }
 
-Notifications.prototype.latest = function(opt_watch, done) {
+Notifications.prototype.latest = function(opt_watch) {
     const instance = this
     const options = instance.options
     let operations
@@ -128,8 +130,6 @@ Notifications.prototype.latest = function(opt_watch, done) {
                 )
             })
         }
-
-        done && done()
     })
 }
 

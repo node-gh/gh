@@ -93,8 +93,6 @@ Gists.prototype.run = async function(done) {
 
             afterHooks('gists.delete', instance)
         }
-
-        done && done()
     }
 
     if (options.fork) {
@@ -111,8 +109,6 @@ Gists.prototype.run = async function(done) {
         logger.log(data.html_url)
 
         afterHooks('gists.fork', instance)
-
-        done && done()
     }
 
     if (options.list) {
@@ -125,8 +121,6 @@ Gists.prototype.run = async function(done) {
         }
 
         instance.listCallback_(data)
-
-        done && done()
     }
 
     if (options.new) {
@@ -154,9 +148,9 @@ Gists.prototype.run = async function(done) {
         }
 
         afterHooks('gists.new', instance)
-
-        done && done()
     }
+
+    done && done()
 }
 
 Gists.prototype.browser = function(gist) {

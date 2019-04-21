@@ -173,8 +173,6 @@ Repo.prototype.run = async function(done) {
                 logger.error(`Can't delete repo.\n${err}`)
             }
 
-            done && done()
-
             afterHooks('repo.delete', instance)
         } else {
             logger.log('Not deleted.')
@@ -206,8 +204,6 @@ Repo.prototype.run = async function(done) {
             instance.clone_(user, options.repo, data.ssh_url)
         }
 
-        done && done()
-
         afterHooks('repo.fork', instance)
     } else if (options.label) {
         if (options.organization) {
@@ -235,8 +231,6 @@ Repo.prototype.run = async function(done) {
 
             status === 204 && logger.log('Successful.')
 
-            done && done()
-
             afterHooks('repo.deleteLabel', instance)
         } else if (options.list) {
             beforeHooks('repo.listLabels', instance)
@@ -259,8 +253,6 @@ Repo.prototype.run = async function(done) {
 
             data.forEach(label => logger.log(logger.colors.yellow(label.name)))
 
-            done && done()
-
             afterHooks('repo.listLabels', instance)
         } else if (options.new) {
             beforeHooks('repo.createLabel', instance)
@@ -279,8 +271,6 @@ Repo.prototype.run = async function(done) {
             } catch (err) {
                 throw new Error(`Can't create label.\n${err}`)
             }
-
-            done && done()
 
             beforeHooks('repo.createLabel', instance)
         } else if (options.update) {
@@ -301,8 +291,6 @@ Repo.prototype.run = async function(done) {
             }
 
             status === 200 && logger.log('Success')
-
-            done && done()
 
             beforeHooks('repo.updateLabel', instance)
         }
@@ -329,8 +317,6 @@ Repo.prototype.run = async function(done) {
         }
 
         instance.listCallback_(data)
-
-        done && done()
 
         return
     } else if (options.new && !options.label) {
@@ -362,10 +348,10 @@ Repo.prototype.run = async function(done) {
             instance.clone_(options.user, options.repo, data.ssh_url)
         }
 
-        done && done()
-
         afterHooks('repo.new', instance)
     }
+
+    done && done()
 }
 
 Repo.prototype.browser = function(user, repo) {

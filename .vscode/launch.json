@@ -12,14 +12,13 @@
             "args": [
                 "${workspaceFolder}/src/debug.ts",
                 "pr",
-                "-s",
+                "--browser",
+                "--user",
                 "protoEvangelion",
-                "-b",
-                "octokit-1behind",
-                "-t",
-                "pr title",
-                "-D",
-                "pr description"
+                "--repo",
+                "gh",
+                "--number",
+                "97"
             ],
             "console": "integratedTerminal"
         },
@@ -32,14 +31,13 @@
             "args": [
                 "${workspaceFolder}/src/debug.ts",
                 "pr",
-                "-s",
+                "--browser",
+                "--user",
                 "protoEvangelion",
-                "-b",
-                "master",
-                "-t",
-                "pr title",
-                "-D",
-                "pr description"
+                "--repo",
+                "gh",
+                "--number",
+                "97"
             ],
             "console": "integratedTerminal"
         }
