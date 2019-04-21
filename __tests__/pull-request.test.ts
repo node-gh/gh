@@ -14,6 +14,12 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
+    it('List Detailed PRs `gh pr --detailed`', done => {
+        // strip ansi characters so it doesn't fail on Travis
+        expect(stripAnsi(runCmd('gh pr  --detailed'))).toMatchSnapshot()
+        done()
+    })
+
     it('Fetch PR `gh pr 55`', done => {
         expect(runCmd('gh pr 55')).toMatchSnapshot()
         done()
@@ -24,14 +30,8 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it('Fwd PR to another user `gh pr 55 --fwd node-gh-bot`', done => {
+    xit('Fwd PR to another user `gh pr 55 --fwd node-gh-bot`', done => {
         expect(runCmd('gh pr 55 --fwd node-gh-bot')).toMatchSnapshot()
-        done()
-    })
-
-    it('List PRs `gh pr --detailed`', done => {
-        // strip ansi characters so it doesn't fail on Travis
-        expect(stripAnsi(runCmd('gh pr  --detailed'))).toMatchSnapshot()
         done()
     })
 
@@ -55,7 +55,7 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it.only('Submit PR `gh pr -s protoEvangelion -b master -t "pr title" -D "pr description"`', done => {
+    it('Submit PR `gh pr -s protoEvangelion -b master -t "pr title" -D "pr description"`', done => {
         expect(
             runCmd('gh pr -s protoEvangelion -b master -t "pr title" -D "pr description"')
         ).toMatchSnapshot()

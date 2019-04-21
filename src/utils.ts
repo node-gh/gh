@@ -40,7 +40,15 @@ export function prepareTestFixtures(cmdName, argv) {
         },
         {
             name: 'PullRequest',
-            flags: ['--info', '--fetch', '--comment', '--open', '--close', '--submit'],
+            flags: [
+                '--detailed',
+                '--info',
+                '--fetch',
+                '--comment',
+                '--open',
+                '--close',
+                '--submit',
+            ],
         },
         {
             name: 'Gists',
@@ -68,6 +76,10 @@ export function prepareTestFixtures(cmdName, argv) {
     ].filter(cmd => cmd.name === cmdName)
 
     const newCmdName = formatCmdName(cmds[0], argv)
+
+    if (!newCmdName) {
+        return () => {}
+    }
 
     nockBack.fixtures = `${process.cwd()}/__tests__/nockFixtures`
     nockBack.setMode('record')
