@@ -6,8 +6,9 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as async from 'async'
+import { getGitHubInstance } from '../github'
 import * as logger from '../logger'
+import { hasCmdInOptions } from '../utils'
 
 const printed = {}
 
@@ -48,99 +49,91 @@ Notifications.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Notifications.prototype.run = function(done) {
+Notifications.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
+    instance.GitHub = await getGitHubInstance()
+
+    if (!hasCmdInOptions(Notifications.DETAILS.commands, options)) {
+        options.latest = true
+    }
 
     if (options.latest) {
         logger.log(
             `Listing activities on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
-        instance.latest(false)
+
+        await instance.latest(false)
     }
 
     if (options.watch) {
         logger.log(
             `Watching any activity on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
-        instance.watch()
+
+        await instance.watch()
     }
 
     done && done()
 }
 
-Notifications.prototype.latest = function(opt_watch) {
+Notifications.prototype.latest = async function(opt_watch) {
     const instance = this
     const options = instance.options
-    let operations
     let payload
-    let listEvents
     let filteredListEvents = []
 
-    operations = [
-        function(callback) {
-            payload = {
-                owner: options.user,
-                repo: options.repo,
+    payload = {
+        owner: options.user,
+        repo: options.repo,
+    }
+
+    try {
+        var { data } = await instance.GitHub.activity.listRepoEvents(payload)
+    } catch (err) {
+        throw new Error(`Can't get latest notifications.\n${err}`)
+    }
+
+    data.forEach(event => {
+        event.txt = instance.getMessage_(event)
+
+        if (opt_watch) {
+            if (!printed[event.created_at]) {
+                filteredListEvents.push(event)
             }
-
-            instance.GitHub.activity.listNotificationsForRepo(payload, (err, data) => {
-                if (!err) {
-                    listEvents = data
-                }
-                callback(err)
-            })
-        },
-        function(callback) {
-            listEvents.forEach(event => {
-                event.txt = instance.getMessage_(event)
-
-                if (opt_watch) {
-                    if (!printed[event.created_at]) {
-                        filteredListEvents.push(event)
-                    }
-                } else {
-                    filteredListEvents.push(event)
-                }
-
-                printed[event.created_at] = true
-            })
-            callback()
-        },
-    ]
-
-    async.series(operations, err => {
-        if (err) {
-            throw new Error(`Can't get latest notifications.\n${err}`)
+        } else {
+            filteredListEvents.push(event)
         }
 
-        if (filteredListEvents.length) {
-            if (!options.watch) {
-                logger.log(logger.colors.yellow(`${options.user}/${options.repo}`))
-            }
-
-            filteredListEvents.forEach(event => {
-                logger.log(
-                    `${logger.colors.magenta(`@${event.actor.login}`)} ${
-                        event.txt
-                    } ${logger.colors.cyan(options.repo)} ${logger.getDuration(
-                        event.created_at,
-                        options.date
-                    )}`
-                )
-            })
-        }
+        printed[event.created_at] = true
     })
+
+    if (filteredListEvents.length) {
+        if (!options.watch) {
+            logger.log(logger.colors.yellow(`${options.user}/${options.repo}`))
+        }
+
+        filteredListEvents.forEach(event => {
+            logger.log(
+                `${logger.colors.magenta(`@${event.actor.login}`)} ${
+                    event.txt
+                } ${logger.colors.cyan(options.repo)} ${logger.getDuration(
+                    event.created_at,
+                    options.date
+                )}`
+            )
+        })
+    }
 }
 
-Notifications.prototype.watch = function() {
+Notifications.prototype.watch = async function() {
     const instance = this
     const intervalTime = 3000
 
-    instance.latest()
+    await instance.latest()
 
-    setInterval(() => {
-        instance.latest(true)
+    setInterval(async () => {
+        await instance.latest(true)
     }, intervalTime)
 }
 
