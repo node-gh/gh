@@ -20,11 +20,15 @@
             "runtimeArgs": ["-r", "ts-node/register"],
             "args": [
                 "${workspaceFolder}/src/debug.ts",
-                "gi",
-                "--new",
-                "hello",
-                "--content",
-                "Hello World\\!"
+                "pr",
+                "-s",
+                "protoEvangelion",
+                "-b",
+                "master",
+                "-t",
+                "pr title",
+                "-D",
+                "pr description"
             ],
             "console": "integratedTerminal"
         }

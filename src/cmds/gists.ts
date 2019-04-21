@@ -110,9 +110,9 @@ Gists.prototype.run = async function(done) {
 
         logger.log(data.html_url)
 
-        done && done()
-
         afterHooks('gists.fork', instance)
+
+        done && done()
     }
 
     if (options.list) {
@@ -153,9 +153,9 @@ Gists.prototype.run = async function(done) {
             logger.log(data.html_url)
         }
 
-        done && done()
-
         afterHooks('gists.new', instance)
+
+        done && done()
     }
 }
 

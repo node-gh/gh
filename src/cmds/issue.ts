@@ -131,9 +131,9 @@ Issue.prototype.run = async function(done) {
 
         logger.log(logger.colors.cyan(data.html_url))
 
-        done && done()
-
         afterHooks('issue.assign', instance)
+
+        done && done()
     }
 
     if (options.browser) {
@@ -155,9 +155,9 @@ Issue.prototype.run = async function(done) {
 
         logger.log(logger.colors.cyan(data.html_url))
 
-        done && done()
-
         afterHooks('issue.close', instance)
+
+        done && done()
     }
 
     if (options.comment) {
@@ -213,9 +213,9 @@ Issue.prototype.run = async function(done) {
 
         logger.log(data.html_url)
 
-        done && done()
-
         afterHooks('issue.new', instance)
+
+        done && done()
     }
 
     if (options.open) {
@@ -231,9 +231,9 @@ Issue.prototype.run = async function(done) {
 
         logger.log(data.html_url)
 
-        done && done()
-
         afterHooks('issue.open', instance)
+
+        done && done()
     }
 
     if (options.search) {
@@ -285,12 +285,10 @@ Issue.prototype.close = async function() {
 Issue.prototype.comment = function() {
     const instance = this
     let options = instance.options
-    let body
-    let payload
 
-    body = logger.applyReplacements(options.comment, config.replace) + config.signature
+    const body = logger.applyReplacements(options.comment, config.replace) + config.signature
 
-    payload = {
+    const payload = {
         body,
         issue_number: options.number,
         repo: options.repo,
