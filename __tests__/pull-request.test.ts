@@ -14,22 +14,22 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it('List PRs & sorty by complexity `gh pr --list --sort complexity`', done => {
-        // strip ansi characters so it doesn't fail on Travis
-        expect(stripAnsi(runCmd('gh pr --list --sort complexity'))).toMatchSnapshot()
-        done()
-    })
+    // it('List PRs & sorty by complexity `gh pr --list --sort complexity`', done => {
+    //     // strip ansi characters so it doesn't fail on Travis
+    //     expect(stripAnsi(runCmd('gh pr --list --sort complexity'))).toMatchSnapshot()
+    //     done()
+    // })
 
     it('List Detailed PRs `gh pr --detailed`', done => {
         // strip ansi characters so it doesn't fail on Travis
-        expect(stripAnsi(runCmd('gh pr  --detailed'))).toMatchSnapshot()
+        expect(stripAnsi(runCmd('gh pr --detailed'))).toMatchSnapshot()
         done()
     })
 
-    it('Fetch PR `gh pr 55`', done => {
-        expect(runCmd('gh pr 55')).toMatchSnapshot()
-        done()
-    })
+    // it('Fetch PR `gh pr 55`', done => {
+    //     expect(runCmd('gh pr 55')).toMatchSnapshot()
+    //     done()
+    // })
 
     it('Fetch & Rebase PR `gh pr 55 --fetch --rebase`', done => {
         expect(runCmd('gh pr 55 --fetch --rebase')).toMatchSnapshot()
