@@ -23,9 +23,14 @@ describe('E2E: User Module Test', () => {
         const user = 'myuser'
         const pass = 'mypass'
 
-        expect(
-            stripAnsi(runCmd(`printf "${user}\n${pass}" | gh user --login`, true))
-        ).toMatchSnapshot()
+        let output = stripAnsi(runCmd(`printf "${user}\n${pass}" | gh user --login`, true))
+
+        // strip fs path so it passes on travis
+
+        output =
+            output.substring(0, output.indexOf('data:')) + output.substring(output.indexOf('/gh/'))
+
+        expect(output).toMatchSnapshot()
 
         const configPath = join(__dirname, 'auth.json')
         const config = JSON.parse(readFileSync(configPath).toString())

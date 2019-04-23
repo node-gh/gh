@@ -20,14 +20,6 @@ https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
 "
 `;
 
-exports[`E2E: Pull Request Module Test Fetch PR \`gh pr 55\` 1`] = `
-"Fetching pull request #55 into branch pr-55
-[hook] gh pr 55 --user protoEvangelion --repo gh --comment 'Just started reviewing :)'
-Adding comment on pull request #55
-https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
-"
-`;
-
 exports[`E2E: Pull Request Module Test Fwd PR to another user \`gh pr 97 --fwd node-gh-bot\` 1`] = `
 "Forwarding pull request #97 to @node-gh-bot
 https://github.com/node-gh-bot/gh/pull/3
@@ -55,27 +47,6 @@ Branch: master (1)
 │         │ pr description                                │                     │               │        │
 │         │                                               │                     │               │        │
 │         │ https://github.com/protoEvangelion/gh/pull/55 │                     │               │        │
-└─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
-"
-`;
-
-exports[`E2E: Pull Request Module Test List PRs & sorty by complexity \`gh pr --list --sort complexity\` 1`] = `
-"Listing open pull requests on protoEvangelion/gh
-protoEvangelion/gh
-Branch: master (2)
-┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
-│    #    │ Title                                         │ Author              │ Opened        │ Status │
-├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
-│   #50   │ pr2                                           │ @protoEvangelion    │ in 5 years    │   ✓    │
-├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
-│   #40   │ My pr title                                   │ @protoEvangelion    │ in 5 years    │   ✓    │
-└─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
-
-Branch: octokit (1)
-┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
-│    #    │ Title                                         │ Author              │ Opened        │ Status │
-├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
-│   #98   │ pr title2                                     │ @protoEvangelion    │ in 5 years    │   -    │
 └─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
 "
 `;
