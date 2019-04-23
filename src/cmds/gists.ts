@@ -76,20 +76,28 @@ Gists.prototype.run = async function(done) {
     if (options.delete) {
         options.delete
 
+        const answers = await inquirer.prompt([
+            {
+                type: 'input',
+                message: 'Are you sure? This action CANNOT be undone. [y/N]',
+                name: 'confirmation',
+            },
+        ])
+
+        if (
+            answers.confirmation.toLowerCase() === 'n' ||
+            answers.confirmation.toLowerCase() === ''
+        ) {
+            console.log('Not deleted.')
+            return
+        }
+
         for (const gist_id of options.delete) {
             logger.log(`Deleting gist ${logger.colors.green(`${options.loggedUser}/${gist_id}`)}`)
 
-            const answers = await inquirer.prompt([
-                {
-                    type: 'input',
-                    message: 'Are you sure? This action CANNOT be undone. [y/N]',
-                    name: 'confirmation',
-                },
-            ])
-
             beforeHooks('gists.delete', instance)
 
-            await _deleteHandler(answers.confirmation.toLowerCase() === 'y', gist_id, instance)
+            await _deleteHandler(gist_id, instance)
 
             afterHooks('gists.delete', instance)
         }
@@ -221,16 +229,12 @@ Gists.prototype.new = function(name, content) {
     return instance.GitHub.gists.create(payload)
 }
 
-async function _deleteHandler(proceed, gist_id, instance) {
-    if (proceed) {
-        try {
-            var { status } = await instance.delete(gist_id)
-        } catch (err) {
-            throw new Error(`Can't delete gist: ${gist_id}.`)
-        }
-
-        status === 204 && logger.log(`Successfully deleted gist: ${gist_id}`)
-    } else {
-        logger.log('Not deleted.')
+async function _deleteHandler(gist_id, instance) {
+    try {
+        var { status } = await instance.delete(gist_id)
+    } catch (err) {
+        throw new Error(`Can't delete gist: ${gist_id}.`)
     }
+
+    status === 204 && logger.log(`Successfully deleted gist: ${gist_id}`)
 }
