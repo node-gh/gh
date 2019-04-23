@@ -3,6 +3,8 @@
 ## Features
 
 -   Upgrade to latest GitHub rest endpoints
+-   Add throttling Octokit plugin that uses best practices to prevent hitting rate limits
+-   Increase reliability through more robust testing suite
 
 ### Node Versions
 
