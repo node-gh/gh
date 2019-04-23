@@ -2,8 +2,8 @@
 
 exports[`E2E: User Module Test Generates token end to end without 2fa 1`] = `
 "In order to use GitHub's API, you will need to login with your GitHub account.
-? Enter your GitHub user [25D[25C[2K[G? Enter your GitHub user m[26D[26C[2K[G? Enter your GitHub user my[27D[27C[2K[G? Enter your GitHub user myu[28D[28C[2K[G? Enter your GitHub user myus[29D[29C[2K[G? Enter your GitHub user myuse[30D[30C[2K[G? Enter your GitHub user myuser[31D[31C[2K[G? Enter your GitHub user m[26D[26C[2K[G? Enter your GitHub user my[27D[27C[2K[G? Enter your GitHub user myp[28D[28C[2K[G? Enter your GitHub user mypa[29D[29C[2K[G? Enter your GitHub user mypas[30D[30C[2K[G? Enter your GitHub user mypass[31D[31C[2K[G? Enter your GitHub user myuser[31D[31C
-? Enter your GitHub password [input is hidden] [47D[47C[2K[G? Enter your GitHub password [hidden][37D[37C
+? Enter your GitHub user ? Enter your GitHub user m? Enter your GitHub user my? Enter your GitHub user myu? Enter your GitHub user myus? Enter your GitHub user myuse? Enter your GitHub user myuser? Enter your GitHub user m? Enter your GitHub user my? Enter your GitHub user myp? Enter your GitHub user mypa? Enter your GitHub user mypas? Enter your GitHub user mypass? Enter your GitHub user myuser
+? Enter your GitHub password [input is hidden] ? Enter your GitHub password [hidden]
 Writing GH config data: /Users/liferay/dev/_node-gh/gh/__tests__/auth.json
 Authentication succeed. Token written to global config.
 "

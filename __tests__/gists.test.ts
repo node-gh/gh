@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import * as stripAnsi from 'strip-ansi'
 import { runCmd } from './runCmd'
 
 describe('E2E: Gist Module Test', () => {
@@ -24,8 +25,10 @@ describe('E2E: Gist Module Test', () => {
 
     it('Delete gists `gh gi --delete 5250d21093b46bd0665c2e8656d16bd2 --delete 30e5d3c69a6997617ab69d07b733105e`', done => {
         expect(
-            runCmd(
-                'yes | gh gi --delete 5250d21093b46bd0665c2e8656d16bd2 --delete 30e5d3c69a6997617ab69d07b733105e'
+            stripAnsi(
+                runCmd(
+                    'yes | gh gi --delete 5250d21093b46bd0665c2e8656d16bd2 --delete 30e5d3c69a6997617ab69d07b733105e'
+                )
             )
         ).toMatchSnapshot()
         done()
