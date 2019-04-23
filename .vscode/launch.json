@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "nt", "-u", "gatsbyjs", "-r", "gatsby"],
+            "args": ["${workspaceFolder}/src/debug.ts", "ji"],
             "console": "integratedTerminal"
         },
         {

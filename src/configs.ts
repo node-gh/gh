@@ -257,11 +257,17 @@ export function getPlugins() {
 export function getPlugin(plugin) {
     plugin = getPluginBasename(plugin)
 
-    return require(getPluginPath(`gh-${plugin}`))
+    return import(getPluginPath(`gh-${plugin}`))
 }
 
 export function getPluginPath(plugin) {
-    return fs.realpathSync(which.sync(plugin))
+    try {
+        var location = which.sync(plugin)
+    } catch (err) {
+        throw new Error(`Cannot resolve plugin path\n${err}`)
+    }
+
+    return fs.realpathSync(location)
 }
 
 export function getPluginBasename(plugin) {
