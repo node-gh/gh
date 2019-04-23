@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import * as stripAnsi from 'strip-ansi'
 import { runCmd } from './runCmd'
 
 describe('E2E: Repo Module Test', () => {
@@ -28,7 +29,7 @@ describe('E2E: Repo Module Test', () => {
     })
 
     it('Delete repo `gh re --delete foo`', done => {
-        expect(runCmd('printf "y" | gh re --delete foo')).toMatchSnapshot()
+        expect(stripAnsi(runCmd('printf "y" | gh re --delete foo'))).toMatchSnapshot()
         done()
     })
 })

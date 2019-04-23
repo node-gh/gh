@@ -15,7 +15,7 @@ Version.DETAILS = {
 }
 
 Version.prototype.run = function() {
-    printVersion(getGlobalPackageJson)
+    printVersion(getGlobalPackageJson())
 }
 
 function printVersion(pkg) {

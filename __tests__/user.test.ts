@@ -6,6 +6,7 @@
 
 import { readFileSync, unlinkSync } from 'fs'
 import { join } from 'path'
+import * as stripAnsi from 'strip-ansi'
 import { runCmd } from './testUtils'
 
 describe('E2E: User Module Test', () => {
@@ -22,7 +23,9 @@ describe('E2E: User Module Test', () => {
         const user = 'myuser'
         const pass = 'mypass'
 
-        expect(runCmd(`printf "${user}\n${pass}" | gh user --login`, true)).toMatchSnapshot()
+        expect(
+            stripAnsi(runCmd(`printf "${user}\n${pass}" | gh user --login`, true))
+        ).toMatchSnapshot()
 
         const configPath = join(__dirname, 'auth.json')
         const config = JSON.parse(readFileSync(configPath).toString())
