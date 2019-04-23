@@ -46,18 +46,17 @@ async function resolveCmd(name, commandDir) {
     })[0]
 
     if (commandName) {
-        return await import(path.join(commandDir, commandName))
+        return import(path.join(commandDir, commandName))
     }
 
     return resolvePlugin(name)
 }
 
 function resolvePlugin(name) {
-    // If plugin command exists, register the executed plugin name on
-    // process.env. This may simplify core plugin infrastructure.
+    // If plugin command exists, register the executed plugin name
     process.env.NODEGH_PLUGIN = name
 
-    return { default: configs.getPlugin(name).Impl }
+    return configs.getPlugin(name)
 }
 
 async function loadCommand(name) {
@@ -69,7 +68,8 @@ async function loadCommand(name) {
     if (fs.existsSync(commandPath)) {
         Command = await import(commandPath)
     } else {
-        Command = await resolveCmd(name, commandDir)
+        const resolvedCmd = await resolveCmd(name, commandDir)
+        Command = { default: resolvedCmd.Impl }
     }
 
     return Command.default

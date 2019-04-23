@@ -9,7 +9,7 @@
 import * as inquirer from 'inquirer'
 import * as openUrl from 'opn'
 import * as base from '../base'
-import { getGitHubInstance } from '../GitHub'
+import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 import { hasCmdInOptions } from '../utils'

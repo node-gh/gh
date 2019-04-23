@@ -7,7 +7,7 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as configs from '../configs'
-import { getGitHubInstance, tokenExists } from '../GitHub'
+import { getGitHubInstance, tokenExists } from '../github'
 import * as logger from '../logger'
 import { hasCmdInOptions } from '../utils'
 
