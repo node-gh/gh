@@ -178,7 +178,7 @@ export function writeGlobalConfigCredentials(user, token, path): void {
     if (fs.existsSync(configPath)) {
         config = JSON.parse(fs.readFileSync(configPath).toString())
     } else {
-        config = JSON.parse(fs.readFileSync('../default.gh.json').toString())
+        config = JSON.parse(fs.readFileSync(getGlobalConfigPath()).toString())
     }
 
     logger.log(`Writing GH config data: ${configPath}`)
