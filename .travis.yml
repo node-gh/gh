@@ -21,9 +21,7 @@ script:
 jobs:
     include:
         - stage: test
-          node_js: '6'
-          os: osx
-        - node_js: '8'
+          node_js: '8'
           os: osx
         - os: linux
           node_js: 'lts/*'
