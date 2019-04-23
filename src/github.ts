@@ -18,8 +18,31 @@ const config = getConfig()
 export async function getGitHubInstance(): Promise<Octokit> {
     const baseUrl =
         config.github_host === 'https://github.com' ? 'https://api.github.com' : config.github_host
+    const token = await getToken()
 
-    return new Octokit({ baseUrl, auth: await getToken() })
+    const throttlePlugin = await import('@octokit/plugin-throttling')
+
+    Octokit.plugin(throttlePlugin)
+
+    return new Octokit({
+        baseUrl,
+        auth: token,
+        throttle: {
+            onRateLimit: (retryAfter, options) => {
+                console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)
+
+                if (options.request.retryCount === 0) {
+                    // only retries once
+                    console.log(`Retrying after ${retryAfter} seconds!`)
+                    return true
+                }
+            },
+            onAbuseLimit: (_, options) => {
+                // does not retry, only logs a warning
+                console.warn(`Abuse detected for request ${options.method} ${options.url}`)
+            },
+        },
+    })
 }
 
 export async function getToken(): Promise<string> {

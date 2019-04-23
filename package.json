@@ -91,6 +91,7 @@
         }
     },
     "dependencies": {
+        "@octokit/plugin-throttling": "^2.4.0",
         "@octokit/rest": "16.25.0",
         "cli-table3": "0.5.1",
         "colors": "1.3.3",
