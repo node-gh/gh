@@ -82,6 +82,7 @@ export function prepareTestFixtures(cmdName, argv) {
         return () => {}
     }
 
+    nock.disableNetConnect()
     nockBack.fixtures = `${process.cwd()}/__tests__/nockFixtures`
     nockBack.setMode('record')
 
