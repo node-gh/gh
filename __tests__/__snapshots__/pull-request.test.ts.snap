@@ -13,7 +13,7 @@ https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
 `;
 
 exports[`E2E: Pull Request Module Test Fetch & Rebase PR \`gh pr 55 --fetch --rebase\` 1`] = `
-"Fetching pull request #55 and rebasing into branch octokit
+"Fetching pull request #55 and rebasing into branch master
 [hook] gh pr 55 --user protoEvangelion --repo gh --comment 'Just started reviewing :)'
 Adding comment on pull request #55
 https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
