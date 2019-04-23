@@ -49,7 +49,8 @@ async function resolveCmd(name, commandDir) {
         return import(path.join(commandDir, commandName))
     }
 
-    return resolvePlugin(name)
+    const plugin = await resolvePlugin(name)
+    return { default: plugin.Impl }
 }
 
 function resolvePlugin(name) {
@@ -68,8 +69,7 @@ async function loadCommand(name) {
     if (fs.existsSync(commandPath)) {
         Command = await import(commandPath)
     } else {
-        const resolvedCmd = await resolveCmd(name, commandDir)
-        Command = { default: resolvedCmd.Impl }
+        Command = await resolveCmd(name, commandDir)
     }
 
     return Command.default
