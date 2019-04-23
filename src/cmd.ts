@@ -19,6 +19,8 @@ const config = configs.getConfig()
 // allows to run program as js or ts
 const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
 
+const testing = process.env.NODE_ENV === 'testing'
+
 // -- Utils ----------------------------------------------------------------------------------------
 
 async function resolveCmd(name, commandDir) {
@@ -131,12 +133,13 @@ export async function setUp() {
     }
 
     options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
-    options.currentBranch = options.currentBranch || git.getCurrentBranch()
+
+    options.currentBranch = testing ? 'master' : git.getCurrentBranch()
 
     options.github_host = config.github_host
     options.github_gist_host = config.github_gist_host
 
-    if (process.env.NODE_ENV === 'testing') {
+    if (testing) {
         const { prepareTestFixtures } = await import('./utils')
 
         await new Command(options).run(prepareTestFixtures(Command.name, cooked))
