@@ -51,18 +51,13 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it('Open PR `gh pr 40 --open`', done => {
-        expect(runCmd('gh pr 40 --open')).toMatchSnapshot()
+    it('Close PR `gh pr --close --number 50 --number 40`', done => {
+        expect(runCmd('gh pr --close --number 50 --number 40')).toMatchSnapshot()
         done()
     })
 
-    it('Works with passing in multiple number flags `gh pr --open --number 40 --number 50`', done => {
-        expect(runCmd('gh pr --open --number 40 --number 50')).toMatchSnapshot()
-        done()
-    })
-
-    it('Close PR `gh pr 50 --close`', done => {
-        expect(runCmd('gh pr 50 --close')).toMatchSnapshot()
+    it('Open PR `gh pr --open --number 50 --number 40`', done => {
+        expect(runCmd('gh pr --open --number 50 --number 40')).toMatchSnapshot()
         done()
     })
 

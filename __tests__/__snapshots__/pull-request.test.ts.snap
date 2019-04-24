@@ -1,8 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`E2E: Pull Request Module Test Close PR \`gh pr 50 --close\` 1`] = `
+exports[`E2E: Pull Request Module Test Close PR \`gh pr --close --number 50 --number 40\` 1`] = `
 "Closing pull request #50
 https://github.com/protoEvangelion/gh/pull/50
+Closing pull request #40
+https://github.com/protoEvangelion/gh/pull/40
 "
 `;
 
@@ -63,8 +65,10 @@ Branch: master (1)
 "
 `;
 
-exports[`E2E: Pull Request Module Test Open PR \`gh pr 40 --open\` 1`] = `
-"Opening pull request #40
+exports[`E2E: Pull Request Module Test Open PR \`gh pr --open --number 50 --number 40\` 1`] = `
+"Opening pull request #50
+https://github.com/protoEvangelion/gh/pull/50
+Opening pull request #40
 https://github.com/protoEvangelion/gh/pull/40
 "
 `;
@@ -73,13 +77,5 @@ exports[`E2E: Pull Request Module Test Submit PR \`gh pr -s protoEvangelion -b m
 "Submitting pull request to @protoEvangelion
 https://github.com/protoEvangelion/gh/pull/97
 [hook] gh pr --browser  --user protoEvangelion --repo gh --number 97
-"
-`;
-
-exports[`E2E: Pull Request Module Test Works with passing in multiple number flags \`gh pr --open --number 40 --number 50\` 1`] = `
-"Opening pull request #40
-https://github.com/protoEvangelion/gh/pull/40
-Opening pull request #50
-https://github.com/protoEvangelion/gh/pull/50
 "
 `;
