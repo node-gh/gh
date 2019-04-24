@@ -123,7 +123,7 @@ Gists.prototype.run = async function(done) {
         logger.log(`Listing gists for ${logger.colors.green(options.user)}`)
 
         try {
-            var { data } = await instance.list(options.user)
+            var data = await instance.list(options.user)
         } catch (err) {
             throw new Error(`Can't list gists for ${options.user}.`)
         }
@@ -184,13 +184,13 @@ Gists.prototype.fork = function(id) {
     return instance.GitHub.gists.fork(payload)
 }
 
-Gists.prototype.list = function(user) {
+Gists.prototype.list = async function(user) {
     const instance = this
     const payload = {
         username: user,
     }
 
-    return instance.GitHub.gists.listPublicForUser(payload)
+    return instance.GitHub.paginate(instance.GitHub.gists.listPublicForUser.endpoint(payload))
 }
 
 Gists.prototype.listCallback_ = function(gists) {

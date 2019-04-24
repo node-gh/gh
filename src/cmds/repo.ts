@@ -311,7 +311,7 @@ Repo.prototype.run = async function(done) {
             )
         }
         try {
-            var { data } = await instance.list(user)
+            var data = await instance.list(user)
         } catch (err) {
             throw new Error(`Can't list repos.\n${err}`)
         }
@@ -444,7 +444,7 @@ Repo.prototype.list = async function(
         }
     }
 
-    return await instance.GitHub.repos[method](payload)
+    return await instance.GitHub.paginate(instance.GitHub.repos[method].endpoint(payload))
 }
 
 Repo.prototype.listCallback_ = function(repos): void {

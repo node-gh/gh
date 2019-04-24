@@ -339,10 +339,12 @@ Issue.prototype.list = async function(user, repo) {
     }
 
     if (options.milestone) {
-        const { data } = await instance.GitHub.issues.listMilestonesForRepo({
-            repo,
-            owner: user,
-        })
+        const data = await instance.GitHub.paginate(
+            instance.GitHub.issues.listMilestonesForRepo.endpoint({
+                repo,
+                owner: user,
+            })
+        )
 
         const milestoneNumber = data
             .filter(milestone => options.milestone === milestone.title)
@@ -355,16 +357,19 @@ Issue.prototype.list = async function(user, repo) {
         payload.assignee = options.assignee
     }
 
-    const { data } = await instance.GitHub.issues.listForRepo(payload)
+    const data = await instance.GitHub.paginate(
+        instance.GitHub.issues.listForRepo.endpoint(payload)
+    )
 
     const issues = data.filter(result => Boolean(result))
 
+    const userRepo = logger.colors.yellow(`${user}/${repo}`)
+
     if (issues && issues.length > 0) {
         const formattedIssues = formatIssues(issues, options.detailed)
-
-        logger.log(formattedIssues)
+        options.all ? logger.log(`\n${userRepo}:\n${formattedIssues}`) : logger.log(formattedIssues)
     } else {
-        logger.log('No issues.')
+        logger.log(`\nNo issues on ${userRepo}`)
     }
 }
 
@@ -377,9 +382,11 @@ Issue.prototype.listFromAllRepositories = async function() {
         username: options.user,
     }
 
-    const repositories: any = await instance.GitHub.repos.listForUser(payload)
+    const repositories: any = await instance.GitHub.paginate(
+        instance.GitHub.repos.listForUser.endpoint(payload)
+    )
 
-    for (const repo of repositories.data) {
+    for (const repo of repositories) {
         await instance.list(repo.owner.login, repo.name)
     }
 }

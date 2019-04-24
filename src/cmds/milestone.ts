@@ -87,7 +87,9 @@ Milestone.prototype.list = async function(user, repo) {
     }
 
     try {
-        var { data } = await instance.GitHub.issues.listMilestonesForRepo(payload)
+        var data = await instance.GitHub.paginate(
+            instance.GitHub.issues.listMilestonesForRepo.endpoint(payload)
+        )
     } catch (err) {
         throw new Error(logger.getErrorMessage(err))
     }
@@ -109,12 +111,12 @@ Milestone.prototype.listFromAllRepositories = async function() {
     const instance = this
     const options = instance.options
 
-    let operation = 'list'
+    let operation = 'listForUser'
     let payload
 
     payload = {
         type: 'all',
-        owner: options.user,
+        username: options.user,
     }
 
     if (options.organization) {
@@ -122,7 +124,7 @@ Milestone.prototype.listFromAllRepositories = async function() {
         payload.org = options.organization
     }
 
-    const { data } = await instance.GitHub.repos[operation](payload)
+    const data = await instance.GitHub.paginate(instance.GitHub.repos[operation].endpoint(payload))
 
     for (const repo of data) {
         await instance.list(repo.owner.login, repo.name)

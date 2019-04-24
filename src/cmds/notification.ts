@@ -89,7 +89,9 @@ Notifications.prototype.latest = async function(opt_watch) {
     }
 
     try {
-        var { data } = await instance.GitHub.activity.listRepoEvents(payload)
+        var data = await instance.GitHub.paginate(
+            instance.GitHub.activity.listRepoEvents.endpoint(payload)
+        )
     } catch (err) {
         throw new Error(`Can't get latest notifications.\n${err}`)
     }

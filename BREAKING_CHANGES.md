@@ -2,6 +2,7 @@
 
 ## Features
 
+-   Add pagination to list endpoints
 -   Upgrade to latest GitHub rest endpoints
 -   Add throttling Octokit plugin that uses best practices to prevent hitting rate limits
 -   Increase reliability through more robust testing suite
@@ -14,6 +15,7 @@
 ### Issues
 
 -   `--label` flag is now `--labels`
+-   Clearer delineation between repos when listing
 
 ### Milestons
 
