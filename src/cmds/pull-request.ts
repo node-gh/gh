@@ -328,7 +328,7 @@ PullRequest.prototype.checkPullRequestIntegrity_ = async function(originalError,
     }
 
     try {
-        var { data: pulls } = await instance.GitHub.pulls.list(payload)
+        var pulls = await instance.GitHub.paginate(instance.GitHub.pulls.list.endpoint(payload))
     } catch (err) {
         throw new Error(`Error listings PRs\n${err}`)
     }
@@ -693,7 +693,7 @@ PullRequest.prototype.list = async function(user, repo) {
     }
 
     try {
-        var { data } = await instance.GitHub.pulls.list(payload)
+        var data = await instance.GitHub.paginate(instance.GitHub.pulls.list.endpoint(payload))
     } catch (err) {
         if (err && err.status === '404') {
             // some times a repo is found, but you can't listen its prs
@@ -786,7 +786,9 @@ PullRequest.prototype.listFromAllRepositories = async function() {
     }
 
     try {
-        var { data: repositories } = await instance.GitHub.repos[apiMethod](payload)
+        var repositories = await instance.GitHub.paginate(
+            instance.GitHub.repos[apiMethod].endpoint(payload)
+        )
     } catch (err) {
         throw new Error(`Error listing repos`)
     }
