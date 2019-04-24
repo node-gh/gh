@@ -134,8 +134,6 @@ Gists.prototype.run = async function(done) {
     if (options.new) {
         const privacy = options.private ? 'private' : 'public'
 
-        options.new = options.new
-
         beforeHooks('gists.new', instance)
 
         logger.log(

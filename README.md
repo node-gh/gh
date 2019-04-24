@@ -917,16 +917,16 @@ gh re --clone --user eduardolundgren --repo gh --protocol https
 
 #### Examples
 
--   Create a label for a repository.
+-   Create a label for a repository (_color is a hex code with or without literal hex symbol_).
 
 ```
-gh re --label --new bug --color color --repo gh
+gh re --label --new bug --color '#7057ff' --repo gh
 ```
 
 -   Create a label for a user's repository.
 
 ```
-gh re --label --new bug --color color --user eduardolundgren --repo gh
+gh re --label --new bug --color '#7057ff' --user eduardolundgren --repo gh
 ```
 
 ### 8. Delete Label
@@ -990,7 +990,7 @@ gh re --label --list --user eduardolundgren --repo gh
 
 #### Examples
 
--   Update a label for a repository.
+-   Update a label for a repository (_color is a hex code with or without literal hex symbol_).
 
 ```
 gh re --label --update bug --color color --repo gh

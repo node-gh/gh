@@ -266,13 +266,12 @@ Repo.prototype.run = async function(done) {
             )
 
             try {
-                const { data } = await instance.createLabel(user)
-                console.log('data', data)
+                await instance.createLabel(user)
             } catch (err) {
                 throw new Error(`Can't create label.\n${err}`)
             }
 
-            beforeHooks('repo.createLabel', instance)
+            afterHooks('repo.createLabel', instance)
         } else if (options.update) {
             beforeHooks('repo.updateLabel', instance)
 
@@ -292,7 +291,7 @@ Repo.prototype.run = async function(done) {
 
             status === 200 && logger.log('Success')
 
-            beforeHooks('repo.updateLabel', instance)
+            afterHooks('repo.updateLabel', instance)
         }
     } else if (options.list && !options.label) {
         if (options.organization) {
@@ -363,13 +362,13 @@ Repo.prototype.clone_ = function(user, repo, repo_url) {
     git.clone(url.parse(repo_url).href, repo)
 }
 
-Repo.prototype.createLabel = async function(user): Promise<Octokit.IssuesCreateLabelResponse> {
+Repo.prototype.createLabel = function(user): Promise<Octokit.IssuesCreateLabelResponse> {
     const instance = this
     const options = instance.options
 
     const payload: Octokit.IssuesCreateLabelParams = {
         owner: user,
-        color: options.color,
+        color: normalizeColor(options.color),
         name: options.new,
         repo: options.repo,
     }
@@ -378,20 +377,20 @@ Repo.prototype.createLabel = async function(user): Promise<Octokit.IssuesCreateL
         payload.description = options.description
     }
 
-    return await instance.GitHub.issues.createLabel(payload)
+    return instance.GitHub.issues.createLabel(payload)
 }
 
-Repo.prototype.delete = async function(user, repo): Promise<Octokit.ReposDeleteResponse> {
+Repo.prototype.delete = function(user, repo): Promise<Octokit.ReposDeleteResponse> {
     const instance = this
     const payload = {
         repo,
         owner: user,
     }
 
-    return await instance.GitHub.repos.delete(payload)
+    return instance.GitHub.repos.delete(payload)
 }
 
-Repo.prototype.deleteLabel = async function(user): Promise<Octokit.IssuesDeleteLabelResponse> {
+Repo.prototype.deleteLabel = function(user): Promise<Octokit.IssuesDeleteLabelResponse> {
     const instance = this
     const options = instance.options
 
@@ -401,10 +400,10 @@ Repo.prototype.deleteLabel = async function(user): Promise<Octokit.IssuesDeleteL
         repo: options.repo,
     }
 
-    return await instance.GitHub.issues.deleteLabel(payload)
+    return instance.GitHub.issues.deleteLabel(payload)
 }
 
-Repo.prototype.get = async function(user, repo): Promise<Octokit.IssuesGetResponse> {
+Repo.prototype.get = function(user, repo): Promise<Octokit.IssuesGetResponse> {
     const instance = this
 
     const payload = {
@@ -412,10 +411,10 @@ Repo.prototype.get = async function(user, repo): Promise<Octokit.IssuesGetRespon
         owner: user,
     }
 
-    return await instance.GitHub.repos.get(payload)
+    return instance.GitHub.repos.get(payload)
 }
 
-Repo.prototype.list = async function(
+Repo.prototype.list = function(
     user
 ): Promise<Octokit.AnyResponse | Octokit.ReposListForOrgResponse> {
     const instance = this
@@ -444,7 +443,7 @@ Repo.prototype.list = async function(
         }
     }
 
-    return await instance.GitHub.paginate(instance.GitHub.repos[method].endpoint(payload))
+    return instance.GitHub.paginate(instance.GitHub.repos[method].endpoint(payload))
 }
 
 Repo.prototype.listCallback_ = function(repos): void {
@@ -487,7 +486,7 @@ Repo.prototype.listCallback_ = function(repos): void {
     }
 }
 
-Repo.prototype.listLabels = async function(user): Promise<Octokit.IssuesListLabelsForRepoResponse> {
+Repo.prototype.listLabels = function(user): Promise<Octokit.IssuesListLabelsForRepoResponse> {
     const instance = this
     const options = instance.options
 
@@ -498,7 +497,7 @@ Repo.prototype.listLabels = async function(user): Promise<Octokit.IssuesListLabe
         ...(options.per_page && { per_page: options.per_page }),
     }
 
-    return await instance.GitHub.issues.listLabelsForRepo(payload)
+    return instance.GitHub.issues.listLabelsForRepo(payload)
 }
 
 Repo.prototype.listLabelsCallback_ = function(err, labels): void {
@@ -532,7 +531,7 @@ Repo.prototype.fork = async function(): Promise<Octokit.ReposCreateForkResponse>
     return await instance.GitHub.repos.createFork(payload)
 }
 
-Repo.prototype.new = async function(): Promise<
+Repo.prototype.new = function(): Promise<
     Octokit.ReposCreateInOrgResponse | Octokit.ReposCreateForAuthenticatedUserResponse
 > {
     const instance = this
@@ -568,19 +567,23 @@ Repo.prototype.new = async function(): Promise<
         payload.org = options.organization
     }
 
-    return await instance.GitHub.repos[method](payload)
+    return instance.GitHub.repos[method](payload)
 }
 
-Repo.prototype.updateLabel = async function(user): Promise<Octokit.IssuesUpdateLabelResponse> {
+Repo.prototype.updateLabel = function(user): Promise<Octokit.IssuesUpdateLabelResponse> {
     const instance = this
     const options = instance.options
 
     const payload: Octokit.IssuesUpdateLabelParams = {
         owner: user,
-        color: options.color,
+        color: normalizeColor(options.color),
         current_name: options.update,
         repo: options.repo,
     }
 
-    return await instance.GitHub.issues.updateLabel(payload)
+    return instance.GitHub.issues.updateLabel(payload)
+}
+
+function normalizeColor(color) {
+    return color.includes('#') ? color.replace('#', '') : color
 }
