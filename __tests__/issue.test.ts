@@ -27,13 +27,13 @@ describe('E2E: Issues Module Test', () => {
         done()
     })
 
-    it('Open Issue `gh is 1 -o`', done => {
-        expect(runCmd(`gh is 1 -o`)).toMatchSnapshot()
+    it('Close Issue `gh is --close --number 7 --number 10`', done => {
+        expect(runCmd(`gh is --close --number 7 --number 10`)).toMatchSnapshot()
         done()
     })
 
-    it('Close Issue `gh is 1 -C`', done => {
-        expect(runCmd(`gh is 1 -C`)).toMatchSnapshot()
+    it('Open Issue `gh is --open --number 7 --number 10`', done => {
+        expect(runCmd(`gh is --open --number 7 --number 10`)).toMatchSnapshot()
         done()
     })
 
