@@ -90,7 +90,6 @@ Issue.STATE_OPEN = 'open'
 Issue.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
-    const userRepo = logger.colors.green(`${options.user}/${options.repo}`)
     const number = logger.colors.green(`#${options.number}`)
 
     instance.config = config
@@ -120,7 +119,9 @@ Issue.prototype.run = async function(done) {
         beforeHooks('issue.assign', instance)
 
         logger.log(
-            `Assigning issue ${number} on ${userRepo} to ${logger.colors.magenta(options.assignee)}`
+            `Assigning issue ${number} on ${getUserRepo(options)} to ${logger.colors.magenta(
+                options.assignee
+            )}`
         )
 
         try {
@@ -138,26 +139,8 @@ Issue.prototype.run = async function(done) {
         !testing && instance.browser(options.user, options.repo, options.number)
     }
 
-    if (options.close) {
-        beforeHooks('issue.close', instance)
-
-        options.state = Issue.STATE_CLOSED
-
-        logger.log(`Closing issue ${number} on ${userRepo}`)
-
-        try {
-            var { data } = await instance.close()
-        } catch (err) {
-            throw new Error(`Can't close issue.\n${err}`)
-        }
-
-        logger.log(logger.colors.cyan(data.html_url))
-
-        afterHooks('issue.close', instance)
-    }
-
     if (options.comment) {
-        logger.log(`Adding comment on issue ${number} on ${userRepo}`)
+        logger.log(`Adding comment on issue ${number} on ${getUserRepo(options)}`)
 
         try {
             var { data } = await instance.comment()
@@ -179,7 +162,11 @@ Issue.prototype.run = async function(done) {
 
                 await instance.listFromAllRepositories()
             } else {
-                logger.log(`Listing ${logger.colors.green(options.state)} issues on ${userRepo}`)
+                logger.log(
+                    `Listing ${logger.colors.green(options.state)} issues on ${getUserRepo(
+                        options
+                    )}`
+                )
 
                 await instance.list(options.user, options.repo)
             }
@@ -191,7 +178,7 @@ Issue.prototype.run = async function(done) {
     if (options.new) {
         beforeHooks('issue.new', instance)
 
-        logger.log(`Creating a new issue on ${userRepo}`)
+        logger.log(`Creating a new issue on ${getUserRepo(options)}`)
 
         try {
             var { data } = await instance.new()
@@ -211,17 +198,15 @@ Issue.prototype.run = async function(done) {
     if (options.open) {
         beforeHooks('issue.open', instance)
 
-        logger.log(`Opening issue ${number} on ${userRepo}`)
-
-        try {
-            var { data } = await instance.open()
-        } catch (err) {
-            throw new Error(`Can't close issue.\n${err}`)
-        }
-
-        logger.log(data.html_url)
+        await openHandler(instance, options)
 
         afterHooks('issue.open', instance)
+    } else if (options.close) {
+        beforeHooks('issue.close', instance)
+
+        await closeHandler(instance, options)
+
+        afterHooks('issue.close', instance)
     }
 
     if (options.search) {
@@ -233,13 +218,13 @@ Issue.prototype.run = async function(done) {
 
             logger.log(`Searching for ${query} in issues for ${logger.colors.green(user)}\n`)
         } else {
-            logger.log(`Searching for ${query} in issues for ${userRepo}\n`)
+            logger.log(`Searching for ${query} in issues for ${getUserRepo(options)}\n`)
         }
 
         try {
             await instance.search(user, repo)
         } catch (err) {
-            throw new Error(`Can't search issues for ${userRepo}: \n${err}`)
+            throw new Error(`Can't search issues for ${getUserRepo(options)}: \n${err}`)
         }
     }
 
@@ -251,7 +236,7 @@ Issue.prototype.assign = async function() {
 
     const issue = await instance.getIssue_()
 
-    return await instance.editIssue_(issue.title, Issue.STATE_OPEN)
+    return instance.editIssue_(issue.title, Issue.STATE_OPEN)
 }
 
 Issue.prototype.browser = function(user, repo, number) {
@@ -262,12 +247,12 @@ Issue.prototype.browser = function(user, repo, number) {
     openUrl(`${config.github_host}/${user}/${repo}/issues/${number}`, { wait: false })
 }
 
-Issue.prototype.close = async function() {
+Issue.prototype.close = async function(number) {
     var instance = this
 
-    const issue = await instance.getIssue_()
+    const issue = await instance.getIssue_(number)
 
-    return await instance.editIssue_(issue.title, Issue.STATE_CLOSED)
+    return instance.editIssue_(issue.title, Issue.STATE_CLOSED, number)
 }
 
 Issue.prototype.comment = function() {
@@ -286,7 +271,7 @@ Issue.prototype.comment = function() {
     return instance.GitHub.issues.createComment(payload)
 }
 
-Issue.prototype.editIssue_ = function(title, state) {
+Issue.prototype.editIssue_ = function(title, state, number?: number) {
     const instance = this
     const options = instance.options
     let payload
@@ -297,7 +282,7 @@ Issue.prototype.editIssue_ = function(title, state) {
         assignee: options.assignee,
         labels: options.labels || [],
         milestone: options.milestone,
-        issue_number: options.number,
+        issue_number: number || options.number,
         owner: options.user,
         repo: options.repo,
     }
@@ -305,13 +290,12 @@ Issue.prototype.editIssue_ = function(title, state) {
     return instance.GitHub.issues.update(payload)
 }
 
-Issue.prototype.getIssue_ = function() {
+Issue.prototype.getIssue_ = function(number?: number) {
     const instance = this
     const options = instance.options
-    let payload
 
-    payload = {
-        issue_number: options.number,
+    const payload = {
+        issue_number: number || options.number,
         repo: options.repo,
         owner: options.user,
     }
@@ -363,13 +347,13 @@ Issue.prototype.list = async function(user, repo) {
 
     const issues = data.filter(result => Boolean(result))
 
-    const userRepo = logger.colors.yellow(`${user}/${repo}`)
-
     if (issues && issues.length > 0) {
         const formattedIssues = formatIssues(issues, options.detailed)
-        options.all ? logger.log(`\n${userRepo}:\n${formattedIssues}`) : logger.log(formattedIssues)
+        options.all
+            ? logger.log(`\n${getUserRepo(options)}:\n${formattedIssues}`)
+            : logger.log(formattedIssues)
     } else {
-        logger.log(`\nNo issues on ${userRepo}`)
+        logger.log(`\nNo issues on ${getUserRepo(options)}`)
     }
 }
 
@@ -418,12 +402,12 @@ Issue.prototype.new = function() {
     return instance.GitHub.issues.create(payload)
 }
 
-Issue.prototype.open = async function() {
-    var instance = this
+Issue.prototype.open = async function(number) {
+    const instance = this
 
-    const issue = await instance.getIssue_()
+    const issue = await instance.getIssue_(number)
 
-    return await instance.editIssue_(issue.title, Issue.STATE_OPEN)
+    return instance.editIssue_(issue.title, Issue.STATE_OPEN, number)
 }
 
 Issue.prototype.search = async function(user, repo) {
@@ -454,6 +438,36 @@ Issue.prototype.search = async function(user, repo) {
         logger.log(formattedIssues)
     } else {
         logger.log('Could not find any issues matching your query.')
+    }
+}
+
+async function closeHandler(instance, options) {
+    options.state = Issue.STATE_CLOSED
+
+    for (const number of options.number) {
+        logger.log(`Closing issue ${number} on ${getUserRepo(options)}`)
+
+        try {
+            var { data } = await instance.close(number)
+        } catch (err) {
+            throw new Error(`Can't close issue.\n${err}`)
+        }
+
+        logger.log(logger.colors.cyan(data.html_url))
+    }
+}
+
+async function openHandler(instance, options) {
+    for (const number of options.number) {
+        logger.log(`Opening issue ${number} on ${getUserRepo(options)}`)
+
+        try {
+            var { data } = await instance.open(number)
+        } catch (err) {
+            throw new Error(`Can't close issue.\n${err}`)
+        }
+
+        logger.log(logger.colors.cyan(data.html_url))
     }
 }
 
@@ -517,4 +531,8 @@ function trim(str) {
         .replace(/^[ ]+/gm, '')
         .replace(/[\r\n]+/g, '\n')
         .trim()
+}
+
+function getUserRepo(options) {
+    return logger.colors.green(`${options.user}/${options.repo}`)
 }

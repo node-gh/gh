@@ -6,9 +6,11 @@ https://github.com/protoEvangelion/gh/issues/1
 "
 `;
 
-exports[`E2E: Issues Module Test Close Issue \`gh is 1 -C\` 1`] = `
-"Closing issue #1 on protoEvangelion/gh
-https://github.com/protoEvangelion/gh/issues/1
+exports[`E2E: Issues Module Test Close Issue \`gh is --close --number 7 --number 10\` 1`] = `
+"Closing issue 7 on protoEvangelion/gh
+https://github.com/protoEvangelion/gh/issues/7
+Closing issue 10 on protoEvangelion/gh
+https://github.com/protoEvangelion/gh/issues/10
 "
 `;
 
@@ -41,9 +43,11 @@ exports[`E2E: Issues Module Test List Issues \`gh is\` 1`] = `
 "
 `;
 
-exports[`E2E: Issues Module Test Open Issue \`gh is 1 -o\` 1`] = `
-"Opening issue #1 on protoEvangelion/gh
-https://github.com/protoEvangelion/gh/issues/1
+exports[`E2E: Issues Module Test Open Issue \`gh is --open --number 7 --number 10\` 1`] = `
+"Opening issue 7 on protoEvangelion/gh
+https://github.com/protoEvangelion/gh/issues/7
+Opening issue 10 on protoEvangelion/gh
+https://github.com/protoEvangelion/gh/issues/10
 "
 `;
 
