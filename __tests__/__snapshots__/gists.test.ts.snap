@@ -3,7 +3,7 @@
 exports[`E2E: Gist Module Test Create new gist \`gh gi --new hello --content "Hello World!"\` 1`] = `
 "Creating public gist on protoEvangelion
 https://gist.github.com/000000001e9f6422a8d3cd0feda0a3be845d4
-[hook] gh gi --browser  --id 1000
+{after-hook} gh gi --browser  --id 1000
 "
 `;
 
@@ -19,7 +19,7 @@ Successfully deleted gist: 30e5d3c69a6997617ab69d07b733105e
 exports[`E2E: Gist Module Test Fork a gist \`gh gi --fork 5444883\` 1`] = `
 "Forking gist on protoEvangelion
 https://gist.github.com/c93ab6d93dde5dfa3fe9f0b000000001b1643c
-[hook] gh gi --browser  --id
+{after-hook} gh gi --browser  --id
 "
 `;
 

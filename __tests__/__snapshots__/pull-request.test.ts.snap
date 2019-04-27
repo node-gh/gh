@@ -16,15 +16,16 @@ https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
 
 exports[`E2E: Pull Request Module Test Fetch & Rebase PR \`gh pr 55 --fetch --rebase\` 1`] = `
 "Fetching pull request #55 and rebasing into branch master
-[hook] gh pr 55 --user protoEvangelion --repo gh --comment 'Just started reviewing :)'
-Adding comment on pull request #55
-https://github.com/protoEvangelion/gh/pull/50#issuecomment-000000001
+{after-hook} gh pr 55 --user protoEvangelion --repo gh --comment 'Just started reviewing :)'
 "
 `;
 
 exports[`E2E: Pull Request Module Test Fwd PR to another user \`gh pr 97 --fwd node-gh-bot\` 1`] = `
 "Forwarding pull request #97 to @node-gh-bot
 https://github.com/node-gh-bot/gh/pull/3
+{after-hook} gh pr 3 --user node-gh-bot --comment '/cc @protoEvangelion'
+{after-hook} gh pr 97 --user protoEvangelion --repo gh --comment 'Pull request forwarded to https://github.com/node-gh-bot/gh/pull/3.…
+{after-hook} gh pr 97 --close
 "
 `;
 
@@ -76,6 +77,6 @@ https://github.com/protoEvangelion/gh/pull/40
 exports[`E2E: Pull Request Module Test Submit PR \`gh pr -s protoEvangelion -b master -t "pr title" -D "pr description"\` 1`] = `
 "Submitting pull request to @protoEvangelion
 https://github.com/protoEvangelion/gh/pull/97
-[hook] gh pr --browser  --user protoEvangelion --repo gh --number 97
+{after-hook} gh pr --browser  --user protoEvangelion --repo gh --number 97
 "
 `;

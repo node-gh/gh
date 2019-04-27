@@ -107,7 +107,7 @@ Repo.prototype.run = async function(done) {
     if (options.browser) {
         instance.browser(options.user, options.repo)
     } else if (options.clone && !options.new) {
-        beforeHooks('repo.get', instance)
+        await beforeHooks('repo.get', instance)
 
         if (options.organization) {
             user = options.organization
@@ -150,9 +150,9 @@ Repo.prototype.run = async function(done) {
             instance.clone_(user, options.repo, repoUrl)
         }
 
-        afterHooks('repo.get', instance)
+        await afterHooks('repo.get', instance)
     } else if (options.delete && !options.label) {
-        beforeHooks('repo.delete', instance)
+        await beforeHooks('repo.delete', instance)
 
         logger.log(`Deleting repo ${logger.colors.green(`${options.user}/${options.delete}`)}`)
 
@@ -173,12 +173,12 @@ Repo.prototype.run = async function(done) {
                 logger.error(`Can't delete repo.\n${err}`)
             }
 
-            afterHooks('repo.delete', instance)
+            await afterHooks('repo.delete', instance)
         } else {
             logger.log('Not deleted.')
         }
     } else if (options.fork) {
-        beforeHooks('repo.fork', instance)
+        await beforeHooks('repo.fork', instance)
 
         if (options.organization) {
             user = options.organization
@@ -204,7 +204,7 @@ Repo.prototype.run = async function(done) {
             instance.clone_(user, options.repo, data.ssh_url)
         }
 
-        afterHooks('repo.fork', instance)
+        await afterHooks('repo.fork', instance)
     } else if (options.label) {
         if (options.organization) {
             user = options.organization
@@ -213,7 +213,7 @@ Repo.prototype.run = async function(done) {
         }
 
         if (options.delete) {
-            beforeHooks('repo.deleteLabel', instance)
+            await beforeHooks('repo.deleteLabel', instance)
 
             options.label = options.delete
 
@@ -231,9 +231,9 @@ Repo.prototype.run = async function(done) {
 
             status === 204 && logger.log('Successful.')
 
-            afterHooks('repo.deleteLabel', instance)
+            await afterHooks('repo.deleteLabel', instance)
         } else if (options.list) {
-            beforeHooks('repo.listLabels', instance)
+            await beforeHooks('repo.listLabels', instance)
 
             if (options.page) {
                 logger.log(
@@ -253,9 +253,9 @@ Repo.prototype.run = async function(done) {
 
             data.forEach(label => logger.log(logger.colors.yellow(label.name)))
 
-            afterHooks('repo.listLabels', instance)
+            await afterHooks('repo.listLabels', instance)
         } else if (options.new) {
-            beforeHooks('repo.createLabel', instance)
+            await beforeHooks('repo.createLabel', instance)
 
             options.label = options.new
 
@@ -271,9 +271,9 @@ Repo.prototype.run = async function(done) {
                 throw new Error(`Can't create label.\n${err}`)
             }
 
-            afterHooks('repo.createLabel', instance)
+            await afterHooks('repo.createLabel', instance)
         } else if (options.update) {
-            beforeHooks('repo.updateLabel', instance)
+            await beforeHooks('repo.updateLabel', instance)
 
             options.label = options.update
 
@@ -291,9 +291,11 @@ Repo.prototype.run = async function(done) {
 
             status === 200 && logger.log('Success')
 
-            afterHooks('repo.updateLabel', instance)
+            await afterHooks('repo.updateLabel', instance)
         }
     } else if (options.list && !options.label) {
+        await beforeHooks('repo.list', instance)
+
         if (options.organization) {
             user = options.organization
             options.type = options.type || Repo.TYPE_ALL
@@ -317,13 +319,13 @@ Repo.prototype.run = async function(done) {
 
         instance.listCallback_(data)
 
-        return
+        await afterHooks('repo.list', instance)
     } else if (options.new && !options.label) {
         if (!options.new.trim()) {
             options.new = getCurrentFolderName()
         }
 
-        beforeHooks('repo.new', instance)
+        await beforeHooks('repo.new', instance)
 
         options.repo = options.new
 
@@ -347,7 +349,7 @@ Repo.prototype.run = async function(done) {
             instance.clone_(options.user, options.repo, data.ssh_url)
         }
 
-        afterHooks('repo.new', instance)
+        await afterHooks('repo.new', instance)
     }
 
     done && done()

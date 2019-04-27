@@ -38,37 +38,10 @@ export function getHooksArrayFromPath_(path, opt_config?: any) {
 }
 
 export function getHooksFromPath(path) {
-    const plugins = configs.getPlugins()
-    let pluginHooks = []
-
-    // First, load all core hooks for the specified path.
-    const hooks = getHooksArrayFromPath_(path)
-
-    // Second, search all installed plugins and load the hooks for each into core hooks array.
-    !testing &&
-        plugins.forEach(plugin => {
-            var pluginConfig
-
-            plugin = configs.getPluginBasename(plugin)
-
-            if (config.plugins && !configs.isPluginIgnored(plugin)) {
-                pluginConfig = config.plugins[plugin]
-
-                if (pluginConfig) {
-                    pluginHooks = pluginHooks.concat(getHooksArrayFromPath_(path, pluginConfig))
-                }
-            }
-        })
-
-    return hooks.concat(pluginHooks)
+    return getHooksArrayFromPath_(path)
 }
 
-export function afterHooks(path, scope) {
-    // skip gh pr --fwd after hooks to pass tests
-    if (testing && path.includes('fwd')) {
-        return
-    }
-
+export async function afterHooks(path, scope) {
     const after = getHooksFromPath(`${path}.after`)
     const options = scope.options
 
@@ -76,9 +49,11 @@ export function afterHooks(path, scope) {
         return
     }
 
-    const context = createContext(scope)
+    let context = createContext(scope)
 
-    setupPlugins_(context, 'setupAfterHooks')
+    if (!testing) {
+        context = await setupPlugins_(context, 'setupAfterHooks')
+    }
 
     after.forEach(cmd => {
         wrapCommand_(cmd, context, 'after')
@@ -87,7 +62,7 @@ export function afterHooks(path, scope) {
     process.env.NODEGH_HOOK_IS_LOCKED = 'true'
 }
 
-export function beforeHooks(path, scope) {
+export async function beforeHooks(path, scope) {
     const before = getHooksFromPath(`${path}.before`)
     const options = scope.options
 
@@ -95,44 +70,52 @@ export function beforeHooks(path, scope) {
         return
     }
 
-    const context = createContext(scope)
+    let context = createContext(scope)
 
-    setupPlugins_(context, 'setupBeforeHooks')
+    if (!testing) {
+        context = await setupPlugins_(context, 'setupBeforeHooks')
+    }
 
     before.forEach(cmd => {
         wrapCommand_(cmd, context, 'before')
     })
 }
 
-export function setupPlugins_(context, setupFn) {
+async function setupPlugins_(context, setupFn) {
     const plugins = configs.getPlugins()
-    const operations = []
 
-    plugins.forEach(plugin => {
-        try {
-            plugin = configs.getPlugin(plugin)
-        } catch (e) {
-            logger.warn(`Can't get ${plugin} plugin.`)
+    const contextArr = await Promise.all(
+        plugins.map(async plugin => {
+            try {
+                var pluginFile = await configs.getPlugin(plugin)
+            } catch (e) {
+                logger.warn(`Can't get ${plugin} plugin.`)
+            }
+
+            if (pluginFile && pluginFile[setupFn]) {
+                const newContext = pluginFile[setupFn](context)
+                return newContext
+            }
+        })
+    )
+
+    return contextArr.reduce((accum, curr) => {
+        if (accum) {
+            return { ...accum, ...curr }
         }
-
-        if (plugin && plugin[setupFn]) {
-            operations.push(callback => {
-                plugin[setupFn](context, callback)
-            })
-        }
-    })
-
-    operations.forEach(fn => fn && fn())
+        return { ...curr }
+    }, {})
 }
-
 export function wrapCommand_(cmd, context, when) {
-    var raw = logger.compileTemplate(cmd, context)
+    const raw = logger.compileTemplate(cmd, context)
 
     if (!raw) {
         return
     }
 
-    logger.log(logger.colors.cyan('[hook]'), truncate(raw.trim(), 120))
+    logger.log(logger.colors.cyan(`{${when}-hook}`), truncate(raw.trim(), 120))
+
+    if (testing) return
 
     try {
         exec.execSyncInteractiveStream(raw, { cwd: process.cwd() })

@@ -5,14 +5,12 @@
  */
 
 import * as fs from 'fs'
+import { cloneDeep } from 'lodash'
 import * as path from 'path'
 import * as userhome from 'userhome'
 import * as which from 'which'
 import * as exec from './exec'
 import * as logger from './logger'
-
-let cache = {}
-let plugins
 
 export const PLUGINS_PATH_KEY = 'plugins_path'
 
@@ -21,27 +19,23 @@ const testing = process.env.NODE_ENV === 'testing'
 // -- Config -------------------------------------------------------------------
 
 export function getNodeModulesGlobalPath() {
-    let result
-    let path = getConfig()[PLUGINS_PATH_KEY]
-
-    if (path === undefined) {
-        result = exec.spawnSync('npm', ['root', '-g'])
-
-        if (result.stdout) {
-            path = result.stdout
-            !testing && writeGlobalConfig(PLUGINS_PATH_KEY, path)
-        } else {
-            logger.warn("Can't resolve plugins directory path.")
-        }
+    try {
+        var { stdout } = exec.spawnSync('npm', ['root', '-g'])
+    } catch (err) {
+        logger.warn(`Can't resolve plugins directory path.\n${err}`)
     }
 
-    return path
+    return stdout
 }
 
 export function getGlobalPackageJson() {
     const configFile = fs.readFileSync(path.join(__dirname, '../package.json'))
 
     return JSON.parse(configFile.toString())
+}
+
+export function getDefaultConfigPath() {
+    return path.join(__dirname, '../default.gh.json')
 }
 
 export function getProjectConfigPath() {
@@ -52,8 +46,8 @@ export function getUserHomePath() {
     return userhome('.gh.json')
 }
 
-function resolveGhConfigs(opt_plugin) {
-    const globalConfig = getGlobalConfig(opt_plugin)
+function resolveGHConfigs() {
+    const globalConfig = getGlobalConfig()
     let projectConfig
     const result = {}
 
@@ -80,13 +74,8 @@ function resolveGhConfigs(opt_plugin) {
     }
 }
 
-export function getConfig(opt_plugin?: string) {
-    let config = cache[opt_plugin]
-
-    if (!config) {
-        config = resolveGhConfigs(opt_plugin)
-        cache[opt_plugin] = config
-    }
+export function getConfig(): object {
+    const config = resolveGHConfigs()
 
     const protocol = `${config.api.protocol}://`
     const is_enterprise = config.api.host !== 'api.github.com'
@@ -103,35 +92,15 @@ export function getConfig(opt_plugin?: string) {
     return config
 }
 
-export function getGlobalConfig(opt_plugin?: string) {
-    let defaultConfig
-    let userConfig
-
+export function getGlobalConfig() {
     const configPath = getUserHomePath()
-    const globalPath = getGlobalConfigPath()
+    const defaultPath = getDefaultConfigPath()
 
     if (!fs.existsSync(configPath)) {
         createGlobalConfig()
     }
 
-    defaultConfig = JSON.parse(fs.readFileSync(globalPath).toString())
-    userConfig = JSON.parse(fs.readFileSync(testing ? globalPath : configPath).toString())
-
-    Object.keys(userConfig).forEach(key => {
-        defaultConfig[key] = userConfig[key]
-    })
-
-    if (opt_plugin) {
-        getPlugins().forEach(plugin => {
-            addPluginConfig(defaultConfig, plugin)
-        })
-    }
-
-    return defaultConfig
-}
-
-export function getGlobalConfigPath() {
-    return path.join(__dirname, '../default.gh.json')
+    return JSON.parse(fs.readFileSync(testing ? defaultPath : configPath).toString())
 }
 
 export function removeGlobalConfig(key) {
@@ -140,12 +109,13 @@ export function removeGlobalConfig(key) {
     delete config[key]
 
     saveJsonConfig(getUserHomePath(), config)
-    cache = {}
 }
 
 export function createGlobalConfig() {
-    saveJsonConfig(getUserHomePath(), JSON.parse(fs.readFileSync(getGlobalConfigPath()).toString()))
-    cache = {}
+    saveJsonConfig(
+        getUserHomePath(),
+        JSON.parse(fs.readFileSync(getDefaultConfigPath()).toString())
+    )
 }
 
 export function writeGlobalConfig(jsonPath, value) {
@@ -164,7 +134,6 @@ export function writeGlobalConfig(jsonPath, value) {
     }
 
     saveJsonConfig(getUserHomePath(), config)
-    cache = {}
 }
 
 export function saveJsonConfig(path, object) {
@@ -178,7 +147,7 @@ export function writeGlobalConfigCredentials(user, token, path): void {
     if (fs.existsSync(configPath)) {
         config = JSON.parse(fs.readFileSync(configPath).toString())
     } else {
-        config = JSON.parse(fs.readFileSync(getGlobalConfigPath()).toString())
+        config = JSON.parse(fs.readFileSync(getDefaultConfigPath()).toString())
     }
 
     logger.log(`Writing GH config data: ${configPath}`)
@@ -197,29 +166,52 @@ export function writeGlobalConfigCredentials(user, token, path): void {
 
 // -- Plugins ------------------------------------------------------------------
 
-export function addPluginConfig(config, plugin) {
-    let pluginConfig
-    let userConfig
-
+export function addPluginConfig(plugin) {
     try {
-        // Always use the plugin name without prefix. To be safe removing "gh-"
-        // prefix from passed plugin.
-        plugin = getPluginBasename(plugin || process.env.NODEGH_PLUGIN)
-
-        pluginConfig = require(path.join(
+        const pluginConfig = require(path.join(
             getNodeModulesGlobalPath(),
             `gh-${plugin}`,
             'gh-plugin.json'
         ))
 
-        // Merge default plugin configuration with the user's.
-        userConfig = config.plugins[plugin] || {}
+        const config = getGlobalConfig()
+        const configHooks = cloneDeep(config.hooks)
+        const pluginHooks = cloneDeep(pluginConfig.hooks)
 
-        Object.keys(userConfig).forEach(key => {
-            pluginConfig[key] = userConfig[key]
-        })
+        if (config.plugins[plugin] && !config.plugins[plugin]['hooks_installed']) {
+            Object.keys(pluginHooks).forEach(cmd => {
+                Object.keys(pluginHooks[cmd]).forEach(hook => {
+                    configHooks[cmd][hook].before = [
+                        ...configHooks[cmd][hook].before,
+                        ...pluginHooks[cmd][hook].before,
+                    ]
 
-        config.plugins[plugin] = pluginConfig
+                    configHooks[cmd][hook].after = [
+                        ...configHooks[cmd][hook].after,
+                        ...pluginHooks[cmd][hook].after,
+                    ]
+                })
+            })
+
+            if (!testing) {
+                logger.log(
+                    logger.colors.yellow(
+                        `Copying over ${plugin} plugin hooks to your .gh.json hooks.`
+                    )
+                )
+
+                try {
+                    config.hooks = configHooks
+                    config.plugins[plugin]['hooks_installed'] = true
+
+                    saveJsonConfig(getUserHomePath(), config)
+                } catch (err) {
+                    logger.error(`Error writing ${plugin} hooks to .gh.json config.\n${err}`)
+                }
+
+                logger.log(logger.colors.green('Copy successful.\n'))
+            }
+        }
     } catch (e) {
         if (e.code !== 'MODULE_NOT_FOUND') {
             throw e
@@ -227,28 +219,19 @@ export function addPluginConfig(config, plugin) {
     }
 }
 
-function resolvePlugins() {
-    var pluginsPath = getNodeModulesGlobalPath()
+export function getPlugins() {
+    const pluginsPath = getNodeModulesGlobalPath()
 
     if (pluginsPath === '') {
         return []
     }
 
     try {
-        plugins = fs.readdirSync(pluginsPath).filter(plugin => {
+        var plugins = fs.readdirSync(pluginsPath).filter(plugin => {
             return plugin.substring(0, 3) === 'gh-'
         })
-    } catch (e) {
-        plugins = []
-        logger.warn("Can't read plugins directory.")
-    } finally {
-        return plugins
-    }
-}
-
-export function getPlugins() {
-    if (!plugins) {
-        plugins = resolvePlugins()
+    } catch (err) {
+        logger.warn(`Can't read plugins directory.\n${err}`)
     }
 
     return plugins

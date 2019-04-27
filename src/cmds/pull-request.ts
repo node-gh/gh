@@ -921,7 +921,7 @@ PullRequest.prototype._fetchHandler = async function() {
         fetchType = PullRequest.FETCH_TYPE_REBASE
     }
 
-    beforeHooks('pull-request.fetch', instance)
+    await beforeHooks('pull-request.fetch', instance)
 
     let operation = ''
     let branch = options.pullBranch
@@ -948,14 +948,14 @@ PullRequest.prototype._fetchHandler = async function() {
         throw new Error(`Can't fetch pull request ${options.number}.\n${err}`)
     }
 
-    afterHooks('pull-request.fetch', instance)
+    await afterHooks('pull-request.fetch', instance)
 }
 
 PullRequest.prototype._fwdHandler = async function() {
     const instance = this
     const options = this.options
 
-    beforeHooks('pull-request.fwd', instance)
+    await beforeHooks('pull-request.fwd', instance)
 
     logger.log(
         `Forwarding pull request ${logger.colors.green(
@@ -978,14 +978,14 @@ PullRequest.prototype._fwdHandler = async function() {
 
     instance.setMergeCommentRequiredOptions_()
 
-    afterHooks('pull-request.fwd', instance)
+    await afterHooks('pull-request.fwd', instance)
 }
 
 PullRequest.prototype._closeHandler = async function() {
     const instance = this
     const options = this.options
 
-    beforeHooks('pull-request.close', instance)
+    await beforeHooks('pull-request.close', instance)
 
     logger.log(`Closing pull request ${logger.colors.green(`#${options.number}`)}`)
 
@@ -999,7 +999,7 @@ PullRequest.prototype._closeHandler = async function() {
 
     instance.setMergeCommentRequiredOptions_()
 
-    afterHooks('pull-request.close', instance)
+    await afterHooks('pull-request.close', instance)
 }
 
 PullRequest.prototype._commentHandler = async function() {
@@ -1077,7 +1077,7 @@ PullRequest.prototype._openHandler = async function() {
     const instance = this
     const options = this.options
 
-    beforeHooks('pull-request.open', instance)
+    await beforeHooks('pull-request.open', instance)
 
     logger.log(`Opening pull request ${logger.colors.green(`#${options.number}`)}`)
 
@@ -1089,14 +1089,14 @@ PullRequest.prototype._openHandler = async function() {
 
     logger.log(data.html_url)
 
-    afterHooks('pull-request.open', instance)
+    await afterHooks('pull-request.open', instance)
 }
 
 PullRequest.prototype._submitHandler = async function() {
     const instance = this
     const options = this.options
 
-    beforeHooks('pull-request.submit', instance)
+    await beforeHooks('pull-request.submit', instance)
 
     logger.log(`Submitting pull request to ${logger.colors.magenta(`@${options.submit}`)}`)
 
@@ -1114,5 +1114,5 @@ PullRequest.prototype._submitHandler = async function() {
 
     instance.setMergeCommentRequiredOptions_()
 
-    afterHooks('pull-request.submit', instance)
+    await afterHooks('pull-request.submit', instance)
 }
