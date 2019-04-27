@@ -13,6 +13,7 @@ import * as updateNotifier from 'update-notifier'
 import { find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
+import * as logger from './logger'
 
 const config = configs.getConfig()
 
@@ -52,14 +53,46 @@ async function resolveCmd(name, commandDir) {
     }
 
     const plugin = await resolvePlugin(name)
+
     return { default: plugin.Impl }
 }
 
-function resolvePlugin(name) {
+async function resolvePlugin(name) {
     // If plugin command exists, register the executed plugin name
     process.env.NODEGH_PLUGIN = name
 
-    return configs.getPlugin(name)
+    const plugin = await configs.getPlugin(name)
+    const pluginFullName = plugin.Impl.name.toLowerCase()
+
+    if (pluginFullName === 'jira') {
+        exitIfJiraPluginIsIncompat()
+    }
+
+    plugin && configs.addPluginConfig(pluginFullName)
+
+    return plugin
+}
+
+function exitIfJiraPluginIsIncompat() {
+    const packageJson = fs.readFileSync(
+        path.join(configs.getNodeModulesGlobalPath(), 'gh-jira', 'package.json'),
+        'utf8'
+    )
+
+    if (packageJson) {
+        const versionMajor = JSON.parse(packageJson).version.slice(0, 1)
+
+        // todo: change this when updating gh beyond v3
+        if (versionMajor < 2) {
+            console.error(
+                logger.colors.red(
+                    'Your Jira plugin version is incompatible with this version of gh and must updated to >= version 2.0.0.\nPlease update with `npm install gh-jira`.\nExiting until version has been updated.'
+                )
+            )
+
+            process.exit(1)
+        }
+    }
 }
 
 async function loadCommand(name) {
@@ -133,9 +166,7 @@ export async function setUp() {
     }
 
     options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
-
     options.currentBranch = testing ? 'master' : git.getCurrentBranch()
-
     options.github_host = config.github_host
     options.github_gist_host = config.github_gist_host
 
@@ -151,13 +182,6 @@ export async function setUp() {
 export async function run() {
     if (!fs.existsSync(configs.getUserHomePath())) {
         configs.createGlobalConfig()
-    }
-
-    configs.getConfig()
-
-    // If configs.PLUGINS_PATH_KEY is undefined, try to cache it before proceeding.
-    if (configs.getConfig()[configs.PLUGINS_PATH_KEY] === undefined) {
-        configs.getNodeModulesGlobalPath()
     }
 
     try {

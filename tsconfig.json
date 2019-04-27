@@ -3,10 +3,10 @@
         "alwaysStrict": true,
         "module": "commonjs",
         "moduleResolution": "node",
-        "target": "es5",
+        "target": "es2017",
         "outDir": "lib",
         "rootDir": "src",
-        "lib": ["es6"],
+        "lib": ["es2017"],
         "sourceMap": true
     },
     "exclude": ["node_modules", "lib", "__tests__"]

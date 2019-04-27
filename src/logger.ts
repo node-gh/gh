@@ -129,9 +129,10 @@ export function getErrorMessage(err) {
 }
 
 export function compileTemplate(source, map) {
-    var template = handlebars.compile(source)
+    const template = handlebars.compile(source)
+    const replacements = applyReplacements(template(map))
 
-    return applyReplacements(template(map))
+    return replacements
 }
 
 export function logTemplate(source, map) {

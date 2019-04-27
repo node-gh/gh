@@ -116,7 +116,7 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.assign) {
-        beforeHooks('issue.assign', instance)
+        await beforeHooks('issue.assign', instance)
 
         logger.log(
             `Assigning issue ${number} on ${getUserRepo(options)} to ${logger.colors.magenta(
@@ -132,7 +132,7 @@ Issue.prototype.run = async function(done) {
 
         logger.log(logger.colors.cyan(data.html_url))
 
-        afterHooks('issue.assign', instance)
+        await afterHooks('issue.assign', instance)
     }
 
     if (options.browser) {
@@ -176,7 +176,7 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.new) {
-        beforeHooks('issue.new', instance)
+        await beforeHooks('issue.new', instance)
 
         logger.log(`Creating a new issue on ${getUserRepo(options)}`)
 
@@ -192,21 +192,21 @@ Issue.prototype.run = async function(done) {
 
         logger.log(data.html_url)
 
-        afterHooks('issue.new', instance)
+        await afterHooks('issue.new', instance)
     }
 
     if (options.open) {
-        beforeHooks('issue.open', instance)
+        await beforeHooks('issue.open', instance)
 
         await openHandler(instance, options)
 
-        afterHooks('issue.open', instance)
+        await afterHooks('issue.open', instance)
     } else if (options.close) {
-        beforeHooks('issue.close', instance)
+        await beforeHooks('issue.close', instance)
 
         await closeHandler(instance, options)
 
-        afterHooks('issue.close', instance)
+        await afterHooks('issue.close', instance)
     }
 
     if (options.search) {
