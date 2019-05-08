@@ -74,7 +74,7 @@ function resolveGHConfigs() {
     }
 }
 
-export function getConfig(): object {
+export function getConfig() {
     const config = resolveGHConfigs()
 
     const protocol = `${config.api.protocol}://`
