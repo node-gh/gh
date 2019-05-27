@@ -42,13 +42,24 @@
         "helpers"
     ],
     "bin": {
-        "gh": "bin/gh.js"
+        "gh": "bin/run"
     },
     "config": {
         "commitizen": {
             "path": "cz-conventional-changelog"
         }
     },
+    "oclif": {
+        "commands": "./lib/commands",
+        "bin": "gh",
+        "plugins": [
+            "@oclif/plugin-help"
+        ]
+    },
+    "files": [
+        "/bin",
+        "/lib"
+    ],
     "release": {
         "branch": "master",
         "debug": true,
@@ -76,6 +87,11 @@
     "scripts": {
         "build": "tsc",
         "dev": "tsc --watch",
+        "clean": "rm -rf node_modules && git clean -dfx && npm unlink && npm install && npm install -g gh",
+        "postpack": "rm -f oclif.manifest.json npm-shrinkwrap.json",
+        "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",
+        "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme && npm shrinkwrap",
+        "prepare": "rm -rf lib && tsc",
         "commit": "git-cz",
         "format": "prettier 'lib/**/*.js' && prettier 'bin/*.js'",
         "env:test": "cross-env NODE_ENV=testing GH_USER=protoEvangelion GH_TOKEN=0001",
@@ -83,7 +99,8 @@
         "test:watch": "npm run env:test -- jest --watch",
         "test:ci": "npm run env:test -- jest",
         "test:coverage": "npm run env:test -- jest --coverage",
-        "test:program": "npm run env:test -- gh "
+        "test:program": "npm run env:test -- gh ",
+        "version": "oclif-dev readme && git add README.md"
     },
     "husky": {
         "hooks": {
@@ -91,6 +108,7 @@
         }
     },
     "dependencies": {
+        "@oclif/plugin-help": "^2.1.6",
         "@octokit/plugin-throttling": "^2.4.0",
         "@octokit/rest": "16.25.0",
         "cli-table3": "0.5.1",
@@ -111,6 +129,9 @@
         "wordwrap": "1.0.0"
     },
     "devDependencies": {
+        "@oclif/command": "^1.5.13",
+        "@oclif/config": "^1.13.0",
+        "@oclif/dev-cli": "^1.22.0",
         "@semantic-release/git": "7.0.7",
         "@semantic-release/github": "5.2.8",
         "@semantic-release/npm": "5.1.3",

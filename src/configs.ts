@@ -11,8 +11,7 @@ import * as userhome from 'userhome'
 import * as which from 'which'
 import * as exec from './exec'
 import * as logger from './logger'
-
-export const PLUGINS_PATH_KEY = 'plugins_path'
+const PLUGINS_PATH_KEY = 'plugins_path'
 
 const testing = process.env.NODE_ENV === 'testing'
 
