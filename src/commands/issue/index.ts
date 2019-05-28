@@ -5,7 +5,6 @@ import { IFlags } from '../../interfaces'
 // import { runBrowserCmd } from './browser'
 // import { newCmdFlags, runNewCmd } from './new'
 import { listCmdFlags, runListCmd } from './list'
-// import { runStateCmd, stateCmdFlags } from './state'
 import { forEach } from 'lodash'
 
 export default class Issue extends Command {
@@ -26,13 +25,7 @@ export default class Issue extends Command {
 
     public static description = 'List, Create & Modify issues'
 
-    // public static flags = generateFlags()
-
-    public static flags = {
-        // can pass either --force or -f
-        force: flags.boolean({ char: 'f' }),
-        file: flags.string(),
-    }
+    public static flags = generateFlags()
 
     public async run() {
         const { args } = this.parse(Issue)
@@ -49,7 +42,7 @@ export default class Issue extends Command {
         // } else if (isShortcutForComment) {
         //   const adjustedArgs = {
         //     number: args.number_or_title,
-        //     message: args.comment_or_body,
+        //     message: args.comment_or_body
         //   }
 
         //   runCommentCmd(adjustedArgs, this.remoteInfo)
@@ -65,10 +58,6 @@ export default class Issue extends Command {
         //   }
 
         //   runNewCmd(adjustedFlags, this.remoteInfo)
-        // } else if (isShortcutForOpenCloseIssue) {
-        //   const number = args.number_or_title
-
-        //   runStateCmd(number, flags, this.remoteInfo)
         // }
     }
 }
@@ -78,7 +67,6 @@ function generateFlags() {
         { flags: { ...Command.flags }, namespace: 'global' },
         { flags: { ...listCmdFlags }, namespace: 'issue:list' },
         // { flags: { ...newCmdFlags }, namespace: 'issue:new' },
-        // { flags: { ...stateCmdFlags }, namespace: 'issue:state' },
     ]
 
     return flagsArr.reduce((previousFlags, currentFlags) => {

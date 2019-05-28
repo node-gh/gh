@@ -151,6 +151,7 @@ Issue.prototype.run = async function(done) {
         logger.log(logger.colors.cyan(data.html_url))
     }
 
+    // ✅
     if (options.list) {
         try {
             if (options.all) {

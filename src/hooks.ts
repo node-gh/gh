@@ -13,9 +13,9 @@ const config = configs.getConfig()
 
 const testing = process.env.NODE_ENV === 'testing'
 
-export function createContext(scope) {
+export function createContext(flags) {
     return {
-        options: scope.options,
+        options: flags,
         signature: config.signature,
     }
 }
@@ -41,15 +41,14 @@ export function getHooksFromPath(path) {
     return getHooksArrayFromPath_(path)
 }
 
-export async function afterHooks(path, scope) {
+export async function afterHooks(path, flags) {
     const after = getHooksFromPath(`${path}.after`)
-    const options = scope.options
 
-    if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
+    if (flags.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
         return
     }
 
-    let context = createContext(scope)
+    let context = createContext(flags)
 
     if (!testing) {
         context = await setupPlugins_(context, 'setupAfterHooks')
@@ -62,15 +61,14 @@ export async function afterHooks(path, scope) {
     process.env.NODEGH_HOOK_IS_LOCKED = 'true'
 }
 
-export async function beforeHooks(path, scope) {
+export async function beforeHooks(path, flags) {
     const before = getHooksFromPath(`${path}.before`)
-    const options = scope.options
 
-    if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
+    if (flags.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
         return
     }
 
-    let context = createContext(scope)
+    let context = createContext(flags)
 
     if (!testing) {
         context = await setupPlugins_(context, 'setupBeforeHooks')

@@ -3,6 +3,7 @@ import { isArray } from 'lodash'
 import Command from '../../base'
 import { getGitHubInstance } from '../../github'
 import * as logger from '../../logger'
+import { getUserRepo } from '../../utils'
 
 export const listCmdFlags = {
     all: flags.boolean({ char: 'a', description: 'List all issues' }),
@@ -122,10 +123,6 @@ async function listFromAllRepositories(user, GitHub) {
     for (const repo of repositories) {
         await list(repo.owner.login, repo.name)
     }
-}
-
-function getUserRepo({ user, repo }) {
-    return logger.colors.green(`${user}/${repo}`)
 }
 
 function formatIssues(issues, showDetailed, dateFormatter?: string) {

@@ -7,6 +7,11 @@
 import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
 import * as zlib from 'zlib'
+import * as logger from './logger'
+
+export function getUserRepo({ user, repo }) {
+    return logger.colors.green(`${user}/${repo}`)
+}
 
 export function getCurrentFolderName(): string {
     const cwdArr = process
@@ -234,4 +239,29 @@ function formatCmdName(cmd, argv) {
 
 function concatUpper(one, two) {
     return `${one}${upperFirst(two)}`
+}
+
+export function getIssue(GitHub, number, flags) {
+    const payload = {
+        issue_number: number,
+        repo: flags.repo,
+        owner: flags.user,
+    }
+
+    return GitHub.issues.get(payload)
+}
+
+export function editIssue(GitHub, number, title, state, flags) {
+    const payload = {
+        state,
+        title,
+        assignee: flags.assignee,
+        labels: flags.labels || [],
+        milestone: flags.milestone,
+        issue_number: number,
+        owner: flags.user,
+        repo: flags.repo,
+    }
+
+    return GitHub.issues.update(payload)
 }
