@@ -1,0 +1,71 @@
+{
+    "base": "rest/api/2",
+    "hooks": {
+        "repo": {
+            "list": {
+                "before": ["echo 'before ji 1'", "echo 'before ji 2'"],
+                "after": ["echo 'after ji 1'", "echo 'after ji 2'"]
+            }
+        },
+        "pull-request": {
+            "close": {
+                "before": [],
+                "after": ["gh jira {{jira.number}}"]
+            },
+            "fetch": {
+                "before": [],
+                "after": []
+            },
+            "fwd": {
+                "before": [],
+                "after": [
+                    "gh jira {{jira.number}} --assignee {{options.fwd}} --submittedLink {{forwardedLink}} --transition"
+                ]
+            },
+            "merge": {
+                "before": [],
+                "after": ["gh jira {{jira.number}}"]
+            },
+            "submit": {
+                "before": [],
+                "after": [
+                    "gh jira {{jira.number}} --assignee {{options.submit}} --submittedLink {{submittedLink}} --transition"
+                ]
+            }
+        }
+    },
+    "host": "issues.liferay.com",
+    "password": "",
+    "port": "",
+    "protocol": "https",
+    "inferFromCommitTitle": true,
+    "transition": {
+        "Close Issue": {
+            "Fix Version/s": true
+        },
+        "Code Review Request": {
+            "Assignee": {
+                "name": "{{options.assignee}}"
+            },
+            "Git Pull Request": "{{options.submittedLink}}"
+        },
+        "Create Review Request": {
+            "Assignee": {
+                "name": "{{options.assignee}}"
+            },
+            "Git Pull Request": "{{options.submittedLink}}"
+        },
+        "Send for Review": {
+            "Assignee": {
+                "name": "{{options.assignee}}"
+            },
+            "Git Pull Request": "{{options.submittedLink}}"
+        },
+        "Start Progress": {
+            "Assignee": {
+                "name": "{{jira.user}}"
+            }
+        }
+    },
+    "user": ""
+}

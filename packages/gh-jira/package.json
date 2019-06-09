@@ -1,0 +1,59 @@
+{
+    "name": "gh-jira",
+    "description": "NodeGH plugin for integrating Jira, an issue management system",
+    "version": "2.0.0",
+    "author": {
+        "name": "Eduardo Lundgren",
+        "email": "eduardolundgren@gmail.com",
+        "web": "http://www.eduardo.io",
+        "twitter": "eduardolundgren"
+    },
+    "license": "BSD",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:node-gh/gh-jira.git"
+    },
+    "bugs": {
+        "url": "https://github.com/node-gh/gh-jira/issues"
+    },
+    "keywords": [
+        "gh",
+        "nodegh",
+        "jira",
+        "plugin"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "postpack": "rm -f oclif.manifest.json",
+        "posttest": "tslint -p . -t stylish",
+        "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+        "version": "oclif-dev readme && git add README.md",
+        "test": "node_modules/.bin/mocha --reporter list"
+    },
+    "dependencies": {
+        "@oclif/command": "^1.5.13",
+        "@oclif/config": "^1.13.0",
+        "@oclif/plugin-help": "^2.1.6",
+        "inquirer": "^0.11.0",
+        "lodash": "^3.10.1",
+        "opn": "^5.3.0"
+    },
+    "devDependencies": {
+        "@oclif/dev-cli": "^1.22.0"
+    },
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "files": [
+        "/lib",
+        "/package-lock.json"
+    ],
+    "oclif": {
+        "commands": "./lib/commands",
+        "bin": "jira",
+        "devPlugins": [
+            "@oclif/plugin-help"
+        ]
+    }
+}

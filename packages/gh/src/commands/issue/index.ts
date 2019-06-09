@@ -8,6 +8,8 @@ import { listCmdFlags, runListCmd } from './list'
 import { forEach } from 'lodash'
 
 export default class Issue extends Command {
+    static aliases = ['is']
+
     public static args = [
         {
             name: 'number_or_title',
@@ -35,7 +37,6 @@ export default class Issue extends Command {
         // const isShortcutForComment = Number(args.number_or_title) && args.comment_or_body
         const isShorcutForListIssues = !args.number_or_title && !args.comment_or_body
         // const isShorcutForNewIssue = !Number(args.number_or_title) && args.comment_or_body
-        // const isShortcutForOpenCloseIssue = Number(args.number_or_title) && (flags.open || flags.close)
 
         // if (isShortcutForBrowser) {
         //   runBrowserCmd(args.number_or_title, this.remoteInfo)
@@ -46,8 +47,9 @@ export default class Issue extends Command {
         //   }
 
         //   runCommentCmd(adjustedArgs, this.remoteInfo)
-        // } else if (isShorcutForListIssues) {
+        // } else
         if (isShorcutForListIssues) {
+            console.log('flags', flags)
             runListCmd(flags)
         }
         // else if (isShorcutForNewIssue) {

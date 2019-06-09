@@ -20,6 +20,12 @@ export const listCmdFlags = {
         char: 'M',
         description: 'Filter issues by milestone (case insensitive)',
     }),
+    state: flags.string({
+        required: false,
+        default: 'open',
+        description: 'Filter issues by state',
+        options: ['open', 'closed'],
+    }),
 }
 
 export default class List extends Command {
@@ -48,12 +54,10 @@ export async function runListCmd(flags) {
 
             await listFromAllRepositories(flags.user, github)
         } else {
-            // logger.log(
-            //     `Listing ${logger.colors.green(flags.state)} issues on ${getUserRepo(flags)}`
-            // )
-            flags.state = 'open'
-            logger.log(`Listing ${logger.colors.green('open')} issues on ${getUserRepo(flags)}`)
-            console.log('flags', flags)
+            logger.log(
+                `Listing ${logger.colors.green(flags.state)} issues on ${getUserRepo(flags)}`
+            )
+
             await list(flags, github)
         }
     } catch (err) {

@@ -4,14 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import * as fs from 'fs'
-import * as configs from './configs'
-import { find } from 'lodash'
 import Command, { flags } from '@oclif/command'
-import { log } from './logger'
-import * as git from './git'
+import * as fs from 'fs'
 
-const config = configs.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
 
 export default abstract class extends Command {
@@ -48,15 +43,9 @@ export default abstract class extends Command {
         // @ts-ignore: need to figure out if this error is benign
         const { flags } = this.parse(this.constructor)
 
-        flags.remote = flags.remote || config.default_remote
-
-        const remoteUrl = git.getRemoteUrl(flags.remote)
-
         flags.isTTY = {}
         flags.isTTY.in = Boolean(process.stdin.isTTY)
         flags.isTTY.out = Boolean(process.stdout.isTTY)
-        flags.loggedUser = getUser()
-        flags.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
 
         if (!flags.user) {
             if (flags.repo || flags.all) {
@@ -65,11 +54,6 @@ export default abstract class extends Command {
                 flags.user = process.env.GH_USER || flags.remoteUser || flags.loggedUser
             }
         }
-
-        flags.repo = flags.repo || git.getRepoFromRemoteURL(remoteUrl)
-        flags.currentBranch = testing ? 'master' : git.getCurrentBranch()
-        flags.github_host = config.github_host
-        flags.github_gist_host = config.github_gist_host
 
         this.flags = flags
     }
@@ -103,11 +87,3 @@ export function find(filepath, opt_pattern) {
         return (opt_pattern || /.*/).test(file)
     })
 }
-
-export function getUser() {
-    return config.github_user || process.env.GH_USER
-}
-
-// Export some config methods to allow plugins to access them
-export const getConfig = configs.getConfig
-export const writeGlobalConfig = configs.writeGlobalConfig

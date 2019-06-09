@@ -1,6 +1,6 @@
 {
     "rulesDirectory": ["tslint-plugin-prettier"],
-    "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
+    "extends": ["tslint-config-airbnb", "tslint-config-prettier", "@oclif/tslint"],
     "rules": {
         "function-name": false,
         "import-name": false,

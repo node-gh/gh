@@ -38,7 +38,6 @@ async function resolveCmd(name, commandDir) {
                 break
             case `pull-request.${extension}`:
                 if (name === 'pr') return true
-                break
         }
 
         if (file.startsWith(name)) {

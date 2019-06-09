@@ -1,9 +1,8 @@
-import { flags } from '@oclif/command'
 import Command from '../../base'
 import { getGitHubInstance } from '../../github'
 import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
-import { getIssue, editIssue, getUserRepo } from '../../utils'
+import { editIssue, getIssue, getUserRepo } from '../../utils'
 
 export default class Close extends Command {
     public static args = [

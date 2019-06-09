@@ -1,0 +1,89 @@
+{
+    "name": "gh",
+    "description": "GitHub command line tools.",
+    "version": "1.17.5",
+    "homepage": "http://nodegh.io",
+    "author": {
+        "name": "Eduardo Lundgren",
+        "email": "eduardolundgren@gmail.com",
+        "web": "http://eduardo.io",
+        "twitter": "eduardolundgren"
+    },
+    "contributors": [
+        {
+            "name": "Zeno Rocha",
+            "email": "zno.rocha@gmail.com",
+            "web": "http://zenorocha.com",
+            "twitter": "zenorocha"
+        },
+        {
+            "name": "Ryan Garant",
+            "email": "ryantgarant@gmail.com",
+            "web": "https://github.com/protoEvangelion"
+        }
+    ],
+    "license": "BSD-3-Clause",
+    "engines": {
+        "node": ">=6"
+    },
+    "preferGlobal": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/node-gh/gh.git"
+    },
+    "bugs": {
+        "url": "https://github.com/node-gh/gh/issues"
+    },
+    "keywords": [
+        "git",
+        "github",
+        "external",
+        "commands",
+        "helpers"
+    ],
+    "bin": {
+        "gh": "bin/run"
+    },
+    "files": [
+        "/bin",
+        "/lib"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "clean": "rm -rf node_modules && git clean -dfx && npm unlink && npm install && npm install -g gh",
+        "postpack": "rm -f oclif.manifest.json npm-shrinkwrap.json",
+        "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",
+        "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme && npm shrinkwrap",
+        "prepare": "rm -rf lib && tsc",
+        "version": "oclif-dev readme && git add README.md"
+    },
+    "dependencies": {
+        "@oclif/command": "^1.5.13",
+        "@oclif/config": "^1.13.0",
+        "@oclif/plugin-help": "^2.1.6",
+        "@oclif/plugin-plugins": "^1.7.8",
+        "@octokit/plugin-throttling": "^2.4.0",
+        "@octokit/rest": "16.25.0",
+        "cli-table3": "0.5.1",
+        "colors": "1.3.3",
+        "handlebars": "4.0.12",
+        "inquirer": "6.2.1",
+        "lodash": "4.17.11",
+        "marked": "0.6.2",
+        "marked-terminal": "3.2.0",
+        "moment": "2.23.0",
+        "nopt": "3.0.6",
+        "opn": "5.4.0",
+        "request": "2.88.0",
+        "truncate": "2.0.1",
+        "update-notifier": "2.5.0",
+        "userhome": "1.0.0",
+        "which": "1.3.1",
+        "wordwrap": "1.0.0"
+    },
+    "devDependencies": {
+        "@oclif/dev-cli": "^1.22.0",
+        "nock": "10.0.5"
+    }
+}

@@ -9,8 +9,7 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["./bin/run", "issue"],
-            // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
+            "args": ["./packages/gh/bin/run", "issue"],
             "console": "integratedTerminal"
         },
         {
@@ -19,7 +18,7 @@
             "request": "launch",
             "env": { "NODE_ENV": "testing", "GH_USER": "protoEvangelion", "GH_TOKEN": "0001" },
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "pr", "--close", "50"],
+            "args": ["${workspaceFolder}/packages/gh/src/debug.ts", "pr", "--close", "50"],
             "console": "integratedTerminal"
         }
     ]

@@ -50,10 +50,6 @@ export async function afterHooks(path, flags) {
 
     let context = createContext(flags)
 
-    if (!testing) {
-        context = await setupPlugins_(context, 'setupAfterHooks')
-    }
-
     after.forEach(cmd => {
         wrapCommand_(cmd, context, 'after')
     })
@@ -70,40 +66,11 @@ export async function beforeHooks(path, flags) {
 
     let context = createContext(flags)
 
-    if (!testing) {
-        context = await setupPlugins_(context, 'setupBeforeHooks')
-    }
-
     before.forEach(cmd => {
         wrapCommand_(cmd, context, 'before')
     })
 }
 
-async function setupPlugins_(context, setupFn) {
-    const plugins = configs.getPlugins()
-
-    const contextArr = await Promise.all(
-        plugins.map(async plugin => {
-            try {
-                var pluginFile = await configs.getPlugin(plugin)
-            } catch (e) {
-                logger.warn(`Can't get ${plugin} plugin.`)
-            }
-
-            if (pluginFile && pluginFile[setupFn]) {
-                const newContext = pluginFile[setupFn](context)
-                return newContext
-            }
-        })
-    )
-
-    return contextArr.reduce((accum, curr) => {
-        if (accum) {
-            return { ...accum, ...curr }
-        }
-        return { ...curr }
-    }, {})
-}
 export function wrapCommand_(cmd, context, when) {
     const raw = logger.compileTemplate(cmd, context)
 

@@ -477,9 +477,7 @@ Repo.prototype.listCallback_ = function(repos): void {
                 if (options.isTTY.out) {
                     logger.log(
                         `${logger.colors.green(
-                            `forks: ${repo.forks}, stars: ${repo.watchers}, issues: ${
-                                repo.open_issues
-                            }`
+                            `forks: ${repo.forks}, stars: ${repo.watchers}, issues: ${repo.open_issues}`
                         )}\n`
                     )
                 }
