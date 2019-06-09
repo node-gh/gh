@@ -44,6 +44,14 @@
     "bin": {
         "gh": "bin/run"
     },
+    "oclif": {
+        "commands": "./lib/commands",
+        "bin": "gh",
+        "plugins": [
+            "@oclif/plugin-help",
+            "@oclif/plugin-plugins"
+        ]
+    },
     "files": [
         "/bin",
         "/lib"
@@ -51,6 +59,7 @@
     "scripts": {
         "build": "tsc",
         "dev": "tsc --watch",
+        "link:jira": "./bin/run plugins:link ../gh-jira",
         "clean": "rm -rf node_modules && git clean -dfx && npm unlink && npm install && npm install -g gh",
         "postpack": "rm -f oclif.manifest.json npm-shrinkwrap.json",
         "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",

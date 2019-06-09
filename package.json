@@ -33,14 +33,6 @@
             "path": "cz-conventional-changelog"
         }
     },
-    "oclif": {
-        "commands": "./lib/commands",
-        "bin": "gh",
-        "plugins": [
-            "@oclif/plugin-help",
-            "@oclif/plugin-plugins"
-        ]
-    },
     "devDependencies": {
         "@oclif/tslint": "^3.1.1",
         "@semantic-release/git": "7.0.7",
