@@ -6,8 +6,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { run } from './cmd'
-
 const verbose = process.argv.indexOf('--verbose') !== -1
 const insane = process.argv.indexOf('--insane') !== -1
 
@@ -21,4 +19,7 @@ if (insane) {
     process.env.GH_VERBOSE_INSANE = 'true'
 }
 
-run()
+require('@oclif/command')
+    .run()
+    .then(require('@oclif/command/flush'))
+    .catch(require('@oclif/errors/handle'))

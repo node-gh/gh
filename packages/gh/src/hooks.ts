@@ -41,6 +41,8 @@ export function getHooksFromPath(path) {
     return getHooksArrayFromPath_(path)
 }
 
+let doneTesting
+
 export async function afterHooks(path, flags) {
     const after = getHooksFromPath(`${path}.after`)
 
@@ -55,10 +57,24 @@ export async function afterHooks(path, flags) {
     })
 
     process.env.NODEGH_HOOK_IS_LOCKED = 'true'
+
+    if (testing && doneTesting) {
+        await doneTesting
+            .then(({ nockDone }) => nockDone())
+            .catch(err => {
+                throw new Error(`Nock ==> ${err}`)
+            })
+    }
 }
 
 export async function beforeHooks(path, flags) {
     const before = getHooksFromPath(`${path}.before`)
+
+    if (testing) {
+        const { prepareTestFixtures } = await import('./utils')
+
+        doneTesting = prepareTestFixtures(path)
+    }
 
     if (flags.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
         return
@@ -71,7 +87,7 @@ export async function beforeHooks(path, flags) {
     })
 }
 
-export function wrapCommand_(cmd, context, when) {
+function wrapCommand_(cmd, context, when) {
     const raw = logger.compileTemplate(cmd, context)
 
     if (!raw) {

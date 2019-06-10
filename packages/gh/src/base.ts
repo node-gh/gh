@@ -6,14 +6,14 @@
 
 import Command, { flags } from '@oclif/command'
 import * as fs from 'fs'
-
 import * as configs from './configs'
 import * as git from './git'
 
 const config = configs.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
 
-export default abstract class extends Command {
+// @ts-ignore
+export default class extends Command {
     public static flags: any = {
         help: flags.help({ char: 'h' }),
         debug: flags.boolean({
@@ -44,7 +44,7 @@ export default abstract class extends Command {
     }
 
     private setGlobalFlags() {
-        // @ts-ignore: need to figure out if this error is benign
+        // @ts-ignore
         const { flags } = this.parse(this.constructor)
 
         flags.remote = flags.remote || config.default_remote

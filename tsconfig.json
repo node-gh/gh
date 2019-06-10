@@ -9,12 +9,5 @@
         "lib": ["es2017"],
         "sourceMap": true
     },
-    "exclude": [
-        "node_modules",
-        "lib",
-        "boilerplate-cmd.ts",
-        "src/cmd.ts",
-        "src/cmd-anonymizer.ts",
-        "bin/debug.ts"
-    ]
+    "exclude": ["node_modules", "lib", "boilerplate-cmd.ts", "src/cmd.ts", "src/cmd-anonymizer.ts"]
 }

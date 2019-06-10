@@ -1,11 +1,10 @@
+import { forEach } from 'lodash'
 import Command from '../../base'
-import { flags } from '@oclif/command'
 import { IFlags } from '../../interfaces'
 // import { runCommentCmd } from './comment'
 // import { runBrowserCmd } from './browser'
 // import { newCmdFlags, runNewCmd } from './new'
 import { listCmdFlags, runListCmd } from './list'
-import { forEach } from 'lodash'
 
 export default class Issue extends Command {
     static aliases = ['is']
@@ -49,7 +48,6 @@ export default class Issue extends Command {
         //   runCommentCmd(adjustedArgs, this.remoteInfo)
         // } else
         if (isShorcutForListIssues) {
-            console.log('flags', flags)
             runListCmd(flags)
         }
         // else if (isShorcutForNewIssue) {

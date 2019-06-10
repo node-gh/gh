@@ -29,7 +29,7 @@
         "posttest": "tslint -p . -t stylish",
         "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
         "version": "oclif-dev readme && git add README.md",
-        "test": "node_modules/.bin/mocha --reporter list"
+        "test:todo": "mocha --reporter list"
     },
     "dependencies": {
         "@oclif/command": "^1.5.13",

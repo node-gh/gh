@@ -2,6 +2,7 @@ import { flags } from '@oclif/command'
 import { isArray } from 'lodash'
 import Command from '../../base'
 import { getGitHubInstance } from '../../github'
+import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
 import { getUserRepo } from '../../utils'
 
@@ -42,6 +43,8 @@ export default class List extends Command {
 }
 
 export async function runListCmd(flags) {
+    beforeHooks('issue.list', flags)
+
     const github = await getGitHubInstance()
 
     try {
@@ -63,6 +66,8 @@ export async function runListCmd(flags) {
     } catch (err) {
         throw new Error(`Error listing issues\n${err}`)
     }
+
+    afterHooks('issue.list', flags)
 }
 
 async function list(flags, GitHub) {

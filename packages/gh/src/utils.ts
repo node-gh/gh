@@ -32,76 +32,29 @@ export function hasCmdInOptions(commands, options) {
     return false
 }
 
-const nockBack = nock.back
+function capitalizeFirstLetter(str: string): string {
+    return `${str.charAt(0).toUpperCase()}${str.slice(1)}`
+}
 
-export function prepareTestFixtures(cmdName, argv) {
+export function prepareTestFixtures(cmdPath: string) {
+    const nockBack = nock.back
     let id = 0
+    const cmdArr = cmdPath.split('.')
 
-    // These should only include the flags that you need for e2e tests
-    const cmds = [
-        {
-            name: 'Issue',
-            flags: ['--comment', '--new', '--open', '--close', '--search', '--assign'],
-        },
-        {
-            name: 'PullRequest',
-            flags: [
-                '--detailed',
-                '--info',
-                '--fetch',
-                '--fwd',
-                '--comment',
-                '--open',
-                '--close',
-                '--submit',
-            ],
-        },
-        {
-            name: 'Gists',
-            flags: ['--new', '--fork', '--delete'],
-        },
-        {
-            name: 'Milestone',
-            flags: ['--list'],
-        },
-        {
-            name: 'Notifications',
-        },
-        {
-            name: 'Repo',
-            flags: ['--label', '--list', '--new', '--fork', '--delete'],
-        },
-        {
-            name: 'User',
-            flags: ['--login', '--logout', '--whoami'],
-        },
-        {
-            name: 'Version',
-            flags: ['--version'],
-        },
-    ].filter(cmd => cmd.name === cmdName)
-
-    const newCmdName = formatCmdName(cmds[0], argv)
-
-    if (!newCmdName) {
-        return () => {}
-    }
+    const formattedCmdName = `${capitalizeFirstLetter(cmdArr[0])}${capitalizeFirstLetter(
+        cmdArr[1]
+    )}`
 
     nock.disableNetConnect()
     nockBack.fixtures = `${process.cwd()}/__tests__/nockFixtures`
     nockBack.setMode('record')
 
-    const nockPromise = nockBack(`${newCmdName}.json`, {
+    const nockPromise = nockBack(`${formattedCmdName}.json`, {
         before,
         afterRecord,
     })
 
-    return () =>
-        nockPromise
-            .then(({ nockDone }) => nockDone())
-            .catch(err => {
-                throw new Error(`Nock ==> ${err}`)
-            })
+    return nockPromise
 
     /* --- Normalization Functions --- */
 
