@@ -646,7 +646,7 @@ PullRequest.prototype.printPullInfo_ = function(pull) {
     if (pull.mergeable_state === 'clean') {
         logger.log(`Mergeable (${pull.mergeable_state})`)
     } else if (pull.mergeable_state !== undefined) {
-        logger.warn(`Not mergeable (${pull.mergeable_state})`)
+        logger.info(`Not mergeable (${pull.mergeable_state})`)
     }
 
     if ((options.info || options.detailed) && pull.body) {
@@ -667,7 +667,7 @@ PullRequest.prototype.get = async function(user, repo, number) {
     try {
         var { data: pull } = await instance.GitHub.pulls.get(payload)
     } catch (err) {
-        logger.warn(`Can't get pull request ${user}/${repo}/${number}`)
+        logger.info(`Can't get pull request ${user}/${repo}/${number}`)
     }
 
     pr.printPullInfo_(pull)
@@ -698,7 +698,7 @@ PullRequest.prototype.list = async function(user, repo) {
         if (err && err.status === '404') {
             // some times a repo is found, but you can't listen its prs
             // due to the repo being disabled (e.g., private repo with debt)
-            logger.warn(`Can't list pull requests for ${user}/${payload.repo}`)
+            logger.info(`Can't list pull requests for ${user}/${payload.repo}`)
         } else {
             throw new Error(`Error listing pulls\n${err}`)
         }

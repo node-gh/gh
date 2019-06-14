@@ -1,6 +1,6 @@
 import { flags } from '@oclif/command'
 import Command from '../../base'
-import { getGitHubInstance } from '../../github'
+import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
 
 export const listCmdFlags = {
@@ -20,12 +20,14 @@ export default class List extends Command {
     }
 
     public async run() {
-        runListCmd(this.flags)
+        runListCmd(this.flags).catch(err => logger.error(err, 'Error running list cmd.'))
     }
 }
 
 export async function runListCmd(flags) {
-    const github = await getGitHubInstance()
+    await beforeHooks('issue.list', flags)
 
     //
+
+    await afterHooks('issue.list', flags)
 }

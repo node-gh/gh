@@ -1,7 +1,7 @@
 import { flags } from '@oclif/command'
 import { isArray } from 'lodash'
 import Command from '../../base'
-import { getGitHubInstance } from '../../github'
+import { github } from '../../github'
 import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
 import { getUserRepo } from '../../utils'
@@ -30,6 +30,8 @@ export const listCmdFlags = {
 }
 
 export default class List extends Command {
+    static aliases = ['i:l', 'issue:l', 'issue:list']
+
     public static description = 'List & filter issues'
 
     public static flags = {
@@ -38,43 +40,35 @@ export default class List extends Command {
     }
 
     public async run() {
-        runListCmd(this.flags)
+        runListCmd(this.flags).catch(err => logger.error(err, 'Error listing issues.'))
     }
 }
 
 export async function runListCmd(flags) {
     beforeHooks('issue.list', flags)
 
-    const github = await getGitHubInstance()
+    if (flags.all) {
+        logger.log(
+            `Listing ${logger.colors.green(flags.state)} issues for ${logger.colors.green(
+                flags.user
+            )}`
+        )
 
-    try {
-        if (flags.all) {
-            logger.log(
-                `Listing ${logger.colors.green(flags.state)} issues for ${logger.colors.green(
-                    flags.user
-                )}`
-            )
+        await listFromAllRepositories(flags.user)
+    } else {
+        logger.log(`Listing ${logger.colors.green(flags.state)} issues on ${getUserRepo(flags)}`)
 
-            await listFromAllRepositories(flags.user, github)
-        } else {
-            logger.log(
-                `Listing ${logger.colors.green(flags.state)} issues on ${getUserRepo(flags)}`
-            )
-
-            await list(flags, github)
-        }
-    } catch (err) {
-        throw new Error(`Error listing issues\n${err}`)
+        await list(flags)
     }
 
     afterHooks('issue.list', flags)
 }
 
-async function list(flags, GitHub) {
+async function list(flags, repo?: string) {
     let payload
 
     payload = {
-        repo: flags.repo,
+        repo: repo || flags.repo,
         owner: flags.user,
         state: flags.state,
     }
@@ -88,25 +82,29 @@ async function list(flags, GitHub) {
     }
 
     if (flags.milestone) {
-        const data = await GitHub.paginate(
-            GitHub.issues.listMilestonesForRepo.endpoint({
-                repo: flags.repo,
-                owner: flags.user,
-            })
-        )
+        const data = await github('issues.listMilestonesForRepo', {
+            repo: flags.repo,
+            owner: flags.user,
+        })
 
-        const milestoneNumber = data
-            .filter(milestone => flags.milestone === milestone.title)
-            .map(milestone => milestone.number)[0]
+        const milestoneNumber = data.filter(byMilestoneTitle).map(getNumber)
 
         payload.milestone = `${milestoneNumber}`
+    }
+
+    function byMilestoneTitle(milestone) {
+        return flags.milestone === milestone.title
+    }
+
+    function getNumber(milestone) {
+        return milestone.number
     }
 
     if (flags.assignee) {
         payload.assignee = flags.assignee
     }
 
-    const data = await GitHub.paginate(GitHub.issues.listForRepo.endpoint(payload))
+    const data = await github('issues.listForRepo', payload)
 
     const issues = data.filter(result => Boolean(result))
 
@@ -121,13 +119,13 @@ async function list(flags, GitHub) {
     }
 }
 
-async function listFromAllRepositories(user, GitHub) {
+async function listFromAllRepositories(user) {
     const payload = {
         type: 'all',
         username: user,
     }
 
-    const repositories: any = await GitHub.paginate(GitHub.repos.listForUser.endpoint(payload))
+    const repositories: any = await github('repos.listForUser', payload)
 
     for (const repo of repositories) {
         await list(repo.owner.login, repo.name)

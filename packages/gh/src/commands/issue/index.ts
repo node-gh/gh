@@ -1,5 +1,6 @@
 import { forEach } from 'lodash'
 import Command from '../../base'
+import { github } from '../../github'
 import { IFlags } from '../../interfaces'
 // import { runCommentCmd } from './comment'
 // import { runBrowserCmd } from './browser'
@@ -7,7 +8,7 @@ import { IFlags } from '../../interfaces'
 import { listCmdFlags, runListCmd } from './list'
 
 export default class Issue extends Command {
-    static aliases = ['is']
+    static aliases = ['i', 'issue']
 
     public static args = [
         {
@@ -89,4 +90,29 @@ function generateFlags() {
 
         return allFlags
     }, {})
+}
+
+export function getIssue(number, flags) {
+    const payload = {
+        issue_number: number,
+        repo: flags.repo,
+        owner: flags.user,
+    }
+
+    return github('issues.get', payload)
+}
+
+export function editIssue(number, title, state, flags) {
+    const payload = {
+        state,
+        title,
+        assignee: flags.assignee,
+        labels: flags.labels || [],
+        milestone: flags.milestone,
+        issue_number: number,
+        owner: flags.user,
+        repo: flags.repo,
+    }
+
+    return github('issues.update', payload)
 }

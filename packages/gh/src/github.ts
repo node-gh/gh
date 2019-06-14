@@ -5,8 +5,10 @@
  */
 
 import * as Octokit from '@octokit/rest'
+import * as level from 'console-log-level'
 import * as fs from 'fs'
 import * as inquirer from 'inquirer'
+import { get } from 'lodash'
 import * as moment from 'moment'
 import { join } from 'path'
 import * as userhome from 'userhome'
@@ -14,6 +16,26 @@ import { getConfig, writeGlobalConfigCredentials } from './configs'
 import * as logger from './logger'
 
 const config = getConfig()
+
+let githubAPI
+
+export async function github(apiPath: string, payload): Promise<Octokit.AnyResponse | any> {
+    if (!githubAPI) {
+        githubAPI = await getGitHubInstance()
+    }
+
+    if (apiPath.includes('list')) {
+        const githubMethod = get(githubAPI, apiPath).endpoint(payload)
+
+        return githubAPI
+            .paginate(githubMethod)
+            .catch(err => logger.error(err, 'Error when calling paginated GitHub API endpoint'))
+    }
+
+    return get(githubAPI, apiPath)(payload).catch(err =>
+        logger.error(err, 'Error when calling GitHub API endpoint')
+    )
+}
 
 export async function getGitHubInstance(): Promise<Octokit> {
     const baseUrl =
@@ -24,9 +46,20 @@ export async function getGitHubInstance(): Promise<Octokit> {
 
     Octokit.plugin(throttlePlugin)
 
+    let logLevel = 'error'
+
+    if (process.argv.includes('--debug')) {
+        logLevel = 'debug'
+    } else if (process.argv.includes('--info')) {
+        logLevel = 'info'
+    }
+
     return new Octokit({
         baseUrl,
         auth: token,
+        log: level({
+            level: logLevel,
+        }),
         throttle: {
             onRateLimit: (retryAfter, options) => {
                 console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)

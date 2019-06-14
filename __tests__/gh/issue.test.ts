@@ -7,13 +7,13 @@
 import { runCmd } from './runCmd'
 
 describe('E2E: Issues Module Test', () => {
-    it('List Issues Shorthand `issue`', done => {
+    it('List Issues Shorthand', done => {
         expect(runCmd('issue')).toMatchSnapshot()
         done()
     })
 
-    xit(`Assign Issues \`gh is --assign -A ${process.env.GH_USER} --number 1\``, done => {
-        expect(runCmd(`gh is --assign -A ${process.env.GH_USER} --number 1`)).toMatchSnapshot()
+    it(`Assign Issues`, done => {
+        expect(runCmd(`issue:assign 1 ${process.env.GH_USER}`)).toMatchSnapshot()
         done()
     })
 
@@ -27,13 +27,13 @@ describe('E2E: Issues Module Test', () => {
         done()
     })
 
-    xit('Close Issue `gh is --close --number 7 --number 10`', done => {
-        expect(runCmd(`gh is --close --number 7 --number 10`)).toMatchSnapshot()
+    it('Close Issue', done => {
+        expect(runCmd(`issue:close 7,10`)).toMatchSnapshot()
         done()
     })
 
-    xit('Open Issue `gh is --open --number 7 --number 10`', done => {
-        expect(runCmd(`gh is --open --number 7 --number 10`)).toMatchSnapshot()
+    it('Open Issue', done => {
+        expect(runCmd(`issue:open 7,10`)).toMatchSnapshot()
         done()
     })
 

@@ -91,7 +91,7 @@ class RestApiClient {
         return new Promise((resolve, reject) => {
             logger.debug(`New request #${id} started at ${begin}:\n${method} ${p.uri}`)
 
-            logger.insane(p)
+            logger.debug(p)
 
             request(p, (error, response) => {
                 let end = new Date().getTime()
@@ -101,8 +101,8 @@ class RestApiClient {
                 )
 
                 if (response) {
-                    logger.insane('Response headers:')
-                    logger.insane(response.headers)
+                    logger.debug('Response headers:')
+                    logger.debug(response.headers)
                     logger.debug('Response body')
                     logger.debug(response.body)
                 }

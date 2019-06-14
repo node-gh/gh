@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lodash'
+import { isArray, isObject, isPlainObject, map, mapValues } from 'lodash'
 import * as nock from 'nock'
 import * as zlib from 'zlib'
 import * as logger from './logger'
@@ -46,7 +46,7 @@ export function prepareTestFixtures(cmdPath: string) {
     )}`
 
     nock.disableNetConnect()
-    nockBack.fixtures = `${process.cwd()}/__tests__/nockFixtures`
+    nockBack.fixtures = `${process.cwd()}/__tests__/gh/nockFixtures`
     nockBack.setMode('record')
 
     const nockPromise = nockBack(`${formattedCmdName}.json`, {
@@ -172,49 +172,4 @@ export function prepareTestFixtures(cmdPath: string) {
             return body
         }
     }
-}
-
-function formatCmdName(cmd, argv) {
-    if (argv.length === 1) {
-        return cmd.name
-    }
-
-    return cmd.flags.reduce((flagName, current) => {
-        if (flagName) {
-            return flagName
-        }
-
-        if (argv.includes(current)) {
-            return concatUpper(cmd.name, current.slice(2))
-        }
-    }, null)
-}
-
-function concatUpper(one, two) {
-    return `${one}${upperFirst(two)}`
-}
-
-export function getIssue(GitHub, number, flags) {
-    const payload = {
-        issue_number: number,
-        repo: flags.repo,
-        owner: flags.user,
-    }
-
-    return GitHub.issues.get(payload)
-}
-
-export function editIssue(GitHub, number, title, state, flags) {
-    const payload = {
-        state,
-        title,
-        assignee: flags.assignee,
-        labels: flags.labels || [],
-        milestone: flags.milestone,
-        issue_number: number,
-        owner: flags.user,
-        repo: flags.repo,
-    }
-
-    return GitHub.issues.update(payload)
 }

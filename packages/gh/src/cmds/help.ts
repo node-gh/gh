@@ -59,7 +59,7 @@ Help.prototype.run = async function() {
         try {
             files.push(configs.getPluginPath(plugin))
         } catch (e) {
-            logger.warn(`Can't get ${plugin} plugin path.`)
+            logger.info(`Can't get ${plugin} plugin path.`)
         }
     })
 

@@ -21,7 +21,7 @@ export function getNodeModulesGlobalPath() {
     try {
         var { stdout } = exec.spawnSync('npm', ['root', '-g'])
     } catch (err) {
-        logger.warn(`Can't resolve plugins directory path.\n${err}`)
+        logger.info(`Can't resolve plugins directory path.\n${err}`)
     }
 
     return stdout
@@ -230,7 +230,7 @@ export function getPlugins() {
             return plugin.substring(0, 3) === 'gh-'
         })
     } catch (err) {
-        logger.warn(`Can't read plugins directory.\n${err}`)
+        logger.info(`Can't read plugins directory.\n${err}`)
     }
 
     return plugins

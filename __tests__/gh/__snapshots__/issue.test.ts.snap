@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`E2E: Issues Module Test Assign Issues \`gh is --assign -A protoEvangelion --number 1\` 1`] = `
-"Assigning issue #1 on protoEvangelion/gh to protoEvangelion
+exports[`E2E: Issues Module Test Assign Issues 1`] = `
+"Assigning issue 1 on protoEvangelion/gh to protoEvangelion
 https://github.com/protoEvangelion/gh/issues/1
 "
 `;
 
-exports[`E2E: Issues Module Test Close Issue \`gh is --close --number 7 --number 10\` 1`] = `
+exports[`E2E: Issues Module Test Close Issue 1`] = `
 "Closing issue 7 on protoEvangelion/gh
 https://github.com/protoEvangelion/gh/issues/7
 Closing issue 10 on protoEvangelion/gh
@@ -27,23 +27,23 @@ https://github.com/protoEvangelion/gh/issues/88
 "
 `;
 
-exports[`E2E: Issues Module Test List Issues Shorthand \`issue\` 1`] = `
+exports[`E2E: Issues Module Test List Issues Shorthand 1`] = `
 "Listing open issues on protoEvangelion/gh
-#101 hi @protoEvangelion (in 4 years)
-
-#100 test @protoEvangelion (in 4 years)
-
 #99 notification @protoEvangelion (in 4 years)
 
-#46 Node GH rocks! @protoEvangelion (in 4 years)
+#98 pr title2 @protoEvangelion (in 4 years)
 
-#43 testGo @protoEvangelion (in 4 years)
+#91 Node GH rocks! @protoEvangelion (in 4 years)
 
 #42 test2 @protoEvangelion (in 4 years)
+
+#40 My pr title @protoEvangelion (in 4 years)
+
+#38 Node GH rocks! @protoEvangelion (in 4 years)
 "
 `;
 
-exports[`E2E: Issues Module Test Open Issue \`gh is --open --number 7 --number 10\` 1`] = `
+exports[`E2E: Issues Module Test Open Issue 1`] = `
 "Opening issue 7 on protoEvangelion/gh
 https://github.com/protoEvangelion/gh/issues/7
 Opening issue 10 on protoEvangelion/gh

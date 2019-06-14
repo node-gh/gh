@@ -1,15 +1,17 @@
 import Command from '../../base'
-import { getGitHubInstance } from '../../github'
 import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
-import { editIssue, getIssue, getUserRepo } from '../../utils'
+import { getUserRepo } from '../../utils'
+import { editIssue, getIssue } from './index'
 
 export default class Close extends Command {
+    static aliases = ['i:c', 'issue:c', 'issue:close']
+
     public static args = [
         {
             name: 'number',
             required: true,
-            description: 'Number of the issue.',
+            description: 'Number(s) of the issue.',
             parse: input => input.split(','),
         },
     ]
@@ -23,25 +25,18 @@ export default class Close extends Command {
     public async run() {
         const { args } = this.parse(Close)
 
-        runCloseCmd({ ...this.flags, ...args })
+        runCloseCmd({ ...this.flags, ...args }).catch(err => logger.error(`Can't close issue.`))
     }
 }
 
 export async function runCloseCmd(flags) {
-    const github = await getGitHubInstance()
-
     await beforeHooks('issue.close', flags)
 
     for (const number of flags.number) {
         logger.log(`Closing issue ${number} on ${getUserRepo(flags)}`)
 
-        try {
-            const issue = await getIssue(github, number, flags)
-
-            var { data } = await editIssue(github, number, issue.title, 'closed', flags)
-        } catch (err) {
-            throw new Error(`Can't close issue.\n${err}`)
-        }
+        const issue = await getIssue(number, flags)
+        const { data } = await editIssue(number, issue.title, 'closed', flags)
 
         logger.log(logger.colors.cyan(data.html_url))
     }

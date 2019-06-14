@@ -39,26 +39,24 @@ export function debug(...args) {
     console.log('DEBUG:', ...args)
 }
 
-export function insane(...args) {
-    if (!process.env.GH_VERBOSE_INSANE) {
-        return
-    }
-
-    console.log(...args)
-}
-
-export function error(...args) {
-    if (typeof args[0] === 'string') {
-        args[0] = `fatal: ${args[0]}`
-    }
-
-    console.error(...args)
-    process.exit(1)
-}
-
-export function warn(...args) {
+export function info(...args) {
     args[0] = `warning: ${args[0]}`
     console.error(...args)
+}
+
+export function error(
+    error,
+    msg = 'Error running GH. Exiting early. Please run with --debug or --info for more details.'
+) {
+    if (process.argv.includes('--debug')) {
+        throw new Error(colors.red(`${msg}: \n${error}`))
+    } else if (process.argv.includes('--info')) {
+        console.error(colors.red(getErrorMessage(error)))
+    } else {
+        console.error(colors.red(msg))
+    }
+
+    process.exit(1)
 }
 
 export function log(...args) {
