@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import List from '../../src/commands/issue'
+import * as opn from 'opn'
+import { default as Browser, default as List } from '../../src/commands/issue'
 import Assign from '../../src/commands/issue/assign'
 import Close from '../../src/commands/issue/close'
 import Open from '../../src/commands/issue/open'
@@ -40,6 +41,15 @@ describe('E2E: Issues Module Test', () => {
         expect(spy.mock.calls).toMatchSnapshot()
 
         nockDone()
+    })
+
+    it('Open Issue in Browser', async () => {
+        await Browser.run(['7,10'])
+
+        expect(opn).toHaveBeenCalledTimes(2)
+        expect(opn).toHaveBeenCalledWith('https://github.com/protoEvangelion/gh/issues/7', {
+            wait: false,
+        })
     })
 
     xit('Create a new issue `gh is -N -t "Node GH rocks!" -L bug,question,test`', done => {

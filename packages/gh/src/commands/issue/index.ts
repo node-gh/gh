@@ -3,7 +3,7 @@ import Command from '../../base'
 import { github } from '../../github'
 import { IFlags } from '../../interfaces'
 // import { runCommentCmd } from './comment'
-// import { runBrowserCmd } from './browser'
+import { runBrowserCmd } from './browser'
 // import { newCmdFlags, runNewCmd } from './new'
 import { listCmdFlags, runListCmd } from './list'
 
@@ -33,22 +33,17 @@ export default class Issue extends Command {
         const { args } = this.parse(Issue)
         const flags = this.flags
 
-        // const isShortcutForBrowser = Number(args.number_or_title) && !args.comment_or_body
+        const isShortcutForBrowser =
+            args.number_or_title &&
+            !isNaN(args.number_or_title.split(',')[0]) &&
+            !args.comment_or_body
         // const isShortcutForComment = Number(args.number_or_title) && args.comment_or_body
         const isShorcutForListIssues = !args.number_or_title && !args.comment_or_body
         // const isShorcutForNewIssue = !Number(args.number_or_title) && args.comment_or_body
 
-        // if (isShortcutForBrowser) {
-        //   runBrowserCmd(args.number_or_title, this.remoteInfo)
-        // } else if (isShortcutForComment) {
-        //   const adjustedArgs = {
-        //     number: args.number_or_title,
-        //     message: args.comment_or_body
-        //   }
-
-        //   runCommentCmd(adjustedArgs, this.remoteInfo)
-        // } else
-        if (isShorcutForListIssues) {
+        if (isShortcutForBrowser) {
+            await runBrowserCmd({ ...this.flags, number: args.number_or_title.split(',') })
+        } else if (isShorcutForListIssues) {
             await runListCmd(flags)
         }
         // else if (isShorcutForNewIssue) {
