@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import { get } from 'lodash'
 import * as truncate from 'truncate'
 import * as configs from './configs'
 import * as exec from './exec'
@@ -20,12 +21,10 @@ export function createContext(flags) {
     }
 }
 
-export function getHooksArrayFromPath_(path, opt_config?: any) {
+export function getHooksArrayFromPath_(path, opt_config = config) {
     const keys = path.split('.')
     let key = keys.shift()
     let hooks
-
-    opt_config = opt_config || config
 
     hooks = opt_config.hooks || {}
 
@@ -37,57 +36,53 @@ export function getHooksArrayFromPath_(path, opt_config?: any) {
     return Array.isArray(hooks) ? hooks : []
 }
 
-export function getHooksFromPath(path) {
-    return getHooksArrayFromPath_(path)
+export function getHooksFromPath(path: string, opt_config = config): string[] | undefined {
+    return get(opt_config, `hooks.${path}`)
 }
 
-let doneTesting
+// let doneTesting
 
 export async function afterHooks(path, flags) {
     const after = getHooksFromPath(`${path}.after`)
 
-    if (flags.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
+    if (!after || flags.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
         return
     }
 
     let context = createContext(flags)
 
-    after.forEach(cmd => {
-        wrapCommand_(cmd, context, 'after')
-    })
+    after.forEach(cmd => callCmd(cmd, context, 'after'))
 
     process.env.NODEGH_HOOK_IS_LOCKED = 'true'
 
-    if (testing && doneTesting) {
-        await doneTesting
-            .then(({ nockDone }) => nockDone())
-            .catch(err => {
-                throw new Error(`Nock ==> ${err}`)
-            })
-    }
+    // if (testing && doneTesting) {
+    //     await doneTesting
+    //         .then(({ nockDone }) => nockDone())
+    //         .catch(err => {
+    //             throw new Error(`Nock ==> ${err}`)
+    //         })
+    // }
 }
 
 export async function beforeHooks(path, flags) {
     const before = getHooksFromPath(`${path}.before`)
 
-    if (testing) {
-        const { prepareTestFixtures } = await import('./utils')
+    // if (testing) {
+    //     const { prepareTestFixtures } = await import('./utils')
 
-        doneTesting = prepareTestFixtures(path)
-    }
+    //     doneTesting = prepareTestFixtures(path)
+    // }
 
-    if (flags.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
+    if (!before || flags.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
         return
     }
 
     let context = createContext(flags)
 
-    before.forEach(cmd => {
-        wrapCommand_(cmd, context, 'before')
-    })
+    before.forEach(cmd => callCmd(cmd, context, 'before'))
 }
 
-function wrapCommand_(cmd, context, when) {
+function callCmd(cmd, context, when) {
     const raw = logger.compileTemplate(cmd, context)
 
     if (!raw) {

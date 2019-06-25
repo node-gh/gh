@@ -1,5 +1,5 @@
 module.exports = {
-    collectCoverageFrom: ['lib/**/*.ts'],
+    collectCoverageFrom: ['packages/gh/src/commands/issue/*.ts'],
     coverageDirectory: '<rootDir>/coverage/',
     coveragePathIgnorePatterns: ['node_modules'],
     coverageThreshold: {
@@ -14,5 +14,4 @@ module.exports = {
     testMatch: ['**/?(*.)+(spec|test).ts'],
     testPathIgnorePatterns: ['node_modules'],
     testEnvironment: 'node',
-    verbose: true,
 }

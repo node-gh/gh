@@ -6,6 +6,7 @@
 
 import { isArray, isObject, isPlainObject, map, mapValues } from 'lodash'
 import * as nock from 'nock'
+import { resolve } from 'path'
 import * as zlib from 'zlib'
 import * as logger from './logger'
 
@@ -46,7 +47,7 @@ export function prepareTestFixtures(cmdPath: string) {
     )}`
 
     nock.disableNetConnect()
-    nockBack.fixtures = `${process.cwd()}/__tests__/gh/nockFixtures`
+    nockBack.fixtures = resolve(process.cwd(), 'packages/gh/__tests__/nockFixtures')
     nockBack.setMode('record')
 
     const nockPromise = nockBack(`${formattedCmdName}.json`, {

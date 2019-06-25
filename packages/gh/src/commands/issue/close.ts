@@ -25,7 +25,9 @@ export default class Close extends Command {
     public async run() {
         const { args } = this.parse(Close)
 
-        runCloseCmd({ ...this.flags, ...args }).catch(err => logger.error(`Can't close issue.`))
+        await runCloseCmd({ ...this.flags, ...args }).catch(err =>
+            logger.error(err, "Can't close issue.")
+        )
     }
 }
 

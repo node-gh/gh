@@ -11,6 +11,7 @@ import * as userhome from 'userhome'
 import * as which from 'which'
 import * as exec from './exec'
 import * as logger from './logger'
+
 const PLUGINS_PATH_KEY = 'plugins_path'
 
 const testing = process.env.NODE_ENV === 'testing'
@@ -177,7 +178,7 @@ export function addPluginConfig(plugin) {
         const configHooks = cloneDeep(config.hooks)
         const pluginHooks = cloneDeep(pluginConfig.hooks)
 
-        if (config.plugins[plugin] && !config.plugins[plugin]['hooks_installed']) {
+        if (config.plugins[plugin] && !config.plugins[plugin].hooks_installed) {
             Object.keys(pluginHooks).forEach(cmd => {
                 Object.keys(pluginHooks[cmd]).forEach(hook => {
                     configHooks[cmd][hook].before = [
@@ -201,7 +202,7 @@ export function addPluginConfig(plugin) {
 
                 try {
                     config.hooks = configHooks
-                    config.plugins[plugin]['hooks_installed'] = true
+                    config.plugins[plugin].hooks_installed = true
 
                     saveJsonConfig(getUserHomePath(), config)
                 } catch (err) {

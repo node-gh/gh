@@ -30,7 +30,7 @@ export default class Assign extends Command {
     public async run() {
         const { args } = this.parse(Assign)
 
-        runAssignCmd({ ...this.flags, ...args }).catch(err =>
+        await runAssignCmd({ ...this.flags, ...args }).catch(err =>
             logger.error(err, 'Error assigning issue')
         )
     }
@@ -39,17 +39,19 @@ export default class Assign extends Command {
 export async function runAssignCmd(flags) {
     await beforeHooks('issue.assign', flags)
 
-    logger.log(
-        `Assigning issue ${flags.number} on ${getUserRepo(flags)} to ${logger.colors.magenta(
-            flags.assignee
-        )}`
-    )
+    for (const num of flags.number) {
+        logger.log(
+            `Assigning issue ${num} on ${getUserRepo(flags)} to ${logger.colors.magenta(
+                flags.assignee
+            )}`
+        )
 
-    const issue = await getIssue(flags.number, flags)
+        const issue = await getIssue(num, flags)
 
-    const { data } = await editIssue(flags.number, issue.title, 'open', flags)
+        const { data } = await editIssue(num, issue.title, 'open', flags)
 
-    logger.log(logger.colors.cyan(data.html_url))
+        logger.log(logger.colors.cyan(data.html_url))
+    }
 
     await afterHooks('issue.assign', flags)
 }

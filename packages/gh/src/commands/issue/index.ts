@@ -49,7 +49,7 @@ export default class Issue extends Command {
         //   runCommentCmd(adjustedArgs, this.remoteInfo)
         // } else
         if (isShorcutForListIssues) {
-            runListCmd(flags)
+            await runListCmd(flags)
         }
         // else if (isShorcutForNewIssue) {
         //   const adjustedFlags = {

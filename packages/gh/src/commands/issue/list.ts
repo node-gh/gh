@@ -45,7 +45,7 @@ export default class List extends Command {
 }
 
 export async function runListCmd(flags) {
-    beforeHooks('issue.list', flags)
+    await beforeHooks('issue.list', flags)
 
     if (flags.all) {
         logger.log(
@@ -61,7 +61,7 @@ export async function runListCmd(flags) {
         await list(flags)
     }
 
-    afterHooks('issue.list', flags)
+    await afterHooks('issue.list', flags)
 }
 
 async function list(flags, repo?: string) {

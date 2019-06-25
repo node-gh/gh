@@ -25,7 +25,7 @@ export default class Open extends Command {
     public async run() {
         const { args } = this.parse(Open)
 
-        runOpenCmd({ ...this.flags, ...args }).catch(err => logger.error(`Can't open issue.`))
+        await runOpenCmd({ ...this.flags, ...args }).catch(err => logger.error("Can't open issue."))
     }
 }
 

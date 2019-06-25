@@ -67,7 +67,7 @@
         "dev": "lerna run dev",
         "commit": "git-cz",
         "env:test": "cross-env NODE_ENV=testing GH_USER=protoEvangelion GH_TOKEN=0001",
-        "test": "npm run env:test -- jest",
+        "test": "npm run env:test -- jest --silent",
         "test:watch": "npm run env:test -- jest --watch",
         "test:ci": "npm run env:test -- jest",
         "test:coverage": "npm run env:test -- jest --coverage",
