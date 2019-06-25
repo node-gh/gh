@@ -7,7 +7,7 @@
 import { readFileSync, unlinkSync } from 'fs'
 import { join } from 'path'
 import * as stripAnsi from 'strip-ansi'
-import { runCmd } from './testUtils'
+import { runCmd } from '../testUtils'
 
 describe('E2E: User Module Test', () => {
     it('List Current User `gh user`', done => {

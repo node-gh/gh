@@ -5,7 +5,6 @@
  */
 
 import Command, { flags } from '@oclif/command'
-import * as fs from 'fs'
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -30,60 +29,46 @@ export default abstract class extends Command {
     public remoteInfo
 
     public async init() {
-        this.setGlobalFlags()
-        this.initLogger()
-    }
-
-    private initLogger() {
-        process.env.DEBUG = this.flags.debug
-        process.env.INFO = this.flags.info
-    }
-
-    private setGlobalFlags() {
-        // @ts-ignore: need to figure out if this error is benign
         const { flags } = this.parse(this.constructor)
 
-        flags.isTTY = {}
-        flags.isTTY.in = Boolean(process.stdin.isTTY)
-        flags.isTTY.out = Boolean(process.stdout.isTTY)
+        expandAliases()
+        this.normalizeOptions()
+        this.registerLoggerHelpers()
 
-        if (!flags.user) {
-            if (flags.repo || flags.all) {
-                flags.user = flags.loggedUser
-            } else {
-                flags.user = process.env.GH_USER || flags.remoteUser || flags.loggedUser
-            }
+        if (options.argv.remain.length === 1) {
+            return
         }
 
-        this.flags = flags
+        return this.configureUser()
+            .then(() => {
+                if (jiraConfig.base === undefined) {
+                    jiraConfig.base = Jira.DEFAULT_JIRA_BASE
+                }
+
+                this.api = new RestApiClient(jiraConfig)
+
+                // shortcut if only the browser command was invoked to avoid remote call
+                if (
+                    options.browser &&
+                    lodash.intersection(Jira.DETAILS.commands, Object.keys(options)).length === 1
+                ) {
+                    return this.browserAction()
+                }
+                console.log('RIGHT BEFORE RUN')
+                return this.runCommands()
+            })
+            .catch(this.fatalErrorHandler)
     }
 }
 
-const verbose = process.argv.indexOf('--verbose') !== -1
-const insane = process.argv.indexOf('--insane') !== -1
+function expandAliases() {
+    var options = this.options
 
-process.on('unhandledRejection', r => console.log(r))
+    if (config.alias) {
+        options.assignee = config.alias[options.assignee] || options.assignee
+    }
 
-if (verbose || insane) {
-    process.env.GH_VERBOSE = 'true'
-}
-
-if (insane) {
-    process.env.GH_VERBOSE_INSANE = 'true'
-}
-
-// -- Config -------------------------------------------------------------------
-
-export function clone(o) {
-    return JSON.parse(JSON.stringify(o))
-}
-
-// -- Utils --------------------------------------------------------------------
-
-export function load() {}
-
-export function find(filepath, opt_pattern) {
-    return fs.readdirSync(filepath).filter(file => {
-        return (opt_pattern || /.*/).test(file)
-    })
+    if (options.new && config.alias) {
+        options.reporter = config.alias[options.reporter] || options.reporter
+    }
 }

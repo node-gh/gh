@@ -69,7 +69,7 @@
     },
     "dependencies": {
         "@oclif/command": "^1.5.13",
-        "@oclif/config": "^1.13.0",
+        "@oclif/config": "^1.12.6",
         "@oclif/plugin-help": "^2.1.6",
         "@oclif/plugin-plugins": "^1.7.8",
         "@octokit/plugin-throttling": "^2.4.0",
@@ -94,6 +94,8 @@
     },
     "devDependencies": {
         "@oclif/dev-cli": "^1.22.0",
-        "nock": "10.0.5"
+        "nock": "10.0.5",
+        "ts-node": "^8.3.0",
+        "typescript": "^3.3.3"
     }
 }

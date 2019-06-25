@@ -15,6 +15,7 @@
         "boilerplate-cmd.ts",
         "src/cmd.ts",
         "src/cmd-anonymizer.ts",
-        "bin/debug.ts"
+        "bin/debug.ts",
+        "__tests__"
     ]
 }

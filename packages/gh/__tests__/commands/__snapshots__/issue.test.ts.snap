@@ -1,17 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`E2E: Issues Module Test Assign Issues 1`] = `
-"Assigning issue 1 on protoEvangelion/gh to protoEvangelion
-https://github.com/protoEvangelion/gh/issues/1
-"
+Array [
+  Array [
+    "Assigning issue 1 on protoEvangelion/gh to protoEvangelion",
+  ],
+  Array [
+    "https://github.com/protoEvangelion/gh/issues/1",
+  ],
+]
 `;
 
 exports[`E2E: Issues Module Test Close Issue 1`] = `
-"Closing issue 7 on protoEvangelion/gh
-https://github.com/protoEvangelion/gh/issues/7
-Closing issue 10 on protoEvangelion/gh
-https://github.com/protoEvangelion/gh/issues/10
-"
+Array [
+  Array [
+    "Closing issue 7 on protoEvangelion/gh",
+  ],
+  Array [
+    "https://github.com/protoEvangelion/gh/issues/7",
+  ],
+  Array [
+    "Closing issue 10 on protoEvangelion/gh",
+  ],
+  Array [
+    "https://github.com/protoEvangelion/gh/issues/10",
+  ],
+]
 `;
 
 exports[`E2E: Issues Module Test Comment on Issues \`gh is 1 -c "comment"\` 1`] = `
@@ -28,8 +42,12 @@ https://github.com/protoEvangelion/gh/issues/88
 `;
 
 exports[`E2E: Issues Module Test List Issues Shorthand 1`] = `
-"Listing open issues on protoEvangelion/gh
-#99 notification @protoEvangelion (in 4 years)
+Array [
+  Array [
+    "Listing open issues on protoEvangelion/gh",
+  ],
+  Array [
+    "#99 notification @protoEvangelion (in 4 years)
 
 #98 pr title2 @protoEvangelion (in 4 years)
 
@@ -39,16 +57,26 @@ exports[`E2E: Issues Module Test List Issues Shorthand 1`] = `
 
 #40 My pr title @protoEvangelion (in 4 years)
 
-#38 Node GH rocks! @protoEvangelion (in 4 years)
-"
+#38 Node GH rocks! @protoEvangelion (in 4 years)",
+  ],
+]
 `;
 
 exports[`E2E: Issues Module Test Open Issue 1`] = `
-"Opening issue 7 on protoEvangelion/gh
-https://github.com/protoEvangelion/gh/issues/7
-Opening issue 10 on protoEvangelion/gh
-https://github.com/protoEvangelion/gh/issues/10
-"
+Array [
+  Array [
+    "Opening issue 7 on protoEvangelion/gh",
+  ],
+  Array [
+    "https://github.com/protoEvangelion/gh/issues/7",
+  ],
+  Array [
+    "Opening issue 10 on protoEvangelion/gh",
+  ],
+  Array [
+    "https://github.com/protoEvangelion/gh/issues/10",
+  ],
+]
 `;
 
 exports[`E2E: Issues Module Test Search Issues \`gh is -s hi\` 1`] = `

@@ -5,7 +5,7 @@
  */
 
 import * as stripAnsi from 'strip-ansi'
-import { runCmd } from './runCmd'
+import { runCmd } from '../runCmd'
 
 describe('E2E: Repo Module Test', () => {
     it('List Repos `gh re --list`', done => {
