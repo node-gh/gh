@@ -14,4 +14,5 @@ module.exports = {
     testMatch: ['**/?(*.)+(spec|test).ts'],
     testPathIgnorePatterns: ['node_modules'],
     testEnvironment: 'node',
+    watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 }
