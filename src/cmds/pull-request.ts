@@ -59,6 +59,7 @@ export const DETAILS = {
         description: String,
         detailed: Boolean,
         direction: String,
+        draft: Boolean,
         fetch: Boolean,
         fwd: String,
         issue: Number,
@@ -88,6 +89,7 @@ export const DETAILS = {
         D: ['--description'],
         d: ['--detailed'],
         f: ['--fetch'],
+        F: ['--draft'],
         i: ['--issue'],
         I: ['--info'],
         k: ['--link'],
@@ -827,6 +829,7 @@ async function submit(options, user) {
         base: options.branch,
         head: `${options.user}:${pullBranch}`,
         repo: options.repo,
+        draft: options.draft,
     }
 
     try {

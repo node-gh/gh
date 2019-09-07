@@ -493,14 +493,15 @@ gh pr 1 --close --user eduardolundgren
 
 ### 8. Submit
 
-| Option                | Usage        | Type     |
-| --------------------- | ------------ | -------- |
-| `-s`, `--submit`      | **Required** | `String` |
-| `-b`, `--branch`      | _Optional_   | `String` |
-| `-D`, `--description` | _Optional_   | `String` |
-| `-i`, `--issue`       | _Optional_   | `Number` |
-| `-r`, `--repo`        | _Optional_   | `String` |
-| `-t`, `--title`       | _Optional_   | `String` |
+| Option                | Usage        | Type      |
+| --------------------- | ------------ | --------- |
+| `-s`, `--submit`      | **Required** | `String`  |
+| `-b`, `--branch`      | _Optional_   | `String`  |
+| `-D`, `--description` | _Optional_   | `String`  |
+| `-F`, `--draft`       | _Optional_   | `Boolean` |
+| `-i`, `--issue`       | _Optional_   | `Number`  |
+| `-r`, `--repo`        | _Optional_   | `String`  |
+| `-t`, `--title`       | _Optional_   | `String`  |
 
 Omitting a value for `--submit` fallbacks to the `default_pr_reviewer` key found
 in your [config file](#config). Omitting `--title` will submit a pull request
@@ -524,6 +525,12 @@ gh pr --submit eduardolundgren --branch dev
 
 ```
 gh pr --submit eduardolundgren --issue 150
+```
+
+-   Submit a pull request in a draft state.
+
+```
+gh pr --submit eduardolundgren --draft
 ```
 
 ### 9. Open in Browser
