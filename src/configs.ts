@@ -74,14 +74,14 @@ function resolveGHConfigs() {
     }
 }
 
-export function getConfig(): object {
+export function getConfig() {
     const config = resolveGHConfigs()
 
     const protocol = `${config.api.protocol}://`
     const is_enterprise = config.api.host !== 'api.github.com'
 
     if (config.github_host === undefined) {
-        config.github_host = `${protocol}${is_enterprise ? config.api.host : 'github.com'}`
+        config.github_host = `${protocol}${is_enterprise ? config.api.host : 'api.github.com'}`
     }
     if (config.github_gist_host === undefined) {
         config.github_gist_host = `${protocol}${
@@ -237,10 +237,14 @@ export function getPlugins() {
     return plugins
 }
 
-export function getPlugin(plugin) {
-    plugin = getPluginBasename(plugin)
+export function getPlugin(pluginName) {
+    pluginName = getPluginBasename(pluginName)
 
-    return import(getPluginPath(`gh-${plugin}`))
+    return import(getPluginPath(`gh-${pluginName}`))
+}
+
+export function pluginHasConfig(pluginName) {
+    return Boolean(getConfig().plugins[pluginName])
 }
 
 export function getPluginPath(plugin) {

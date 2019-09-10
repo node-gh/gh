@@ -85,14 +85,14 @@ async function setupPlugins_(context, setupFn) {
     const plugins = configs.getPlugins()
 
     const contextArr = await Promise.all(
-        plugins.map(async plugin => {
+        plugins.map(async pluginName => {
             try {
-                var pluginFile = await configs.getPlugin(plugin)
+                var pluginFile = await configs.getPlugin(pluginName)
             } catch (e) {
-                logger.warn(`Can't get ${plugin} plugin.`)
+                logger.warn(`Can't get ${pluginName} plugin.`)
             }
 
-            if (pluginFile && pluginFile[setupFn]) {
+            if (pluginFile && configs.pluginHasConfig(pluginName) && pluginFile[setupFn]) {
                 const newContext = pluginFile[setupFn](context)
                 return newContext
             }
@@ -113,7 +113,7 @@ export function wrapCommand_(cmd, context, when) {
         return
     }
 
-    logger.log(logger.colors.cyan(`{${when}-hook}`), truncate(raw.trim(), 120))
+    logger.log(logger.colors.cyan('[hook]'), truncate(raw.trim(), 120))
 
     if (testing) return
 

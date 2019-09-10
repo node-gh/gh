@@ -98,7 +98,7 @@ Issue.prototype.run = async function(done) {
     options.state = options.state || Issue.STATE_OPEN
 
     if (!hasCmdInOptions(Issue.DETAILS.commands, options)) {
-        const payload = options.remain && options.remain.concat().slice(1)
+        const payload = options.argv.remain && options.argv.remain.slice(1)
 
         if (payload && payload[0]) {
             if (/^\d+$/.test(payload[0])) {
