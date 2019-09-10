@@ -12,12 +12,21 @@ import { join } from 'path'
 import * as userhome from 'userhome'
 import { getConfig, writeGlobalConfigCredentials } from './configs'
 import * as logger from './logger'
+import { URL } from 'url'
 
 const config = getConfig()
 
 export async function getGitHubInstance(): Promise<Octokit> {
-    const baseUrl =
-        config.github_host === 'https://github.com' ? 'https://api.github.com' : config.github_host
+    const {
+        github_host,
+        api: { pathPrefix },
+    } = config
+
+    const { href, ...rest } = new URL(`${github_host}${pathPrefix || ''}`)
+
+    // trim trailing slash for Octokit
+    const baseUrl = href.replace(/\/+$/, '')
+
     const token = await getToken()
 
     const throttlePlugin = await import('@octokit/plugin-throttling')
@@ -25,6 +34,7 @@ export async function getGitHubInstance(): Promise<Octokit> {
     Octokit.plugin(throttlePlugin)
 
     return new Octokit({
+        // log: console,
         baseUrl,
         auth: token,
         throttle: {

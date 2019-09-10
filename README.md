@@ -54,6 +54,16 @@
 
 <p><img src="https://github.com/nodejs/Release/blob/master/schedule.svg" alt="LTS Schedule"/></p>
 
+## Authentication
+
+-   Under the hood, we are using [@octokit/rest](https://github.com/octokit/rest.js) to work with the GitHub API
+-   The method of authentication that we use with octokit, is a personal access token
+-   You have two options here:
+    1. Run `gh` which will start the authentication process & generate the token for you automatically
+        - Though they are hidden, the downside of this is having to type your user & pass
+        - Supports 2fa
+    2. [Manually generate your personal token](https://github.com/node-gh/gh/issues/450#issuecomment-490530739) & add it to your `~/.gh.json`
+
 ## Available commands
 
 ```

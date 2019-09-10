@@ -48,13 +48,7 @@ async function resolveCmd(name, commandDir) {
         return false
     })[0]
 
-    if (commandName) {
-        return import(path.join(commandDir, commandName))
-    }
-
-    const plugin = await resolvePlugin(name)
-
-    return { default: plugin.Impl }
+    return commandName && import(path.join(commandDir, commandName))
 }
 
 async function resolvePlugin(name) {
@@ -64,35 +58,9 @@ async function resolvePlugin(name) {
     const plugin = await configs.getPlugin(name)
     const pluginFullName = plugin.Impl.name.toLowerCase()
 
-    if (pluginFullName === 'jira') {
-        exitIfJiraPluginIsIncompat()
-    }
-
     plugin && configs.addPluginConfig(pluginFullName)
 
     return plugin
-}
-
-function exitIfJiraPluginIsIncompat() {
-    const packageJson = fs.readFileSync(
-        path.join(configs.getNodeModulesGlobalPath(), 'gh-jira', 'package.json'),
-        'utf8'
-    )
-
-    if (packageJson) {
-        const versionMajor = JSON.parse(packageJson).version.slice(0, 1)
-
-        // todo: change this when updating gh beyond v3
-        if (versionMajor < 2) {
-            console.error(
-                logger.colors.red(
-                    'Your Jira plugin version is incompatible with this version of gh and must updated to >= version 2.0.0.\nPlease update with `npm install gh-jira`.\nExiting until version has been updated.'
-                )
-            )
-
-            process.exit(1)
-        }
-    }
 }
 
 async function loadCommand(name) {
@@ -105,6 +73,13 @@ async function loadCommand(name) {
         Command = await import(commandPath)
     } else {
         Command = await resolveCmd(name, commandDir)
+    }
+
+    if (!Command) {
+        // try to resolve as plugin
+        const plugin = await resolvePlugin(name)
+
+        Command = { default: plugin.Impl }
     }
 
     return Command.default
@@ -139,6 +114,10 @@ export async function setUp() {
         Command = await loadCommand(module)
     } catch (err) {
         throw new Error(`Cannot find module ${module}\n${err}`)
+    }
+
+    if (!Command) {
+        throw new Error(`No cmd or plugin found.`)
     }
 
     options = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)

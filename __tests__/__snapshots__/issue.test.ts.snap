@@ -23,7 +23,7 @@ https://github.com/protoEvangelion/gh/issues/1#issuecomment-000000001
 exports[`E2E: Issues Module Test Create a new issue \`gh is -N -t "Node GH rocks!" -L bug,question,test\` 1`] = `
 "Creating a new issue on protoEvangelion/gh
 https://github.com/protoEvangelion/gh/issues/88
-{after-hook} gh is --browser  --user protoEvangelion --repo gh --number 88
+[hook] gh is --browser  --user protoEvangelion --repo gh --number 88
 "
 `;
 
