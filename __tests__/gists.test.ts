@@ -5,7 +5,7 @@
  */
 
 import * as stripAnsi from 'strip-ansi'
-import { runCmd } from './runCmd'
+import { runCmd } from './testUtils'
 
 describe('E2E: Gist Module Test', () => {
     it('List Gists `gh gi`', done => {

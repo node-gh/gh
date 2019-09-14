@@ -20,6 +20,12 @@ exports[`E2E: Pull Request Module Test Fetch & Rebase PR \`gh pr 55 --fetch --re
 "
 `;
 
+exports[`E2E: Pull Request Module Test Fetch PR \`gh pr 55\` 1`] = `
+"Fetching pull request #55 into branch pr-55
+[hook] gh pr 55 --user protoEvangelion --repo gh --comment 'Just started reviewing :)'
+"
+`;
+
 exports[`E2E: Pull Request Module Test Fwd PR to another user \`gh pr 97 --fwd node-gh-bot\` 1`] = `
 "Forwarding pull request #97 to @node-gh-bot
 https://github.com/node-gh-bot/gh/pull/3
@@ -34,7 +40,7 @@ exports[`E2E: Pull Request Module Test Get PR Info \`gh pr --info 50\` 1`] = `
 "
 `;
 
-exports[`E2E: Pull Request Module Test List Detailed PRs \`gh pr --detailed\` 1`] = `
+exports[`E2E: Pull Request Module Test List Detailed PRs \`gh pr --detailed --prettyPrint\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
 Branch: master (1)
@@ -54,15 +60,52 @@ Branch: master (1)
 "
 `;
 
-exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
+exports[`E2E: Pull Request Module Test List Detailed PRs \`gh pr --detailed\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
+Branch: master (1)
+#55 pr title @protoEvangelion (in 4 years) ✓
+https://github.com/protoEvangelion/gh/pull/55
+pr description
+
+"
+`;
+
+exports[`E2E: Pull Request Module Test List PRs & sorty by complexity \`gh pr --list --sort complexity\` 1`] = `
+"Listing open pull requests on protoEvangelion/gh
+protoEvangelion/gh
+Branch: master (1)
+#50 pr2 @protoEvangelion (in 5 years) ✓
+
+Branch: octokit (1)
+#98 pr title2 @protoEvangelion (in 5 years)
+"
+`;
+
+exports[`E2E: Pull Request Module Test List PRs \`gh pr --list --prettyPrint\` 1`] = `
+"Listing open pull requests on protoEvangelion/gh
+protoEvangelion/gh
+Branch: octokit (1)
+┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
+│    #    │ Title                                         │ Author              │ Opened        │ Status │
+├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
+│   #98   │ pr title2                                     │ @protoEvangelion    │ in 5 years    │   -    │
+└─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
+
 Branch: master (1)
 ┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
 │    #    │ Title                                         │ Author              │ Opened        │ Status │
 ├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
-│   #55   │ pr title                                      │ @protoEvangelion    │ in 4 years    │   ✓    │
+│   #50   │ pr2                                           │ @protoEvangelion    │ in 5 years    │   ✓    │
 └─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
+"
+`;
+
+exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
+"Listing open pull requests on protoEvangelion/gh
+protoEvangelion/gh
+Branch: master (1)
+#55 pr title @protoEvangelion (in 4 years) ✓
 "
 `;
 

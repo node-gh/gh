@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { runCmd } from './runCmd'
+import { runCmd } from './testUtils'
 
 describe('E2E: Version Module Test', () => {
     it('Check Current version `gh --version`', done => {
