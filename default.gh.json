@@ -103,7 +103,7 @@
 
     "plugins": {},
 
-    "pretty_print": true,
+    "pretty_print": false,
 
     "replace": {},
 

@@ -748,7 +748,7 @@ PullRequest.prototype.list = async function(user, repo) {
         json.branches.forEach((branch, index, arr) => {
             logger.log(`${logger.colors.blue('Branch:')} ${branch.name} (${branch.total})`)
 
-            if (config.pretty_print) {
+            if (config.pretty_print || options.prettyPrint) {
                 instance.printPullsInfoTable_(branch.pulls)
             } else {
                 branch.pulls.forEach(instance.printPullInfo_, instance)

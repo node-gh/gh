@@ -1,11 +1,16 @@
+/**
+ * © 2013 Liferay, Inc. <https://liferay.com> and Node GH contributors
+ * (see file: CONTRIBUTORS)
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 import { execSync } from 'child_process'
 
-export function runCmd(cmd, env?) {
+export function runCmd(cmd: string, env?: boolean) {
     try {
-        if (env) {
-            env = { env: { ...process.env } }
-        }
-        var result = execSync(cmd, { cwd: process.cwd(), ...(env && env) })
+        const customEnv = env ? { env: { ...process.env } } : {}
+
+        var result = execSync(cmd, { cwd: process.cwd(), ...customEnv })
     } catch (error) {
         throw new Error(error.output.toString())
     }

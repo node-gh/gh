@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { runCmd } from './runCmd'
+import { runCmd } from './testUtils'
 
 describe('E2E: Milestone Module Test', () => {
     it('List Milestones `gh ms --list`', done => {
