@@ -52,7 +52,11 @@ export async function afterHooks(path, scope) {
     let context = createContext(scope)
 
     if (!testing) {
-        context = await setupPlugins_(context, 'setupAfterHooks')
+        const pluginContext = await setupPlugins_(context, 'setupAfterHooks')
+
+        if (pluginContext) {
+            context = { ...context, ...pluginContext }
+        }
     }
 
     after.forEach(cmd => {
@@ -73,7 +77,11 @@ export async function beforeHooks(path, scope) {
     let context = createContext(scope)
 
     if (!testing) {
-        context = await setupPlugins_(context, 'setupBeforeHooks')
+        const pluginContext = await setupPlugins_(context, 'setupBeforeHooks')
+
+        if (pluginContext) {
+            context = { ...context, ...pluginContext }
+        }
     }
 
     before.forEach(cmd => {
@@ -81,7 +89,7 @@ export async function beforeHooks(path, scope) {
     })
 }
 
-async function setupPlugins_(context, setupFn) {
+async function setupPlugins_(context, setupFn): Promise<object> {
     const plugins = configs.getPlugins()
 
     const contextArr = await Promise.all(
@@ -99,13 +107,15 @@ async function setupPlugins_(context, setupFn) {
         })
     )
 
-    return contextArr.reduce((accum, curr) => {
-        if (accum) {
-            return { ...accum, ...curr }
-        }
-        return { ...curr }
-    }, {})
+    return contextArr.filter(plugin => plugin !== undefined).reduce(mergeArrayOfObjects, false)
 }
+
+function mergeArrayOfObjects(accumulatedObject, currentObject): object | boolean {
+    if (!currentObject) return accumulatedObject
+
+    return { ...accumulatedObject, ...currentObject }
+}
+
 export function wrapCommand_(cmd, context, when) {
     const raw = logger.compileTemplate(cmd, context)
 
