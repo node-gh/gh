@@ -64,10 +64,19 @@ exports[`E2E: Pull Request Module Test List Detailed PRs \`gh pr --detailed\` 1`
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
 Branch: master (1)
-#55 pr title @protoEvangelion (in 4 years) ✓
-https://github.com/protoEvangelion/gh/pull/55
-pr description
-
+┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
+│    #    │ Details                                       │ Author              │ Opened        │ Status │
+├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
+│   #55   │ Title:                                        │ @protoEvangelion    │ in 4 years    │   ✓    │
+│         │                                               │                     │               │        │
+│         │ pr title                                      │                     │               │        │
+│         │                                               │                     │               │        │
+│         │ Body:                                         │                     │               │        │
+│         │                                               │                     │               │        │
+│         │ pr description                                │                     │               │        │
+│         │                                               │                     │               │        │
+│         │ https://github.com/protoEvangelion/gh/pull/55 │                     │               │        │
+└─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
 "
 `;
 
@@ -105,7 +114,11 @@ exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
 Branch: master (1)
-#55 pr title @protoEvangelion (in 4 years) ✓
+┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
+│    #    │ Title                                         │ Author              │ Opened        │ Status │
+├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
+│   #55   │ pr title                                      │ @protoEvangelion    │ in 4 years    │   ✓    │
+└─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
 "
 `;
 
