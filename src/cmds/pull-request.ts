@@ -678,6 +678,8 @@ PullRequest.prototype.list = async function(user, repo) {
     let options = instance.options
     let json
 
+    await beforeHooks('pull-request.list', instance)
+
     let sort = options.sort
 
     if (options.sort === PullRequest.SORT_COMPLEXITY) {
@@ -765,6 +767,8 @@ PullRequest.prototype.list = async function(user, repo) {
             logger.log('')
         }
     }
+
+    await afterHooks('pull-request.list', instance)
 }
 
 PullRequest.prototype.listFromAllRepositories = async function() {
