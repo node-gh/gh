@@ -137,7 +137,7 @@ gh pull-request
 #### Examples
 
 -   **Shortcut** for listing open pull requests for the current repository.
--   To pretty print output in a table add `"pretty_print": true` to your `~/.gh-json` config or to cli like `--prettyPrint`
+-   To turn off pretty printing of output in a table add `"pretty_print": false` to your `~/.gh-json` config
 
 ```
 gh pr
