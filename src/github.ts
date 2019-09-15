@@ -18,11 +18,14 @@ const config = getConfig()
 
 export async function getGitHubInstance(): Promise<Octokit> {
     const {
-        github_host,
-        api: { pathPrefix },
+        api: { protocol, pathPrefix, host },
     } = config
 
-    const { href, ...rest } = new URL(`${github_host}${pathPrefix || ''}`)
+    const is_enterprise = config.api.host !== 'api.github.com'
+
+    const apiUrl = `${protocol}://${is_enterprise ? config.api.host : 'api.github.com'}`
+
+    const { href, ...rest } = new URL(`${apiUrl}${pathPrefix || ''}`)
 
     // trim trailing slash for Octokit
     const baseUrl = href.replace(/\/+$/, '')

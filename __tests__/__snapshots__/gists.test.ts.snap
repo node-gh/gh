@@ -39,3 +39,8 @@ https://gist.github.com/dfc000000001b8c49c8a97dbc98cf7193
 
 "
 `;
+
+exports[`E2E: Gist Module Test Open gist in browser \`gh gi --browser --id 5444883\` 1`] = `
+"https://gist.github.com/5444883
+"
+`;

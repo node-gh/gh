@@ -9,7 +9,7 @@
 import * as Octokit from '@octokit/rest'
 import * as fs from 'fs'
 import * as inquirer from 'inquirer'
-import * as openUrl from 'opn'
+import { openUrl } from '../utils'
 import * as url from 'url'
 import * as base from '../base'
 import * as git from '../git'
@@ -356,7 +356,7 @@ Repo.prototype.run = async function(done) {
 }
 
 Repo.prototype.browser = function(user, repo) {
-    !testing && openUrl(`${config.github_host}/${user}/${repo}`, { wait: false })
+    openUrl(`${config.github_host}/${user}/${repo}`)
 }
 
 Repo.prototype.clone_ = function(user, repo, repo_url) {

@@ -26,6 +26,11 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
+    it('Open pr in browser `gh pr 55 --browser`', done => {
+        expect(runCmd('gh pr 55 --browser')).toMatchSnapshot()
+        done()
+    })
+
     /* These have been passing locally but failing in Travis, need to find out work around */
     xit('List PRs `gh pr --list --prettyPrint`', done => {
         // strip ansi characters so it doesn't fail on Travis

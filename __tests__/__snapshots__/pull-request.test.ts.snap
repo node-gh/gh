@@ -30,7 +30,7 @@ exports[`E2E: Pull Request Module Test Fwd PR to another user \`gh pr 97 --fwd n
 "Forwarding pull request #97 to @node-gh-bot
 https://github.com/node-gh-bot/gh/pull/3
 [hook] gh pr 3 --user node-gh-bot --comment '/cc @protoEvangelion'
-[hook] gh pr 97 --user protoEvangelion --repo gh --comment 'Pull request forwarded to https://api.github.com/node-gh-bot/gh/pull/3.…
+[hook] gh pr 97 --user protoEvangelion --repo gh --comment 'Pull request forwarded to https://github.com/node-gh-bot/gh/pull/3.…
 [hook] gh pr 97 --close
 "
 `;
@@ -127,6 +127,11 @@ exports[`E2E: Pull Request Module Test Open PR \`gh pr --open --number 50 --numb
 https://github.com/protoEvangelion/gh/pull/50
 Opening pull request #40
 https://github.com/protoEvangelion/gh/pull/40
+"
+`;
+
+exports[`E2E: Pull Request Module Test Open pr in browser \`gh pr 55 --browser\` 1`] = `
+"https://github.com/protoEvangelion/gh/pull/55
 "
 `;
 

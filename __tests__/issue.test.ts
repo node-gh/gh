@@ -17,6 +17,11 @@ describe('E2E: Issues Module Test', () => {
         done()
     })
 
+    it('Open issue in browser `gh is 55 --browser`', done => {
+        expect(runCmd('gh is 55 --browser')).toMatchSnapshot()
+        done()
+    })
+
     it('Create a new issue `gh is -N -t "Node GH rocks!" -L bug,question,test`', done => {
         expect(runCmd(`gh is -N -t "Node GH rocks!" -L bug,question,test`)).toMatchSnapshot()
         done()

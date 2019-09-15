@@ -51,6 +51,11 @@ https://github.com/protoEvangelion/gh/issues/10
 "
 `;
 
+exports[`E2E: Issues Module Test Open issue in browser \`gh is 55 --browser\` 1`] = `
+"https://github.com/protoEvangelion/gh/issues/55
+"
+`;
+
 exports[`E2E: Issues Module Test Search Issues \`gh is -s hi\` 1`] = `
 "Searching for hi in issues for protoEvangelion/gh
 
