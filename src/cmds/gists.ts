@@ -7,7 +7,7 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as inquirer from 'inquirer'
-import * as openUrl from 'opn'
+import { openUrl } from '../utils'
 import * as base from '../base'
 import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
@@ -70,7 +70,7 @@ Gists.prototype.run = async function(done) {
     }
 
     if (options.browser) {
-        !testing && instance.browser(options.id || options.loggedUser)
+        instance.browser(options.id || options.loggedUser)
     }
 
     if (options.delete) {
@@ -160,7 +160,7 @@ Gists.prototype.run = async function(done) {
 }
 
 Gists.prototype.browser = function(gist) {
-    openUrl(config.github_gist_host + gist, { wait: false })
+    openUrl(config.github_gist_host + gist)
 }
 
 Gists.prototype.delete = function(id) {

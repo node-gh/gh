@@ -81,7 +81,7 @@ export function getConfig() {
     const is_enterprise = config.api.host !== 'api.github.com'
 
     if (config.github_host === undefined) {
-        config.github_host = `${protocol}${is_enterprise ? config.api.host : 'api.github.com'}`
+        config.github_host = `${protocol}${is_enterprise ? config.api.host : 'github.com'}`
     }
     if (config.github_gist_host === undefined) {
         config.github_gist_host = `${protocol}${

@@ -7,7 +7,7 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import { isArray } from 'lodash'
-import * as openUrl from 'opn'
+import { openUrl } from '../utils'
 import * as base from '../base'
 import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
@@ -136,7 +136,7 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.browser) {
-        !testing && instance.browser(options.user, options.repo, options.number)
+        instance.browser(options.user, options.repo, options.number)
     }
 
     if (options.comment) {
@@ -244,7 +244,7 @@ Issue.prototype.browser = function(user, repo, number) {
         number = ''
     }
 
-    openUrl(`${config.github_host}/${user}/${repo}/issues/${number}`, { wait: false })
+    openUrl(`${config.github_host}/${user}/${repo}/issues/${number}`)
 }
 
 Issue.prototype.close = async function(number) {

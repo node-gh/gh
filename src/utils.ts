@@ -7,6 +7,16 @@
 import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
 import * as zlib from 'zlib'
+import * as open from 'opn'
+
+const testing = process.env.NODE_ENV === 'testing'
+
+/**
+ * Opens url in browser
+ */
+export function openUrl(url) {
+    testing ? console.log(url) : open(url, { wait: false })
+}
 
 export function getCurrentFolderName(): string {
     const cwdArr = process

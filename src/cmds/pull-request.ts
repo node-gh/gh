@@ -10,7 +10,7 @@ import * as Table from 'cli-table3'
 import { startsWith } from 'lodash'
 import * as marked from 'marked'
 import * as TerminalRenderer from 'marked-terminal'
-import * as openUrl from 'opn'
+import { openUrl } from '../utils'
 import * as wrap from 'wordwrap'
 import * as base from '../base'
 import * as git from '../git'
@@ -173,7 +173,7 @@ PullRequest.prototype.run = async function(done) {
             logger.error("You've invoked a method that requires an issue number.")
         }
 
-        if (options.browser && !testing) {
+        if (options.browser) {
             instance.browser(options.user, options.repo, number)
         }
 
@@ -258,10 +258,9 @@ PullRequest.prototype.addComplexityParamToPulls_ = async function(pulls) {
 
 PullRequest.prototype.browser = function(user, repo, number) {
     if (number) {
-        const hey = `${config.github_host}/${user}/${repo}/pull/${number}`
-        openUrl(`${config.github_host}/${user}/${repo}/pull/${number}`, { wait: false })
+        openUrl(`${config.github_host}/${user}/${repo}/pull/${number}`)
     } else {
-        openUrl(`${config.github_host}/${user}/${repo}/pulls`, { wait: false })
+        openUrl(`${config.github_host}/${user}/${repo}/pulls`)
     }
 }
 

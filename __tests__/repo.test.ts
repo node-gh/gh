@@ -13,6 +13,11 @@ describe('E2E: Repo Module Test', () => {
         done()
     })
 
+    it('List Repos `gh re --browser`', done => {
+        expect(runCmd('gh re --browser')).toMatchSnapshot()
+        done()
+    })
+
     it('Create new repo `gh re --new foo --init`', done => {
         expect(runCmd('gh re --new foo --init')).toMatchSnapshot()
         done()

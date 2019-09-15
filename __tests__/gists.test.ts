@@ -13,6 +13,11 @@ describe('E2E: Gist Module Test', () => {
         done()
     })
 
+    it('Open gist in browser `gh gi --browser --id 5444883`', done => {
+        expect(runCmd('gh gi --browser --id 5444883')).toMatchSnapshot()
+        done()
+    })
+
     it('Create new gist `gh gi --new hello --content "Hello World!"`', done => {
         expect(runCmd('gh gi --new hello --content "Hello World!"')).toMatchSnapshot()
         done()
