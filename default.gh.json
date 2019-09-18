@@ -109,5 +109,9 @@
 
     "ssh": true,
 
-    "signature": ""
+    "signature": "",
+
+    "alias": {
+        "zeno": "zenorocha"
+    }
 }

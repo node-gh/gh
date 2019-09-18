@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E: Alias Module Test User alias is expanded \`gh user --user=zeno\` 1`] = `
+"You're logged in as zenorocha
+"
+`;

@@ -10,7 +10,7 @@ import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
-import { find, getUser } from './base'
+import { find, getUser, expandAliases } from './base'
 import * as configs from './configs'
 import * as git from './git'
 import * as logger from './logger'
@@ -143,6 +143,8 @@ export async function setUp() {
             options.user = process.env.GH_USER || options.remoteUser || options.loggedUser
         }
     }
+
+    expandAliases(options)
 
     options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
     options.currentBranch = testing ? 'master' : git.getCurrentBranch()

@@ -25,6 +25,7 @@
     -   [Gists](#gists)
     -   [User](#user)
     -   [Milestone](#milestone)
+    -   [Alias](#alias)
 -   [Config](#config)
 -   [Plugins](#plugins)
 -   [Team](#team)
@@ -112,6 +113,16 @@ gh pull-request
 | `-r`, `--repo`   | _Optional_ | `String`  |
 | `-u`, `--user`   | _Optional_ | `String`  |
 
+```
+gh pr
+```
+
+-   Get information about a pull request.
+
+```
+gh pr --info number
+```
+
 ### 2. List
 
 | Option             | Usage        | Type                                                               |
@@ -138,16 +149,6 @@ gh pull-request
 
 -   **Shortcut** for listing open pull requests for the current repository.
 -   To turn off pretty printing of output in a table add `"pretty_print": false` to your `~/.gh-json` config
-
-```
-gh pr
-```
-
--   Get information about a pull request.
-
-```
-gh pr --info number
-```
 
 -   List open pull requests for all branches from all your repositories.
 
@@ -1206,6 +1207,65 @@ gh ms --list --user node-gh --repo gh
 
 ```
 gh ms --list --all --organization node-gh
+```
+
+## Alias
+
+This cmd provides something similar to shell aliases. If there are aliases in your .gh.json file, we will attempt to resolve the user, PR forwarder or PR submitter to your alias.
+
+```
+gh alias
+```
+
+> **Alias:** `gh al`
+
+### 1. List
+
+| Option         | Usage        | Type      |
+| -------------- | ------------ | --------- |
+| `-l`, `--list` | **Required** | `Boolean` |
+
+#### Examples
+
+-   **Shortcut** for listing aliases.
+
+```
+gh alias
+```
+
+-   List aliases.
+
+```
+gh alias --list
+```
+
+### 2. Add
+
+| Option         | Usage        | Type     |
+| -------------- | ------------ | -------- |
+| `-a`, `--add`  | **Required** | `String` |
+| `-u`, `--user` | **Required** | `String` |
+
+#### Examples
+
+-   Create alias for username.
+
+```
+gh alias --add zeno --user zenorocha
+```
+
+### 3. Remove
+
+| Option           | Usage        | Type     |
+| ---------------- | ------------ | -------- |
+| `-r`, `--remove` | **Required** | `String` |
+
+#### Examples
+
+-   Remove alias.
+
+```
+gh alias --remove zeno
 ```
 
 ## Config
