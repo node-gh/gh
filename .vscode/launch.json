@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "is", "test"],
+            "args": ["${workspaceFolder}/src/debug.ts", "user", "--user=zeno"],
             // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
             "console": "integratedTerminal"
         },
