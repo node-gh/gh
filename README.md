@@ -1,10 +1,9 @@
 # Node GH
 
+[![All Contributors](https://img.shields.io/badge/all_contributors-79-orange.svg?style=flat-square)](#contributors-)
 [![NPM version](http://img.shields.io/npm/v/gh.svg?style=flat)](http://npmjs.org/gh)
-[![NPM downloads](http://img.shields.io/npm/dm/gh.svg?style=flat)](http://npmjs.org/gh)
 [![Build Status](http://img.shields.io/travis/node-gh/gh/master.svg?style=flat)](https://travis-ci.org/node-gh/gh)
 [![Known Vulnerabilities](https://snyk.io/test/github/node-gh/gh/badge.svg)](https://snyk.io/test/github/node-gh/gh)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/context:javascript)
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/alerts)
@@ -15,6 +14,10 @@
 
 -   [Install](#install)
 -   [Usage](#usage)
+-   [Contributors](#contributors)
+-   [Contributing](#contributing)
+-   [History](#history)
+-   [License](#license)
 -   [Demonstration](#demonstration)
 -   [Supported Node Versions](#supported-node-versions)
 -   [Available commands](#available-commands)
@@ -27,10 +30,6 @@
     -   [Milestone](#milestone)
 -   [Config](#config)
 -   [Plugins](#plugins)
--   [Team](#team)
--   [Contributing](#contributing)
--   [History](#history)
--   [License](#license)
 
 ## Install
 
@@ -38,7 +37,139 @@
 
 ## Usage
 
-    gh [command] [payload] [--flags]
+    gh [command] [--flags]
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/eduardolundgren"><img src="https://avatars0.githubusercontent.com/u/113087?v=4" width="50px;" alt="Eduardo Lundgren"/><br /><sub><b>Eduardo Lundgren</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=eduardolundgren" title="Code">💻</a> <a href="https://github.com/protoEvangelion/gh/issues?q=author%3Aeduardolundgren" title="Bug reports">🐛</a> <a href="https://github.com/protoEvangelion/gh/commits?author=eduardolundgren" title="Documentation">📖</a> <a href="#question-eduardolundgren" title="Answering Questions">💬</a> <a href="#infra-eduardolundgren" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#plugin-eduardolundgren" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/protoEvangelion/gh/commits?author=eduardolundgren" title="Tests">⚠️</a> <a href="#review-eduardolundgren" title="Reviewed Pull Requests">👀</a> <a href="#ideas-eduardolundgren" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://zenorocha.com"><img src="https://avatars1.githubusercontent.com/u/398893?v=4" width="50px;" alt="Zeno Rocha"/><br /><sub><b>Zeno Rocha</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=zenorocha" title="Code">💻</a> <a href="https://github.com/protoEvangelion/gh/issues?q=author%3Azenorocha" title="Bug reports">🐛</a> <a href="https://github.com/protoEvangelion/gh/commits?author=zenorocha" title="Documentation">📖</a> <a href="#question-zenorocha" title="Answering Questions">💬</a> <a href="#infra-zenorocha" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#plugin-zenorocha" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/protoEvangelion/gh/commits?author=zenorocha" title="Tests">⚠️</a> <a href="#review-zenorocha" title="Reviewed Pull Requests">👀</a> <a href="#ideas-zenorocha" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-zenorocha" title="Content">🖋</a></td>
+    <td align="center"><a href="https://henvic.github.io/"><img src="https://avatars3.githubusercontent.com/u/936421?v=4" width="50px;" alt="Henrique Vicente"/><br /><sub><b>Henrique Vicente</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=henvic" title="Code">💻</a> <a href="https://github.com/protoEvangelion/gh/issues?q=author%3Ahenvic" title="Bug reports">🐛</a> <a href="#question-henvic" title="Answering Questions">💬</a> <a href="#infra-henvic" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#plugin-henvic" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/protoEvangelion/gh/commits?author=henvic" title="Tests">⚠️</a> <a href="#review-henvic" title="Reviewed Pull Requests">👀</a> <a href="#security-henvic" title="Security">🛡️</a> <a href="#ideas-henvic" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/protoEvangelion"><img src="https://avatars3.githubusercontent.com/u/20076677?v=4" width="50px;" alt="Ryan Garant"/><br /><sub><b>Ryan Garant</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3AprotoEvangelion" title="Bug reports">🐛</a> <a href="#question-protoEvangelion" title="Answering Questions">💬</a> <a href="#infra-protoEvangelion" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#plugin-protoEvangelion" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/protoEvangelion/gh/commits?author=protoEvangelion" title="Tests">⚠️</a> <a href="#review-protoEvangelion" title="Reviewed Pull Requests">👀</a> <a href="#security-protoEvangelion" title="Security">🛡️</a> <a href="#ideas-protoEvangelion" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/brunocoelho"><img src="https://avatars1.githubusercontent.com/u/827445?v=4" width="50px;" alt="Bruno Coelho"/><br /><sub><b>Bruno Coelho</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=brunocoelho" title="Code">💻</a> <a href="https://github.com/protoEvangelion/gh/issues?q=author%3Abrunocoelho" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://www.joyent.com/"><img src="https://avatars1.githubusercontent.com/u/2080476?v=4" width="50px;" alt="Dustin Ryerson"/><br /><sub><b>Dustin Ryerson</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=dustinryerson" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/drewbrokke"><img src="https://avatars1.githubusercontent.com/u/6403097?v=4" width="50px;" alt="Drew Brokke"/><br /><sub><b>Drew Brokke</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=drewbrokke" title="Code">💻</a> <a href="#ideas-drewbrokke" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://twitter.com/joserobleda"><img src="https://avatars1.githubusercontent.com/u/1263865?v=4" width="50px;" alt="Jose Ignacio"/><br /><sub><b>Jose Ignacio</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=joserobleda" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/rodrigovidal"><img src="https://avatars0.githubusercontent.com/u/388081?v=4" width="50px;" alt="Rodrigo Vidal"/><br /><sub><b>Rodrigo Vidal</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=rodrigovidal" title="Code">💻</a></td>
+    <td align="center"><a href="http://hamxabaig.github.io"><img src="https://avatars2.githubusercontent.com/u/12872177?v=4" width="50px;" alt="Hamza Baig"/><br /><sub><b>Hamza Baig</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=hamxabaig" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.liferay.com/web/gregory.amerson/blog"><img src="https://avatars2.githubusercontent.com/u/595221?v=4" width="50px;" alt="Gregory Amerson"/><br /><sub><b>Gregory Amerson</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=gamerson" title="Code">💻</a> <a href="https://github.com/protoEvangelion/gh/issues?q=author%3Agamerson" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://blog.tomrochette.com"><img src="https://avatars2.githubusercontent.com/u/188960?v=4" width="50px;" alt="Tom Rochette"/><br /><sub><b>Tom Rochette</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=tomzx" title="Code">💻</a> <a href="https://github.com/protoEvangelion/gh/issues?q=author%3Atomzx" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://m-roberts.github.io"><img src="https://avatars2.githubusercontent.com/u/2947595?v=4" width="50px;" alt="Mike Roberts"/><br /><sub><b>Mike Roberts</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=m-roberts" title="Code">💻</a></td>
+    <td align="center"><a href="https://snyk.io"><img src="https://avatars2.githubusercontent.com/u/19733683?v=4" width="50px;" alt="Snyk bot"/><br /><sub><b>Snyk bot</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=snyk-bot" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/TheBlockchainDeveloper"><img src="https://avatars1.githubusercontent.com/u/139483?v=4" width="50px;" alt="BlockchainDeveloper"/><br /><sub><b>BlockchainDeveloper</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=TheBlockchainDeveloper" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/jpbochi"><img src="https://avatars1.githubusercontent.com/u/96475?v=4" width="50px;" alt="João Paulo Bochi"/><br /><sub><b>João Paulo Bochi</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=jpbochi" title="Code">💻</a></td>
+    <td align="center"><a href="http://maael.github.io/"><img src="https://avatars3.githubusercontent.com/u/5610674?v=4" width="50px;" alt="Matthew Elphick"/><br /><sub><b>Matthew Elphick</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=maael" title="Code">💻</a></td>
+    <td align="center"><a href="http://alterform.com"><img src="https://avatars2.githubusercontent.com/u/116871?v=4" width="50px;" alt="Nate Cavanaugh"/><br /><sub><b>Nate Cavanaugh</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=natecavanaugh" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.peterdavehello.org/"><img src="https://avatars3.githubusercontent.com/u/3691490?v=4" width="50px;" alt="Peter Dave Hello"/><br /><sub><b>Peter Dave Hello</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=PeterDaveHello" title="Code">💻</a></td>
+    <td align="center"><a href="https://mattdesl.com/"><img src="https://avatars1.githubusercontent.com/u/1383811?v=4" width="50px;" alt="Matt DesLauriers"/><br /><sub><b>Matt DesLauriers</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=mattdesl" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/oughter"><img src="https://avatars1.githubusercontent.com/u/18747026?v=4" width="50px;" alt="oughter"/><br /><sub><b>oughter</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=oughter" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://adrianmacneil.com/"><img src="https://avatars2.githubusercontent.com/u/637671?v=4" width="50px;" alt="Adrian Macneil"/><br /><sub><b>Adrian Macneil</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=amacneil" title="Code">💻</a></td>
+    <td align="center"><a href="http://kbakba.net/"><img src="https://avatars1.githubusercontent.com/u/36834?v=4" width="50px;" alt="Aleksey Ostapenko"/><br /><sub><b>Aleksey Ostapenko</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=kbakba" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/roadhump"><img src="https://avatars3.githubusercontent.com/u/234692?v=4" width="50px;" alt="Aliaksei"/><br /><sub><b>Aliaksei</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=roadhump" title="Code">💻</a></td>
+    <td align="center"><a href="https://akv.io"><img src="https://avatars2.githubusercontent.com/u/967317?v=4" width="50px;" alt="Andrey"/><br /><sub><b>Andrey</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=andreyvital" title="Code">💻</a></td>
+    <td align="center"><a href="http://arbo.com.br"><img src="https://avatars0.githubusercontent.com/u/859765?v=4" width="50px;" alt="André de Oliveira"/><br /><sub><b>André de Oliveira</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=arboliveira" title="Code">💻</a></td>
+    <td align="center"><a href="https://slewsystems.com"><img src="https://avatars1.githubusercontent.com/u/5579960?v=4" width="50px;" alt="Brandon Patram"/><br /><sub><b>Brandon Patram</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=bpatram" title="Code">💻</a></td>
+    <td align="center"><a href="https://twitter.com/jbalsas"><img src="https://avatars1.githubusercontent.com/u/905006?v=4" width="50px;" alt="Chema Balsas"/><br /><sub><b>Chema Balsas</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=jbalsas" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://cswebartisan.com"><img src="https://avatars2.githubusercontent.com/u/555044?v=4" width="50px;" alt="Christian Schlensker"/><br /><sub><b>Christian Schlensker</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=wordofchristian" title="Code">💻</a></td>
+    <td align="center"><a href="http://cironunes.com/"><img src="https://avatars2.githubusercontent.com/u/469908?v=4" width="50px;" alt="Ciro Nunes"/><br /><sub><b>Ciro Nunes</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=cironunes" title="Code">💻</a></td>
+    <td align="center"><a href="https://t.me/piterden"><img src="https://avatars3.githubusercontent.com/u/5930429?v=4" width="50px;" alt="Denis Efremov"/><br /><sub><b>Denis Efremov</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=Piterden" title="Code">💻</a></td>
+    <td align="center"><a href="http://henrimichel.com.br"><img src="https://avatars1.githubusercontent.com/u/2352034?v=4" width="50px;" alt="Henri Cavalcante"/><br /><sub><b>Henri Cavalcante</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=henricavalcante" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.jakahudoklin.com"><img src="https://avatars2.githubusercontent.com/u/585547?v=4" width="50px;" alt="Jaka Hudoklin"/><br /><sub><b>Jaka Hudoklin</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=offlinehacker" title="Code">💻</a></td>
+    <td align="center"><a href="http://twitter.com/jfroma"><img src="https://avatars3.githubusercontent.com/u/178512?v=4" width="50px;" alt="José F. Romaniello"/><br /><sub><b>José F. Romaniello</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=jfromaniello" title="Code">💻</a></td>
+    <td align="center"><a href="http://joshuawu.me/"><img src="https://avatars2.githubusercontent.com/u/12107969?v=4" width="50px;" alt="Joshua Wu"/><br /><sub><b>Joshua Wu</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=jwu910" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://keaglin.com"><img src="https://avatars0.githubusercontent.com/u/1952896?v=4" width="50px;" alt="Kevon Eaglin"/><br /><sub><b>Kevon Eaglin</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=keaglin" title="Code">💻</a></td>
+    <td align="center"><a href="https://mtyurt.net"><img src="https://avatars0.githubusercontent.com/u/2225537?v=4" width="50px;" alt="M. Tarık Yurt"/><br /><sub><b>M. Tarık Yurt</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=mtyurt" title="Code">💻</a></td>
+    <td align="center"><a href="https://mbuffett.com"><img src="https://avatars3.githubusercontent.com/u/1834328?v=4" width="50px;" alt="Marcus Buffett"/><br /><sub><b>Marcus Buffett</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=marcusbuffett" title="Code">💻</a></td>
+    <td align="center"><a href="https://rands0n.com"><img src="https://avatars2.githubusercontent.com/u/4191734?v=4" width="50px;" alt="Randѕon"/><br /><sub><b>Randѕon</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=rands0n" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.earthbound.io"><img src="https://avatars1.githubusercontent.com/u/2556781?v=4" width="50px;" alt="Alex Hall"/><br /><sub><b>Alex Hall</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=earthbound19" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.dev-institut.fr"><img src="https://avatars1.githubusercontent.com/u/1372183?v=4" width="50px;" alt="Rossi Oddet"/><br /><sub><b>Rossi Oddet</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=roddet" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/rschmukler"><img src="https://avatars1.githubusercontent.com/u/651740?v=4" width="50px;" alt="Ryan Schmukler"/><br /><sub><b>Ryan Schmukler</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=rschmukler" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://www.onato.com/"><img src="https://avatars2.githubusercontent.com/u/107999?v=4" width="50px;" alt="Stephen Williams"/><br /><sub><b>Stephen Williams</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=onato" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.wulftone.com"><img src="https://avatars3.githubusercontent.com/u/142784?v=4" width="50px;" alt="Trevor Bortins"/><br /><sub><b>Trevor Bortins</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=wulftone" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/wbyoung"><img src="https://avatars1.githubusercontent.com/u/57162?v=4" width="50px;" alt="Whitney Young"/><br /><sub><b>Whitney Young</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=wbyoung" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.lgtm.com"><img src="https://avatars3.githubusercontent.com/u/7395402?v=4" width="50px;" alt="Xavier RENE-CORAIL"/><br /><sub><b>Xavier RENE-CORAIL</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=xcorail" title="Code">💻</a></td>
+    <td align="center"><a href="http://the.igreque.info/"><img src="https://avatars2.githubusercontent.com/u/227057?v=4" width="50px;" alt="YAMAMOTO Yuji"/><br /><sub><b>YAMAMOTO Yuji</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=igrep" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/smikes"><img src="https://avatars0.githubusercontent.com/u/5124609?v=4" width="50px;" alt="Sam Mikes"/><br /><sub><b>Sam Mikes</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=smikes" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/tijuthomas"><img src="https://avatars0.githubusercontent.com/u/8406974?v=4" width="50px;" alt="Tiju Thomas"/><br /><sub><b>Tiju Thomas</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=tijuthomas" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://averba.ch"><img src="https://avatars3.githubusercontent.com/u/2838836?v=4" width="50px;" alt="Zev Averbach"/><br /><sub><b>Zev Averbach</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=zevaverbach" title="Code">💻</a> <a href="https://github.com/protoEvangelion/gh/issues?q=author%3Azevaverbach" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://aaronkjones.com"><img src="https://avatars1.githubusercontent.com/u/17125755?v=4" width="50px;" alt="Aaron Jones"/><br /><sub><b>Aaron Jones</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Aaaronkjones" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://linkedin.com/in/jrschumacher"><img src="https://avatars1.githubusercontent.com/u/46549?v=4" width="50px;" alt="Ryan Schumacher"/><br /><sub><b>Ryan Schumacher</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Ajrschumacher" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://robdodson.me"><img src="https://avatars0.githubusercontent.com/u/1066253?v=4" width="50px;" alt="Rob Dodson"/><br /><sub><b>Rob Dodson</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Arobdodson" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/dsifford"><img src="https://avatars0.githubusercontent.com/u/5240018?v=4" width="50px;" alt="Derek Sifford"/><br /><sub><b>Derek Sifford</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Adsifford" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/rachidbch"><img src="https://avatars1.githubusercontent.com/u/1119174?v=4" width="50px;" alt="rachidbch"/><br /><sub><b>rachidbch</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Arachidbch" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://www.tabookey.com/"><img src="https://avatars0.githubusercontent.com/u/1171354?v=4" width="50px;" alt="Liraz Siri"/><br /><sub><b>Liraz Siri</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Alirazsiri" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/zsoltbalogh"><img src="https://avatars1.githubusercontent.com/u/866157?v=4" width="50px;" alt="Zsolt Balogh"/><br /><sub><b>Zsolt Balogh</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Azsoltbalogh" title="Bug reports">🐛</a> <a href="https://github.com/protoEvangelion/gh/commits?author=zsoltbalogh" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://www.liferay.com/"><img src="https://avatars3.githubusercontent.com/u/78014?v=4" width="50px;" alt="Iliyan Peychev"/><br /><sub><b>Iliyan Peychev</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Aipeychev" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://dante.io"><img src="https://avatars0.githubusercontent.com/u/1185063?v=4" width="50px;" alt="Dante Wang"/><br /><sub><b>Dante Wang</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Adantewang" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://rotty3000.github.io"><img src="https://avatars1.githubusercontent.com/u/146764?v=4" width="50px;" alt="Raymond Augé"/><br /><sub><b>Raymond Augé</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Arotty3000" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://mbassem.com"><img src="https://avatars2.githubusercontent.com/u/2418637?v=4" width="50px;" alt="Mohamed Bassem"/><br /><sub><b>Mohamed Bassem</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3AMohamedBassem" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/sez11a"><img src="https://avatars3.githubusercontent.com/u/515497?v=4" width="50px;" alt="Rich Sezov"/><br /><sub><b>Rich Sezov</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Asez11a" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/jasonkuhrt"><img src="https://avatars3.githubusercontent.com/u/284476?v=4" width="50px;" alt="Jason Kuhrt"/><br /><sub><b>Jason Kuhrt</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Ajasonkuhrt" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/gon138"><img src="https://avatars0.githubusercontent.com/u/5614711?v=4" width="50px;" alt="gon138"/><br /><sub><b>gon138</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Agon138" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/m-novikov"><img src="https://avatars2.githubusercontent.com/u/5163640?v=4" width="50px;" alt="Maxim Novikov"/><br /><sub><b>Maxim Novikov</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Am-novikov" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://andersdjohnson.com"><img src="https://avatars3.githubusercontent.com/u/615381?v=4" width="50px;" alt="Anders D. Johnson"/><br /><sub><b>Anders D. Johnson</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3AAndersDJohnson" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://izaias.co"><img src="https://avatars3.githubusercontent.com/u/192261?v=4" width="50px;" alt="Gabriel Izaias"/><br /><sub><b>Gabriel Izaias</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Agabrielizaias" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://smyles.dev"><img src="https://avatars3.githubusercontent.com/u/553732?v=4" width="50px;" alt="Myles McNamara"/><br /><sub><b>Myles McNamara</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Atripflex" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://www.giladpeleg.com"><img src="https://avatars0.githubusercontent.com/u/4533329?v=4" width="50px;" alt="Gilad Peleg"/><br /><sub><b>Gilad Peleg</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Apgilad" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://yoshuawuyts.com"><img src="https://avatars3.githubusercontent.com/u/2467194?v=4" width="50px;" alt="Yoshua Wuyts"/><br /><sub><b>Yoshua Wuyts</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Ayoshuawuyts" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://marclundgren.github.io/"><img src="https://avatars1.githubusercontent.com/u/1154834?v=4" width="50px;" alt="Marc Lundgren"/><br /><sub><b>Marc Lundgren</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Amarclundgren" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/juliocamarero"><img src="https://avatars0.githubusercontent.com/u/203395?v=4" width="50px;" alt="Julio Camarero"/><br /><sub><b>Julio Camarero</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Ajuliocamarero" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://www.liferay.com/web/marcellus.tavares/blog"><img src="https://avatars2.githubusercontent.com/u/286892?v=4" width="50px;" alt="Marcellus Tavares"/><br /><sub><b>Marcellus Tavares</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Amarcellustavares" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://www.liferay.com/es/web/sergio.gonzalez/blog"><img src="https://avatars3.githubusercontent.com/u/860987?v=4" width="50px;" alt="Sergio Gonzalez"/><br /><sub><b>Sergio Gonzalez</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Asergiogonzalez" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://resume.djalmaaraujo.com/"><img src="https://avatars1.githubusercontent.com/u/3402?v=4" width="50px;" alt="Djalma Araújo"/><br /><sub><b>Djalma Araújo</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Adjalmaaraujo" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/brunobasto"><img src="https://avatars0.githubusercontent.com/u/156388?v=4" width="50px;" alt="Bruno Basto"/><br /><sub><b>Bruno Basto</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Abrunobasto" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://jason.pincin.com/"><img src="https://avatars0.githubusercontent.com/u/1831096?v=4" width="50px;" alt="Jason Pincin"/><br /><sub><b>Jason Pincin</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Ajasonpincin" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://twitter.com/leoj3n"><img src="https://avatars2.githubusercontent.com/u/990216?v=4" width="50px;" alt="Joel Kuzmarski"/><br /><sub><b>Joel Kuzmarski</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/issues?q=author%3Aleoj3n" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/shinzui"><img src="https://avatars3.githubusercontent.com/u/519?v=4" width="50px;" alt="Nadeem Bitar"/><br /><sub><b>Nadeem Bitar</b></sub></a><br /><a href="https://github.com/protoEvangelion/gh/commits?author=shinzui" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## Contributing
+
+For detailed instructions, check [Contributing](https://github.com/node-gh/gh/blob/master/CONTRIBUTING.md). Don't miss the [source code reports](https://node-gh.github.io/reports/).
+
+## History
+
+For detailed changelog, check [Releases](https://github.com/node-gh/gh/releases).
+
+## License
+
+[BSD-3-Clause](https://github.com/node-gh/gh/blob/master/LICENSE.txt)
 
 ## Demonstration
 
@@ -1299,24 +1430,3 @@ If you need to use a custom git command, set the environment variable `GH_GIT_CO
 -   [GH Jira](https://github.com/node-gh/gh-jira) - A plugin for integrating Jira, an issue management system.
 
 Feel free to create your own plugins by forking [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
-
-## Team
-
-Node GH is maintained by these guys and [some awesome contributors](CONTRIBUTORS).
-
-| Contributors                                                                                                                                                                         |                                                                                                                                                                       |                                                                                                                                                                      |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![Eduardo Lundgren](http://gravatar.com/avatar/42327de520e674a6d1686845b30778d0?s=70)](https://github.com/eduardolundgren/) [Eduardo Lundgren](https://github.com/eduardolundgren/) | [![Zeno Rocha](http://gravatar.com/avatar/e190023b66e2b8aa73a842b106920c93?s=70)](https://github.com/zenorocha/) [Zeno Rocha](https://github.com/zenorocha/)          | [![Henrique Vicente](http://gravatar.com/avatar/5733fd332f2a0da11931e0e73ddfb20d?s=70)](https://github.com/henvic/) [Henrique Vicente](https://github.com/henvic/)   |
-| [![Bruno Coelho](http://gravatar.com/avatar/1f90c690b534779560d3bfdb23772915?s=70)](https://github.com/brunocoelho/) [Bruno Coelho](https://github.com/brunocoelho/)                 | [![Dustin Ryerson](https://avatars2.githubusercontent.com/u/2080476?v=3&s=70)](https://github.com/dustinryerson/) [Dustin Ryerson](https://github.com/dustinryerson/) | [![Ryan Garant](https://avatars1.githubusercontent.com/u/20076677?s=70&v=4)](https://github.com/protoEvangelion/) [Ryan Garant](https://github.com/protoEvangelion/) |
-
-## Contributing
-
-For detailed instructions, check [Contributing](https://github.com/node-gh/gh/blob/master/CONTRIBUTING.md). Don't miss the [source code reports](https://node-gh.github.io/reports/).
-
-## History
-
-For detailed changelog, check [Releases](https://github.com/node-gh/gh/releases).
-
-## License
-
-[BSD-3-Clause](https://github.com/node-gh/gh/blob/master/LICENSE.txt)
