@@ -1,6 +1,6 @@
 {
   "projectName": "gh",
-  "projectOwner": "protoEvangelion",
+  "projectOwner": "node-gh",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -45,7 +45,7 @@
         "content"
       ]
     },
-        {
+    {
       "login": "henvic",
       "name": "Henrique Vicente",
       "avatar_url": "https://avatars3.githubusercontent.com/u/936421?v=4",
@@ -757,6 +757,15 @@
       "profile": "https://github.com/shinzui",
       "contributions": [
         "doc"
+      ]
+    },
+    {
+      "login": "cleydyr",
+      "name": "Cleydyr Bezerra de Albuquerque",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/441513?v=4",
+      "profile": "https://github.com/cleydyr",
+      "contributions": [
+        "bug"
       ]
     }
   ],
