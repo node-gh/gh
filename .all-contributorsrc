@@ -769,6 +769,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "ramonPires",
+      "name": "Ramon Pires da Silva",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1796577?v=4",
+      "profile": "https://twitter.com/rmnPires",
+      "contributions": [
+        "plugin"
+      ]
     }
   ],
   "contributorsPerLine": 7
