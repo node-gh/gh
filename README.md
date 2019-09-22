@@ -150,6 +150,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://twitter.com/leoj3n"><img src="https://avatars2.githubusercontent.com/u/990216?v=4" width="50px;" alt="Joel Kuzmarski"/><br /><sub><b>Joel Kuzmarski</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Aleoj3n" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/shinzui"><img src="https://avatars3.githubusercontent.com/u/519?v=4" width="50px;" alt="Nadeem Bitar"/><br /><sub><b>Nadeem Bitar</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=shinzui" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/cleydyr"><img src="https://avatars1.githubusercontent.com/u/441513?v=4" width="50px;" alt="Cleydyr Bezerra de Albuquerque"/><br /><sub><b>Cleydyr Bezerra de Albuquerque</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Acleydyr" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://twitter.com/rmnPires"><img src="https://avatars1.githubusercontent.com/u/1796577?v=4" width="50px;" alt="Ramon Pires da Silva"/><br /><sub><b>Ramon Pires da Silva</b></sub></a><br /><a href="#plugin-ramonPires" title="Plugin/utility libraries">🔌</a></td>
   </tr>
 </table>
 
