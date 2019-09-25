@@ -9,14 +9,13 @@
 import * as Octokit from '@octokit/rest'
 import * as fs from 'fs'
 import * as inquirer from 'inquirer'
-import { openUrl } from '../utils'
+import { openUrl, getCurrentFolderName, userRanValidFlags } from '../utils'
 import * as url from 'url'
 import * as base from '../base'
 import * as git from '../git'
 import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
-import { getCurrentFolderName, hasCmdInOptions } from '../utils'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
@@ -97,7 +96,7 @@ Repo.prototype.run = async function(done) {
     instance.GitHub = await getGitHubInstance()
 
     if (
-        !hasCmdInOptions(Repo.DETAILS.commands, options) &&
+        !userRanValidFlags(Repo.DETAILS.commands, options) &&
         options.browser !== false &&
         options.argv.cooked.length === 1
     ) {

@@ -7,12 +7,11 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as inquirer from 'inquirer'
-import { openUrl } from '../utils'
+import { openUrl, userRanValidFlags } from '../utils'
 import * as base from '../base'
 import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
-import { hasCmdInOptions } from '../utils'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
@@ -65,7 +64,7 @@ Gists.prototype.run = async function(done) {
     instance.config = config
     instance.GitHub = await getGitHubInstance()
 
-    if (!hasCmdInOptions(Gists.DETAILS.commands, options)) {
+    if (!userRanValidFlags(Gists.DETAILS.commands, options)) {
         options.list = true
     }
 

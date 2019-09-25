@@ -10,14 +10,13 @@ import * as Table from 'cli-table3'
 import { startsWith } from 'lodash'
 import * as marked from 'marked'
 import * as TerminalRenderer from 'marked-terminal'
-import { openUrl } from '../utils'
+import { openUrl, userRanValidFlags } from '../utils'
 import * as wrap from 'wordwrap'
 import * as base from '../base'
 import * as git from '../git'
 import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
-import { hasCmdInOptions } from '../utils'
 
 const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
@@ -139,7 +138,7 @@ PullRequest.prototype.run = async function(done) {
     instance.config = config
     instance.GitHub = await getGitHubInstance()
 
-    if (!hasCmdInOptions(PullRequest.DETAILS.commands, options)) {
+    if (!userRanValidFlags(PullRequest.DETAILS.commands, options)) {
         const payload = options.argv.remain && options.argv.remain.concat().slice(1)
 
         if (payload && payload[0]) {

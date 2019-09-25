@@ -8,7 +8,7 @@
 
 import { getGitHubInstance } from '../github'
 import * as logger from '../logger'
-import { hasCmdInOptions } from '../utils'
+import { userRanValidFlags } from '../utils'
 
 const printed = {}
 
@@ -54,7 +54,7 @@ Notifications.prototype.run = async function(done) {
     const options = instance.options
     instance.GitHub = await getGitHubInstance()
 
-    if (!hasCmdInOptions(Notifications.DETAILS.commands, options)) {
+    if (!userRanValidFlags(Notifications.DETAILS.commands, options)) {
         options.latest = true
     }
 

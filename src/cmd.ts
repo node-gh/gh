@@ -130,6 +130,24 @@ export async function setUp() {
 
     const Command = await getCommand(process.argv)
 
+    /**
+     * If you run `gh pr 1 -s node-gh --remote=origin --user protoEvangelion`, nopt will return
+     *
+     *   {
+     *     remote: 'origin',
+     *     submit: 'node-gh',
+     *     user: 'protoEvangelion',
+     *     argv: {
+     *         original: ['pr', '1', '-s', 'pr', 'node-gh', '--remote', 'origin', '--user', 'protoEvangelion'],
+     *         remain: ['pr', '1'],
+     *         cooked: ['pr', '1', '--submit', 'node-gh', '--remote', 'origin', '--user', 'protoEvangelion'],
+     *     },
+     *   }
+     *
+     * Historically we passed every arg after 2nd arg (gh pr 1 -s user; everything after 'pr')
+     * and all parsed options to each cmd's payload function to figure out positional args and allow for neat shortcuts like:
+     * gh is 'new issue' 'new issue description'
+     */
     const args = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 
     setAutoFreeze(false)
