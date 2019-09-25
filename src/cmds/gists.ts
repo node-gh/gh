@@ -94,16 +94,16 @@ Gists.prototype.run = async function(done) {
         for (const gist_id of options.delete) {
             logger.log(`Deleting gist ${logger.colors.green(`${options.loggedUser}/${gist_id}`)}`)
 
-            await beforeHooks('gists.delete', instance)
+            await beforeHooks('gists.delete', { options })
 
             await _deleteHandler(gist_id, instance)
 
-            await afterHooks('gists.delete', instance)
+            await afterHooks('gists.delete', { options })
         }
     }
 
     if (options.fork) {
-        await beforeHooks('gists.fork', instance)
+        await beforeHooks('gists.fork', { options })
 
         logger.log(`Forking gist on ${logger.colors.green(options.loggedUser)}`)
 
@@ -115,7 +115,7 @@ Gists.prototype.run = async function(done) {
 
         logger.log(data.html_url)
 
-        await afterHooks('gists.fork', instance)
+        await afterHooks('gists.fork', { options })
     }
 
     if (options.list) {
@@ -133,7 +133,7 @@ Gists.prototype.run = async function(done) {
     if (options.new) {
         const privacy = options.private ? 'private' : 'public'
 
-        await beforeHooks('gists.new', instance)
+        await beforeHooks('gists.new', { options })
 
         logger.log(
             `Creating ${logger.colors.magenta(privacy)} gist on ${logger.colors.green(
@@ -152,7 +152,7 @@ Gists.prototype.run = async function(done) {
             logger.log(data.html_url)
         }
 
-        await afterHooks('gists.new', instance)
+        await afterHooks('gists.new', { options })
     }
 
     done && done()

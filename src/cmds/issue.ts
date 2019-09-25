@@ -7,15 +7,14 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import { isArray } from 'lodash'
-import { openUrl } from '../utils'
+import { produce } from 'immer'
+import { openUrl, userRanValidFlags } from '../utils'
 import * as base from '../base'
 import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
-import { hasCmdInOptions } from '../utils'
 
 const config = base.getConfig()
-const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
@@ -89,34 +88,35 @@ Issue.STATE_OPEN = 'open'
 
 Issue.prototype.run = async function(done) {
     const instance = this
-    const options = instance.options
+    let options = instance.options
     const number = logger.colors.green(`#${options.number}`)
 
     instance.config = config
     instance.GitHub = await getGitHubInstance()
 
-    options.state = options.state || Issue.STATE_OPEN
+    options = produce(options, draft => {
+        draft.state = draft.state || Issue.STATE_OPEN
 
-    if (!hasCmdInOptions(Issue.DETAILS.commands, options)) {
-        const payload = options.argv.remain && options.argv.remain.slice(1)
+        if (!userRanValidFlags(Issue.DETAILS.commands, draft)) {
+            const payload = draft.argv.remain && draft.argv.remain.slice(1)
 
-        if (payload && payload[0]) {
-            if (/^\d+$/.test(payload[0])) {
-                options.browser = true
-                options.number = payload[0]
-                return
+            if (payload && payload[0]) {
+                if (/^\d+$/.test(payload[0])) {
+                    draft.browser = true
+                    draft.number = payload[0]
+                } else {
+                    draft.new = true
+                    draft.title = draft.title || payload[0]
+                    draft.message = draft.message || payload[1]
+                }
+            } else {
+                draft.list = true
             }
-
-            options.new = true
-            options.title = options.title || payload[0]
-            options.message = options.message || payload[1]
-        } else {
-            options.list = true
         }
-    }
+    })
 
     if (options.assign) {
-        await beforeHooks('issue.assign', instance)
+        await beforeHooks('issue.assign', { options })
 
         logger.log(
             `Assigning issue ${number} on ${getUserRepo(options)} to ${logger.colors.magenta(
@@ -132,7 +132,7 @@ Issue.prototype.run = async function(done) {
 
         logger.log(logger.colors.cyan(data.html_url))
 
-        await afterHooks('issue.assign', instance)
+        await afterHooks('issue.assign', { options })
     }
 
     if (options.browser) {
@@ -176,7 +176,7 @@ Issue.prototype.run = async function(done) {
     }
 
     if (options.new) {
-        await beforeHooks('issue.new', instance)
+        await beforeHooks('issue.new', { options })
 
         logger.log(`Creating a new issue on ${getUserRepo(options)}`)
 
@@ -192,21 +192,21 @@ Issue.prototype.run = async function(done) {
 
         logger.log(data.html_url)
 
-        await afterHooks('issue.new', instance)
+        await afterHooks('issue.new', { options })
     }
 
     if (options.open) {
-        await beforeHooks('issue.open', instance)
+        await beforeHooks('issue.open', { options })
 
         await openHandler(instance, options)
 
-        await afterHooks('issue.open', instance)
+        await afterHooks('issue.open', { options })
     } else if (options.close) {
-        await beforeHooks('issue.close', instance)
+        await beforeHooks('issue.close', { options })
 
         await closeHandler(instance, options)
 
-        await afterHooks('issue.close', instance)
+        await afterHooks('issue.close', { options })
     }
 
     if (options.search) {
