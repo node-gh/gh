@@ -10,10 +10,10 @@ import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
-import { find, getUser, expandAliases } from './base'
+import { find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
-import * as logger from './logger'
+import { produce, setAutoFreeze } from 'immer'
 
 const config = configs.getConfig()
 
@@ -93,16 +93,18 @@ function notifyVersion() {
     }
 }
 
-export async function setUp() {
-    let Command
-    let options
-    const parsed = nopt(process.argv)
-    let remain = parsed.argv.remain
-    let cooked = parsed.argv.cooked
-
+async function getCommand(args) {
+    /**
+     * nopt function returns:
+     *
+     * remain: The remaining args after all the parsing has occurred.
+     * original: The args as they originally appeared.
+     * cooked: The args after flags and shorthands are expanded.
+     */
+    const parsed = nopt(args)
+    const remain = parsed.argv.remain
+    const cooked = parsed.argv.cooked
     let module = remain[0]
-
-    notifyVersion()
 
     if (cooked[0] === '--version' || cooked[0] === '-v') {
         module = 'version'
@@ -111,7 +113,7 @@ export async function setUp() {
     }
 
     try {
-        Command = await loadCommand(module)
+        var Command = await loadCommand(module)
     } catch (err) {
         throw new Error(`Cannot find module ${module}\n${err}`)
     }
@@ -120,41 +122,56 @@ export async function setUp() {
         throw new Error(`No cmd or plugin found.`)
     }
 
-    options = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
+    return Command
+}
 
-    cooked = options.argv.cooked
-    remain = options.argv.remain
+export async function setUp() {
+    notifyVersion()
 
-    options.number = options.number || [remain[1]]
-    options.remote = options.remote || config.default_remote
+    const Command = await getCommand(process.argv)
 
-    const remoteUrl = git.getRemoteUrl(options.remote)
+    const args = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 
-    options.isTTY = {}
-    options.isTTY.in = Boolean(process.stdin.isTTY)
-    options.isTTY.out = Boolean(process.stdout.isTTY)
-    options.loggedUser = getUser()
-    options.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
+    setAutoFreeze(false)
 
-    if (!options.user) {
-        if (options.repo || options.all) {
-            options.user = options.loggedUser
-        } else {
-            options.user = process.env.GH_USER || options.remoteUser || options.loggedUser
+    const options = produce(args, draft => {
+        // Gets 2nd positional arg (`gh pr 1` will return 1)
+        const secondArg = [draft.argv.remain[1]]
+        const remote = draft.remote || config.default_remote
+        const remoteUrl = git.getRemoteUrl(remote)
+
+        draft.remote = remote
+        draft.number = draft.number || secondArg
+        draft.loggedUser = getUser()
+        draft.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
+        draft.repo = draft.repo || git.getRepoFromRemoteURL(remoteUrl)
+        draft.currentBranch = git.getCurrentBranch()
+        draft.github_host = config.github_host
+        draft.github_gist_host = config.github_gist_host
+
+        if (!draft.user) {
+            if (draft.repo || draft.all) {
+                draft.user = draft.loggedUser
+            } else {
+                draft.user = process.env.GH_USER || draft.remoteUser || draft.loggedUser
+            }
         }
-    }
 
-    expandAliases(options)
-
-    options.repo = options.repo || git.getRepoFromRemoteURL(remoteUrl)
-    options.currentBranch = testing ? 'master' : git.getCurrentBranch()
-    options.github_host = config.github_host
-    options.github_gist_host = config.github_gist_host
+        /**
+         * Checks if there are aliases in your .gh.json file.
+         * If there are aliases in your .gh.json file, we will attempt to resolve the user, PR forwarder or PR submitter to your alias.
+         */
+        if (config.alias) {
+            draft.fwd = config.alias[draft.fwd] || draft.fwd
+            draft.submit = config.alias[draft.submit] || draft.submit
+            draft.user = config.alias[draft.user] || draft.user
+        }
+    })
 
     if (testing) {
         const { prepareTestFixtures } = await import('./utils')
 
-        await new Command(options).run(prepareTestFixtures(Command.name, cooked))
+        await new Command(options).run(prepareTestFixtures(Command.name, args.argv.cooked))
     } else {
         await new Command(options).run()
     }
