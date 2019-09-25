@@ -9,7 +9,7 @@
 import * as configs from '../configs'
 import { getGitHubInstance, tokenExists } from '../github'
 import * as logger from '../logger'
-import { hasCmdInOptions } from '../utils'
+import { userRanValidFlags } from '../utils'
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -42,9 +42,9 @@ User.DETAILS = {
 User.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
-    let login
+    let login = options.login
 
-    if (!hasCmdInOptions(User.DETAILS.commands, options)) {
+    if (!userRanValidFlags(User.DETAILS.commands, options)) {
         login = true
     }
 

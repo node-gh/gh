@@ -27,7 +27,10 @@ export function getCurrentFolderName(): string {
     return cwdArr[cwdArr.length - 1]
 }
 
-export function hasCmdInOptions(commands, options) {
+/**
+ * Checks to see if the cli arguments are one of the accepted flags
+ */
+export function userRanValidFlags(commands, options) {
     if (commands) {
         return commands.some(c => {
             return options[c] !== undefined
