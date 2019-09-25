@@ -151,8 +151,7 @@ Help.prototype.listFlags_ = function(command) {
 }
 
 Help.prototype.listCommands_ = function(commands) {
-    let content =
-        'usage: gh <command> [payload] [--flags] [--verbose] [--no-color] [--no-hooks]\n\n'
+    let content = 'usage: gh <command> [--flags] [--verbose] [--no-color] [--no-hooks]\n\n'
 
     content += 'List of available commands:\n'
 

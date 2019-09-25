@@ -304,7 +304,9 @@ Repo.prototype.run = async function(done) {
             options.type = options.type || Repo.TYPE_OWNER
         }
 
-        if (options.isTTY.out) {
+        // Add a isTTY value on the options to determine whether or not the command is executed in a TTY context or not.
+        // Will be false if cmd is piped like: gh re --list | cat
+        if (Boolean(process.stdout.isTTY)) {
             logger.log(
                 `Listing ${logger.colors.green(options.type)} repos for ${logger.colors.green(
                     user
@@ -474,7 +476,7 @@ Repo.prototype.listCallback_ = function(repos): void {
                     logger.log(`last update ${logger.getDuration(repo.updated_at, options.date)}`)
                 }
 
-                if (options.isTTY.out) {
+                if (Boolean(process.stdout.isTTY)) {
                     logger.log(
                         `${logger.colors.green(
                             `forks: ${repo.forks}, stars: ${repo.watchers}, issues: ${

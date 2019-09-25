@@ -42,12 +42,13 @@ User.DETAILS = {
 User.prototype.run = async function(done) {
     const instance = this
     const options = instance.options
+    let login
 
     if (!hasCmdInOptions(User.DETAILS.commands, options)) {
-        options.login = true
+        login = true
     }
 
-    if (options.login) {
+    if (login) {
         if (tokenExists()) {
             logger.log(`You're logged in as ${logger.colors.green(options.user)}`)
         } else {
