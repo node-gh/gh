@@ -133,13 +133,9 @@ Issue.prototype.run = async function(done) {
         logger.log(logger.colors.cyan(data.html_url))
 
         await afterHooks('issue.assign', { options })
-    }
-
-    if (options.browser) {
+    } else if (options.browser) {
         instance.browser(options.user, options.repo, options.number)
-    }
-
-    if (options.comment) {
+    } else if (options.comment) {
         logger.log(`Adding comment on issue ${number} on ${getUserRepo(options)}`)
 
         try {
@@ -149,9 +145,7 @@ Issue.prototype.run = async function(done) {
         }
 
         logger.log(logger.colors.cyan(data.html_url))
-    }
-
-    if (options.list) {
+    } else if (options.list) {
         try {
             if (options.all) {
                 logger.log(
@@ -173,9 +167,7 @@ Issue.prototype.run = async function(done) {
         } catch (err) {
             throw new Error(`Error listing issues\n${err}`)
         }
-    }
-
-    if (options.new) {
+    } else if (options.new) {
         await beforeHooks('issue.new', { options })
 
         logger.log(`Creating a new issue on ${getUserRepo(options)}`)
@@ -187,15 +179,15 @@ Issue.prototype.run = async function(done) {
         }
 
         if (data) {
-            options.number = data.number
+            options = produce(options, draft => {
+                draft.number = data.number
+            })
+
+            logger.log(data.html_url)
         }
 
-        logger.log(data.html_url)
-
         await afterHooks('issue.new', { options })
-    }
-
-    if (options.open) {
+    } else if (options.open) {
         await beforeHooks('issue.open', { options })
 
         await openHandler(instance, options)
@@ -207,9 +199,7 @@ Issue.prototype.run = async function(done) {
         await closeHandler(instance, options)
 
         await afterHooks('issue.close', { options })
-    }
-
-    if (options.search) {
+    } else if (options.search) {
         let { repo, user } = options
         const query = logger.colors.green(options.search)
 
@@ -377,18 +367,20 @@ Issue.prototype.listFromAllRepositories = async function() {
 
 Issue.prototype.new = function() {
     const instance = this
-    const options = instance.options
+    let options = instance.options
     let body
 
     if (options.message) {
         body = logger.applyReplacements(options.message, config.replace)
     }
 
-    if (options.labels) {
-        options.labels = options.labels.split(',')
-    } else {
-        options.labels = []
-    }
+    options = produce(options, draft => {
+        if (draft.labels) {
+            draft.labels = draft.labels.split(',')
+        } else {
+            draft.labels = []
+        }
+    })
 
     const payload = {
         body,
@@ -442,8 +434,6 @@ Issue.prototype.search = async function(user, repo) {
 }
 
 async function closeHandler(instance, options) {
-    options.state = Issue.STATE_CLOSED
-
     for (const number of options.number) {
         logger.log(`Closing issue ${number} on ${getUserRepo(options)}`)
 
