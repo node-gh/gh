@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "us", "--whoami"],
+            "args": ["${workspaceFolder}/src/debug.ts", "user", "--login"],
             // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
             "console": "integratedTerminal"
         },
@@ -19,7 +19,15 @@
             "request": "launch",
             "env": { "NODE_ENV": "testing", "GH_USER": "protoEvangelion", "GH_TOKEN": "0001" },
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "re", "--new", "foo", "--init"],
+            "args": [
+                "${workspaceFolder}/src/debug.ts",
+                "is",
+                "-N",
+                "-t",
+                "'Node GH rocks!'",
+                "-L",
+                "bug,question,test"
+            ],
             "console": "integratedTerminal"
         }
     ]
