@@ -36,7 +36,7 @@ Notifications.DETAILS = {
         u: ['--user'],
         w: ['--watch'],
     },
-    payload(payload, options) {
+    payload(_, options) {
         options.latest = true
     },
 }

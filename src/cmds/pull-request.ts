@@ -368,8 +368,6 @@ PullRequest.prototype.fetch = async function(options, opt_type) {
 }
 
 PullRequest.prototype.filterPullsSentByMe_ = function(options, pulls) {
-    const instance = this
-
     return pulls.filter(pull => {
         if (options.loggedUser === pull.user.login) {
             return pull
@@ -418,8 +416,6 @@ PullRequest.prototype.getPullRequestNumberFromBranch_ = function(currentBranch, 
 }
 
 PullRequest.prototype.getPullsTemplateJson_ = function(options, pulls) {
-    const instance = this
-
     let branch
 
     const branches = {}
@@ -813,9 +809,7 @@ PullRequest.prototype.setMergeCommentRequiredOptions_ = function(options) {
     options.pullHeadSHA = `${lastCommitSHA}~${changes}`
 }
 
-PullRequest.prototype.sortPullsByComplexity_ = function(options, pulls, direction) {
-    const instance = this
-
+PullRequest.prototype.sortPullsByComplexity_ = function(pulls, direction) {
     pulls.sort((a, b) => {
         if (a.complexity > b.complexity) {
             return -1
