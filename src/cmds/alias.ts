@@ -14,9 +14,7 @@ const config = base.getConfig()
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Alias(options) {
-    this.options = options
-}
+export default function Alias() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -48,9 +46,8 @@ Alias.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Alias.prototype.run = function() {
+Alias.prototype.run = function(options) {
     const instance = this
-    const options = instance.options
 
     if (options.add) {
         if (!options.user) {
@@ -79,9 +76,8 @@ Alias.prototype.run = function() {
     }
 }
 
-Alias.prototype.add = function() {
+Alias.prototype.add = function(options) {
     const instance = this
-    const options = instance.options
 
     configs.writeGlobalConfig(`alias.${options.add}`, options.user)
 }
@@ -90,9 +86,8 @@ Alias.prototype.list = function(opt_callback) {
     opt_callback && opt_callback(null, config.alias)
 }
 
-Alias.prototype.remove = function() {
+Alias.prototype.remove = function(options) {
     const instance = this
-    const options = instance.options
 
     delete config.alias[options.remove]
 

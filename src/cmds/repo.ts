@@ -22,9 +22,7 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Repo(options) {
-    this.options = options
-}
+export default function Repo() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -87,9 +85,9 @@ Repo.TYPE_SOURCES = 'sources'
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Repo.prototype.run = async function(done) {
+Repo.prototype.run = async function(options, done) {
     const instance = this
-    const options = instance.options
+
     let user = options.loggedUser
 
     instance.config = config
@@ -365,9 +363,8 @@ Repo.prototype.clone_ = function(user, repo, repo_url) {
     git.clone(url.parse(repo_url).href, repo)
 }
 
-Repo.prototype.createLabel = function(user): Promise<Octokit.IssuesCreateLabelResponse> {
+Repo.prototype.createLabel = function(options, user): Promise<Octokit.IssuesCreateLabelResponse> {
     const instance = this
-    const options = instance.options
 
     const payload: Octokit.IssuesCreateLabelParams = {
         owner: user,
@@ -393,9 +390,8 @@ Repo.prototype.delete = function(user, repo): Promise<Octokit.ReposDeleteRespons
     return instance.GitHub.repos.delete(payload)
 }
 
-Repo.prototype.deleteLabel = function(user): Promise<Octokit.IssuesDeleteLabelResponse> {
+Repo.prototype.deleteLabel = function(options, user): Promise<Octokit.IssuesDeleteLabelResponse> {
     const instance = this
-    const options = instance.options
 
     const payload = {
         owner: user,
@@ -418,10 +414,10 @@ Repo.prototype.get = function(user, repo): Promise<Octokit.IssuesGetResponse> {
 }
 
 Repo.prototype.list = function(
+    options,
     user
 ): Promise<Octokit.AnyResponse | Octokit.ReposListForOrgResponse> {
     const instance = this
-    const options = instance.options
 
     let method = 'listForUser'
 
@@ -449,9 +445,9 @@ Repo.prototype.list = function(
     return instance.GitHub.paginate(instance.GitHub.repos[method].endpoint(payload))
 }
 
-Repo.prototype.listCallback_ = function(repos): void {
+Repo.prototype.listCallback_ = function(options, repos): void {
     const instance = this
-    const options = instance.options
+
     let pos
     let repo
 
@@ -489,9 +485,11 @@ Repo.prototype.listCallback_ = function(repos): void {
     }
 }
 
-Repo.prototype.listLabels = function(user): Promise<Octokit.IssuesListLabelsForRepoResponse> {
+Repo.prototype.listLabels = function(
+    options,
+    user
+): Promise<Octokit.IssuesListLabelsForRepoResponse> {
     const instance = this
-    const options = instance.options
 
     const payload: Octokit.IssuesListLabelsForRepoParams = {
         owner: user,
@@ -503,9 +501,8 @@ Repo.prototype.listLabels = function(user): Promise<Octokit.IssuesListLabelsForR
     return instance.GitHub.issues.listLabelsForRepo(payload)
 }
 
-Repo.prototype.listLabelsCallback_ = function(err, labels): void {
+Repo.prototype.listLabelsCallback_ = function(options, err, labels): void {
     const instance = this
-    const options = instance.options
 
     if (err && !options.all) {
         logger.error(logger.getErrorMessage(err))
@@ -518,9 +515,8 @@ Repo.prototype.listLabelsCallback_ = function(err, labels): void {
     }
 }
 
-Repo.prototype.fork = async function(): Promise<Octokit.ReposCreateForkResponse> {
+Repo.prototype.fork = async function(options): Promise<Octokit.ReposCreateForkResponse> {
     const instance = this
-    const options = instance.options
 
     const payload: Octokit.ReposCreateForkParams = {
         owner: options.user,
@@ -534,11 +530,11 @@ Repo.prototype.fork = async function(): Promise<Octokit.ReposCreateForkResponse>
     return await instance.GitHub.repos.createFork(payload)
 }
 
-Repo.prototype.new = function(): Promise<
-    Octokit.ReposCreateInOrgResponse | Octokit.ReposCreateForAuthenticatedUserResponse
-> {
+Repo.prototype.new = function(
+    options
+): Promise<Octokit.ReposCreateInOrgResponse | Octokit.ReposCreateForAuthenticatedUserResponse> {
     const instance = this
-    const options = instance.options
+
     let method = 'createForAuthenticatedUser'
 
     options.description = options.description || ''
@@ -573,9 +569,8 @@ Repo.prototype.new = function(): Promise<
     return instance.GitHub.repos[method](payload)
 }
 
-Repo.prototype.updateLabel = function(user): Promise<Octokit.IssuesUpdateLabelResponse> {
+Repo.prototype.updateLabel = function(options, user): Promise<Octokit.IssuesUpdateLabelResponse> {
     const instance = this
-    const options = instance.options
 
     const payload: Octokit.IssuesUpdateLabelParams = {
         owner: user,

@@ -18,13 +18,7 @@ const config = base.getConfig()
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Issue(options) {
-    this.options = options
-
-    if (!options.repo && !options.all) {
-        logger.error('You must specify a Git repository with a GitHub remote to run this command')
-    }
-}
+export default function Issue() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -86,9 +80,13 @@ Issue.STATE_OPEN = 'open'
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Issue.prototype.run = async function(done) {
+Issue.prototype.run = async function(options, done) {
     const instance = this
-    let options = instance.options
+
+    if (!options.repo && !options.all) {
+        logger.error('You must specify a Git repository with a GitHub remote to run this command')
+    }
+
     const number = logger.colors.green(`#${options.number}`)
 
     instance.config = config
@@ -173,7 +171,7 @@ Issue.prototype.run = async function(done) {
         logger.log(`Creating a new issue on ${getUserRepo(options)}`)
 
         try {
-            var { data } = await instance.new()
+            var { data } = await instance.new(options)
         } catch (err) {
             throw new Error(`Can't create issue.\n${err}`)
         }
@@ -245,9 +243,8 @@ Issue.prototype.close = async function(number) {
     return instance.editIssue_(issue.title, Issue.STATE_CLOSED, number)
 }
 
-Issue.prototype.comment = function() {
+Issue.prototype.comment = function(options) {
     const instance = this
-    let options = instance.options
 
     const body = logger.applyReplacements(options.comment, config.replace) + config.signature
 
@@ -261,9 +258,9 @@ Issue.prototype.comment = function() {
     return instance.GitHub.issues.createComment(payload)
 }
 
-Issue.prototype.editIssue_ = function(title, state, number?: number) {
+Issue.prototype.editIssue_ = function(options, title, state, number?: number) {
     const instance = this
-    const options = instance.options
+
     let payload
 
     payload = {
@@ -280,9 +277,8 @@ Issue.prototype.editIssue_ = function(title, state, number?: number) {
     return instance.GitHub.issues.update(payload)
 }
 
-Issue.prototype.getIssue_ = function(number?: number) {
+Issue.prototype.getIssue_ = function(options, number?: number) {
     const instance = this
-    const options = instance.options
 
     const payload = {
         issue_number: number || options.number,
@@ -293,9 +289,9 @@ Issue.prototype.getIssue_ = function(number?: number) {
     return instance.GitHub.issues.get(payload)
 }
 
-Issue.prototype.list = async function(user, repo) {
+Issue.prototype.list = async function(options, user, repo) {
     const instance = this
-    const options = instance.options
+
     let payload
 
     payload = {
@@ -347,9 +343,8 @@ Issue.prototype.list = async function(user, repo) {
     }
 }
 
-Issue.prototype.listFromAllRepositories = async function() {
+Issue.prototype.listFromAllRepositories = async function(options) {
     const instance = this
-    const options = instance.options
 
     const payload = {
         type: 'all',
@@ -365,9 +360,8 @@ Issue.prototype.listFromAllRepositories = async function() {
     }
 }
 
-Issue.prototype.new = function() {
+Issue.prototype.new = function(options) {
     const instance = this
-    let options = instance.options
     let body
 
     if (options.message) {
@@ -402,9 +396,9 @@ Issue.prototype.open = async function(number) {
     return instance.editIssue_(issue.title, Issue.STATE_OPEN, number)
 }
 
-Issue.prototype.search = async function(user, repo) {
+Issue.prototype.search = async function(options, user, repo) {
     const instance = this
-    const options = instance.options
+
     let query = ['type:issue']
     let payload
 

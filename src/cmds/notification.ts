@@ -14,13 +14,7 @@ const printed = {}
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Notifications(options) {
-    this.options = options
-
-    if (!options.repo) {
-        logger.error('You must specify a Git repository with a GitHub remote to run this command')
-    }
-}
+export default function Notifications() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -49,9 +43,13 @@ Notifications.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Notifications.prototype.run = async function(done) {
+Notifications.prototype.run = async function(options, done) {
     const instance = this
-    const options = instance.options
+
+    if (!options.repo) {
+        logger.error('You must specify a Git repository with a GitHub remote to run this command')
+    }
+
     instance.GitHub = await getGitHubInstance()
 
     if (!userRanValidFlags(Notifications.DETAILS.commands, options)) {
@@ -77,9 +75,9 @@ Notifications.prototype.run = async function(done) {
     done && done()
 }
 
-Notifications.prototype.latest = async function(opt_watch) {
+Notifications.prototype.latest = async function(options, opt_watch) {
     const instance = this
-    const options = instance.options
+
     let payload
     let filteredListEvents = []
 

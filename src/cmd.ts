@@ -189,9 +189,9 @@ export async function setUp() {
     if (testing) {
         const { prepareTestFixtures } = await import('./utils')
 
-        await new Command(options).run(prepareTestFixtures(Command.name, args.argv.cooked))
+        await new Command().run(options, prepareTestFixtures(Command.name, args.argv.cooked))
     } else {
-        await new Command(options).run()
+        await new Command().run(options)
     }
 }
 
