@@ -14,16 +14,13 @@ import * as base from '../base'
 import * as configs from '../configs'
 import * as logger from '../logger'
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Help() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
 // allows to run program as js or ts
 const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
 
-Help.DETAILS = {
+export const name = 'Help'
+export const DETAILS = {
     description: 'List all commands and options available.',
     options: {
         all: Boolean,
@@ -37,13 +34,12 @@ Help.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Help.prototype.run = async function() {
-    const instance = this
+async function run() {
     const cmdDir = path.join(__dirname, '../cmds/')
     const reg = new RegExp(`.${extension}$`)
     const files = base.find(cmdDir, reg)
     let filter
-    const options = nopt(Help.DETAILS.options, Help.DETAILS.shorthands, process.argv, 2)
+    const options = nopt(DETAILS.options, DETAILS.shorthands, process.argv, 2)
     let plugins
 
     // Remove help from command list
@@ -96,7 +92,7 @@ Help.prototype.run = async function() {
             }
 
             if (filter || options.all) {
-                flags = instance.groupOptions_(cmd.DETAILS)
+                flags = groupOptions_(cmd.DETAILS)
                 offset = 1
             }
 
@@ -117,7 +113,7 @@ Help.prototype.run = async function() {
     logger.log(this.listCommands_(commands))
 }
 
-Help.prototype.listFlags_ = function(command) {
+function listFlags_(command) {
     const flags = command.flags
     let content = ''
 
@@ -148,7 +144,7 @@ Help.prototype.listFlags_ = function(command) {
     return content
 }
 
-Help.prototype.listCommands_ = function(commands) {
+function listCommands_(commands) {
     let content = 'usage: gh <command> [--flags] [--verbose] [--no-color] [--no-hooks]\n\n'
 
     content += 'List of available commands:\n'
@@ -172,8 +168,7 @@ Help.prototype.listCommands_ = function(commands) {
     return content
 }
 
-Help.prototype.groupOptions_ = function(details) {
-    const instance = this
+function groupOptions_(details) {
     let cmd
     let options
     let shorthands
@@ -194,8 +189,8 @@ Help.prototype.groupOptions_ = function(details) {
             }
         })
 
-        cmd = instance.isCommand_(details, option)
-        type = instance.getType_(details.options[option])
+        cmd = isCommand_(details, option)
+        type = getType_(details.options[option])
 
         grouped.push({
             cmd,
@@ -208,7 +203,7 @@ Help.prototype.groupOptions_ = function(details) {
     return grouped
 }
 
-Help.prototype.getType_ = function(type) {
+function getType_(type) {
     let types
     const separator = ', '
 
@@ -259,7 +254,7 @@ Help.prototype.getType_ = function(type) {
     return type
 }
 
-Help.prototype.isCommand_ = function(details, option) {
+function isCommand_(details, option) {
     if (details.commands && details.commands.indexOf(option) > -1) {
         return true
     }

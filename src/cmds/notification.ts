@@ -12,13 +12,10 @@ import { userRanValidFlags } from '../utils'
 
 const printed = {}
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Notifications() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-Notifications.DETAILS = {
+export const name = 'Notifications'
+export const DETAILS = {
     alias: 'nt',
     description: 'Provides a set of util commands to work with Notifications.',
     commands: ['latest', 'watch'],
@@ -43,16 +40,14 @@ Notifications.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Notifications.prototype.run = async function(options, done) {
-    const instance = this
-
+export async function run(options, done) {
     if (!options.repo) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
     }
 
-    instance.GitHub = await getGitHubInstance()
+    options.GitHub = await getGitHubInstance()
 
-    if (!userRanValidFlags(Notifications.DETAILS.commands, options)) {
+    if (!userRanValidFlags(DETAILS.commands, options)) {
         options.latest = true
     }
 
@@ -61,7 +56,7 @@ Notifications.prototype.run = async function(options, done) {
             `Listing activities on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
 
-        await instance.latest(false)
+        await latest(false)
     }
 
     if (options.watch) {
@@ -69,15 +64,13 @@ Notifications.prototype.run = async function(options, done) {
             `Watching any activity on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
 
-        await instance.watch()
+        await watch()
     }
 
     done && done()
 }
 
-Notifications.prototype.latest = async function(options, opt_watch) {
-    const instance = this
-
+async function latest(options, opt_watch) {
     let payload
     let filteredListEvents = []
 
@@ -87,15 +80,15 @@ Notifications.prototype.latest = async function(options, opt_watch) {
     }
 
     try {
-        var data = await instance.GitHub.paginate(
-            instance.GitHub.activity.listRepoEvents.endpoint(payload)
+        var data = await options.GitHub.paginate(
+            options.GitHub.activity.listRepoEvents.endpoint(payload)
         )
     } catch (err) {
         throw new Error(`Can't get latest notifications.\n${err}`)
     }
 
     data.forEach(event => {
-        event.txt = instance.getMessage_(event)
+        event.txt = getMessage_(event)
 
         if (opt_watch) {
             if (!printed[event.created_at]) {
@@ -126,18 +119,17 @@ Notifications.prototype.latest = async function(options, opt_watch) {
     }
 }
 
-Notifications.prototype.watch = async function() {
-    const instance = this
+async function watch() {
     const intervalTime = 3000
 
-    await instance.latest()
+    await latest()
 
     setInterval(async () => {
-        await instance.latest(true)
+        await latest(true)
     }, intervalTime)
 }
 
-Notifications.prototype.getMessage_ = function(event) {
+function getMessage_(event) {
     let txt = ''
     const type = event.type
     const payload = event.payload

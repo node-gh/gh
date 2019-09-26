@@ -9,13 +9,10 @@
 import { getGitHubInstance } from '../github'
 import * as logger from '../logger'
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Milestone() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-Milestone.DETAILS = {
+export const name = 'Milestone'
+export const DETAILS = {
     alias: 'ms',
     description: 'Provides a set of util commands to work with Milestones.',
     commands: ['list'],
@@ -34,9 +31,7 @@ Milestone.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Milestone.prototype.run = async function(options, done) {
-    const instance = this
-
+export async function run(options, done) {
     if (options.organization) {
         options.all = true
     }
@@ -45,7 +40,7 @@ Milestone.prototype.run = async function(options, done) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
     }
 
-    instance.GitHub = await getGitHubInstance()
+    options.GitHub = await getGitHubInstance()
 
     if (options.all) {
         logger.log(
@@ -53,7 +48,7 @@ Milestone.prototype.run = async function(options, done) {
         )
 
         try {
-            await instance.listFromAllRepositories()
+            await listFromAllRepositories()
         } catch (err) {
             throw new Error(`Can't list milestones for ${options.user}.\n${err}`)
         }
@@ -63,7 +58,7 @@ Milestone.prototype.run = async function(options, done) {
         logger.log(`Listing milestones on ${logger.colors.green(userRepo)}`)
 
         try {
-            await instance.list(options.user, options.repo)
+            await list(options.user, options.repo)
         } catch (err) {
             throw new Error(`Can't list milestones on ${userRepo}\n${err}`)
         }
@@ -72,9 +67,7 @@ Milestone.prototype.run = async function(options, done) {
     }
 }
 
-Milestone.prototype.list = async function(options, user, repo) {
-    const instance = this
-
+async function list(options, user, repo) {
     let payload
 
     payload = {
@@ -84,8 +77,8 @@ Milestone.prototype.list = async function(options, user, repo) {
     }
 
     try {
-        var data = await instance.GitHub.paginate(
-            instance.GitHub.issues.listMilestonesForRepo.endpoint(payload)
+        var data = await options.GitHub.paginate(
+            options.GitHub.issues.listMilestonesForRepo.endpoint(payload)
         )
     } catch (err) {
         throw new Error(logger.getErrorMessage(err))
@@ -104,9 +97,7 @@ Milestone.prototype.list = async function(options, user, repo) {
     }
 }
 
-Milestone.prototype.listFromAllRepositories = async function(options) {
-    const instance = this
-
+async function listFromAllRepositories(options) {
     let operation = 'listForUser'
     let payload
 
@@ -120,9 +111,9 @@ Milestone.prototype.listFromAllRepositories = async function(options) {
         payload.org = options.organization
     }
 
-    const data = await instance.GitHub.paginate(instance.GitHub.repos[operation].endpoint(payload))
+    const data = await options.GitHub.paginate(options.GitHub.repos[operation].endpoint(payload))
 
     for (const repo of data) {
-        await instance.list(repo.owner.login, repo.name)
+        await list(repo.owner.login, repo.name)
     }
 }

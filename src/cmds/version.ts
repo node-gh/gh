@@ -9,12 +9,13 @@ import * as logger from '../logger'
 
 export default function Version() {}
 
-Version.DETAILS = {
+export const name = 'Version'
+export const DETAILS = {
     alias: 'v',
     description: 'Print gh version.',
 }
 
-Version.prototype.run = function() {
+function run() {
     printVersion(getGlobalPackageJson())
 }
 

@@ -15,13 +15,10 @@ import * as logger from '../logger'
 
 const config = base.getConfig()
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Gists() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-Gists.DETAILS = {
+export const name = 'Gists'
+export const DETAILS = {
     alias: 'gi',
     description: 'Provides a set of util commands to work with Gists.',
     commands: ['browser', 'delete', 'fork', 'list', 'new'],
@@ -54,18 +51,15 @@ Gists.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Gists.prototype.run = async function(options, done) {
-    const instance = this
+export async function run(options, done) {
+    options.GitHub = await getGitHubInstance()
 
-    instance.config = config
-    instance.GitHub = await getGitHubInstance()
-
-    if (!userRanValidFlags(Gists.DETAILS.commands, options)) {
+    if (!userRanValidFlags(DETAILS.commands, options)) {
         options.list = true
     }
 
     if (options.browser) {
-        instance.browser(options.id || options.loggedUser)
+        browser(options.id || options.loggedUser)
     }
 
     if (options.delete) {
@@ -92,7 +86,7 @@ Gists.prototype.run = async function(options, done) {
 
             await beforeHooks('gists.delete', { options })
 
-            await _deleteHandler(gist_id, instance)
+            await _deleteHandler(gist_id)
 
             await afterHooks('gists.delete', { options })
         }
@@ -104,7 +98,7 @@ Gists.prototype.run = async function(options, done) {
         logger.log(`Forking gist on ${logger.colors.green(options.loggedUser)}`)
 
         try {
-            var { data } = await instance.fork(options.fork)
+            var { data } = await fork(options.fork)
         } catch (err) {
             throw new Error(`Cannot fork gist.\n${err}`)
         }
@@ -118,12 +112,12 @@ Gists.prototype.run = async function(options, done) {
         logger.log(`Listing gists for ${logger.colors.green(options.user)}`)
 
         try {
-            var data = await instance.list(options.user)
+            var data = await list(options.user)
         } catch (err) {
             throw new Error(`Can't list gists for ${options.user}.`)
         }
 
-        instance.listCallback_(data)
+        listCallback_(data)
     }
 
     if (options.new) {
@@ -138,7 +132,7 @@ Gists.prototype.run = async function(options, done) {
         )
 
         try {
-            var { data } = await instance.new(options.new, options.content)
+            var { data } = await newGist(options.new, options.content)
         } catch (err) {
             throw new Error(`Can't create gist.\n${err}`)
         }
@@ -154,39 +148,35 @@ Gists.prototype.run = async function(options, done) {
     done && done()
 }
 
-Gists.prototype.browser = function(gist) {
+function browser(gist) {
     openUrl(config.github_gist_host + gist)
 }
 
-Gists.prototype.delete = function(id) {
-    const instance = this
+function deleteGist(id) {
     const payload = {
         gist_id: id,
     }
 
-    return instance.GitHub.gists.delete(payload)
+    return options.GitHub.gists.delete(payload)
 }
 
-Gists.prototype.fork = function(id) {
-    const instance = this
-
+function fork(id) {
     const payload = {
         gist_id: id,
     }
 
-    return instance.GitHub.gists.fork(payload)
+    return options.GitHub.gists.fork(payload)
 }
 
-Gists.prototype.list = async function(user) {
-    const instance = this
+async function list(user) {
     const payload = {
         username: user,
     }
 
-    return instance.GitHub.paginate(instance.GitHub.gists.listPublicForUser.endpoint(payload))
+    return options.GitHub.paginate(options.GitHub.gists.listPublicForUser.endpoint(payload))
 }
 
-Gists.prototype.listCallback_ = function(gists) {
+function listCallback_(gists) {
     if (gists && gists.length > 0) {
         gists.forEach(gist => {
             const duration = logger.getDuration(gist.updated_at, this.options.date)
@@ -202,9 +192,7 @@ Gists.prototype.listCallback_ = function(gists) {
     }
 }
 
-Gists.prototype.new = function(options, name, content) {
-    const instance = this
-
+function newGist(options, name, content) {
     let file = {}
 
     options.description = options.description || ''
@@ -219,12 +207,12 @@ Gists.prototype.new = function(options, name, content) {
         public: !options.private,
     }
 
-    return instance.GitHub.gists.create(payload)
+    return options.GitHub.gists.create(payload)
 }
 
-async function _deleteHandler(gist_id, instance) {
+async function _deleteHandler(gist_id) {
     try {
-        var { status } = await instance.delete(gist_id)
+        var { status } = await deleteGist(gist_id)
     } catch (err) {
         throw new Error(`Can't delete gist: ${gist_id}.`)
     }
