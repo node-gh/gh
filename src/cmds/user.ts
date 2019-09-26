@@ -13,13 +13,9 @@ import { userRanValidFlags } from '../utils'
 
 const testing = process.env.NODE_ENV === 'testing'
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function User() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-User.DETAILS = {
+export const DETAILS = {
     alias: 'us',
     description: 'Provides the ability to login and logout if needed.',
     commands: ['login', 'logout', 'whoami'],
@@ -36,11 +32,12 @@ User.DETAILS = {
 }
 
 // -- Commands -------------------------------------------------------------------------------------
+export const name = 'User'
 
-User.prototype.run = async function(options, done) {
+export async function run(options, done) {
     let login = options.login
 
-    if (!userRanValidFlags(User.DETAILS.commands, options)) {
+    if (!userRanValidFlags(DETAILS.commands, options)) {
         login = true
     }
 
@@ -57,7 +54,7 @@ User.prototype.run = async function(options, done) {
     if (options.logout) {
         logger.log(`Logging out of user ${logger.colors.green(options.user)}`)
 
-        !testing && User.logout()
+        !testing && logout()
     }
 
     if (options.whoami) {
@@ -67,7 +64,7 @@ User.prototype.run = async function(options, done) {
 
 // -- Static ---------------------------------------------------------------------------------------
 
-User.logout = function() {
+function logout() {
     configs.removeGlobalConfig('github_user')
     configs.removeGlobalConfig('github_token')
 }
