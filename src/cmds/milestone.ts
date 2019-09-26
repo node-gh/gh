@@ -7,7 +7,7 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as logger from '../logger'
-
+import { produce } from 'immer'
 // -- Constants ------------------------------------------------------------------------------------
 
 export const name = 'Milestone'
@@ -32,7 +32,9 @@ export const DETAILS = {
 
 export async function run(options, done) {
     if (options.organization) {
-        options.all = true
+        options = produce(options, draft => {
+            draft.all = true
+        })
     }
 
     if (!options.repo && !options.all) {
@@ -45,7 +47,7 @@ export async function run(options, done) {
         )
 
         try {
-            await listFromAllRepositories()
+            await listFromAllRepositories(options)
         } catch (err) {
             throw new Error(`Can't list milestones for ${options.user}.\n${err}`)
         }
@@ -55,7 +57,7 @@ export async function run(options, done) {
         logger.log(`Listing milestones on ${logger.colors.green(userRepo)}`)
 
         try {
-            await list(options.user, options.repo)
+            await list(options, options.user, options.repo)
         } catch (err) {
             throw new Error(`Can't list milestones on ${userRepo}\n${err}`)
         }
@@ -111,6 +113,6 @@ async function listFromAllRepositories(options) {
     const data = await options.GitHub.paginate(options.GitHub.repos[operation].endpoint(payload))
 
     for (const repo of data) {
-        await list(repo.owner.login, repo.name)
+        await list(options, repo.owner.login, repo.name)
     }
 }

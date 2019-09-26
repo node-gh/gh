@@ -28,7 +28,7 @@ export const DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-function run(options) {
+export function run(options) {
     if (options.world) {
         world()
     }

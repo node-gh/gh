@@ -34,7 +34,7 @@ export const DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-async function run() {
+export async function run() {
     const cmdDir = path.join(__dirname, '../cmds/')
     const reg = new RegExp(`.${extension}$`)
     const files = base.find(cmdDir, reg)
@@ -69,9 +69,7 @@ async function run() {
 
             let flags = []
 
-            if (cmd.default) {
-                cmd = cmd.default
-            } else {
+            if (cmd.Impl) {
                 cmd = cmd.Impl
             }
 
@@ -110,7 +108,7 @@ async function run() {
         throw new Error(`No manual entry for ${filter}`)
     }
 
-    logger.log(this.listCommands_(commands))
+    logger.log(listCommands_(commands))
 }
 
 function listFlags_(command) {
@@ -159,7 +157,7 @@ function listCommands_(commands) {
                 command.description
             }\n`
 
-            content += this.listFlags_(command)
+            content += listFlags_(command)
         }
     })
 
@@ -219,7 +217,7 @@ function getType_(type) {
         type = ''
 
         types.forEach(function(eachType) {
-            type += this.getType_(eachType) + separator
+            type += getType_(eachType) + separator
         }, this)
 
         type = type.substr(0, type.length - separator.length)
