@@ -6,7 +6,6 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import { getGitHubInstance } from '../github'
 import * as logger from '../logger'
 
 // -- Constants ------------------------------------------------------------------------------------
@@ -39,8 +38,6 @@ export async function run(options, done) {
     if (!options.repo && !options.all) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
     }
-
-    options.GitHub = await getGitHubInstance()
 
     if (options.all) {
         logger.log(
