@@ -11,17 +11,7 @@ import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Milestone(options) {
-    this.options = options
-
-    if (options.organization) {
-        options.all = true
-    }
-
-    if (!options.repo && !options.all) {
-        logger.error('You must specify a Git repository with a GitHub remote to run this command')
-    }
-}
+export default function Milestone() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -44,9 +34,16 @@ Milestone.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Milestone.prototype.run = async function(done) {
+Milestone.prototype.run = async function(options, done) {
     const instance = this
-    const options = instance.options
+
+    if (options.organization) {
+        options.all = true
+    }
+
+    if (!options.repo && !options.all) {
+        logger.error('You must specify a Git repository with a GitHub remote to run this command')
+    }
 
     instance.GitHub = await getGitHubInstance()
 
@@ -75,9 +72,9 @@ Milestone.prototype.run = async function(done) {
     }
 }
 
-Milestone.prototype.list = async function(user, repo) {
+Milestone.prototype.list = async function(options, user, repo) {
     const instance = this
-    const options = instance.options
+
     let payload
 
     payload = {
@@ -107,9 +104,8 @@ Milestone.prototype.list = async function(user, repo) {
     }
 }
 
-Milestone.prototype.listFromAllRepositories = async function() {
+Milestone.prototype.listFromAllRepositories = async function(options) {
     const instance = this
-    const options = instance.options
 
     let operation = 'listForUser'
     let payload

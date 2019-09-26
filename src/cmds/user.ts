@@ -15,9 +15,7 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function User(options) {
-    this.options = options
-}
+export default function User() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -39,9 +37,7 @@ User.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-User.prototype.run = async function(done) {
-    const instance = this
-    const options = instance.options
+User.prototype.run = async function(options, done) {
     let login = options.login
 
     if (!userRanValidFlags(User.DETAILS.commands, options)) {

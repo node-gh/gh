@@ -16,9 +16,7 @@ import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Help() {
-    this.options = nopt(Help.DETAILS.options, Help.DETAILS.shorthands, process.argv, 2)
-}
+export default function Help() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -45,7 +43,7 @@ Help.prototype.run = async function() {
     const reg = new RegExp(`.${extension}$`)
     const files = base.find(cmdDir, reg)
     let filter
-    const options = this.options
+    const options = nopt(Help.DETAILS.options, Help.DETAILS.shorthands, process.argv, 2)
     let plugins
 
     // Remove help from command list

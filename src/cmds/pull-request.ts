@@ -30,13 +30,7 @@ const STATUSES = {
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function PullRequest(options) {
-    this.options = options
-
-    if (!options.repo && !options.all) {
-        logger.error('You must specify a Git repository with a GitHub remote to run this command')
-    }
-}
+export default function PullRequest() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -131,9 +125,12 @@ PullRequest.prototype.options = null
 
 PullRequest.prototype.issues = null
 
-PullRequest.prototype.run = async function(done) {
+PullRequest.prototype.run = async function(options, done) {
     const instance = this
-    const options = instance.options
+
+    if (!options.repo && !options.all) {
+        logger.error('You must specify a Git repository with a GitHub remote to run this command')
+    }
 
     instance.config = config
     instance.GitHub = await getGitHubInstance()
@@ -226,9 +223,8 @@ PullRequest.prototype.run = async function(done) {
     }
 }
 
-PullRequest.prototype.addComplexityParamToPulls_ = async function(pulls) {
+PullRequest.prototype.addComplexityParamToPulls_ = async function(options, pulls) {
     const instance = this
-    const options = instance.options
 
     return Promise.all(
         pulls.map(async pull => {
@@ -280,9 +276,8 @@ PullRequest.prototype.calculateComplexity_ = function(metrics): number {
     return complexity
 }
 
-PullRequest.prototype.close = async function() {
+PullRequest.prototype.close = async function(options) {
     const instance = this
-    const options = instance.options
 
     const { data: pull } = await instance.getPullRequest_()
 
@@ -299,9 +294,9 @@ PullRequest.prototype.close = async function() {
     return data
 }
 
-PullRequest.prototype.comment = async function() {
+PullRequest.prototype.comment = async function(options) {
     const instance = this
-    const options = instance.options
+
     const body = logger.applyReplacements(options.comment, config.replace) + config.signature
 
     const payload = {
@@ -314,9 +309,9 @@ PullRequest.prototype.comment = async function() {
     return instance.GitHub.issues.createComment(payload)
 }
 
-PullRequest.prototype.checkPullRequestIntegrity_ = async function(originalError, user) {
+PullRequest.prototype.checkPullRequestIntegrity_ = async function(options, originalError, user) {
     const instance = this
-    const options = instance.options
+
     let pull
 
     const payload = {
@@ -351,9 +346,8 @@ PullRequest.prototype.checkPullRequestIntegrity_ = async function(originalError,
     }
 }
 
-PullRequest.prototype.fetch = async function(opt_type) {
+PullRequest.prototype.fetch = async function(options, opt_type) {
     const instance = this
-    const options = instance.options
 
     try {
         var { data: pull } = await instance.getPullRequest_()
@@ -373,9 +367,8 @@ PullRequest.prototype.fetch = async function(opt_type) {
     return pull
 }
 
-PullRequest.prototype.filterPullsSentByMe_ = function(pulls) {
+PullRequest.prototype.filterPullsSentByMe_ = function(options, pulls) {
     const instance = this
-    const options = instance.options
 
     return pulls.filter(pull => {
         if (options.loggedUser === pull.user.login) {
@@ -384,9 +377,8 @@ PullRequest.prototype.filterPullsSentByMe_ = function(pulls) {
     })
 }
 
-PullRequest.prototype.forward = async function() {
+PullRequest.prototype.forward = async function(options) {
     const instance = this
-    const options = instance.options
 
     try {
         var pull = await instance.fetch(PullRequest.FETCH_TYPE_SILENT)
@@ -401,9 +393,8 @@ PullRequest.prototype.forward = async function() {
     return instance.submit(options.fwd)
 }
 
-PullRequest.prototype.getPullRequest_ = function() {
+PullRequest.prototype.getPullRequest_ = function(options) {
     const instance = this
-    const options = instance.options
 
     const payload = {
         pull_number: options.number,
@@ -426,9 +417,9 @@ PullRequest.prototype.getPullRequestNumberFromBranch_ = function(currentBranch, 
     }
 }
 
-PullRequest.prototype.getPullsTemplateJson_ = function(pulls) {
+PullRequest.prototype.getPullsTemplateJson_ = function(options, pulls) {
     const instance = this
-    const options = instance.options
+
     let branch
 
     const branches = {}
@@ -456,8 +447,7 @@ PullRequest.prototype.getPullsTemplateJson_ = function(pulls) {
     return json
 }
 
-PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
-    const options = this.options
+PullRequest.prototype.printPullsInfoTable_ = function(options, pulls) {
     const showDetails = options.info || options.detailed
 
     logger.log(generateTable())
@@ -614,9 +604,7 @@ PullRequest.prototype.printPullsInfoTable_ = function(pulls) {
     }
 }
 
-PullRequest.prototype.printPullInfo_ = function(pull) {
-    const options = this.options
-
+PullRequest.prototype.printPullInfo_ = function(options, pull) {
     let status = ''
 
     switch (pull.combinedStatus) {
@@ -671,9 +659,9 @@ PullRequest.prototype.get = async function(user, repo, number) {
     pr.printPullInfo_(pull)
 }
 
-PullRequest.prototype.list = async function(user, repo) {
+PullRequest.prototype.list = async function(options, user, repo) {
     const instance = this
-    let options = instance.options
+
     let json
 
     await beforeHooks('pull-request.list', { options })
@@ -769,9 +757,9 @@ PullRequest.prototype.list = async function(user, repo) {
     await afterHooks('pull-request.list', { options })
 }
 
-PullRequest.prototype.listFromAllRepositories = async function() {
+PullRequest.prototype.listFromAllRepositories = async function(options) {
     const instance = this
-    const options = instance.options
+
     let payload
     let apiMethod
 
@@ -812,8 +800,7 @@ PullRequest.prototype.open = async function() {
     return instance.updatePullRequest_(pull.title, pull.body, PullRequest.STATE_OPEN)
 }
 
-PullRequest.prototype.setMergeCommentRequiredOptions_ = function() {
-    const options = this.options
+PullRequest.prototype.setMergeCommentRequiredOptions_ = function(options) {
     const lastCommitSHA = git.getLastCommitSHA()
     const changes = git.countUserAdjacentCommits()
 
@@ -826,9 +813,8 @@ PullRequest.prototype.setMergeCommentRequiredOptions_ = function() {
     options.pullHeadSHA = `${lastCommitSHA}~${changes}`
 }
 
-PullRequest.prototype.sortPullsByComplexity_ = function(pulls, direction) {
+PullRequest.prototype.sortPullsByComplexity_ = function(options, pulls, direction) {
     const instance = this
-    const options = instance.options
 
     pulls.sort((a, b) => {
         if (a.complexity > b.complexity) {
@@ -849,9 +835,8 @@ PullRequest.prototype.sortPullsByComplexity_ = function(pulls, direction) {
     return pulls
 }
 
-PullRequest.prototype.submit = async function(user) {
+PullRequest.prototype.submit = async function(options, user) {
     const instance = this
-    const options = instance.options
 
     let pullBranch = options.pullBranch || options.currentBranch
 
@@ -893,9 +878,8 @@ PullRequest.prototype.submit = async function(user) {
     return data || pull
 }
 
-PullRequest.prototype.updatePullRequest_ = function(title, opt_body, state) {
+PullRequest.prototype.updatePullRequest_ = function(options, title, opt_body, state) {
     const instance = this
-    const options = instance.options
 
     if (opt_body) {
         opt_body = logger.applyReplacements(opt_body, config.replace)
@@ -913,9 +897,8 @@ PullRequest.prototype.updatePullRequest_ = function(title, opt_body, state) {
     return instance.GitHub.pulls.update(payload)
 }
 
-PullRequest.prototype._fetchHandler = async function() {
+PullRequest.prototype._fetchHandler = async function(options) {
     const instance = this
-    const options = this.options
 
     let fetchType = PullRequest.FETCH_TYPE_CHECKOUT
 
@@ -955,9 +938,8 @@ PullRequest.prototype._fetchHandler = async function() {
     await afterHooks('pull-request.fetch', { options })
 }
 
-PullRequest.prototype._fwdHandler = async function() {
+PullRequest.prototype._fwdHandler = async function(options) {
     const instance = this
-    const options = this.options
 
     await beforeHooks('pull-request.fwd', { options })
 
@@ -985,9 +967,8 @@ PullRequest.prototype._fwdHandler = async function() {
     await afterHooks('pull-request.fwd', { options })
 }
 
-PullRequest.prototype._closeHandler = async function() {
+PullRequest.prototype._closeHandler = async function(options) {
     const instance = this
-    const options = this.options
 
     await beforeHooks('pull-request.close', { options })
 
@@ -1006,9 +987,8 @@ PullRequest.prototype._closeHandler = async function() {
     await afterHooks('pull-request.close', { options })
 }
 
-PullRequest.prototype._commentHandler = async function() {
+PullRequest.prototype._commentHandler = async function(options) {
     const instance = this
-    const options = instance.options
 
     logger.log(`Adding comment on pull request ${logger.colors.green(`#${options.number}`)}`)
 
@@ -1021,9 +1001,8 @@ PullRequest.prototype._commentHandler = async function() {
     logger.log(data.html_url)
 }
 
-PullRequest.prototype._infoHandler = async function() {
+PullRequest.prototype._infoHandler = async function(options) {
     const instance = this
-    const options = this.options
 
     try {
         await instance.get(options.user, options.repo, options.number)
@@ -1032,9 +1011,9 @@ PullRequest.prototype._infoHandler = async function() {
     }
 }
 
-PullRequest.prototype._listHandler = async function() {
+PullRequest.prototype._listHandler = async function(options) {
     const instance = this
-    const options = this.options
+
     let who
 
     options.sort = options.sort || PullRequest.SORT_CREATED
@@ -1077,9 +1056,8 @@ PullRequest.prototype._listHandler = async function() {
     }
 }
 
-PullRequest.prototype._openHandler = async function() {
+PullRequest.prototype._openHandler = async function(options) {
     const instance = this
-    const options = this.options
 
     await beforeHooks('pull-request.open', { options })
 
@@ -1096,9 +1074,8 @@ PullRequest.prototype._openHandler = async function() {
     await afterHooks('pull-request.open', { options })
 }
 
-PullRequest.prototype._submitHandler = async function() {
+PullRequest.prototype._submitHandler = async function(options) {
     const instance = this
-    const options = this.options
 
     await beforeHooks('pull-request.submit', { options })
 

@@ -18,9 +18,7 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Gists(options) {
-    this.options = options
-}
+export default function Gists() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -57,9 +55,8 @@ Gists.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Gists.prototype.run = async function(done) {
+Gists.prototype.run = async function(options, done) {
     const instance = this
-    const options = instance.options
 
     instance.config = config
     instance.GitHub = await getGitHubInstance()
@@ -206,9 +203,9 @@ Gists.prototype.listCallback_ = function(gists) {
     }
 }
 
-Gists.prototype.new = function(name, content) {
+Gists.prototype.new = function(options, name, content) {
     const instance = this
-    const options = instance.options
+
     let file = {}
 
     options.description = options.description || ''

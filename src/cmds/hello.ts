@@ -10,9 +10,7 @@ import * as logger from '../logger'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
-export default function Hello(options) {
-    this.options = options
-}
+export default function Hello() {}
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -33,9 +31,8 @@ Hello.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Hello.prototype.run = function() {
+Hello.prototype.run = function(options) {
     const instance = this
-    const options = instance.options
 
     if (options.world) {
         instance.world()
