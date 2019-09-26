@@ -14,6 +14,7 @@ import { find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
 import { produce, setAutoFreeze } from 'immer'
+import { getGitHubInstance } from './github'
 
 const config = configs.getConfig()
 
@@ -77,12 +78,14 @@ async function loadCommand(name) {
 
     if (!Command) {
         // try to resolve as plugin
-        const plugin = await resolvePlugin(name)
+        const { Impl } = await resolvePlugin(name)
 
-        Command = { default: plugin.Impl }
+        Impl.isPlugin = true
+
+        Command = Impl
     }
 
-    return Command.default
+    return Command
 }
 
 function notifyVersion() {
@@ -152,12 +155,13 @@ export async function setUp() {
 
     setAutoFreeze(false)
 
-    const options = produce(args, draft => {
+    const options = await produce(args, async draft => {
         // Gets 2nd positional arg (`gh pr 1` will return 1)
         const secondArg = [draft.argv.remain[1]]
         const remote = draft.remote || config.default_remote
         const remoteUrl = git.getRemoteUrl(remote)
 
+        draft.GitHub = await getGitHubInstance()
         draft.remote = remote
         draft.number = draft.number || secondArg
         draft.loggedUser = getUser()
@@ -189,9 +193,17 @@ export async function setUp() {
     if (testing) {
         const { prepareTestFixtures } = await import('./utils')
 
-        await new Command().run(options, prepareTestFixtures(Command.name, args.argv.cooked))
+        if (Command.isPlugin) {
+            await new Command(options).run(prepareTestFixtures(Command.name, args.argv.cooked))
+        } else {
+            await Command.run(options, prepareTestFixtures(Command.name, args.argv.cooked))
+        }
     } else {
-        await new Command().run(options)
+        if (Command.isPlugin) {
+            await new Command(options).run()
+        } else {
+            await Command.run(options)
+        }
     }
 }
 
