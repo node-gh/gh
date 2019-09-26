@@ -21,11 +21,11 @@ export async function getGitHubInstance(): Promise<Octokit> {
         api: { protocol, pathPrefix, host },
     } = config
 
-    const is_enterprise = config.api.host !== 'api.github.com'
+    const is_enterprise = host !== 'api.github.com'
 
-    const apiUrl = `${protocol}://${is_enterprise ? config.api.host : 'api.github.com'}`
+    const apiUrl = `${protocol}://${is_enterprise ? host : 'api.github.com'}`
 
-    const { href, ...rest } = new URL(`${apiUrl}${pathPrefix || ''}`)
+    const { href } = new URL(`${apiUrl}${pathPrefix || ''}`)
 
     // trim trailing slash for Octokit
     const baseUrl = href.replace(/\/+$/, '')

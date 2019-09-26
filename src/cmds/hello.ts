@@ -24,7 +24,7 @@ Hello.DETAILS = {
     shorthands: {
         w: ['--world'],
     },
-    payload(payload, options) {
+    payload(_, options) {
         options.world = true
     },
 }

@@ -18,7 +18,6 @@ import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 
 const config = base.getConfig()
-const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
@@ -446,8 +445,6 @@ Repo.prototype.list = function(
 }
 
 Repo.prototype.listCallback_ = function(options, repos): void {
-    const instance = this
-
     let pos
     let repo
 
@@ -502,8 +499,6 @@ Repo.prototype.listLabels = function(
 }
 
 Repo.prototype.listLabelsCallback_ = function(options, err, labels): void {
-    const instance = this
-
     if (err && !options.all) {
         logger.error(logger.getErrorMessage(err))
     }

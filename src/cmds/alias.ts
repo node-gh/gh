@@ -59,7 +59,7 @@ Alias.prototype.run = function(options) {
     }
 
     if (options.list) {
-        instance.list((err, data) => {
+        instance.list((_, data) => {
             let item
 
             for (item in data) {
@@ -77,8 +77,6 @@ Alias.prototype.run = function(options) {
 }
 
 Alias.prototype.add = function(options) {
-    const instance = this
-
     configs.writeGlobalConfig(`alias.${options.add}`, options.user)
 }
 
@@ -87,8 +85,6 @@ Alias.prototype.list = function(opt_callback) {
 }
 
 Alias.prototype.remove = function(options) {
-    const instance = this
-
     delete config.alias[options.remove]
 
     configs.writeGlobalConfig('alias', config.alias)

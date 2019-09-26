@@ -7,7 +7,9 @@
         "outDir": "lib",
         "rootDir": "src",
         "lib": ["es2017"],
-        "sourceMap": true
+        "sourceMap": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true
     },
     "exclude": ["node_modules", "lib", "__tests__"]
 }

@@ -14,7 +14,6 @@ import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 
 const config = base.getConfig()
-const testing = process.env.NODE_ENV === 'testing'
 
 // -- Constructor ----------------------------------------------------------------------------------
 
