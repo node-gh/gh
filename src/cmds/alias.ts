@@ -12,13 +12,9 @@ import * as logger from '../logger'
 
 const config = base.getConfig()
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Alias() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-Alias.DETAILS = {
+export const DETAILS = {
     alias: 'al',
     description: 'Create alias for a username.',
     commands: ['add', 'list', 'remove'],
@@ -45,21 +41,20 @@ Alias.DETAILS = {
 }
 
 // -- Commands -------------------------------------------------------------------------------------
+export const name = 'Alias'
 
-Alias.prototype.run = function(options) {
-    const instance = this
-
+export async function run(options) {
     if (options.add) {
         if (!options.user) {
             logger.error('You must specify an user, try --user username.')
         }
 
         logger.debug(`Creating alias ${options.add}`)
-        instance.add()
+        add(options)
     }
 
     if (options.list) {
-        instance.list((_, data) => {
+        list((_, data) => {
             let item
 
             for (item in data) {
@@ -72,19 +67,19 @@ Alias.prototype.run = function(options) {
 
     if (options.remove) {
         logger.debug(`Removing alias ${options.remove}`)
-        instance.remove()
+        remove(options)
     }
 }
 
-Alias.prototype.add = function(options) {
+function add(options) {
     configs.writeGlobalConfig(`alias.${options.add}`, options.user)
 }
 
-Alias.prototype.list = function(opt_callback) {
+function list(opt_callback) {
     opt_callback && opt_callback(null, config.alias)
 }
 
-Alias.prototype.remove = function(options) {
+function remove(options) {
     delete config.alias[options.remove]
 
     configs.writeGlobalConfig('alias', config.alias)
