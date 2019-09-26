@@ -8,13 +8,10 @@
 
 import * as logger from '../logger'
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Hello() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-Hello.DETAILS = {
+export const name = 'Hello'
+export const DETAILS = {
     alias: 'he',
     description: 'Hello world example. Copy to start a new command.',
     commands: ['world'],
@@ -31,14 +28,12 @@ Hello.DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Hello.prototype.run = function(options) {
-    const instance = this
-
+function run(options) {
     if (options.world) {
-        instance.world()
+        world()
     }
 }
 
-Hello.prototype.world = function() {
+function world() {
     logger.log('hello world :)')
 }

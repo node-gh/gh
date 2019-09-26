@@ -19,13 +19,10 @@ import * as logger from '../logger'
 
 const config = base.getConfig()
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Repo() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-Repo.DETAILS = {
+export const name = 'Repo'
+export const DETAILS = {
     alias: 're',
     description: 'Provides a set of util commands to work with Repositories.',
     commands: ['browser', 'clone', 'delete', 'fork', 'list', 'new', 'update'],
@@ -74,26 +71,24 @@ Repo.DETAILS = {
     },
 }
 
-Repo.TYPE_ALL = 'all'
-Repo.TYPE_FORKS = 'forks'
-Repo.TYPE_MEMBER = 'member'
-Repo.TYPE_OWNER = 'owner'
-Repo.TYPE_PRIVATE = 'private'
-Repo.TYPE_PUBLIC = 'public'
-Repo.TYPE_SOURCES = 'sources'
+const TYPE_ALL = 'all'
+const TYPE_FORKS = 'forks'
+const TYPE_MEMBER = 'member'
+const TYPE_OWNER = 'owner'
+const TYPE_PRIVATE = 'private'
+const TYPE_PUBLIC = 'public'
+const TYPE_SOURCES = 'sources'
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Repo.prototype.run = async function(options, done) {
-    const instance = this
-
+export async function run(options, done) {
     let user = options.loggedUser
 
-    instance.config = config
-    instance.GitHub = await getGitHubInstance()
+    config = config
+    options.GitHub = await getGitHubInstance()
 
     if (
-        !userRanValidFlags(Repo.DETAILS.commands, options) &&
+        !userRanValidFlags(DETAILS.commands, options) &&
         options.browser !== false &&
         options.argv.cooked.length === 1
     ) {
@@ -101,7 +96,7 @@ Repo.prototype.run = async function(options, done) {
     }
 
     if (options.browser) {
-        instance.browser(options.user, options.repo)
+        browser(options.user, options.repo)
     } else if (options.clone && !options.new) {
         await beforeHooks('repo.get', { options })
 
@@ -121,7 +116,7 @@ Repo.prototype.run = async function(options, done) {
         }
 
         try {
-            var { data } = await instance.get(user, options.repo)
+            var { data } = await get(user, options.repo)
         } catch (err) {
             throw new Error(
                 `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}. ${
@@ -143,7 +138,7 @@ Repo.prototype.run = async function(options, done) {
         }
 
         if (data) {
-            instance.clone_(user, options.repo, repoUrl)
+            clone_(user, options.repo, repoUrl)
         }
 
         await afterHooks('repo.get', { options })
@@ -162,7 +157,7 @@ Repo.prototype.run = async function(options, done) {
 
         if (answers.confirmation.toLowerCase() === 'y') {
             try {
-                const { status } = await instance.delete(options.user, options.delete)
+                const { status } = await deleteRepo(options.user, options.delete)
 
                 status === 204 && logger.log('Successfully deleted repo.')
             } catch (err) {
@@ -189,7 +184,7 @@ Repo.prototype.run = async function(options, done) {
         )
 
         try {
-            var { data } = await instance.fork()
+            var { data } = await fork()
         } catch (err) {
             throw new Error(`Can't fork. ${err}`)
         }
@@ -197,7 +192,7 @@ Repo.prototype.run = async function(options, done) {
         logger.log(`Successfully forked: ${data.html_url}`)
 
         if (data && options.clone) {
-            instance.clone_(user, options.repo, data.ssh_url)
+            clone_(user, options.repo, data.ssh_url)
         }
 
         await afterHooks('repo.fork', { options })
@@ -220,7 +215,7 @@ Repo.prototype.run = async function(options, done) {
             )
 
             try {
-                var { status } = await instance.deleteLabel(user)
+                var { status } = await deleteLabel(user)
             } catch (err) {
                 throw new Error(`Can't delete label.\n${err}`)
             }
@@ -242,7 +237,7 @@ Repo.prototype.run = async function(options, done) {
             }
 
             try {
-                var { data } = await instance.listLabels(user)
+                var { data } = await listLabels(user)
             } catch (err) {
                 throw new Error(`Can't list labels\n${err}`)
             }
@@ -262,7 +257,7 @@ Repo.prototype.run = async function(options, done) {
             )
 
             try {
-                await instance.createLabel(user)
+                await createLabel(user)
             } catch (err) {
                 throw new Error(`Can't create label.\n${err}`)
             }
@@ -280,7 +275,7 @@ Repo.prototype.run = async function(options, done) {
             )
 
             try {
-                var { status } = await instance.updateLabel(user)
+                var { status } = await updateLabel(user)
             } catch (err) {
                 throw new Error(`Can't update label.\n${err}`)
             }
@@ -310,12 +305,12 @@ Repo.prototype.run = async function(options, done) {
             )
         }
         try {
-            var data = await instance.list(user)
+            var data = await list(user)
         } catch (err) {
             throw new Error(`Can't list repos.\n${err}`)
         }
 
-        instance.listCallback_(data)
+        listCallback_(data)
 
         await afterHooks('repo.list', { options })
     } else if (options.new && !options.label) {
@@ -336,7 +331,7 @@ Repo.prototype.run = async function(options, done) {
         )
 
         try {
-            var { data } = await instance.new()
+            var { data } = await newRepo(options)
         } catch (err) {
             throw new Error(`Can't create new repo.\n${err}`)
         }
@@ -344,7 +339,7 @@ Repo.prototype.run = async function(options, done) {
         logger.log(data.html_url)
 
         if (data && options.clone) {
-            instance.clone_(options.user, options.repo, data.ssh_url)
+            clone_(options.user, options.repo, data.ssh_url)
         }
 
         await afterHooks('repo.new', { options })
@@ -353,18 +348,16 @@ Repo.prototype.run = async function(options, done) {
     done && done()
 }
 
-Repo.prototype.browser = function(user, repo) {
+function browser(user, repo) {
     openUrl(`${config.github_host}/${user}/${repo}`)
 }
 
-Repo.prototype.clone_ = function(user, repo, repo_url) {
+function clone_(user, repo, repo_url) {
     logger.log(`Cloning ${logger.colors.green(`${user}/${repo}`)}`)
     git.clone(url.parse(repo_url).href, repo)
 }
 
-Repo.prototype.createLabel = function(options, user): Promise<Octokit.IssuesCreateLabelResponse> {
-    const instance = this
-
+function createLabel(options, user): Promise<Octokit.IssuesCreateLabelResponse> {
     const payload: Octokit.IssuesCreateLabelParams = {
         owner: user,
         color: normalizeColor(options.color),
@@ -376,48 +369,38 @@ Repo.prototype.createLabel = function(options, user): Promise<Octokit.IssuesCrea
         payload.description = options.description
     }
 
-    return instance.GitHub.issues.createLabel(payload)
+    return options.GitHub.issues.createLabel(payload)
 }
 
-Repo.prototype.delete = function(user, repo): Promise<Octokit.ReposDeleteResponse> {
-    const instance = this
+function deleteRepo(user, repo): Promise<Octokit.ReposDeleteResponse> {
     const payload = {
         repo,
         owner: user,
     }
 
-    return instance.GitHub.repos.delete(payload)
+    return options.GitHub.repos.delete(payload)
 }
 
-Repo.prototype.deleteLabel = function(options, user): Promise<Octokit.IssuesDeleteLabelResponse> {
-    const instance = this
-
+function deleteLabel(options, user): Promise<Octokit.IssuesDeleteLabelResponse> {
     const payload = {
         owner: user,
         name: options.delete,
         repo: options.repo,
     }
 
-    return instance.GitHub.issues.deleteLabel(payload)
+    return options.GitHub.issues.deleteLabel(payload)
 }
 
-Repo.prototype.get = function(user, repo): Promise<Octokit.IssuesGetResponse> {
-    const instance = this
-
+function get(user, repo): Promise<Octokit.IssuesGetResponse> {
     const payload = {
         repo,
         owner: user,
     }
 
-    return instance.GitHub.repos.get(payload)
+    return options.GitHub.repos.get(payload)
 }
 
-Repo.prototype.list = function(
-    options,
-    user
-): Promise<Octokit.AnyResponse | Octokit.ReposListForOrgResponse> {
-    const instance = this
-
+function list(options, user): Promise<Octokit.AnyResponse | Octokit.ReposListForOrgResponse> {
     let method = 'listForUser'
 
     const payload: any = {
@@ -441,10 +424,10 @@ Repo.prototype.list = function(
         }
     }
 
-    return instance.GitHub.paginate(instance.GitHub.repos[method].endpoint(payload))
+    return options.GitHub.paginate(options.GitHub.repos[method].endpoint(payload))
 }
 
-Repo.prototype.listCallback_ = function(options, repos): void {
+function listCallback_(options, repos): void {
     let pos
     let repo
 
@@ -482,12 +465,7 @@ Repo.prototype.listCallback_ = function(options, repos): void {
     }
 }
 
-Repo.prototype.listLabels = function(
-    options,
-    user
-): Promise<Octokit.IssuesListLabelsForRepoResponse> {
-    const instance = this
-
+function listLabels(options, user): Promise<Octokit.IssuesListLabelsForRepoResponse> {
     const payload: Octokit.IssuesListLabelsForRepoParams = {
         owner: user,
         repo: options.repo,
@@ -495,10 +473,10 @@ Repo.prototype.listLabels = function(
         ...(options.per_page && { per_page: options.per_page }),
     }
 
-    return instance.GitHub.issues.listLabelsForRepo(payload)
+    return options.GitHub.issues.listLabelsForRepo(payload)
 }
 
-Repo.prototype.listLabelsCallback_ = function(options, err, labels): void {
+function listLabelsCallback_(options, err, labels): void {
     if (err && !options.all) {
         logger.error(logger.getErrorMessage(err))
     }
@@ -510,9 +488,7 @@ Repo.prototype.listLabelsCallback_ = function(options, err, labels): void {
     }
 }
 
-Repo.prototype.fork = async function(options): Promise<Octokit.ReposCreateForkResponse> {
-    const instance = this
-
+async function fork(options): Promise<Octokit.ReposCreateForkResponse> {
     const payload: Octokit.ReposCreateForkParams = {
         owner: options.user,
         repo: options.repo,
@@ -522,14 +498,12 @@ Repo.prototype.fork = async function(options): Promise<Octokit.ReposCreateForkRe
         payload.organization = options.organization
     }
 
-    return await instance.GitHub.repos.createFork(payload)
+    return await options.GitHub.repos.createFork(payload)
 }
 
-Repo.prototype.new = function(
+function newRepo(
     options
 ): Promise<Octokit.ReposCreateInOrgResponse | Octokit.ReposCreateForAuthenticatedUserResponse> {
-    const instance = this
-
     let method = 'createForAuthenticatedUser'
 
     options.description = options.description || ''
@@ -561,12 +535,10 @@ Repo.prototype.new = function(
         payload.org = options.organization
     }
 
-    return instance.GitHub.repos[method](payload)
+    return options.GitHub.repos[method](payload)
 }
 
-Repo.prototype.updateLabel = function(options, user): Promise<Octokit.IssuesUpdateLabelResponse> {
-    const instance = this
-
+function updateLabel(options, user): Promise<Octokit.IssuesUpdateLabelResponse> {
     const payload: Octokit.IssuesUpdateLabelParams = {
         owner: user,
         color: normalizeColor(options.color),
@@ -574,7 +546,7 @@ Repo.prototype.updateLabel = function(options, user): Promise<Octokit.IssuesUpda
         repo: options.repo,
     }
 
-    return instance.GitHub.issues.updateLabel(payload)
+    return options.GitHub.issues.updateLabel(payload)
 }
 
 function normalizeColor(color) {
