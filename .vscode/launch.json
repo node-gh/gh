@@ -9,7 +9,17 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "user", "--login"],
+            "args": [
+                "${workspaceFolder}/src/debug.ts",
+                "is",
+                "--new",
+                "--title",
+                "Add Ramda as a npm dependency to being refactoring towards functional style",
+                "--message",
+                "Ramda is the top functional programming lib for JS",
+                "--repo",
+                "node-gh"
+            ],
             // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
             "console": "integratedTerminal"
         },

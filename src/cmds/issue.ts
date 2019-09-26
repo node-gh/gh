@@ -10,19 +10,14 @@ import { isArray } from 'lodash'
 import { produce } from 'immer'
 import { openUrl, userRanValidFlags } from '../utils'
 import * as base from '../base'
-import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 
 const config = base.getConfig()
 
-// -- Constructor ----------------------------------------------------------------------------------
-
-export default function Issue() {}
-
 // -- Constants ------------------------------------------------------------------------------------
 
-Issue.DETAILS = {
+export const DETAILS = {
     alias: 'is',
     description: 'Provides a set of util commands to work with Issues.',
     iterative: 'number',
@@ -75,27 +70,24 @@ Issue.DETAILS = {
     },
 }
 
-Issue.STATE_CLOSED = 'closed'
-Issue.STATE_OPEN = 'open'
+const STATE_CLOSED = 'closed'
+const STATE_OPEN = 'open'
 
 // -- Commands -------------------------------------------------------------------------------------
 
-Issue.prototype.run = async function(options, done) {
-    const instance = this
+export const name = 'Issue'
 
+export async function run(options, done) {
     if (!options.repo && !options.all) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
     }
 
     const number = logger.colors.green(`#${options.number}`)
 
-    instance.config = config
-    instance.GitHub = await getGitHubInstance()
-
     options = produce(options, draft => {
-        draft.state = draft.state || Issue.STATE_OPEN
+        draft.state = draft.state || STATE_OPEN
 
-        if (!userRanValidFlags(Issue.DETAILS.commands, draft)) {
+        if (!userRanValidFlags(DETAILS.commands, draft)) {
             const payload = draft.argv.remain && draft.argv.remain.slice(1)
 
             if (payload && payload[0]) {
@@ -123,7 +115,7 @@ Issue.prototype.run = async function(options, done) {
         )
 
         try {
-            var { data } = await instance.assign()
+            var { data } = await assign(options)
         } catch (err) {
             throw new Error(`Can't assign issue.\n${err}`)
         }
@@ -132,12 +124,12 @@ Issue.prototype.run = async function(options, done) {
 
         await afterHooks('issue.assign', { options })
     } else if (options.browser) {
-        instance.browser(options.user, options.repo, options.number)
+        browser(options.user, options.repo, options.number)
     } else if (options.comment) {
         logger.log(`Adding comment on issue ${number} on ${getUserRepo(options)}`)
 
         try {
-            var { data } = await instance.comment()
+            var { data } = await comment(options)
         } catch (err) {
             throw new Error(`Can't add comment.\n${err}`)
         }
@@ -152,7 +144,7 @@ Issue.prototype.run = async function(options, done) {
                     )}`
                 )
 
-                await instance.listFromAllRepositories()
+                await listFromAllRepositories(options)
             } else {
                 logger.log(
                     `Listing ${logger.colors.green(options.state)} issues on ${getUserRepo(
@@ -160,7 +152,7 @@ Issue.prototype.run = async function(options, done) {
                     )}`
                 )
 
-                await instance.list(options.user, options.repo)
+                await list(options, options.user, options.repo)
             }
         } catch (err) {
             throw new Error(`Error listing issues\n${err}`)
@@ -171,7 +163,7 @@ Issue.prototype.run = async function(options, done) {
         logger.log(`Creating a new issue on ${getUserRepo(options)}`)
 
         try {
-            var { data } = await instance.new(options)
+            var { data } = await newIssue(options)
         } catch (err) {
             throw new Error(`Can't create issue.\n${err}`)
         }
@@ -188,13 +180,13 @@ Issue.prototype.run = async function(options, done) {
     } else if (options.open) {
         await beforeHooks('issue.open', { options })
 
-        await openHandler(instance, options)
+        await openHandler(options)
 
         await afterHooks('issue.open', { options })
     } else if (options.close) {
         await beforeHooks('issue.close', { options })
 
-        await closeHandler(instance, options)
+        await closeHandler(options)
 
         await afterHooks('issue.close', { options })
     } else if (options.search) {
@@ -210,7 +202,7 @@ Issue.prototype.run = async function(options, done) {
         }
 
         try {
-            await instance.search(user, repo)
+            await search(options, user, repo)
         } catch (err) {
             throw new Error(`Can't search issues for ${getUserRepo(options)}: \n${err}`)
         }
@@ -219,15 +211,13 @@ Issue.prototype.run = async function(options, done) {
     done && done()
 }
 
-Issue.prototype.assign = async function() {
-    const instance = this
+async function assign(options) {
+    const issue = await getIssue_(options)
 
-    const issue = await instance.getIssue_()
-
-    return instance.editIssue_(issue.title, Issue.STATE_OPEN)
+    return editIssue_(options, issue.title, STATE_OPEN)
 }
 
-Issue.prototype.browser = function(user, repo, number) {
+function browser(user, repo, number) {
     if (!number) {
         number = ''
     }
@@ -235,17 +225,7 @@ Issue.prototype.browser = function(user, repo, number) {
     openUrl(`${config.github_host}/${user}/${repo}/issues/${number}`)
 }
 
-Issue.prototype.close = async function(number) {
-    var instance = this
-
-    const issue = await instance.getIssue_(number)
-
-    return instance.editIssue_(issue.title, Issue.STATE_CLOSED, number)
-}
-
-Issue.prototype.comment = function(options) {
-    const instance = this
-
+function comment(options) {
     const body = logger.applyReplacements(options.comment, config.replace) + config.signature
 
     const payload = {
@@ -255,12 +235,10 @@ Issue.prototype.comment = function(options) {
         owner: options.user,
     }
 
-    return instance.GitHub.issues.createComment(payload)
+    return options.GitHub.issues.createComment(payload)
 }
 
-Issue.prototype.editIssue_ = function(options, title, state, number?: number) {
-    const instance = this
-
+function editIssue_(options, title, state, number?: number) {
     let payload
 
     payload = {
@@ -274,24 +252,20 @@ Issue.prototype.editIssue_ = function(options, title, state, number?: number) {
         repo: options.repo,
     }
 
-    return instance.GitHub.issues.update(payload)
+    return options.GitHub.issues.update(payload)
 }
 
-Issue.prototype.getIssue_ = function(options, number?: number) {
-    const instance = this
-
+function getIssue_(options, number?: number) {
     const payload = {
         issue_number: number || options.number,
         repo: options.repo,
         owner: options.user,
     }
 
-    return instance.GitHub.issues.get(payload)
+    return options.GitHub.issues.get(payload)
 }
 
-Issue.prototype.list = async function(options, user, repo) {
-    const instance = this
-
+async function list(options, user, repo) {
     let payload
 
     payload = {
@@ -309,8 +283,8 @@ Issue.prototype.list = async function(options, user, repo) {
     }
 
     if (options.milestone) {
-        const data = await instance.GitHub.paginate(
-            instance.GitHub.issues.listMilestonesForRepo.endpoint({
+        const data = await options.GitHub.paginate(
+            options.GitHub.issues.listMilestonesForRepo.endpoint({
                 repo,
                 owner: user,
             })
@@ -327,9 +301,7 @@ Issue.prototype.list = async function(options, user, repo) {
         payload.assignee = options.assignee
     }
 
-    const data = await instance.GitHub.paginate(
-        instance.GitHub.issues.listForRepo.endpoint(payload)
-    )
+    const data = await options.GitHub.paginate(options.GitHub.issues.listForRepo.endpoint(payload))
 
     const issues = data.filter(result => Boolean(result))
 
@@ -343,25 +315,22 @@ Issue.prototype.list = async function(options, user, repo) {
     }
 }
 
-Issue.prototype.listFromAllRepositories = async function(options) {
-    const instance = this
-
+async function listFromAllRepositories(options) {
     const payload = {
         type: 'all',
         username: options.user,
     }
 
-    const repositories: any = await instance.GitHub.paginate(
-        instance.GitHub.repos.listForUser.endpoint(payload)
+    const repositories: any = await options.GitHub.paginate(
+        options.GitHub.repos.listForUser.endpoint(payload)
     )
 
     for (const repo of repositories) {
-        await instance.list(repo.owner.login, repo.name)
+        await list(options, repo.owner.login, repo.name)
     }
 }
 
-Issue.prototype.new = function(options) {
-    const instance = this
+function newIssue(options) {
     let body
 
     if (options.message) {
@@ -385,20 +354,22 @@ Issue.prototype.new = function(options) {
         labels: options.labels,
     }
 
-    return instance.GitHub.issues.create(payload)
+    return options.GitHub.issues.create(payload)
 }
 
-Issue.prototype.open = async function(number) {
-    const instance = this
+async function close(options, number) {
+    const issue = await getIssue_(options, number)
 
-    const issue = await instance.getIssue_(number)
-
-    return instance.editIssue_(issue.title, Issue.STATE_OPEN, number)
+    return editIssue_(options, issue.title, STATE_CLOSED, number)
 }
 
-Issue.prototype.search = async function(options, user, repo) {
-    const instance = this
+async function open(options, number) {
+    const issue = await getIssue_(options, number)
 
+    return editIssue_(options, issue.title, STATE_OPEN, number)
+}
+
+async function search(options, user, repo) {
     let query = ['type:issue']
     let payload
 
@@ -416,7 +387,7 @@ Issue.prototype.search = async function(options, user, repo) {
         q: query.join(' '),
     }
 
-    const { data } = await instance.GitHub.search.issuesAndPullRequests(payload)
+    const { data } = await options.GitHub.search.issuesAndPullRequests(payload)
 
     if (data.items && data.items.length > 0) {
         const formattedIssues = formatIssues(data.items, options.detailed)
@@ -427,12 +398,12 @@ Issue.prototype.search = async function(options, user, repo) {
     }
 }
 
-async function closeHandler(instance, options) {
+async function closeHandler(options) {
     for (const number of options.number) {
         logger.log(`Closing issue ${number} on ${getUserRepo(options)}`)
 
         try {
-            var { data } = await instance.close(number)
+            var { data } = await close(options, number)
         } catch (err) {
             throw new Error(`Can't close issue.\n${err}`)
         }
@@ -441,12 +412,12 @@ async function closeHandler(instance, options) {
     }
 }
 
-async function openHandler(instance, options) {
+async function openHandler(options) {
     for (const number of options.number) {
         logger.log(`Opening issue ${number} on ${getUserRepo(options)}`)
 
         try {
-            var { data } = await instance.open(number)
+            var { data } = await open(options, number)
         } catch (err) {
             throw new Error(`Can't close issue.\n${err}`)
         }
