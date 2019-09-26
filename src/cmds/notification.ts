@@ -8,6 +8,7 @@
 
 import * as logger from '../logger'
 import { userRanValidFlags } from '../utils'
+import { produce } from 'immer'
 
 const printed = {}
 
@@ -32,9 +33,6 @@ export const DETAILS = {
         u: ['--user'],
         w: ['--watch'],
     },
-    payload(_, options) {
-        options.latest = true
-    },
 }
 
 // -- Commands -------------------------------------------------------------------------------------
@@ -45,7 +43,9 @@ export async function run(options, done) {
     }
 
     if (!userRanValidFlags(DETAILS.commands, options)) {
-        options.latest = true
+        options = produce(options, draft => {
+            draft.latest = true
+        })
     }
 
     if (options.latest) {
@@ -53,7 +53,7 @@ export async function run(options, done) {
             `Listing activities on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
 
-        await latest(false)
+        await latest(options, false)
     }
 
     if (options.watch) {
@@ -61,7 +61,7 @@ export async function run(options, done) {
             `Watching any activity on ${logger.colors.green(`${options.user}/${options.repo}`)}`
         )
 
-        await watch()
+        await watch(options)
     }
 
     done && done()
@@ -116,13 +116,13 @@ async function latest(options, opt_watch) {
     }
 }
 
-async function watch() {
+async function watch(options) {
     const intervalTime = 3000
 
-    await latest()
+    await latest(options, false)
 
     setInterval(async () => {
-        await latest(true)
+        await latest(options, true)
     }, intervalTime)
 }
 
