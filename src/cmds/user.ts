@@ -45,8 +45,6 @@ export async function run(options, done) {
         if (tokenExists()) {
             logger.log(`You're logged in as ${logger.colors.green(options.user)}`)
         } else {
-            await getGitHubInstance()
-
             done && done()
         }
     }

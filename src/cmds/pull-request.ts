@@ -14,7 +14,7 @@ import { openUrl, userRanValidFlags } from '../utils'
 import * as wrap from 'wordwrap'
 import * as base from '../base'
 import * as git from '../git'
-import { getGitHubInstance } from '../github'
+
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 
@@ -124,7 +124,6 @@ export async function run(options, done) {
     }
 
     config = config
-    options.GitHub = await getGitHubInstance()
 
     if (!userRanValidFlags(DETAILS.commands, options)) {
         const payload = options.argv.remain && options.argv.remain.concat().slice(1)

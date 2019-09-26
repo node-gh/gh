@@ -9,9 +9,9 @@
 import * as inquirer from 'inquirer'
 import { openUrl, userRanValidFlags } from '../utils'
 import * as base from '../base'
-import { getGitHubInstance } from '../github'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
+import { produce } from 'immer'
 
 const config = base.getConfig()
 
@@ -52,10 +52,10 @@ export const DETAILS = {
 // -- Commands -------------------------------------------------------------------------------------
 
 export async function run(options, done) {
-    options.GitHub = await getGitHubInstance()
-
     if (!userRanValidFlags(DETAILS.commands, options)) {
-        options.list = true
+        options = produce(options, draft => {
+            draft.list = true
+        })
     }
 
     if (options.browser) {
@@ -86,7 +86,7 @@ export async function run(options, done) {
 
             await beforeHooks('gists.delete', { options })
 
-            await _deleteHandler(gist_id)
+            await _deleteHandler(options, gist_id)
 
             await afterHooks('gists.delete', { options })
         }
@@ -98,7 +98,7 @@ export async function run(options, done) {
         logger.log(`Forking gist on ${logger.colors.green(options.loggedUser)}`)
 
         try {
-            var { data } = await fork(options.fork)
+            var { data } = await fork(options, options.fork)
         } catch (err) {
             throw new Error(`Cannot fork gist.\n${err}`)
         }
@@ -112,12 +112,12 @@ export async function run(options, done) {
         logger.log(`Listing gists for ${logger.colors.green(options.user)}`)
 
         try {
-            var data = await list(options.user)
+            var data = await list(options, options.user)
         } catch (err) {
             throw new Error(`Can't list gists for ${options.user}.`)
         }
 
-        listCallback_(data)
+        listCallback_(data, options.date)
     }
 
     if (options.new) {
@@ -132,13 +132,16 @@ export async function run(options, done) {
         )
 
         try {
-            var { data } = await newGist(options.new, options.content)
+            var { data } = await newGist(options, options.new, options.content)
         } catch (err) {
             throw new Error(`Can't create gist.\n${err}`)
         }
 
         if (data) {
-            options.id = data.id
+            options = produce(options, draft => {
+                draft.id = data.id
+            })
+
             logger.log(data.html_url)
         }
 
@@ -152,7 +155,7 @@ function browser(gist) {
     openUrl(config.github_gist_host + gist)
 }
 
-function deleteGist(id) {
+function deleteGist(options, id) {
     const payload = {
         gist_id: id,
     }
@@ -160,7 +163,7 @@ function deleteGist(id) {
     return options.GitHub.gists.delete(payload)
 }
 
-function fork(id) {
+function fork(options, id) {
     const payload = {
         gist_id: id,
     }
@@ -168,7 +171,7 @@ function fork(id) {
     return options.GitHub.gists.fork(payload)
 }
 
-async function list(user) {
+async function list(options, user) {
     const payload = {
         username: user,
     }
@@ -176,10 +179,10 @@ async function list(user) {
     return options.GitHub.paginate(options.GitHub.gists.listPublicForUser.endpoint(payload))
 }
 
-function listCallback_(gists) {
+function listCallback_(gists, date) {
     if (gists && gists.length > 0) {
         gists.forEach(gist => {
-            const duration = logger.getDuration(gist.updated_at, this.options.date)
+            const duration = logger.getDuration(gist.updated_at, date)
 
             logger.log(`${logger.colors.yellow(`${gist.owner.login}/${gist.id}`)} ${duration}`)
 
@@ -195,7 +198,9 @@ function listCallback_(gists) {
 function newGist(options, name, content) {
     let file = {}
 
-    options.description = options.description || ''
+    options = produce(options, draft => {
+        draft.description = draft.description || ''
+    })
 
     file[name] = {
         content,
@@ -210,9 +215,9 @@ function newGist(options, name, content) {
     return options.GitHub.gists.create(payload)
 }
 
-async function _deleteHandler(gist_id) {
+async function _deleteHandler(options, gist_id) {
     try {
-        var { status } = await deleteGist(gist_id)
+        var { status } = await deleteGist(options, gist_id)
     } catch (err) {
         throw new Error(`Can't delete gist: ${gist_id}.`)
     }

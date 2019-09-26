@@ -13,7 +13,7 @@ import { openUrl, getCurrentFolderName, userRanValidFlags } from '../utils'
 import * as url from 'url'
 import * as base from '../base'
 import * as git from '../git'
-import { getGitHubInstance } from '../github'
+
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 
@@ -85,7 +85,6 @@ export async function run(options, done) {
     let user = options.loggedUser
 
     config = config
-    options.GitHub = await getGitHubInstance()
 
     if (
         !userRanValidFlags(DETAILS.commands, options) &&
