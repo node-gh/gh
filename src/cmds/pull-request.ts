@@ -9,6 +9,7 @@
 import * as Table from 'cli-table3'
 import { startsWith } from 'lodash'
 import * as marked from 'marked'
+import { produce } from 'immer'
 import * as TerminalRenderer from 'marked-terminal'
 import { openUrl, userRanValidFlags } from '../utils'
 import * as wrap from 'wordwrap'
@@ -123,16 +124,16 @@ export async function run(options, done) {
         logger.error('You must specify a Git repository with a GitHub remote to run this command')
     }
 
-    config = config
-
     if (!userRanValidFlags(DETAILS.commands, options)) {
         const payload = options.argv.remain && options.argv.remain.concat().slice(1)
 
-        if (payload && payload[0]) {
-            options.fetch = true
-        } else {
-            options.list = true
-        }
+        options = produce(options, draft => {
+            if (payload && payload[0]) {
+                draft.fetch = true
+            } else {
+                draft.list = true
+            }
+        })
     }
 
     const numbers = [...options.number]
@@ -145,12 +146,14 @@ export async function run(options, done) {
 
     // main logic to iterate on when number flag is passed in > 1
     async function main(number) {
-        options.number =
-            number ||
-            getPullRequestNumberFromBranch_(options.currentBranch, config.pull_branch_name_prefix)
+        options = await produce(options, async draft => {
+            draft.number =
+                number ||
+                getPullRequestNumberFromBranch_(draft.currentBranch, config.pull_branch_name_prefix)
 
-        options.pullBranch = getBranchNameFromPullNumber_(number)
-        options.state = options.state || STATE_OPEN
+            draft.pullBranch = getBranchNameFromPullNumber_(number)
+            draft.state = draft.state || STATE_OPEN
+        })
 
         if (!options.pullBranch && (options.close || options.fetch || options.merge)) {
             logger.error("You've invoked a method that requires an issue number.")
@@ -161,51 +164,58 @@ export async function run(options, done) {
         }
 
         if (!options.list) {
-            options.branch = options.branch || config.default_branch
+            options = produce(options, draft => {
+                draft.branch = draft.branch || config.default_branch
+            })
         }
 
         if (options.close) {
             try {
-                await _closeHandler()
+                await _closeHandler(options)
             } catch (err) {
                 throw new Error(`Error closing PR\n${err}`)
             }
         }
 
         if (options.comment) {
-            await _commentHandler()
+            await _commentHandler(options)
         }
 
         if (options.fetch) {
-            await _fetchHandler()
+            await _fetchHandler(options)
         }
 
         if (options.fwd === '') {
-            options.fwd = config.default_pr_forwarder
+            options = produce(options, draft => {
+                draft.fwd = config.default_pr_forwarder
+            })
         }
 
         if (options.fwd) {
-            await _fwdHandler()
+            await _fwdHandler(options)
+            return
         }
 
         if (options.info) {
-            await _infoHandler()
+            await _infoHandler(options)
         }
 
         if (options.list) {
-            await _listHandler()
+            await _listHandler(options)
         }
 
         if (options.open) {
-            await _openHandler()
+            await _openHandler(options)
         }
 
         if (options.submit === '') {
-            options.submit = config.default_pr_reviewer
+            options = produce(options, draft => {
+                draft.submit = config.default_pr_reviewer
+            })
         }
 
         if (options.submit) {
-            await _submitHandler()
+            await _submitHandler(options)
         }
     }
 }
@@ -213,10 +223,12 @@ export async function run(options, done) {
 async function addComplexityParamToPulls_(options, pulls) {
     return Promise.all(
         pulls.map(async pull => {
-            options.number = pull.number
+            options = produce(options, draft => {
+                draft.number = pull.number
+            })
 
             try {
-                var { data } = await getPullRequest_()
+                var { data } = await getPullRequest_(options)
             } catch (err) {
                 throw new Error(`Error getting PR\n${err}`)
             }
@@ -262,9 +274,9 @@ function calculateComplexity_(metrics): number {
 }
 
 async function close(options) {
-    const { data: pull } = await getPullRequest_()
+    const { data: pull } = await getPullRequest_(options)
 
-    const data = await updatePullRequest_(pull.title, pull.body, STATE_CLOSED)
+    const data = await updatePullRequest_(options, pull.title, pull.body, STATE_CLOSED)
 
     if (options.pullBranch === options.currentBranch) {
         git.checkout(pull.base.ref)
@@ -290,11 +302,11 @@ async function comment(options) {
     return options.GitHub.issues.createComment(payload)
 }
 
-async function checkPullRequestIntegrity_(options, originalError, user) {
+async function checkPullRequestIntegrity_(options, originalError) {
     let pull
 
     const payload = {
-        owner: user,
+        owner: options.user,
         repo: options.repo,
         state: STATE_OPEN,
     }
@@ -310,7 +322,7 @@ async function checkPullRequestIntegrity_(options, originalError, user) {
             data.base.ref === options.branch &&
             data.head.ref === options.currentBranch &&
             data.base.sha === data.head.sha &&
-            data.base.user.login === user &&
+            data.base.user.login === options.user &&
             data.head.user.login === options.user
         ) {
             pull = data
@@ -327,7 +339,7 @@ async function checkPullRequestIntegrity_(options, originalError, user) {
 
 async function fetch(options, opt_type) {
     try {
-        var { data: pull } = await getPullRequest_()
+        var { data: pull } = await getPullRequest_(options)
     } catch (err) {
         throw new Error(`Error getting PR\n${err}`)
     }
@@ -354,16 +366,20 @@ function filterPullsSentByMe_(options, pulls) {
 
 async function forward(options) {
     try {
-        var pull = await fetch(FETCH_TYPE_SILENT)
+        var pull = await fetch(options, FETCH_TYPE_SILENT)
     } catch (err) {
         throw new Error(`Error fetching PR\${err}`)
     }
 
-    options.title = pull.title
-    options.description = pull.body
-    options.submittedUser = pull.user.login
+    options = produce(options, draft => {
+        draft.title = pull.title
+        draft.description = pull.body
+        draft.submittedUser = pull.user.login
+    })
 
-    return submit(options.fwd)
+    const data = await submit(options, options.fwd)
+
+    return { data, options }
 }
 
 function getPullRequest_(options) {
@@ -609,9 +625,7 @@ function printPullInfo_(options, pull) {
     }
 }
 
-async function get(user, repo, number) {
-    const pr = this
-
+async function get(options, user, repo, number) {
     const payload = {
         repo,
         pull_number: number,
@@ -624,7 +638,7 @@ async function get(user, repo, number) {
         logger.warn(`Can't get pull request ${user}/${repo}/${number}`)
     }
 
-    pr.printPullInfo_(pull)
+    printPullInfo_(options, pull)
 }
 
 async function list(options, user, repo) {
@@ -661,14 +675,14 @@ async function list(options, user, repo) {
     let pulls = []
 
     if (options.me) {
-        pulls = filterPullsSentByMe_(data)
+        pulls = filterPullsSentByMe_(options, data)
     } else {
         pulls = data
     }
 
     if (options.sort && options.sort === SORT_COMPLEXITY) {
         try {
-            pulls = await addComplexityParamToPulls_(pulls)
+            pulls = await addComplexityParamToPulls_(options, pulls)
         } catch (err) {
             throw new Error(`Error sorting by complexity\n${err}`)
         }
@@ -694,7 +708,7 @@ async function list(options, user, repo) {
         })
     )
 
-    json = getPullsTemplateJson_(pulls)
+    json = getPullsTemplateJson_(options, pulls)
 
     if (pulls.length) {
         logger.log(logger.colors.yellow(`${user}/${repo}`))
@@ -705,7 +719,7 @@ async function list(options, user, repo) {
             const printTableView = config.pretty_print === undefined || Boolean(config.pretty_print)
 
             if (printTableView) {
-                printPullsInfoTable_(branch.pulls)
+                printPullsInfoTable_(options, branch.pulls)
             } else {
                 branch.pulls.forEach(printPullInfo_)
             }
@@ -751,28 +765,32 @@ async function listFromAllRepositories(options) {
 
     return Promise.all(
         repositories.map(repository => {
-            list(repository.owner.login, repository.name)
+            list(options, repository.owner.login, repository.name)
         })
     )
 }
 
-async function open() {
-    const { data: pull } = await getPullRequest_()
+async function open(options) {
+    const { data: pull } = await getPullRequest_(options)
 
-    return updatePullRequest_(pull.title, pull.body, STATE_OPEN)
+    return updatePullRequest_(options, pull.title, pull.body, STATE_OPEN)
 }
 
 function setMergeCommentRequiredOptions_(options) {
     const lastCommitSHA = git.getLastCommitSHA()
     const changes = git.countUserAdjacentCommits()
 
-    options.currentSHA = lastCommitSHA
+    options = produce(options, draft => {
+        draft.currentSHA = lastCommitSHA
 
-    if (changes > 0) {
-        options.changes = changes
-    }
+        if (changes > 0) {
+            draft.changes = changes
+        }
 
-    options.pullHeadSHA = `${lastCommitSHA}~${changes}`
+        draft.pullHeadSHA = `${lastCommitSHA}~${changes}`
+    })
+
+    return options
 }
 
 function sortPullsByComplexity_(pulls, direction) {
@@ -804,10 +822,6 @@ async function submit(options, user) {
 
     git.push(config.default_remote, pullBranch)
 
-    if (!options.title) {
-        options.title = git.getLastCommitMessage(pullBranch)
-    }
-
     var payload: any = {
         owner: user,
         base: options.branch,
@@ -821,12 +835,12 @@ async function submit(options, user) {
             var { data } = await options.GitHub.pulls.createFromIssue(payload)
         } else {
             payload.body = options.description
-            payload.title = options.title
+            payload.title = options.title || git.getLastCommitMessage(pullBranch)
 
             var { data } = await options.GitHub.pulls.create(payload)
         }
     } catch (err) {
-        var { originalError, pull } = await checkPullRequestIntegrity_(err, user)
+        var { originalError, pull } = await checkPullRequestIntegrity_(options, err)
 
         if (originalError) {
             throw new Error(`Error submitting PR\n${err}`)
@@ -884,7 +898,7 @@ async function _fetchHandler(options) {
     )
 
     try {
-        await fetch(fetchType)
+        await fetch(options, fetchType)
     } catch (err) {
         throw new Error(`Can't fetch pull request ${options.number}.\n${err}`)
     }
@@ -902,19 +916,21 @@ async function _fwdHandler(options) {
     )
 
     try {
-        var pull = await forward()
+        var { options: updatedOptions, data: pull } = await forward(options)
     } catch (err) {
         throw new Error(`Can't forward pull request ${options.number} to ${options.fwd}.\n${err}`)
     }
 
     if (pull) {
-        options.submittedPullNumber = pull.number
-        options.forwardedPull = pull.number
+        options = produce(updatedOptions, draft => {
+            draft.submittedPullNumber = pull.number
+            draft.forwardedPull = pull.number
+        })
     }
 
     logger.log(pull.html_url)
 
-    setMergeCommentRequiredOptions_()
+    options = setMergeCommentRequiredOptions_(options)
 
     await afterHooks('pull-request.fwd', { options })
 }
@@ -925,14 +941,14 @@ async function _closeHandler(options) {
     logger.log(`Closing pull request ${logger.colors.green(`#${options.number}`)}`)
 
     try {
-        var { data } = await close()
+        var { data } = await close(options)
     } catch (err) {
         throw new Error(`Can't close pull request ${options.number}.\n${err}`)
     }
 
     logger.log(data.html_url)
 
-    setMergeCommentRequiredOptions_()
+    options = setMergeCommentRequiredOptions_(options)
 
     await afterHooks('pull-request.close', { options })
 }
@@ -941,7 +957,7 @@ async function _commentHandler(options) {
     logger.log(`Adding comment on pull request ${logger.colors.green(`#${options.number}`)}`)
 
     try {
-        var { data } = await comment()
+        var { data } = await comment(options)
     } catch (err) {
         throw new Error(`Can't comment on pull request ${options.number}.\n${err}`)
     }
@@ -951,7 +967,7 @@ async function _commentHandler(options) {
 
 async function _infoHandler(options) {
     try {
-        await get(options.user, options.repo, options.number)
+        await get(options, options.user, options.repo, options.number)
     } catch (err) {
         throw new Error(`Can't get pull requests.\n${err}`)
     }
@@ -960,8 +976,10 @@ async function _infoHandler(options) {
 async function _listHandler(options) {
     let who
 
-    options.sort = options.sort || SORT_CREATED
-    options.direction = options.direction || DIRECTION_DESC
+    options = produce(options, draft => {
+        draft.sort = draft.sort || SORT_CREATED
+        draft.direction = draft.direction || DIRECTION_DESC
+    })
 
     if (options.all) {
         who = options.user
@@ -973,7 +991,7 @@ async function _listHandler(options) {
         logger.log(`Listing all ${options.state} pull requests for ${logger.colors.green(who)}`)
 
         try {
-            await listFromAllRepositories()
+            await listFromAllRepositories(options)
         } catch (err) {
             throw new Error(`Can't list all pull requests from repos.\n${err}`)
         }
@@ -993,7 +1011,7 @@ async function _listHandler(options) {
         }
 
         try {
-            await list(options.user, options.repo)
+            await list(options, options.user, options.repo)
         } catch (err) {
             throw new Error(`Can't list pull requests.\n${err}`)
         }
@@ -1006,7 +1024,7 @@ async function _openHandler(options) {
     logger.log(`Opening pull request ${logger.colors.green(`#${options.number}`)}`)
 
     try {
-        var { data } = await open()
+        var { data } = await open(options)
     } catch (err) {
         logger.error(`Can't open pull request ${options.number}.`)
     }
@@ -1022,18 +1040,20 @@ async function _submitHandler(options) {
     logger.log(`Submitting pull request to ${logger.colors.magenta(`@${options.submit}`)}`)
 
     try {
-        var pull = await submit(options.submit)
+        var pull = await submit(options, options.submit)
     } catch (err) {
         throw new Error(`Can't submit pull request\n${err}`)
     }
 
     if (pull) {
-        options.submittedPull = pull.number
+        options = produce(options, draft => {
+            draft.submittedPull = pull.number
+        })
     }
 
     logger.log(pull.html_url)
 
-    setMergeCommentRequiredOptions_()
+    options = setMergeCommentRequiredOptions_(options)
 
     await afterHooks('pull-request.submit', { options })
 }

@@ -7,6 +7,8 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as logger from '../logger'
+import { userRanValidFlags } from '../utils'
+import { produce } from 'immer'
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -21,14 +23,17 @@ export const DETAILS = {
     shorthands: {
         w: ['--world'],
     },
-    payload(_, options) {
-        options.world = true
-    },
 }
 
 // -- Commands -------------------------------------------------------------------------------------
 
 export function run(options) {
+    if (!userRanValidFlags(DETAILS.commands, options)) {
+        options = produce(options, draft => {
+            draft.world = true
+        })
+    }
+
     if (options.world) {
         world()
     }

@@ -72,19 +72,13 @@ export const DETAILS = {
 }
 
 const TYPE_ALL = 'all'
-const TYPE_FORKS = 'forks'
-const TYPE_MEMBER = 'member'
 const TYPE_OWNER = 'owner'
 const TYPE_PRIVATE = 'private'
-const TYPE_PUBLIC = 'public'
-const TYPE_SOURCES = 'sources'
 
 // -- Commands -------------------------------------------------------------------------------------
 
 export async function run(options, done) {
     let user = options.loggedUser
-
-    config = config
 
     if (
         !userRanValidFlags(DETAILS.commands, options) &&
@@ -288,10 +282,10 @@ export async function run(options, done) {
 
         if (options.organization) {
             user = options.organization
-            options.type = options.type || Repo.TYPE_ALL
+            options.type = options.type || TYPE_ALL
         } else {
             user = options.user
-            options.type = options.type || Repo.TYPE_OWNER
+            options.type = options.type || TYPE_OWNER
         }
 
         // Add a isTTY value on the options to determine whether or not the command is executed in a TTY context or not.
@@ -510,7 +504,7 @@ function newRepo(
     options.homepage = options.homepage || ''
     options.init = options.init || false
 
-    if (options.type === Repo.TYPE_PRIVATE) {
+    if (options.type === TYPE_PRIVATE) {
         options.private = true
     }
 
