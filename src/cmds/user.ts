@@ -7,7 +7,7 @@
 // -- Requires -------------------------------------------------------------------------------------
 
 import * as configs from '../configs'
-import { getGitHubInstance, tokenExists } from '../github'
+import { tokenExists } from '../github'
 import * as logger from '../logger'
 import { userRanValidFlags } from '../utils'
 

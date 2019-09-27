@@ -15,7 +15,7 @@ export const DETAILS = {
     description: 'Print gh version.',
 }
 
-function run() {
+export function run() {
     printVersion(getGlobalPackageJson())
 }
 
