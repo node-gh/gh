@@ -9,6 +9,8 @@
 import * as base from '../base'
 import * as configs from '../configs'
 import * as logger from '../logger'
+import { userRanValidFlags } from '../utils'
+import { produce } from 'immer'
 
 const config = base.getConfig()
 
@@ -30,20 +32,25 @@ export const DETAILS = {
         r: ['--remove'],
         u: ['--user'],
     },
-    payload(payload, options) {
-        if (payload[0]) {
-            options.add = payload[0]
-            options.user = payload[1]
-        } else {
-            options.list = true
-        }
-    },
 }
 
 // -- Commands -------------------------------------------------------------------------------------
 export const name = 'Alias'
 
 export async function run(options) {
+    if (!userRanValidFlags(DETAILS.commands, options)) {
+        const payload = options.argv.remain && options.argv.remain.concat().slice(1)
+
+        options = produce(options, draft => {
+            if (payload[0]) {
+                draft.add = payload[0]
+                draft.user = payload[1]
+            } else {
+                draft.list = true
+            }
+        })
+    }
+
     if (options.add) {
         if (!options.user) {
             logger.error('You must specify an user, try --user username.')

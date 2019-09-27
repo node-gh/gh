@@ -216,9 +216,9 @@ function getType_(type) {
 
         type = ''
 
-        types.forEach(function(eachType) {
+        types.forEach(eachType => {
             type += getType_(eachType) + separator
-        }, this)
+        })
 
         type = type.substr(0, type.length - separator.length)
 
