@@ -115,26 +115,14 @@ export async function run(options, done) {
             var { data } = await getRepo(options)
         } catch (err) {
             throw new Error(
-                `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}. ${
-                    JSON.parse(err).message
-                }\n${err}`
+                `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}.\n${err}`
             )
         }
 
         logger.log(data.html_url)
 
-        let repoUrl
-
-        if (options.protocol) {
-            if (options.protocol === 'https') {
-                repoUrl = `https://github.com/${user}/${options.repo}.git`
-            }
-        } else {
-            repoUrl = `git@github.com:${user}/${options.repo}.git`
-        }
-
         if (data) {
-            clone_(user, options.repo, repoUrl)
+            clone_(user, options.repo, getCloneUrl(options, config.api.git_host))
         }
 
         await afterHooks('repo.get', { options })
@@ -399,6 +387,22 @@ function deleteLabel(options, user): Promise<Octokit.Response<Octokit.IssuesDele
     }
 
     return options.GitHub.issues.deleteLabel(payload)
+}
+
+/**
+ * If user has a custom git_host defined we will use that (helpful for custom ssh rules).
+ * Otherwise pluck it from the previously set up github_host.
+ */
+function getCloneUrl({ repo, user, protocol, github_host }, gitHost?: string): string {
+    const hostWithoutProtocol = gitHost || github_host.split('://')[1]
+    let repoUrl = `git@${hostWithoutProtocol}:${user}/${repo}.git`
+
+    if (protocol === 'https') {
+        repoUrl = `https://${hostWithoutProtocol}/${user}/${repo}.git`
+    }
+    console.log('repoUrl', repoUrl)
+
+    return repoUrl
 }
 
 function getRepo(options): Promise<Octokit.Response<Octokit.IssuesGetResponse>> {
