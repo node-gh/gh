@@ -858,10 +858,10 @@ function updatePullRequest_(options, title, opt_body, state) {
     const payload = {
         state,
         title,
-        body: opt_body,
         pull_number: options.number,
         repo: options.repo,
         owner: options.user,
+        ...(opt_body ? { body: opt_body } : {}),
     }
 
     return options.GitHub.pulls.update(payload)
