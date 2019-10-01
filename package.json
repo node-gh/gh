@@ -105,6 +105,7 @@
         "nock": "10.0.5",
         "nopt": "3.0.6",
         "opn": "5.4.0",
+        "ramda": "^0.26.1",
         "request": "2.88.0",
         "truncate": "2.0.1",
         "update-notifier": "2.5.0",
