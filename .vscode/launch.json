@@ -9,7 +9,15 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "pr", "109", "-C"],
+            "args": [
+                "${workspaceFolder}/src/debug.ts",
+                "re",
+                "-c",
+                "-u",
+                "Product",
+                "--repo",
+                "service-lumin"
+            ],
             // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
             "console": "integratedTerminal"
         },
@@ -17,17 +25,17 @@
             "name": "Testing Mode",
             "type": "node",
             "request": "launch",
-            "env": { "NODE_ENV": "testing", "GH_USER": "protoEvangelion", "GH_TOKEN": "0001" },
+            "env": {
+                "NODE_ENV": "testing",
+                "GH_USER": "protoEvangelion",
+                "GH_TOKEN": "0001",
+                "GENERATE_NEW_TOKEN": "true"
+            },
+            "osx": {
+                "DEBUG": "nock.*"
+            },
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": [
-                "${workspaceFolder}/src/debug.ts",
-                "is",
-                "-N",
-                "-t",
-                "'Node GH rocks!'",
-                "-L",
-                "bug,question,test"
-            ],
+            "args": ["${workspaceFolder}/src/debug.ts", "user", "--login"],
             "console": "integratedTerminal"
         }
     ]

@@ -75,7 +75,7 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it('Open PR `gh pr --open --number 50 --number 40`', done => {
+    it.only('Open PR `gh pr --open --number 50 --number 40`', done => {
         expect(runCmd('gh pr --open --number 50 --number 40')).toMatchSnapshot()
         done()
     })
