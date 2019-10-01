@@ -19,14 +19,13 @@ describe('E2E: User Module Test', () => {
         process.env.GENERATE_NEW_TOKEN = 'true'
 
         // when first generating this you need to add real GitHub
-        // user & password credentials that doesn't 2fa enabled
+        // user & password credentials for an account that doesn't have 2fa enabled
         const user = 'myuser'
         const pass = 'mypass'
 
         let output = stripAnsi(runCmd(`printf "${user}\n${pass}" | gh user --login`, true))
 
         // strip fs path so it passes on travis
-
         output =
             output.substring(0, output.indexOf('data:')) + output.substring(output.indexOf('/gh/'))
 
@@ -35,6 +34,7 @@ describe('E2E: User Module Test', () => {
         const configPath = join(__dirname, 'auth.json')
         const config = JSON.parse(readFileSync(configPath).toString())
 
+        // anonymized token
         expect(config.github_token).toBe('234lkj23l4kj234lkj234lkj234lkj23l4kj234l')
         expect(config.github_user).toBe(user)
 
