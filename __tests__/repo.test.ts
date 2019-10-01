@@ -6,6 +6,7 @@
 
 import * as stripAnsi from 'strip-ansi'
 import { runCmd } from './testUtils'
+import { getCloneUrl } from '../src/cmds/repo'
 
 describe('E2E: Repo Module Test', () => {
     it('List Repos `gh re --list`', done => {
@@ -36,5 +37,21 @@ describe('E2E: Repo Module Test', () => {
     it('Delete repo `gh re --delete foo`', done => {
         expect(stripAnsi(runCmd('printf "y" | gh re --delete foo'))).toMatchSnapshot()
         done()
+    })
+})
+
+describe('Unit tests for repo cmd', () => {
+    it('Cloning repo url is correct', () => {
+        const options = { repo: 'gh', user: 'node-gh', github_host: 'https://github.com' }
+        expect(getCloneUrl(options)).toEqual('git@github.com:node-gh/gh.git')
+        expect(getCloneUrl({ ...options, protocol: 'https' })).toEqual(
+            'https://github.com/node-gh/gh.git'
+        )
+        expect(getCloneUrl({ ...options, protocol: 'https' }, 'custom-ssh-host')).toEqual(
+            'https://github.com/node-gh/gh.git'
+        )
+        expect(getCloneUrl(options, 'custom-ssh-host')).toEqual(
+            'git@custom-ssh-host:node-gh/gh.git'
+        )
     })
 })
