@@ -6,6 +6,9 @@ labels: bug
 assignees: ''
 ---
 
+**Version number**
+In which version does the bug appear?
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
