@@ -155,6 +155,14 @@ export async function setUp() {
 
     setAutoFreeze(false)
 
+    // Dynamically import test util & start mocking api
+    if (testing) {
+        var { prepareTestFixtures } = await import('./utils')
+
+        // function to call when our cmd is done running so e2e tests finish
+        var cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
+    }
+
     const options = await produce(args, async draft => {
         // Gets 2nd positional arg (`gh pr 1` will return 1)
         const secondArg = [draft.argv.remain[1]]
@@ -191,12 +199,10 @@ export async function setUp() {
     })
 
     if (testing) {
-        const { prepareTestFixtures } = await import('./utils')
-
         if (Command.isPlugin) {
-            await new Command(options).run(prepareTestFixtures(Command.name, args.argv.cooked))
+            await new Command(options).run(cmdDoneRunning)
         } else {
-            await Command.run(options, prepareTestFixtures(Command.name, args.argv.cooked))
+            await Command.run(options, cmdDoneRunning)
         }
     } else {
         if (Command.isPlugin) {
