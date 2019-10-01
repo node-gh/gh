@@ -1031,7 +1031,7 @@ gh re --delete foo
 | `-P`, `--protocol`     | _Optional_   | `String` |
 | `-u`, `--user`         | _Optional_   | `String` |
 
-> If you have custom ssh config, you can add `"api": { "git_host": "custom-name", ... }` to your .gh.json file.
+> If you have custom ssh config, you can add `"api": { "ssh_host": "custom-name", ... }` to your .gh.json file.
 
 #### Examples
 
