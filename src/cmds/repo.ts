@@ -393,13 +393,13 @@ function deleteLabel(options, user): Promise<Octokit.Response<Octokit.IssuesDele
  * If user has a custom git_host defined we will use that (helpful for custom ssh rules).
  * Otherwise pluck it from the previously set up github_host.
  */
-interface ICloneOptions {
+interface CloneOptions {
     repo: string
     user: string
     protocol?: string
     github_host?: string
 }
-type GetCloneUrl = (ICloneOptions, customSshHost?: string) => string
+type GetCloneUrl = (options: CloneOptions, customSshHost?: string) => string
 export const getCloneUrl: GetCloneUrl = ({ repo, user, protocol, github_host }, customSshHost) => {
     const hostWithoutProtocol = github_host.split('://')[1]
     let repoUrl = `git@${customSshHost || hostWithoutProtocol}:${user}/${repo}.git`
