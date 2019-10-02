@@ -59,6 +59,7 @@ export const DETAILS = {
         description: String,
         detailed: Boolean,
         direction: String,
+        draft: Boolean,
         fetch: Boolean,
         fwd: String,
         issue: Number,
@@ -297,6 +298,7 @@ async function comment(options) {
         issue_number: options.number,
         repo: options.repo,
         owner: options.user,
+        draft: options.draft,
     }
 
     return options.GitHub.issues.createComment(payload)

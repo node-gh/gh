@@ -385,6 +385,7 @@ gh pr 1 --fetch --merge
 | `-R`, `--rebase` | **Required** | `Boolean` |
 | `-n`, `--number` | _Optional_   | `Number`  |
 | `-b`, `--branch` | _Optional_   | `String`  |
+| `--draft`        | _Optional_   | `Boolean` |
 | `--remote`       | _Optional_   | `String`  |
 | `-r`, `--repo`   | _Optional_   | `String`  |
 | `-u`, `--user`   | _Optional_   | `String`  |
@@ -525,6 +526,12 @@ gh pr --submit eduardolundgren --branch dev
 
 ```
 gh pr --submit eduardolundgren --issue 150
+```
+
+-   Submit a pull request in draft state.
+
+```
+gh pr --submit eduardolundgren --draft
 ```
 
 ### 9. Open in Browser
