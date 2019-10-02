@@ -312,24 +312,16 @@ export async function run(options, done) {
     } else if (options.search) {
         await beforeHooks('repo.search', { options })
 
+        let type = options.type || TYPE_OWNER
+
         if (options.organization) {
-            user = options.organization
-            options.type = options.type || TYPE_ALL
-        } else {
-            user = options.user
-            options.type = options.type || TYPE_OWNER
+            type = options.type || TYPE_ALL
         }
 
-        if (options.isTTY.out) {
-            logger.log(
-                `Searching ${logger.colors.green(options.type)} repos in ${logger.colors.green(
-                    user
-                )}`
-            )
-        }
+        logger.log(`Searching ${logger.colors.green(type)} repos in ${logger.colors.green(user)}`)
 
         try {
-            await search(options, user)
+            await search(options, type)
         } catch (error) {
             logger.error(`Can't list repos.\n${error}`)
         }
@@ -590,10 +582,10 @@ function updateLabel(options, user): Promise<Octokit.Response<Octokit.IssuesUpda
     return options.GitHub.issues.updateLabel(payload)
 }
 
-async function search(options, user) {
+async function search(options, type: string) {
     let terms = [options.search]
 
-    // @fix currently options.user is always set, so I'm checking argv
+    // @fix currently options.user is always set, so checking original args
     if (options.argv.original.some(arg => arg === '-u' || arg === '--user')) {
         terms.push(`user:${options.user}`)
     }
@@ -602,28 +594,21 @@ async function search(options, user) {
         terms.push(`org:${options.organization}`)
     }
 
-    if (options.type === 'public' || options.type === 'private') {
-        terms.push(`is:${options.type}`)
-        delete options.type
+    if (type === 'public' || type === 'private') {
+        terms.push(`is:${type}`)
     }
 
     // add remaining search terms
     terms = terms.concat(options.argv.remain.slice(1))
 
     const payload = {
-        user,
         q: terms.join(' '),
-        // type: options.type,
         per_page: 100,
     }
 
-    const { data } = await options.github.search.repos(payload)
+    const { data } = await options.GitHub.search.repos(payload)
 
-    // console.log(repos)
-    // process.exit()
-    // const re = new RegExp(options.search, 'i')
-    // repos = repos.filter(r => re.test(r.name))
-    listCallback_(options, data.items.slice(0, 10))
+    listCallback_(options, data.items)
 }
 
 function normalizeColor(color) {
