@@ -778,6 +778,15 @@
       "contributions": [
         "plugin"
       ]
+    },
+    {
+      "login": "Lisiadito",
+      "name": "Patrick Weingärtner",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/13214912?v=4",
+      "profile": "https://github.com/Lisiadito",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
