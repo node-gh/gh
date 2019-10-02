@@ -151,6 +151,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/shinzui"><img src="https://avatars3.githubusercontent.com/u/519?v=4" width="50px;" alt="Nadeem Bitar"/><br /><sub><b>Nadeem Bitar</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=shinzui" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/cleydyr"><img src="https://avatars1.githubusercontent.com/u/441513?v=4" width="50px;" alt="Cleydyr Bezerra de Albuquerque"/><br /><sub><b>Cleydyr Bezerra de Albuquerque</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Acleydyr" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://twitter.com/rmnPires"><img src="https://avatars1.githubusercontent.com/u/1796577?v=4" width="50px;" alt="Ramon Pires da Silva"/><br /><sub><b>Ramon Pires da Silva</b></sub></a><br /><a href="#plugin-ramonPires" title="Plugin/utility libraries">🔌</a></td>
+    <td align="center"><a href="https://github.com/Lisiadito"><img src="https://avatars0.githubusercontent.com/u/13214912?v=4" width="50px;" alt="Patrick Weingärtner"/><br /><sub><b>Patrick Weingärtner</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=Lisiadito" title="Code">💻</a></td>
   </tr>
 </table>
 
