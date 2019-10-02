@@ -153,7 +153,7 @@ export async function setUp() {
      */
     const args = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 
-    setAutoFreeze(false)
+    setAutoFreeze(true)
 
     // Dynamically import test util & start mocking api
     if (testing) {
