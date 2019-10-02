@@ -162,14 +162,17 @@ export async function setUp() {
         // function to call when our cmd is done running so e2e tests finish
         var cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
     }
-
     const options = await produce(args, async draft => {
         // Gets 2nd positional arg (`gh pr 1` will return 1)
         const secondArg = [draft.argv.remain[1]]
         const remote = draft.remote || config.default_remote
         const remoteUrl = git.getRemoteUrl(remote)
 
-        draft.GitHub = await getGitHubInstance()
+        if (Command.name !== 'Help' && Command.name !== 'Version') {
+            // We don't want to boot up Ocktokit if user just wants help or version
+            draft.GitHub = await getGitHubInstance()
+        }
+
         draft.remote = remote
         draft.number = draft.number || secondArg
         draft.loggedUser = getUser()
