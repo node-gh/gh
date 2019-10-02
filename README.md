@@ -157,6 +157,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="http://jmvidal.cse.sc.edu"><img src="https://avatars3.githubusercontent.com/u/228704?v=4" width="50px;" alt="Jose M Vidal"/><br /><sub><b>Jose M Vidal</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Ajosemvidal" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://saulovallory.com"><img src="https://avatars1.githubusercontent.com/u/117560?v=4" width="50px;" alt="Saulo Vallory"/><br /><sub><b>Saulo Vallory</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=svallory" title="Code">💻</a></td>
   </tr>
 </table>
 
