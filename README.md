@@ -47,6 +47,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
 <table>
+  <col width="175">
+  <col width="175">
+  <col width="175">
+  <col width="175">
+  <col width="175">
+  <col width="175">
+  <col width="175">
   <tr>
     <td align="center"><a href="https://github.com/eduardolundgren"><img src="https://avatars0.githubusercontent.com/u/113087?v=4" width="50px;" alt="Eduardo Lundgren"/><br /><sub><b>Eduardo Lundgren</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=eduardolundgren" title="Code">💻</a> <a href="https://github.com/node-gh/gh/issues?q=author%3Aeduardolundgren" title="Bug reports">🐛</a> <a href="https://github.com/node-gh/gh/commits?author=eduardolundgren" title="Documentation">📖</a> <a href="#question-eduardolundgren" title="Answering Questions">💬</a> <a href="#infra-eduardolundgren" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#plugin-eduardolundgren" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/node-gh/gh/commits?author=eduardolundgren" title="Tests">⚠️</a> <a href="#review-eduardolundgren" title="Reviewed Pull Requests">👀</a> <a href="#ideas-eduardolundgren" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://zenorocha.com"><img src="https://avatars1.githubusercontent.com/u/398893?v=4" width="50px;" alt="Zeno Rocha"/><br /><sub><b>Zeno Rocha</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=zenorocha" title="Code">💻</a> <a href="https://github.com/node-gh/gh/issues?q=author%3Azenorocha" title="Bug reports">🐛</a> <a href="https://github.com/node-gh/gh/commits?author=zenorocha" title="Documentation">📖</a> <a href="#question-zenorocha" title="Answering Questions">💬</a> <a href="#infra-zenorocha" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#plugin-zenorocha" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/node-gh/gh/commits?author=zenorocha" title="Tests">⚠️</a> <a href="#review-zenorocha" title="Reviewed Pull Requests">👀</a> <a href="#ideas-zenorocha" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-zenorocha" title="Content">🖋</a></td>
