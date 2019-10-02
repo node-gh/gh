@@ -814,6 +814,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "svallory",
+      "name": "Saulo Vallory",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/117560?v=4",
+      "profile": "http://saulovallory.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
