@@ -310,6 +310,8 @@ export async function run(options, done) {
 
         await afterHooks('repo.list', { options })
     } else if (options.search) {
+        await beforeHooks('repo.search', { options })
+
         if (options.organization) {
             user = options.organization
             options.type = options.type || TYPE_ALL
@@ -320,10 +322,9 @@ export async function run(options, done) {
 
         if (options.isTTY.out) {
             logger.log(
-                'Searching ' +
-                    logger.colors.green(options.type) +
-                    ' repos in ' +
-                    logger.colors.green(user)
+                `Searching ${logger.colors.green(options.type)} repos in ${logger.colors.green(
+                    user
+                )}`
             )
         }
 
@@ -332,6 +333,8 @@ export async function run(options, done) {
         } catch (error) {
             logger.error(`Can't list repos.\n${error}`)
         }
+
+        await afterHooks('repo.search', { options })
     } else if (options.new && !options.label) {
         if (!options.new.trim()) {
             options = produce(options, draft => {
