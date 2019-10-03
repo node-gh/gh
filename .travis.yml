@@ -22,17 +22,17 @@ jobs:
     include:
         - stage: test
           node_js: '8'
-          os: osx
-        - os: linux
+          os: linux
+        - os: osx
           node_js: 'lts/*'
         # uncomment in the future when this is fixed: https://travis-ci.community/t/node-js-build-fails-with-no-obvious-error/961/8
         #- os: windows
         #  node_js: 'lts/*'
-        - os: osx
+        - os: linux
           node_js: 'lts/*'
         # latest version of node
         - node_js: 'node'
-          os: osx
+          os: linux
         - stage: release
           node_js: lts/*
           script:
