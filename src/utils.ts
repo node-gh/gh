@@ -61,8 +61,8 @@ export function prepareTestFixtures(cmdName, argv) {
                 '--comment',
                 '--open',
                 '--close',
-                '--submit',
                 '--draft',
+                '--submit',
             ],
         },
         {
