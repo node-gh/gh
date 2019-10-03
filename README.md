@@ -153,6 +153,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://twitter.com/rmnPires"><img src="https://avatars1.githubusercontent.com/u/1796577?v=4" width="50px;" alt="Ramon Pires da Silva"/><br /><sub><b>Ramon Pires da Silva</b></sub></a><br /><a href="#plugin-ramonPires" title="Plugin/utility libraries">🔌</a></td>
     <td align="center"><a href="https://github.com/Lisiadito"><img src="https://avatars0.githubusercontent.com/u/13214912?v=4" width="50px;" alt="Patrick Weingärtner"/><br /><sub><b>Patrick Weingärtner</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=Lisiadito" title="Code">💻</a></td>
     <td align="center"><a href="http://gabrieluizramos.com.br/"><img src="https://avatars0.githubusercontent.com/u/13336905?v=4" width="50px;" alt="Gabriel Ramos"/><br /><sub><b>Gabriel Ramos</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=gabrieluizramos" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/mdelapenya"><img src="https://avatars2.githubusercontent.com/u/951580?v=4" width="50px;" alt="Manuel de la Peña"/><br /><sub><b>Manuel de la Peña</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=mdelapenya" title="Code">💻</a></td>
   </tr>
 </table>
 
