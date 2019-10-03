@@ -1050,6 +1050,10 @@ async function _submitHandler(options) {
         throw new Error(`Can't submit pull request\n${err}`)
     }
 
+    if (pull.draft) {
+        logger.log('Opened in draft state.')
+    }
+
     if (pull) {
         options = produce(options, draft => {
             draft.submittedPull = pull.number
