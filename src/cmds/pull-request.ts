@@ -298,7 +298,6 @@ async function comment(options) {
         issue_number: options.number,
         repo: options.repo,
         owner: options.user,
-        draft: options.draft,
     }
 
     return options.GitHub.issues.createComment(payload)
@@ -829,6 +828,10 @@ async function submit(options, user) {
         base: options.branch,
         head: `${options.user}:${pullBranch}`,
         repo: options.repo,
+        mediaType: {
+            previews: ['shadow-cat'],
+        },
+        ...(options.draft ? { draft: options.draft } : {}),
     }
 
     try {
