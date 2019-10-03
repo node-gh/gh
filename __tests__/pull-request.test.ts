@@ -75,7 +75,7 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it.only('Open PR `gh pr --open --number 50 --number 40`', done => {
+    it('Open PR `gh pr --open --number 50 --number 40`', done => {
         expect(runCmd('gh pr --open --number 50 --number 40')).toMatchSnapshot()
         done()
     })
@@ -84,6 +84,11 @@ describe('E2E: Pull Request Module Test', () => {
         expect(
             runCmd('gh pr -s protoEvangelion -b master -t "pr title" -D "pr description"')
         ).toMatchSnapshot()
+        done()
+    })
+
+    it('Submit PR as a draft `gh pr -s protoEvangelion -b master -t "pr title" --draft`', done => {
+        expect(runCmd('gh pr -s protoEvangelion -b master -t "pr title" --draft')).toMatchSnapshot()
         done()
     })
 })
