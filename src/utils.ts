@@ -236,11 +236,13 @@ function formatCmdName(cmd, argv) {
     }
 
     return cmd.flags.reduce((flagName, current) => {
+        if (flagName) {
+            return flagName
+        }
+
         if (argv.includes(current)) {
             return concatUpper(cmd.name, current.slice(2))
         }
-
-        return flagName
     }, null)
 }
 
