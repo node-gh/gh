@@ -141,3 +141,10 @@ https://github.com/protoEvangelion/gh/pull/97
 [hook] gh pr --browser  --user protoEvangelion --repo gh --number 97
 "
 `;
+
+exports[`E2E: Pull Request Module Test Submit PR as a draft \`gh pr -s protoEvangelion -b master -t "pr title" --draft\` 1`] = `
+"Submitting pull request to @protoEvangelion
+https://github.com/protoEvangelion/gh/pull/000000001
+[hook] gh pr --browser  --user protoEvangelion --repo gh --number 119
+"
+`;
