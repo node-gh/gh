@@ -1,6 +1,6 @@
 # Node GH
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-79-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-85-orange.svg?style=flat-square)](#contributors-)
 [![NPM version](http://img.shields.io/npm/v/gh.svg?style=flat)](http://npmjs.org/gh)
 [![Build Status](http://img.shields.io/travis/node-gh/gh/master.svg?style=flat)](https://travis-ci.org/node-gh/gh)
 [![Known Vulnerabilities](https://snyk.io/test/github/node-gh/gh/badge.svg)](https://snyk.io/test/github/node-gh/gh)
