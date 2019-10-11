@@ -1159,40 +1159,43 @@ gh re --label --update bug --color color --user eduardolundgren --repo gh
 
 ### 11. Search
 
-Search repositories for the terms in name, description or readme.
-You can filter the results using GitHub's [search qualifiers](https://help.github.com/articles/searching-for-repositories/)
+Find repositories via various criteria. Repository search looks through the projects you have access to on GitHub.
+You can filter the results using GitHub's search qualifiers.
+[Examples:](https://help.github.com/articles/searching-for-repositories/)
 
-| Option             | Usage        | Type                                            |
-| ------------------ | ------------ | ----------------------------------------------- |
-| `-s`, `--search`   | **Required** | `Boolean`                                       |
-| `-d`, `--detailed` | _Optional_   | `Boolean`                                       |
-| `-u`, `--user`     | _Optional_   | `String`                                        |
-| `-t`, `--type`     | _Optional_   | [`all`, `owner`, `public`, `private`, `member`] |
+| Option                 | Usage        | Type                                            |
+| ---------------------- | ------------ | ----------------------------------------------- |
+| `-s`, `--search`       | **Required** | `Boolean`                                       |
+| `-d`, `--detailed`     | _Optional_   | `Boolean`                                       |
+| `-u`, `--user`         | _Optional_   | `String`                                        |
+| `-r`, `--repo`         | _Optional_   | `String`                                        |
+| `-O`, `--organization` | _Optional_   | `String`                                        |
+| `-t`, `--type`         | _Optional_   | [`all`, `owner`, `public`, `private`, `member`] |
 
 #### Examples
 
--   Search private repositories you have access to with the term "framework".
+-   Search private repositories you have access to with the term "secret".
 
 ```
-gh re --search framework --type private
+gh re --search secret --type private
 ```
 
-or
+OR
 
 ```
-gh re --search framework is:private
+gh re --search secret is:private
 ```
 
--   Search for repositories mentioning "hapi" on tokilabs organization and show detailed info
+-   Matches repositories from GitHub org showing detailed results.
 
 ```
-gh re -d -o tokilabs --search hapi
+gh re --detailed -o github --search octocat
 ```
 
-or
+OR
 
 ```
-gh re -d --search hapi org:tokilabs
+gh re --detailed --search octocat org:github
 ```
 
 ## Gists

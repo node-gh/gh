@@ -318,10 +318,12 @@ export async function run(options, done) {
             type = options.type || TYPE_ALL
         }
 
-        logger.log(`Searching ${logger.colors.green(type)} repos in ${logger.colors.green(user)}`)
+        const query = buildSearchQuery(options, type)
+
+        logger.log(`Searching for repos using the criteria: ${logger.colors.green(query)}`)
 
         try {
-            await search(options, type)
+            await search(options, query)
         } catch (error) {
             logger.error(`Can't list repos.\n${error}`)
         }
@@ -582,10 +584,9 @@ function updateLabel(options, user): Promise<Octokit.Response<Octokit.IssuesUpda
     return options.GitHub.issues.updateLabel(payload)
 }
 
-async function search(options, type: string) {
+function buildSearchQuery(options, type) {
     let terms = [options.search]
 
-    // @fix currently options.user is always set, so checking original args
     if (options.argv.original.some(arg => arg === '-u' || arg === '--user')) {
         terms.push(`user:${options.user}`)
     }
@@ -601,9 +602,13 @@ async function search(options, type: string) {
     // add remaining search terms
     terms = terms.concat(options.argv.remain.slice(1))
 
+    return terms.join(' ')
+}
+
+async function search(options, query: string) {
     const payload = {
-        q: terms.join(' '),
-        per_page: 100,
+        q: query,
+        per_page: 30,
     }
 
     const { data } = await options.GitHub.search.repos(payload)
