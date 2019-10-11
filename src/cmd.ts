@@ -183,7 +183,7 @@ export async function setUp() {
         draft.github_gist_host = config.github_gist_host
 
         if (!draft.user) {
-            if (draft.repo || draft.all) {
+            if (args.repo || args.all) {
                 draft.user = draft.loggedUser
             } else {
                 draft.user = process.env.GH_USER || draft.remoteUser || draft.loggedUser
