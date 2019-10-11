@@ -155,6 +155,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://gabrieluizramos.com.br/"><img src="https://avatars0.githubusercontent.com/u/13336905?v=4" width="50px;" alt="Gabriel Ramos"/><br /><sub><b>Gabriel Ramos</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=gabrieluizramos" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/mdelapenya"><img src="https://avatars2.githubusercontent.com/u/951580?v=4" width="50px;" alt="Manuel de la Peña"/><br /><sub><b>Manuel de la Peña</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=mdelapenya" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="http://jmvidal.cse.sc.edu"><img src="https://avatars3.githubusercontent.com/u/228704?v=4" width="50px;" alt="Jose M Vidal"/><br /><sub><b>Jose M Vidal</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Ajosemvidal" title="Bug reports">🐛</a></td>
+  </tr>
 </table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
