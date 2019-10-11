@@ -78,7 +78,7 @@ export function prepareTestFixtures(cmdName, argv) {
         },
         {
             name: 'Repo',
-            flags: ['--label', '--list', '--new', '--fork', '--delete'],
+            flags: ['--label', '--list', '--new', '--fork', '--delete', '--search'],
         },
         {
             name: 'User',
