@@ -805,6 +805,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "josemvidal",
+      "name": "Jose M Vidal",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/228704?v=4",
+      "profile": "http://jmvidal.cse.sc.edu",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
