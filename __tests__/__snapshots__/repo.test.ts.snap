@@ -39,3 +39,13 @@ duplicate
 enhancement
 "
 `;
+
+exports[`E2E: Repo Module Test Search repositories from GitHub org showing detailed results. \`gh re --detailed --search octocat org:github\` 1`] = `
+"Searching for repos using the criteria: octocat org:github
+github/octocatalog-diff
+https://github.com/github/octocatalog-diff
+Compile Puppet catalogs from 2 branches, versions, etc., and compare them
+https://rubygems.org/gems/octocatalog-diff/
+last update in 4 years
+"
+`;
