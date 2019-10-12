@@ -143,14 +143,15 @@ export async function run(options, done) {
             try {
                 const { status } = await deleteRepo(options, options.user, options.delete)
 
-                status === 204 && logger.log('Successfully deleted repo.')
+                status === 204 &&
+                    logger.log(`${logger.colors.green('✓')} Successfully deleted repo.`)
             } catch (err) {
-                logger.error(`Can't delete repo.\n${err}`)
+                logger.error(`${logger.colors.red('✗')} Can't delete repo.\n${err}`)
             }
 
             await afterHooks('repo.delete', { options })
         } else {
-            logger.log('Not deleted.')
+            logger.log(`${logger.colors.red('✗')} Not deleted.`)
         }
     } else if (options.fork) {
         await beforeHooks('repo.fork', { options })
