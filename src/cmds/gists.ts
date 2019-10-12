@@ -77,7 +77,7 @@ export async function run(options, done) {
             answers.confirmation.toLowerCase() === 'n' ||
             answers.confirmation.toLowerCase() === ''
         ) {
-            console.log('Not deleted.')
+            logger.log(`${logger.colors.red('✗')} Not deleted.`)
             return
         }
 
@@ -219,8 +219,9 @@ async function _deleteHandler(options, gist_id) {
     try {
         var { status } = await deleteGist(options, gist_id)
     } catch (err) {
-        throw new Error(`Can't delete gist: ${gist_id}.`)
+        throw new Error(`${logger.colors.red('✗')} Can't delete gist: ${gist_id}.`)
     }
 
-    status === 204 && logger.log(`Successfully deleted gist: ${gist_id}`)
+    status === 204 &&
+        logger.log(`${logger.colors.green('✓')} Successfully deleted gist: ${gist_id}`)
 }
