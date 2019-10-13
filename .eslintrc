@@ -13,6 +13,7 @@
     ],
     "plugins": ["@typescript-eslint", "fp"],
     "rules": {
+        "@typescript-eslint/member-delimiter-style": "off",
         "fp/no-arguments": "error",
         "fp/no-class": "error",
         "fp/no-delete": "error",
@@ -26,6 +27,6 @@
         "fp/no-this": "error",
         "fp/no-throw": "error",
         "fp/no-valueof-field": "error",
-        "no-var": "error"
+        "no-var": "off"
     }
 }
