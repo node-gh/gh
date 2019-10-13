@@ -10,6 +10,7 @@ import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
+import * as R from 'ramda'
 import { find, getUser } from './base'
 import * as configs from './configs'
 import * as git from './git'
@@ -133,25 +134,10 @@ export async function setUp() {
 
     const Command = await getCommand(process.argv)
 
-    /**
-     * If you run `gh pr 1 -s node-gh --remote=origin --user protoEvangelion`, nopt will return
-     *
-     *   {
-     *     remote: 'origin',
-     *     submit: 'node-gh',
-     *     user: 'protoEvangelion',
-     *     argv: {
-     *         original: ['pr', '1', '-s', 'pr', 'node-gh', '--remote', 'origin', '--user', 'protoEvangelion'],
-     *         remain: ['pr', '1'],
-     *         cooked: ['pr', '1', '--submit', 'node-gh', '--remote', 'origin', '--user', 'protoEvangelion'],
-     *     },
-     *   }
-     *
-     * Historically we passed every arg after 2nd arg (gh pr 1 -s user; everything after 'pr')
-     * and all parsed options to each cmd's payload function to figure out positional args and allow for neat shortcuts like:
-     * gh is 'new issue' 'new issue description'
-     */
-    const args = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
+    const args = await R.pipe(
+        getCommand,
+        getArgs
+    )(process.argv)
 
     // Allow mutation of options when not testing
     // https://immerjs.github.io/immer/docs/freezing
@@ -160,9 +146,10 @@ export async function setUp() {
     if (testing) {
         var { prepareTestFixtures } = await import('./utils')
 
-        // enable mock apis for e2e's
+        // Enable mock apis for e2e's
         var cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
     }
+
     const options = await produce(args, async draft => {
         // Gets 2nd positional arg (`gh pr 1` will return 1)
         const secondArg = [draft.argv.remain[1]]
@@ -229,4 +216,28 @@ export async function run() {
     } catch (e) {
         console.error(e.stack || e)
     }
+}
+
+/**
+ * If you run `gh pr 1 -s node-gh --remote=origin --user protoEvangelion`, nopt will return
+ *
+ *   {
+ *     remote: 'origin',
+ *     submit: 'node-gh',
+ *     user: 'protoEvangelion',
+ *     argv: {
+ *         original: ['pr', '1', '-s', 'pr', 'node-gh', '--remote', 'origin', '--user', 'protoEvangelion'],
+ *         remain: ['pr', '1'],
+ *         cooked: ['pr', '1', '--submit', 'node-gh', '--remote', 'origin', '--user', 'protoEvangelion'],
+ *     },
+ *   }
+ *
+ * Historically we passed every arg after 2nd arg (gh pr 1 -s user; everything after 'pr')
+ * and all parsed options to each cmd's payload function to figure out positional args and allow for neat shortcuts like:
+ * gh is 'new issue' 'new issue description'
+ */
+async function getArgs(Command) {
+    Command = await Command
+
+    return nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 }
