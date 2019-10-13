@@ -24,9 +24,28 @@ const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
 
 const testing = process.env.NODE_ENV === 'testing'
 
-// -- Utils ----------------------------------------------------------------------------------------
+interface Command {
+    name: string
+    isPlugin?: boolean
+    DETAILS: {
+        alias: string
+        description: string
+        commands: string
+        options: object
+        shorthands: object
+    }
+    run: () => {}
+}
 
-async function resolveCmd(name, commandDir) {
+interface BackwardsCompatCommand {
+    Impl: Command
+}
+
+// -- Utils ----------------------------------------------------------------------------------------
+type CommandPromise = Promise<Command | false>
+type BackwardsCompatCommandPromise = Promise<BackwardsCompatCommand | false>
+
+async function resolveCmd(name, commandDir): CommandPromise {
     const reg = new RegExp(`.${extension}$`, 'i')
     const commandFiles = find(commandDir, reg)
 
@@ -53,7 +72,7 @@ async function resolveCmd(name, commandDir) {
     return commandName && import(path.join(commandDir, commandName))
 }
 
-async function resolvePlugin(name) {
+async function resolvePlugin(name): BackwardsCompatCommandPromise {
     // If plugin command exists, register the executed plugin name
     process.env.NODEGH_PLUGIN = name
 
@@ -79,18 +98,22 @@ async function loadCommand(name) {
 
     if (!Command) {
         // try to resolve as plugin
-        const { Impl } = await resolvePlugin(name)
+        const Command = await resolvePlugin(name)
 
-        Impl.isPlugin = true
+        if (!Command) {
+            return false
+        }
 
-        Command = Impl
+        Command.Impl.isPlugin = true
+
+        return Command.Impl
     }
 
     return Command
 }
 
-function notifyVersion() {
-    var notifier = updateNotifier({ pkg: configs.getGlobalPackageJson() })
+function notifyVersion(): void {
+    const notifier = updateNotifier({ pkg: configs.getGlobalPackageJson() })
 
     if (notifier.update) {
         notifier.notify()
