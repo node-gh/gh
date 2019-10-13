@@ -153,13 +153,14 @@ export async function setUp() {
      */
     const args = nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 
-    setAutoFreeze(true)
+    // Allow mutation of options when not testing
+    // https://immerjs.github.io/immer/docs/freezing
+    !testing && setAutoFreeze(false)
 
-    // Dynamically import test util & start mocking api
     if (testing) {
         var { prepareTestFixtures } = await import('./utils')
 
-        // function to call when our cmd is done running so e2e tests finish
+        // enable mock apis for e2e's
         var cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
     }
     const options = await produce(args, async draft => {
