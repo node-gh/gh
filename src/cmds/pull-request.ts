@@ -722,7 +722,7 @@ async function list(options, user, repo) {
             if (printTableView) {
                 printPullsInfoTable_(options, branch.pulls)
             } else {
-                branch.pulls.forEach(printPullInfo_)
+                branch.pulls.forEach(pull => printPullInfo_(options, pull))
             }
 
             if (index !== arr.length - 1) {
