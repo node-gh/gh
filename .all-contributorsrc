@@ -823,6 +823,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "hernan",
+      "name": "Hernan Fernandez",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/15841?v=4",
+      "profile": "https://github.com/hernan",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
