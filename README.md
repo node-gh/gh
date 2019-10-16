@@ -785,10 +785,10 @@ gh is --list --state closed
 gh is --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
--   List issues filtered by milestone.
+-   List issues filtered by milestone title.
 
 ```
-gh is --list --milestone 1
+gh is --list --milestone "milestone title"
 ```
 
 -   List issues that contains labels `todo` and `bug`.

@@ -9,15 +9,7 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": [
-                "${workspaceFolder}/src/debug.ts",
-                "re",
-                "-c",
-                "-u",
-                "Product",
-                "--repo",
-                "service-lumin"
-            ],
+            "args": ["${workspaceFolder}/src/debug.ts", "is", "--milestone", "Milestone 5"],
             // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
             "console": "integratedTerminal"
         },
