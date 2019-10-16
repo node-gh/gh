@@ -12,40 +12,43 @@ import * as path from 'path'
 import * as updateNotifier from 'update-notifier'
 import * as R from 'ramda'
 import { find, getUser } from './base'
-import * as configs from './configs'
+import {
+    getConfig,
+    getPlugin,
+    addPluginConfig,
+    getGlobalPackageJson,
+    getUserHomePath,
+    createGlobalConfig,
+} from './configs'
 import * as git from './git'
 import { produce, setAutoFreeze } from 'immer'
 import { getGitHubInstance } from './github'
+import { Just, Nothing, isNothing, isLeft } from 'sanctuary'
+import { error, colors } from './logger'
 
-const config = configs.getConfig()
+const config = getConfig()
 
 // allows to run program as js or ts
 const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
 
 const testing = process.env.NODE_ENV === 'testing'
 
-interface Command {
-    name: string
-    isPlugin?: boolean
-    DETAILS: {
-        alias: string
-        description: string
-        commands: string
-        options: object
-        shorthands: object
-    }
-    run: () => {}
-}
-
-interface BackwardsCompatCommand {
-    Impl: Command
-}
+// interface Command {
+//     name: string
+//     isPlugin?: boolean
+//     DETAILS: {
+//         alias: string
+//         description: string
+//         commands: string
+//         options: object
+//         shorthands: object
+//     }
+//     run: () => {}
+// }
 
 // -- Utils ----------------------------------------------------------------------------------------
-type CommandPromise = Promise<Command | false>
-type BackwardsCompatCommandPromise = Promise<BackwardsCompatCommand | false>
 
-async function resolveCmd(name, commandDir): CommandPromise {
+function resolveCmd(name, commandDir) {
     const reg = new RegExp(`.${extension}$`, 'i')
     const commandFiles = find(commandDir, reg)
 
@@ -72,16 +75,24 @@ async function resolveCmd(name, commandDir): CommandPromise {
     return commandName && import(path.join(commandDir, commandName))
 }
 
-async function resolvePlugin(name): BackwardsCompatCommandPromise {
-    // If plugin command exists, register the executed plugin name
-    process.env.NODEGH_PLUGIN = name
+async function resolvePlugin(name) {
+    const plugin = getPlugin(Just(name))
 
-    const plugin = await configs.getPlugin(name)
+    if (isLeft(plugin)) {
+        error(`Could not resolve plugin ${colors.red(name)}`, plugin.value)
+    }
+
     const pluginFullName = plugin.Impl.name.toLowerCase()
 
-    plugin && configs.addPluginConfig(pluginFullName)
+    plugin && addPluginConfig(pluginFullName)
 
-    return plugin
+    return plugin ? Just(plugin) : Nothing
+}
+
+function setProp(propName, value) {
+    return function setObjectProp(object) {
+        return Object.assign({}, object, { [propName]: value })
+    }
 }
 
 async function loadCommand(name) {
@@ -97,27 +108,15 @@ async function loadCommand(name) {
     }
 
     if (!Command) {
-        // try to resolve as plugin
-        const Command = await resolvePlugin(name)
+        // Try to resolve as plugin
+        const { Impl } = await resolvePlugin(name)
 
-        if (!Command) {
-            return false
-        }
+        Impl.map(setProp('isPlugin', true))
 
-        Command.Impl.isPlugin = true
-
-        return Command.Impl
+        Command = Impl
     }
 
     return Command
-}
-
-function notifyVersion(): void {
-    const notifier = updateNotifier({ pkg: configs.getGlobalPackageJson() })
-
-    if (notifier.update) {
-        notifier.notify()
-    }
 }
 
 async function getCommand(args) {
@@ -139,17 +138,22 @@ async function getCommand(args) {
         module = 'help'
     }
 
-    try {
-        var Command = await loadCommand(module)
-    } catch (err) {
-        throw new Error(`Cannot find module ${module}\n${err}`)
-    }
+    var Command = await loadCommand(module)
+    // throw new Error(`Cannot find module ${module}\n${err}`)
 
     if (!Command) {
         throw new Error(`No cmd or plugin found.`)
     }
 
     return Command
+}
+
+function notifyVersion(): void {
+    const notifier = updateNotifier({ pkg: getGlobalPackageJson() })
+
+    if (notifier.update) {
+        notifier.notify()
+    }
 }
 
 export async function setUp() {
@@ -228,8 +232,8 @@ export async function setUp() {
 }
 
 export async function run() {
-    if (!fs.existsSync(configs.getUserHomePath())) {
-        configs.createGlobalConfig()
+    if (!fs.existsSync(getUserHomePath())) {
+        createGlobalConfig()
     }
 
     try {
