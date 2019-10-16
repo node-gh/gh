@@ -51,7 +51,7 @@ export async function run() {
 
     plugins.forEach(plugin => {
         try {
-            files.push(configs.getPluginPath(plugin))
+            files.push(configs.getPluginPath(plugin).value)
         } catch (e) {
             logger.warn(`Can't get ${plugin} plugin path.`)
         }

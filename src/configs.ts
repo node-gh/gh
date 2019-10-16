@@ -11,10 +11,26 @@ import * as userhome from 'userhome'
 import * as which from 'which'
 import * as exec from './exec'
 import * as logger from './logger'
+import { prepend, encase } from 'sanctuary'
+import * as R from 'ramda'
 
 export const PLUGINS_PATH_KEY = 'plugins_path'
 
 const testing = process.env.NODE_ENV === 'testing'
+
+const safeImport = encase(require)
+const safeWhich = encase(which.sync)
+const safeRealpath = encase(fs.realpathSync)
+
+// function concatError(leftMonad, errorMessage) {
+//     const leftMonadContainsError = leftMonad && leftMonad.isLeft() && leftMonad.value
+
+//     return leftMonadContainsError ? leftMonad.map(mapError) : Left(errorMessage)
+
+//     function mapError(prevErrorMessage) {
+//         return `${prevErrorMessage}\n${errorMessage}`
+//     }
+// }
 
 // -- Config -------------------------------------------------------------------
 
@@ -237,34 +253,17 @@ export function getPlugins() {
     return plugins
 }
 
-export function getPlugin(pluginName) {
-    pluginName = getPluginBasename(pluginName)
+export const getPluginPath = R.pipeK(
+    safeWhich,
+    safeRealpath
+)
 
-    return import(getPluginPath(`gh-${pluginName}`))
-}
+export const getPlugin = R.pipeK(
+    prepend('gh-'),
+    getPluginPath,
+    safeImport
+)
 
 export function pluginHasConfig(pluginName) {
     return Boolean(getConfig().plugins[pluginName])
-}
-
-export function getPluginPath(plugin) {
-    try {
-        var location = which.sync(plugin)
-    } catch (err) {
-        throw new Error(`Cannot resolve plugin path\n${err}`)
-    }
-
-    return fs.realpathSync(location)
-}
-
-export function getPluginBasename(plugin) {
-    return plugin && plugin.replace('gh-', '')
-}
-
-export function isPluginIgnored(plugin) {
-    if (getConfig().ignored_plugins.indexOf(getPluginBasename(plugin)) > -1) {
-        return true
-    }
-
-    return false
 }

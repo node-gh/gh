@@ -47,12 +47,15 @@ export function insane(...args) {
     console.log(...args)
 }
 
-export function error(...args) {
-    if (typeof args[0] === 'string') {
-        args[0] = `fatal: ${args[0]}`
+export function error(message, stack?, ...extra) {
+    if (process.env.GH_VERBOSE_INSANE || process.env.GH_VERBOSE_INSANE) {
+        console.error(`${message}
+${stack ? stack : ''}
+${extra.join('\n')}`)
+    } else {
+        console.error(message)
     }
 
-    console.error(...args)
     process.exit(1)
 }
 
