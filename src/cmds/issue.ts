@@ -294,6 +294,13 @@ async function list(options, user, repo) {
             .filter(milestone => options.milestone === milestone.title)
             .map(milestone => milestone.number)[0]
 
+        if (!milestoneNumber) {
+            logger.log(
+                `No issues found with milestone title: ${logger.colors.red(options.milestone)}`
+            )
+            return
+        }
+
         payload.milestone = `${milestoneNumber}`
     }
 

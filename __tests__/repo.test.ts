@@ -19,6 +19,11 @@ describe('E2E: Repo Module Test', () => {
         done()
     })
 
+    it('Search repositories from GitHub org showing detailed results. `gh re --detailed --search octocat org:github`', done => {
+        expect(runCmd('gh re --detailed --search octocat org:github')).toMatchSnapshot()
+        done()
+    })
+
     it('Create new repo `gh re --new foo --init`', done => {
         expect(runCmd('gh re --new foo --init')).toMatchSnapshot()
         done()

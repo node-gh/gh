@@ -1,6 +1,6 @@
 # Node GH
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-79-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-85-orange.svg?style=flat-square)](#contributors-)
 [![NPM version](http://img.shields.io/npm/v/gh.svg?style=flat)](http://npmjs.org/gh)
 [![Build Status](http://img.shields.io/travis/node-gh/gh/master.svg?style=flat)](https://travis-ci.org/node-gh/gh)
 [![Known Vulnerabilities](https://snyk.io/test/github/node-gh/gh/badge.svg)](https://snyk.io/test/github/node-gh/gh)
@@ -154,6 +154,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Lisiadito"><img src="https://avatars0.githubusercontent.com/u/13214912?v=4" width="50px;" alt="Patrick Weingärtner"/><br /><sub><b>Patrick Weingärtner</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=Lisiadito" title="Code">💻</a></td>
     <td align="center"><a href="http://gabrieluizramos.com.br/"><img src="https://avatars0.githubusercontent.com/u/13336905?v=4" width="50px;" alt="Gabriel Ramos"/><br /><sub><b>Gabriel Ramos</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=gabrieluizramos" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/mdelapenya"><img src="https://avatars2.githubusercontent.com/u/951580?v=4" width="50px;" alt="Manuel de la Peña"/><br /><sub><b>Manuel de la Peña</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=mdelapenya" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://jmvidal.cse.sc.edu"><img src="https://avatars3.githubusercontent.com/u/228704?v=4" width="50px;" alt="Jose M Vidal"/><br /><sub><b>Jose M Vidal</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Ajosemvidal" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://saulovallory.com"><img src="https://avatars1.githubusercontent.com/u/117560?v=4" width="50px;" alt="Saulo Vallory"/><br /><sub><b>Saulo Vallory</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=svallory" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/hernan"><img src="https://avatars0.githubusercontent.com/u/15841?v=4" width="50px;" alt="Hernan Fernandez"/><br /><sub><b>Hernan Fernandez</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=hernan" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -781,10 +786,10 @@ gh is --list --state closed
 gh is --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
--   List issues filtered by milestone.
+-   List issues filtered by milestone title.
 
 ```
-gh is --list --milestone 1
+gh is --list --milestone "milestone title"
 ```
 
 -   List issues that contains labels `todo` and `bug`.
@@ -1152,6 +1157,47 @@ gh re --label --update bug --color color --repo gh
 
 ```
 gh re --label --update bug --color color --user eduardolundgren --repo gh
+```
+
+### 11. Search
+
+Find repositories via various criteria. Repository search looks through the projects you have access to on GitHub.
+You can filter the results using GitHub's search qualifiers.
+[Examples:](https://help.github.com/articles/searching-for-repositories/)
+
+| Option                 | Usage        | Type                                            |
+| ---------------------- | ------------ | ----------------------------------------------- |
+| `-s`, `--search`       | **Required** | `Boolean`                                       |
+| `-d`, `--detailed`     | _Optional_   | `Boolean`                                       |
+| `-u`, `--user`         | _Optional_   | `String`                                        |
+| `-r`, `--repo`         | _Optional_   | `String`                                        |
+| `-O`, `--organization` | _Optional_   | `String`                                        |
+| `-t`, `--type`         | _Optional_   | [`all`, `owner`, `public`, `private`, `member`] |
+
+#### Examples
+
+-   Search private repositories you have access to with the term "secret".
+
+```
+gh re --search secret --type private
+```
+
+OR
+
+```
+gh re --search secret is:private
+```
+
+-   Matches repositories from GitHub org showing detailed results.
+
+```
+gh re --detailed -o github --search octocat
+```
+
+OR
+
+```
+gh re --detailed --search octocat org:github
 ```
 
 ## Gists

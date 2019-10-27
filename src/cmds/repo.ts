@@ -26,7 +26,7 @@ export const name = 'Repo'
 export const DETAILS = {
     alias: 're',
     description: 'Provides a set of util commands to work with Repositories.',
-    commands: ['browser', 'clone', 'delete', 'fork', 'list', 'new', 'update'],
+    commands: ['browser', 'clone', 'delete', 'fork', 'list', 'new', 'update', 'search'],
     options: {
         browser: Boolean,
         clone: Boolean,
@@ -48,6 +48,7 @@ export const DETAILS = {
         private: Boolean,
         protocol: String,
         repo: String,
+        search: String,
         type: ['all', 'forks', 'member', 'owner', 'public', 'private', 'source'],
         update: String,
         user: String,
@@ -66,6 +67,7 @@ export const DETAILS = {
         p: ['--private'],
         P: ['--protocol'],
         r: ['--repo'],
+        s: ['--search'],
         t: ['--type'],
         U: ['--update'],
         u: ['--user'],
@@ -308,6 +310,26 @@ export async function run(options, done) {
         listCallback_(options, listData)
 
         await afterHooks('repo.list', { options })
+    } else if (options.search) {
+        await beforeHooks('repo.search', { options })
+
+        let type = options.type || TYPE_OWNER
+
+        if (options.organization) {
+            type = options.type || TYPE_ALL
+        }
+
+        const query = buildSearchQuery(options, type)
+
+        logger.log(`Searching for repos using the criteria: ${logger.colors.green(query)}`)
+
+        try {
+            await search(options, query)
+        } catch (error) {
+            logger.error(`Can't list repos.\n${error}`)
+        }
+
+        await afterHooks('repo.search', { options })
     } else if (options.new && !options.label) {
         if (!options.new.trim()) {
             options = produce(options, draft => {
@@ -561,6 +583,38 @@ function updateLabel(options, user): Promise<Octokit.Response<Octokit.IssuesUpda
     }
 
     return options.GitHub.issues.updateLabel(payload)
+}
+
+function buildSearchQuery(options, type) {
+    let terms = [options.search]
+
+    if (options.argv.original.some(arg => arg === '-u' || arg === '--user')) {
+        terms.push(`user:${options.user}`)
+    }
+
+    if (options.organization) {
+        terms.push(`org:${options.organization}`)
+    }
+
+    if (type === 'public' || type === 'private') {
+        terms.push(`is:${type}`)
+    }
+
+    // add remaining search terms
+    terms = terms.concat(options.argv.remain.slice(1))
+
+    return terms.join(' ')
+}
+
+async function search(options, query: string) {
+    const payload = {
+        q: query,
+        per_page: 30,
+    }
+
+    const { data } = await options.GitHub.search.repos(payload)
+
+    listCallback_(options, data.items)
 }
 
 function normalizeColor(color) {
