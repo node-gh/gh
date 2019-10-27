@@ -10,7 +10,7 @@ https://github.com/protoEvangelion/foo
 exports[`E2E: Repo Module Test Delete repo \`gh re --delete foo\` 1`] = `
 "Deleting repo protoEvangelion/foo
 ? Are you sure? This action CANNOT be undone. [y/N] ? Are you sure? This action CANNOT be undone. [y/N] y? Are you sure? This action CANNOT be undone. [y/N] y
-Successfully deleted repo.
+✓ Successfully deleted repo.
 "
 `;
 
