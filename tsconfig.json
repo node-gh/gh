@@ -9,5 +9,5 @@
         "lib": ["es2017"],
         "sourceMap": true
     },
-    "exclude": ["node_modules", "lib", "__tests__"]
+    "exclude": ["node_modules", "lib", "__tests__", "__mocks__"]
 }
