@@ -82,11 +82,21 @@ async function resolvePlugin(name) {
         error(`Could not resolve plugin ${colors.red(name)}`, plugin.value)
     }
 
-    const pluginFullName = plugin.Impl.name.toLowerCase()
+/**
+ * Function that checks if cmd is a valid alias
+ *
+ * @return {Future} Future with a Nothing or Just
+ */
+export function isCmdAlias(name: string) {
+    const cmdDir = path.join(__dirname, 'cmds')
 
-    plugin && addPluginConfig(pluginFullName)
+    return readdirFuture(cmdDir).map(function mapFiles(files) {
+        const alias = files.filter((file) => {
+            return file.startsWith(name[0]) && file.includes(name[1])
+        })[0]
 
-    return plugin ? Just(plugin) : Nothing
+        return alias ? S.Just(alias) : S.Nothing
+    })
 }
 
 function setProp(propName, value) {
