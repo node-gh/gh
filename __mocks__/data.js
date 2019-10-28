@@ -1,4 +1,4 @@
-const files = ['file.ts', 'file2.js', 'file3.ts']
+const files = ['alias.ts', 'gists.ts', 'pull-request.ts']
 
 module.exports = {
     files,

@@ -19,3 +19,8 @@ export function maybeFnToEither(monadReturningFunction) {
 
 export const importFuture = Future.encase(require)
 export const readdirFuture = Future.encaseN<NodeJS.ErrnoException, string[], string>(fs.readdir)
+
+export const l = x => {
+    console.log('!!!!!!!', x)
+    return x
+}

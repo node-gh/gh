@@ -9,25 +9,21 @@ import * as configs from './configs'
 import * as exec from './exec'
 import * as logger from './logger'
 
-const config = configs.getConfig()
-
 const testing = process.env.NODE_ENV === 'testing'
 
 export function createContext(scope) {
     return {
         options: scope.options,
-        signature: config.signature,
+        signature: scope.options.config.signature,
     }
 }
 
-export function getHooksArrayFromPath_(path, opt_config?: any) {
+export function getHooksFromPath(path, config: any) {
     const keys = path.split('.')
     let key = keys.shift()
     let hooks
 
-    opt_config = opt_config || config
-
-    hooks = opt_config.hooks || {}
+    hooks = config.hooks || {}
 
     while (hooks[key]) {
         hooks = hooks[key]
@@ -37,12 +33,8 @@ export function getHooksArrayFromPath_(path, opt_config?: any) {
     return Array.isArray(hooks) ? hooks : []
 }
 
-export function getHooksFromPath(path) {
-    return getHooksArrayFromPath_(path)
-}
-
 export async function afterHooks(path, scope) {
-    const after = getHooksFromPath(`${path}.after`)
+    const after = getHooksFromPath(`${path}.after`, scope.options.config)
     const options = scope.options
 
     if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {
@@ -67,7 +59,7 @@ export async function afterHooks(path, scope) {
 }
 
 export async function beforeHooks(path, scope) {
-    const before = getHooksFromPath(`${path}.before`)
+    const before = getHooksFromPath(`${path}.before`, scope.options.config)
     const options = scope.options
 
     if (options.hooks === false || process.env.NODEGH_HOOK_IS_LOCKED) {

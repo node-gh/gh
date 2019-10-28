@@ -9,5 +9,7 @@
         "lib": ["es2017"],
         "sourceMap": true
     },
+    "typeRoots": ["node_modules", "node_modules/@types", "definitions"],
+    "include": ["src", "definitions"],
     "exclude": ["node_modules", "lib", "__tests__", "__mocks__"]
 }
