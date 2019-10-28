@@ -9,12 +9,7 @@ import { find } from '../src/base'
 
 jest.mock('fs')
 
-describe('Unit test for cmd module', () => {
-    beforeEach(() => {
-        // Set up some mocked out file info before each test
-        require('fs')
-    })
-
+describe('Unit test for base module', () => {
     it('Checks which files match a pattern in a directory', done => {
         find('dirPath').value(dirs => {
             expect(dirs).toEqual(files)

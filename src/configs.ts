@@ -7,20 +7,36 @@
 import * as fs from 'fs'
 import { cloneDeep } from 'lodash'
 import * as path from 'path'
+import * as R from 'ramda'
+import * as S from 'sanctuary'
+import * as $ from 'sanctuary-def'
 import * as userhome from 'userhome'
 import * as which from 'which'
 import * as exec from './exec'
 import * as logger from './logger'
-import { prepend, encase } from 'sanctuary'
-import * as R from 'ramda'
+import { importFuture } from './fp'
 
 export const PLUGINS_PATH_KEY = 'plugins_path'
 
 const testing = process.env.NODE_ENV === 'testing'
 
-const safeImport = encase(require)
-const safeWhich = encase(which.sync)
-const safeRealpath = encase(fs.realpathSync)
+/* Refactored FP Functions */
+
+const safeWhich = S.encase(which.sync)
+const safeRealpath = S.encase(fs.realpathSync)
+
+export const getPluginPath = R.pipeK(
+    safeWhich,
+    safeRealpath
+)
+
+export const getPlugin = R.pipeK(
+    S.prepend('gh-'),
+    getPluginPath,
+    importFuture
+)
+
+/* ----------------------- */
 
 // function concatError(leftMonad, errorMessage) {
 //     const leftMonadContainsError = leftMonad && leftMonad.isLeft() && leftMonad.value
@@ -184,6 +200,12 @@ export function writeGlobalConfigCredentials(user, token, path): void {
 
 export function addPluginConfig(plugin) {
     try {
+        const pluginName = S.gets(S.is($.String))(['Impl', 'namez'])(plugin)
+
+        if (S.isNothing(pluginName)) {
+            return S.Left('Cannot get plugin name')
+        }
+
         const pluginConfig = require(path.join(
             getNodeModulesGlobalPath(),
             `gh-${plugin}`,
@@ -229,10 +251,10 @@ export function addPluginConfig(plugin) {
             }
         }
     } catch (e) {
-        if (e.code !== 'MODULE_NOT_FOUND') {
-            throw e
-        }
+        return S.Left(`Error adding config\n${e}`)
     }
+
+    return S.Right('Success')
 }
 
 export function getPlugins() {
@@ -252,17 +274,6 @@ export function getPlugins() {
 
     return plugins
 }
-
-export const getPluginPath = R.pipeK(
-    safeWhich,
-    safeRealpath
-)
-
-export const getPlugin = R.pipeK(
-    prepend('gh-'),
-    getPluginPath,
-    safeImport
-)
 
 export function pluginHasConfig(pluginName) {
     return Boolean(getConfig().plugins[pluginName])
