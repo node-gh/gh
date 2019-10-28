@@ -13,13 +13,11 @@ import { produce } from 'immer'
 import * as TerminalRenderer from 'marked-terminal'
 import { openUrl, userRanValidFlags } from '../utils'
 import * as wrap from 'wordwrap'
-import * as base from '../base'
 import * as git from '../git'
 
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
 
-const config = base.getConfig()
 const testing = process.env.NODE_ENV === 'testing'
 
 const STATUSES = {
@@ -140,19 +138,25 @@ export async function run(options, done) {
     const numbers = [...options.number]
 
     for (const number of numbers) {
-        await main(number)
+        await main(number, options)
     }
 
     done && done()
 
     // main logic to iterate on when number flag is passed in > 1
-    async function main(number) {
+    async function main(number, options) {
         options = await produce(options, async draft => {
             draft.number =
                 number ||
-                getPullRequestNumberFromBranch_(draft.currentBranch, config.pull_branch_name_prefix)
+                getPullRequestNumberFromBranch_(
+                    draft.currentBranch,
+                    options.config.pull_branch_name_prefix
+                )
 
-            draft.pullBranch = getBranchNameFromPullNumber_(number)
+            draft.pullBranch = getBranchNameFromPullNumber_(
+                number,
+                options.config.pull_branch_name_prefix
+            )
             draft.state = draft.state || STATE_OPEN
         })
 
@@ -161,12 +165,12 @@ export async function run(options, done) {
         }
 
         if (options.browser) {
-            browser(options.user, options.repo, number)
+            browser(options.user, options.repo, number, options.config.github_host)
         }
 
         if (!options.list) {
             options = produce(options, draft => {
-                draft.branch = draft.branch || config.default_branch
+                draft.branch = draft.branch || options.config.default_branch
             })
         }
 
@@ -188,7 +192,7 @@ export async function run(options, done) {
 
         if (options.fwd === '') {
             options = produce(options, draft => {
-                draft.fwd = config.default_pr_forwarder
+                draft.fwd = options.config.default_pr_forwarder
             })
         }
 
@@ -211,7 +215,7 @@ export async function run(options, done) {
 
         if (options.submit === '') {
             options = produce(options, draft => {
-                draft.submit = config.default_pr_reviewer
+                draft.submit = options.config.default_pr_reviewer
             })
         }
 
@@ -249,11 +253,11 @@ async function addComplexityParamToPulls_(options, pulls) {
     )
 }
 
-function browser(user, repo, number) {
+function browser(user, repo, number, githubHost) {
     if (number) {
-        openUrl(`${config.github_host}/${user}/${repo}/pull/${number}`)
+        openUrl(`${githubHost}/${user}/${repo}/pull/${number}`)
     } else {
-        openUrl(`${config.github_host}/${user}/${repo}/pulls`)
+        openUrl(`${githubHost}/${user}/${repo}/pulls`)
     }
 }
 
@@ -291,7 +295,8 @@ async function close(options) {
 }
 
 async function comment(options) {
-    const body = logger.applyReplacements(options.comment, config.replace) + config.signature
+    const body =
+        logger.applyReplacements(options.comment, options.config.replace) + options.config.signature
 
     const payload = {
         body,
@@ -338,7 +343,7 @@ async function checkPullRequestIntegrity_(options, originalError) {
     }
 }
 
-async function fetch(options, opt_type) {
+async function fetch(options, optType) {
     try {
         var { data: pull } = await getPullRequest_(options)
     } catch (err) {
@@ -346,12 +351,12 @@ async function fetch(options, opt_type) {
     }
 
     const headBranch = pull.head.ref
-    const repoUrl = config.ssh === false ? pull.head.repo.clone_url : pull.head.repo.ssh_url
+    const repoUrl = options.config.ssh === false ? pull.head.repo.clone_url : pull.head.repo.ssh_url
 
     git.fetch(repoUrl, headBranch, options.pullBranch)
 
-    if (opt_type !== FETCH_TYPE_SILENT) {
-        git[opt_type](options.pullBranch)
+    if (optType !== FETCH_TYPE_SILENT) {
+        git[optType](options.pullBranch)
     }
 
     return pull
@@ -393,9 +398,9 @@ function getPullRequest_(options) {
     return options.GitHub.pulls.get(payload)
 }
 
-function getBranchNameFromPullNumber_(number) {
+function getBranchNameFromPullNumber_(number, pullBranchNamePrefix) {
     if (number && number[0] !== undefined) {
-        return config.pull_branch_name_prefix + number
+        return pullBranchNamePrefix + number
     }
 }
 
@@ -717,7 +722,8 @@ async function list(options, user, repo) {
         json.branches.forEach((branch, index, arr) => {
             logger.log(`${logger.colors.blue('Branch:')} ${branch.name} (${branch.total})`)
 
-            const printTableView = config.pretty_print === undefined || Boolean(config.pretty_print)
+            const printTableView =
+                options.config.pretty_print === undefined || Boolean(options.config.pretty_print)
 
             if (printTableView) {
                 printPullsInfoTable_(options, branch.pulls)
@@ -821,7 +827,7 @@ async function submit(options, user) {
         pullBranch = 'test'
     }
 
-    git.push(config.default_remote, pullBranch)
+    git.push(options.config.default_remote, pullBranch)
 
     var payload: any = {
         owner: user,
@@ -855,9 +861,9 @@ async function submit(options, user) {
     return data || pull
 }
 
-function updatePullRequest_(options, title, opt_body, state) {
-    if (opt_body) {
-        opt_body = logger.applyReplacements(opt_body, config.replace)
+function updatePullRequest_(options, title, optBody, state) {
+    if (optBody) {
+        optBody = logger.applyReplacements(optBody, options.config.replace)
     }
 
     const payload = {
@@ -866,7 +872,7 @@ function updatePullRequest_(options, title, opt_body, state) {
         pull_number: options.number,
         repo: options.repo,
         owner: options.user,
-        ...(opt_body ? { body: opt_body } : {}),
+        ...(optBody ? { body: optBody } : {}),
     }
 
     return options.GitHub.pulls.update(payload)
