@@ -15,4 +15,9 @@ module.exports = {
     testPathIgnorePatterns: ['node_modules'],
     testEnvironment: 'node',
     verbose: true,
+    globals: {
+        'ts-jest': {
+            diagnostics: false,
+        },
+    },
 }
