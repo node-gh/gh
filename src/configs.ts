@@ -14,7 +14,7 @@ import * as userhome from 'userhome'
 import * as which from 'which'
 import * as exec from './exec'
 import * as logger from './logger'
-import { importFuture } from './fp'
+import { safeImport } from './fp'
 
 export const PLUGINS_PATH_KEY = 'plugins_path'
 
@@ -30,10 +30,11 @@ export const getPluginPath = R.pipeK(
     safeRealpath
 )
 
+// TODO merge with getPlugin fn in cmd.ts
 export const getPlugin = R.pipeK(
     S.prepend('gh-'),
     getPluginPath,
-    importFuture
+    safeImport
 )
 
 /* ----------------------- */

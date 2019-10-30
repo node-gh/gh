@@ -6,30 +6,21 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
+import * as Future from 'fluture'
+import { env as flutureEnv } from 'fluture-sanctuary-types'
 import * as fs from 'fs'
 import * as nopt from 'nopt'
 import * as path from 'path'
-import * as updateNotifier from 'update-notifier'
 import * as R from 'ramda'
-import { find, getUser } from './base'
-import {
-    getConfig,
-    getPlugin,
-    addPluginConfig,
-    getGlobalPackageJson,
-    getUserHomePath,
-    createGlobalConfig,
-} from './configs'
-import * as git from './git'
-import { produce, setAutoFreeze } from 'immer'
-import { getGitHubInstance } from './github'
-import { Just, Nothing, isNothing, isLeft } from 'sanctuary'
-import { error, colors } from './logger'
+import { env, create } from 'sanctuary'
+import * as updateNotifier from 'update-notifier'
+import { getConfig, find } from './base'
+import { createGlobalConfig, getGlobalPackageJson, getUserHomePath } from './configs'
+import { safeImport, readdirFuture, safeWhich, safeRealpath, prepend } from './fp'
 
-const config = getConfig()
+const S = create({ checkTypes: true, env: env.concat(flutureEnv) })
 
-// allows to run program as js or ts
-const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
+Future.debugMode(true)
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -48,88 +39,87 @@ const testing = process.env.NODE_ENV === 'testing'
 
 // -- Utils ----------------------------------------------------------------------------------------
 
-function resolveCmd(name, commandDir) {
-    const reg = new RegExp(`.${extension}$`, 'i')
-    const commandFiles = find(commandDir, reg)
-
-    const commandName = commandFiles.filter(file => {
-        switch (file) {
-            case `milestone.${extension}`:
-                if (name === 'ms') return true
-                break
-            case `notification.${extension}`:
-                if (name === 'nt') return true
-                break
-            case `pull-request.${extension}`:
-                if (name === 'pr') return true
-                break
-        }
-
-        if (file.startsWith(name)) {
-            return true
-        }
-
-        return false
-    })[0]
-
-    return commandName && import(path.join(commandDir, commandName))
+interface Args {
+    cooked?: string[]
+    remain?: string[]
 }
 
-async function resolvePlugin(name) {
-    const plugin = getPlugin(Just(name))
+/**
+ * Figure out if cmd is either the Version of Help cmd
+ */
+export function tryResolvingByHelpOrVersion({ cooked, remain }: Args = {}): Future.FutureInstance<
+    string,
+    string
+> {
+    let cmdName = null
 
-    if (isLeft(plugin)) {
-        error(`Could not resolve plugin ${colors.red(name)}`, plugin.value)
+    const isVersionCmd = cooked[0] === '--version' || cooked[0] === '-v'
+    const isHelpCmd = !remain.length || cooked.includes('-h') || cooked.includes('--help')
+
+    if (isVersionCmd) {
+        cmdName = 'version'
+    } else if (isHelpCmd) {
+        cmdName = 'help'
     }
+
+    return cmdName ? Future.of(cmdName) : Future.reject(remain[0])
+}
+
+/**
+ * Builds out the absolute path
+ */
+function buildFilePath(filename: string): string {
+    const commandDir = path.join(__dirname, 'cmds')
+
+    // allows to run program as js normally or ts when debugging
+    const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
+    const fullFileName = filename.includes('.') ? filename : `${filename}.${extension}`
+    const absolutePath = path.join(commandDir, fullFileName)
+
+    return absolutePath
+}
+
+export const tryResolvingByPlugin = R.pipeK(
+    prepend('gh-'),
+    safeWhich,
+    safeRealpath
+)
 
 /**
  * Function that checks if cmd is a valid alias
- *
- * @return {Future} Future with a Nothing or Just
  */
-export function isCmdAlias(name: string) {
+export const tryResolvingByAlias: any = name => {
     const cmdDir = path.join(__dirname, 'cmds')
 
-    return readdirFuture(cmdDir).map(function mapFiles(files) {
-        const alias = files.filter((file) => {
+    return readdirFuture(cmdDir).chain(filterFiles)
+
+    function filterFiles(files): any {
+        const alias = files.filter(file => {
             return file.startsWith(name[0]) && file.includes(name[1])
         })[0]
 
-        return alias ? S.Just(alias) : S.Nothing
-    })
-}
-
-function setProp(propName, value) {
-    return function setObjectProp(object) {
-        return Object.assign({}, object, { [propName]: value })
+        return alias ? Future.of(alias) : Future.reject(name)
     }
 }
 
-async function loadCommand(name) {
-    let Command
+// Some plugins have the Impl prop housing the main class
+// For backwards compat, we will flatten it if it exists
+function flattenIfImpl(obj) {
+    const impl = obj.Impl
 
-    const commandDir = path.join(__dirname, 'cmds')
-    const commandPath = path.join(commandDir, `${name}.${extension}`)
-
-    if (fs.existsSync(commandPath)) {
-        Command = await import(commandPath)
-    } else {
-        Command = await resolveCmd(name, commandDir)
-    }
-
-    if (!Command) {
-        // Try to resolve as plugin
-        const { Impl } = await resolvePlugin(name)
-
-        Impl.map(setProp('isPlugin', true))
-
-        Command = Impl
-    }
-
-    return Command
+    return impl ? impl : obj
 }
 
-async function getCommand(args) {
+export function loadCommand(args: Args) {
+    return tryResolvingByHelpOrVersion(args)
+        .chainRej(tryResolvingByAlias)
+        .map(buildFilePath)
+        .chainRej(tryResolvingByPlugin)
+        .chain(safeImport)
+        .map(flattenIfImpl)
+}
+
+function getCommand(args: string[]) {
     /**
      * nopt function returns:
      *
@@ -139,23 +129,11 @@ async function getCommand(args) {
      */
     const parsed = nopt(args)
     const remain = parsed.argv.remain
-    const cooked = parsed.argv.cooked
-    let module = remain[0]
+    const module = remain[0]
 
-    if (cooked[0] === '--version' || cooked[0] === '-v') {
-        module = 'version'
-    } else if (!remain.length || cooked.indexOf('-h') >= 0 || cooked.indexOf('--help') >= 0) {
-        module = 'help'
-    }
+    const Command = loadCommand(parsed.argv)
 
-    var Command = await loadCommand(module)
-    // throw new Error(`Cannot find module ${module}\n${err}`)
-
-    if (!Command) {
-        throw new Error(`No cmd or plugin found.`)
-    }
-
-    return Command
+    return Command.fold(() => S.Left(`Cannot find module ${module}`), S.Right)
 }
 
 function notifyVersion(): void {
@@ -166,93 +144,97 @@ function notifyVersion(): void {
     }
 }
 
-export async function setUp() {
+export function setUp(args) {
     notifyVersion()
 
-    const Command = await getCommand(process.argv)
+    const Command = getCommand(args)
 
-    const args = await R.pipe(
-        getCommand,
-        getArgs
-    )(process.argv)
+    return Command
+    // const config = getConfig()
 
-    // Allow mutation of options when not testing
-    // https://immerjs.github.io/immer/docs/freezing
-    !testing && setAutoFreeze(false)
+    // const args = await R.pipe(
+    //     getCommand,
+    //     getArgs
+    // )(process.argv)
 
-    if (testing) {
-        var { prepareTestFixtures } = await import('./utils')
+    // // Allow mutation of options when not testing
+    // // https://immerjs.github.io/immer/docs/freezing
+    // !testing && setAutoFreeze(false)
 
-        // Enable mock apis for e2e's
-        var cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
-    }
+    // if (testing) {
+    //     var { prepareTestFixtures } = await import('./utils')
 
-    const options = await produce(args, async draft => {
-        // Gets 2nd positional arg (`gh pr 1` will return 1)
-        const secondArg = [draft.argv.remain[1]]
-        const remote = draft.remote || config.default_remote
-        const remoteUrl = git.getRemoteUrl(remote)
+    //     // Enable mock apis for e2e's
+    //     var cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
+    // }
 
-        if (Command.name !== 'Help' && Command.name !== 'Version') {
-            // We don't want to boot up Ocktokit if user just wants help or version
-            draft.GitHub = await getGitHubInstance()
-        }
+    // const options = await produce(args, async draft => {
+    //     // Gets 2nd positional arg (`gh pr 1` will return 1)
+    //     const secondArg = [draft.argv.remain[1]]
+    //     const remote = draft.remote || config.default_remote
+    //     const remoteUrl = git.getRemoteUrl(remote)
 
-        draft.remote = remote
-        draft.number = draft.number || secondArg
-        draft.loggedUser = getUser()
-        draft.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
-        draft.repo = draft.repo || git.getRepoFromRemoteURL(remoteUrl)
-        draft.currentBranch = git.getCurrentBranch()
-        draft.github_host = config.github_host
-        draft.github_gist_host = config.github_gist_host
+    //     if (Command.name !== 'Help' && Command.name !== 'Version') {
+    //         // We don't want to boot up Ocktokit if user just wants help or version
+    //         draft.GitHub = await getGitHubInstance()
+    //     }
 
-        if (!draft.user) {
-            if (args.repo || args.all) {
-                draft.user = draft.loggedUser
-            } else {
-                draft.user = process.env.GH_USER || draft.remoteUser || draft.loggedUser
-            }
-        }
+    //     draft = { ...draft, config: getConfig() }
+    //     draft.remote = remote
+    //     draft.number = draft.number || secondArg
+    //     draft.loggedUser = getUser()
+    //     draft.remoteUser = git.getUserFromRemoteUrl(remoteUrl)
+    //     draft.repo = draft.repo || git.getRepoFromRemoteURL(remoteUrl)
+    //     draft.currentBranch = git.getCurrentBranch()
+    //     draft.github_host = config.github_host
+    //     draft.github_gist_host = config.github_gist_host
 
-        /**
-         * Checks if there are aliases in your .gh.json file.
-         * If there are aliases in your .gh.json file, we will attempt to resolve the user, PR forwarder or PR submitter to your alias.
-         */
-        if (config.alias) {
-            draft.fwd = config.alias[draft.fwd] || draft.fwd
-            draft.submit = config.alias[draft.submit] || draft.submit
-            draft.user = config.alias[draft.user] || draft.user
-        }
-    })
+    //     if (!draft.user) {
+    //         if (args.repo || args.all) {
+    //             draft.user = draft.loggedUser
+    //         } else {
+    //             draft.user = process.env.GH_USER || draft.remoteUser || draft.loggedUser
+    //         }
+    //     }
 
-    if (testing) {
-        if (Command.isPlugin) {
-            await new Command(options).run(cmdDoneRunning)
-        } else {
-            await Command.run(options, cmdDoneRunning)
-        }
-    } else {
-        if (Command.isPlugin) {
-            await new Command(options).run()
-        } else {
-            await Command.run(options)
-        }
-    }
+    //     /**
+    //      * Checks if there are aliases in your .gh.json file.
+    //      * If there are aliases in your .gh.json file, we will attempt to resolve the user, PR forwarder or PR submitter to your alias.
+    //      */
+    //     if (config.alias) {
+    //         draft.fwd = config.alias[draft.fwd] || draft.fwd
+    //         draft.submit = config.alias[draft.submit] || draft.submit
+    //         draft.user = config.alias[draft.user] || draft.user
+    //     }
+    // })
+
+    // if (testing) {
+    //     if (Command.isPlugin) {
+    //         await new Command(options).run(cmdDoneRunning)
+    //     } else {
+    //         await Command.run(options, cmdDoneRunning)
+    //     }
+    // } else {
+    //     if (Command.isPlugin) {
+    //         await new Command(options).run()
+    //     } else {
+    //         await Command.run(options)
+    //     }
+    // }
 }
 
+/* IMPURE CALLING CODE */
 export async function run() {
+    process.env.GH_PATH = path.join(__dirname, '../')
+
     if (!fs.existsSync(getUserHomePath())) {
         createGlobalConfig()
     }
 
-    try {
-        process.env.GH_PATH = path.join(__dirname, '../')
-
-        await setUp()
-    } catch (e) {
-        console.error(e.stack || e)
-    }
+    setUp(process.argv).fork(
+        a => console.log('ERROR --------->', a),
+        a => console.log('SUCCESS --------->', a)
+    )
 }
 
 /**
