@@ -33,7 +33,7 @@ setAutoFreeze(testing)
 
 Future.debugMode(testing)
 
-interface BaseCommandInterface {
+interface CommandInterface {
     name: string
     isPlugin?: boolean
     DETAILS: {
@@ -46,8 +46,8 @@ interface BaseCommandInterface {
     run: (options?: any, done?: any) => {}
 }
 
-interface CommandInterface extends BaseCommandInterface {
-    new (any): BaseCommandInterface
+interface PluginInterface extends CommandInterface {
+    new (any): CommandInterface
 }
 
 // -- Utils ----------------------------------------------------------------------------------------
@@ -124,12 +124,7 @@ export function tryResolvingByAlias(name: string): Future.FutureInstance<string,
 // Some plugins have the Impl prop housing the main class
 // For backwards compat, we will flatten it if it exists
 function flattenIfImpl(obj) {
-    return obj.Impl
-        ? {
-              ...obj.Impl,
-              isPlugin: true,
-          }
-        : obj
+    return obj.Impl ? obj.Impl : obj
 }
 
 export function loadCommand(
@@ -241,8 +236,10 @@ export async function run() {
 
             const options = await buildOptions(args, Command.name)
 
-            if (Command.isPlugin) {
-                await new Command(options).run(cmdDoneRunning)
+            // Maintain backwards compat with plugins implemented as classes
+            if (typeof Command === 'function') {
+                const Plugin: PluginInterface = Command
+                await new Plugin(options).run(cmdDoneRunning)
             } else {
                 await Command.run(options, cmdDoneRunning)
             }
