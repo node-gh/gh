@@ -5,7 +5,7 @@
  */
 
 import * as configs from './configs'
-import { readdirFuture } from './fp'
+import { safeReaddir } from './fp'
 import * as Future from 'fluture'
 
 // -- Config -------------------------------------------------------------------
@@ -23,7 +23,7 @@ export function find(
     dirPath: string,
     optPattern?
 ): Future.FutureInstance<NodeJS.ErrnoException, string[]> {
-    return readdirFuture(dirPath).map(dirs => {
+    return safeReaddir(dirPath).map(dirs => {
         return dirs.filter(file => {
             return (optPattern || /.*/).test(file)
         })
