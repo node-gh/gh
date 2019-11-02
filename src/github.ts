@@ -14,23 +14,23 @@ import { getConfig, writeGlobalConfigCredentials } from './configs'
 import * as logger from './logger'
 import { URL } from 'url'
 
-const config = getConfig()
-
 export async function getGitHubInstance(): Promise<Octokit> {
+    const config = getConfig()
+
     const {
+        github_token: token,
+        github_user: user,
         api: { protocol, pathPrefix, host },
     } = config
 
-    const is_enterprise = host !== 'api.github.com'
+    const isEnterprise = host !== 'api.github.com'
 
-    const apiUrl = `${protocol}://${is_enterprise ? host : 'api.github.com'}`
+    const apiUrl = `${protocol}://${isEnterprise ? host : 'api.github.com'}`
 
     const { href } = new URL(`${apiUrl}${pathPrefix || ''}`)
 
     // trim trailing slash for Octokit
     const baseUrl = href.replace(/\/+$/, '')
-
-    const token = await getToken()
 
     const throttlePlugin = await import('@octokit/plugin-throttling')
 
@@ -39,7 +39,7 @@ export async function getGitHubInstance(): Promise<Octokit> {
     return new Octokit({
         // log: console,
         baseUrl,
-        auth: token,
+        auth: await getToken({ token, user }),
         throttle: {
             onRateLimit: (retryAfter, options) => {
                 console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)
@@ -58,13 +58,13 @@ export async function getGitHubInstance(): Promise<Octokit> {
     })
 }
 
-export async function getToken(): Promise<string> {
+export async function getToken(tokenAndUser): Promise<string> {
     let token
 
-    if (!tokenExists()) {
+    if (!tokenExists(tokenAndUser)) {
         token = await createNewOathToken()
     } else {
-        token = getSavedToken()
+        token = getSavedToken(tokenAndUser.token)
     }
 
     if (token) {
@@ -74,17 +74,15 @@ export async function getToken(): Promise<string> {
     process.exit(1)
 }
 
-export function tokenExists(): boolean {
+export function tokenExists({ token, user }): boolean {
     if (process.env.GENERATE_NEW_TOKEN) {
         return false
     }
 
-    return (
-        (config.github_token && config.github_user) || (process.env.GH_TOKEN && process.env.GH_USER)
-    )
+    return (token && user) || (process.env.GH_TOKEN && process.env.GH_USER)
 }
 
-function getSavedToken(): string {
+function getSavedToken(token): string {
     if (process.env.CONTINUOUS_INTEGRATION) {
         return process.env.GH_TOKEN
     }
@@ -93,7 +91,7 @@ function getSavedToken(): string {
         return JSON.parse(fs.readFileSync(userhome('.gh.json')).toString()).github_token
     }
 
-    return config.github_token
+    return token
 }
 
 async function createNewOathToken(): Promise<string | undefined> {
