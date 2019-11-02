@@ -45,7 +45,9 @@ export function maybeFnToEither(monadReturningFunction) {
  * @return {Future}
  */
 export const prepend = (a: string) => (b: string) => {
-    return Future.of(a).map(() => a + b)
+    const argsAreStrings = typeof a === 'string' && typeof b === 'string'
+
+    return argsAreStrings ? Future.of(a + b) : Future.reject('Both args should be strings')
 }
 
 /* TYPE CHECKING UTILS */

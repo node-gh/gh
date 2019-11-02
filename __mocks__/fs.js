@@ -10,4 +10,8 @@ fs.readdir = (_, done) => {
     done(null, files)
 }
 
+fs.realpathSync = path => {
+    return path
+}
+
 module.exports = fs

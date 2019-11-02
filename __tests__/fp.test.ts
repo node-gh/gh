@@ -5,7 +5,7 @@
  */
 
 import { files } from '../__mocks__/data'
-import { readdirFuture, importFuture } from '../src/fp'
+import { readdirFuture, safeImport } from '../src/fp'
 
 jest.mock('fs')
 
@@ -17,13 +17,13 @@ describe('Unit test for fp module', () => {
         })
     })
 
-    it('importFuture fn returns expected file or error', done => {
-        importFuture('../src/fp').value(({ importFuture }) => {
-            expect(typeof importFuture).toBe('function')
+    it('safeImport fn returns expected file or error', done => {
+        safeImport('../src/fp').value(({ safeImport }) => {
+            expect(typeof safeImport).toBe('function')
             done()
         })
 
-        importFuture('idontexist').fork(
+        safeImport('idontexist').fork(
             ({ message }) => {
                 expect(message).toBe(`Cannot find module 'idontexist' from 'fp.ts'`)
                 done()

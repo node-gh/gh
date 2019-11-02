@@ -4,70 +4,89 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { isCmdAlias, loadCommand, isCmdHelpOrVersion } from '../src/cmd'
-import * as S from 'sanctuary'
+import {
+    tryResolvingByAlias,
+    loadCommand,
+    tryResolvingByHelpOrVersion,
+    tryResolvingByPlugin,
+} from '../src/cmd'
 
 jest.mock('fs')
+jest.mock('which')
 
-describe('isCmdAlias function', () => {
+describe('tryResolvingByAlias function', () => {
     it('Shows gi as a valid alias for the gists cmd', done => {
-        isCmdAlias('gi').value(isAlias => {
-            expect(isAlias.value).toBe('gists.ts')
+        tryResolvingByAlias('gi').value(isAlias => {
+            expect(isAlias).toBe('gists.ts')
 
             done()
         })
     })
 
     it('Shows nothing for bogus alias', done => {
-        isCmdAlias('åå').value(isAlias => {
-            expect(S.isNothing(isAlias)).toBe(true)
+        tryResolvingByAlias('åå').fork(
+            isAlias => {
+                expect(isAlias).toBe('åå')
 
-            done()
-        })
+                done()
+            },
+            () => {}
+        )
     })
 })
 
-describe('isCmdHelpOrVersion function', () => {
+describe('tryResolvingByHelpOrVersion function', () => {
     it('finds version cmd', () => {
-        expect(
-            isCmdHelpOrVersion({
-                cooked: ['--version'],
-                remain: ['version'],
-            }).value
-        ).toBe('version')
-
-        expect(
-            isCmdHelpOrVersion({
-                cooked: ['-v'],
-                remain: [],
-            }).value
-        ).toBe('version')
+        tryResolvingByHelpOrVersion({
+            cooked: ['--version'],
+            remain: ['version'],
+        }).value(cmd => {
+            expect(cmd).toBe('version')
+        })
     })
 
     it('finds help cmd', () => {
-        expect(
-            isCmdHelpOrVersion({
-                cooked: ['--help'],
-                remain: ['help'],
-            }).value
-        ).toBe('help')
+        tryResolvingByHelpOrVersion({
+            cooked: ['--help'],
+            remain: ['help'],
+        }).value(cmd => {
+            expect(cmd).toBe('help')
+        })
     })
 
-    it('returns nothing for pr cmd', () => {
-        expect(
-            S.isNothing(
-                isCmdHelpOrVersion({
-                    cooked: ['pr'],
-                    remain: ['pr'],
-                })
-            )
-        ).toBe(true)
+    it('returns arg on fail', () => {
+        tryResolvingByHelpOrVersion({
+            cooked: ['pr'],
+            remain: ['pr'],
+        }).fork(
+            cmd => {
+                expect(cmd).toBe('pr')
+            },
+            () => {}
+        )
+    })
+})
+
+describe('tryResolvingByPlugin function', () => {
+    it('finds plugin path', () => {
+        tryResolvingByPlugin('jira').value(path => {
+            expect(path).toMatchInlineSnapshot(`"/Users/you/.npm-global/bin/gh-jira"`)
+        })
+    })
+
+    it('returns ', () => {
+        tryResolvingByPlugin(234).fork(
+            path => {
+                expect(path).toMatchInlineSnapshot(`"Both args should be strings"`)
+            },
+            () => {}
+        )
     })
 })
 
 describe('loadCommand function', () => {
     it('finds hello cmd', done => {
-        loadCommand('pr', {
+        loadCommand({
             cooked: ['pr'],
             remain: ['pr'],
         }).value(({ name }) => {
@@ -78,7 +97,7 @@ describe('loadCommand function', () => {
     })
 
     it('finds the version cmd', done => {
-        loadCommand('version', {
+        loadCommand({
             cooked: ['--version'],
             remain: [],
         }).value(file => {
@@ -89,7 +108,7 @@ describe('loadCommand function', () => {
     })
 
     it('finds the help cmd', done => {
-        loadCommand('help', {
+        loadCommand({
             cooked: ['--help'],
             remain: ['help'],
         }).value(file => {
