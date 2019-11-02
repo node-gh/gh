@@ -5,13 +5,13 @@
  */
 
 import { files } from '../__mocks__/data'
-import { readdirFuture, safeImport } from '../src/fp'
+import { safeReaddir, safeImport } from '../src/fp'
 
 jest.mock('fs')
 
 describe('Unit test for fp module', () => {
-    it('readdirFuture fn returns expected files', done => {
-        readdirFuture('dirPath').value(dirs => {
+    it('safeReaddir fn returns expected files', done => {
+        safeReaddir('dirPath').value(dirs => {
             expect(dirs).toEqual(files)
             done()
         })
