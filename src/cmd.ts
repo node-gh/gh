@@ -86,6 +86,10 @@ function buildFilePath(filename: string): string {
     return absolutePath
 }
 
+/**
+ * @param {string} cmdName - A string param
+ * @return {Future} of string path
+ */
 export const tryResolvingByPlugin = R.pipeK(
     prepend('gh-'),
     safeWhich,
@@ -100,8 +104,8 @@ export const tryResolvingByAlias: any = name => {
 
     return readdirFuture(cmdDir).chain(filterFiles)
 
-    function filterFiles(files): any {
-        const alias = files.filter(file => {
+    function filterFiles(files: string[]): any {
+        const alias = files.filter((file: string) => {
             return file.startsWith(name[0]) && file.includes(name[1])
         })[0]
 
