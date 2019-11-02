@@ -9,40 +9,46 @@
 import * as Future from 'fluture'
 import { env as flutureEnv } from 'fluture-sanctuary-types'
 import * as fs from 'fs'
+import produce, { setAutoFreeze } from 'immer'
 import * as nopt from 'nopt'
 import * as path from 'path'
 import * as R from 'ramda'
-import { env, create } from 'sanctuary'
+import { create, env } from 'sanctuary'
 import * as updateNotifier from 'update-notifier'
+
 import { getConfig, getUser } from './base'
 import { createGlobalConfig, getGlobalPackageJson, getUserHomePath } from './configs'
-import { safeImport, readdirFuture, safeWhich, safeRealpath, prepend } from './fp'
-import produce, { setAutoFreeze } from 'immer'
+import { prepend, safeReaddir, safeImport, safeRealpath, safeWhich } from './fp'
 import * as git from './git'
 import { getGitHubInstance } from './github'
 
 const testing = process.env.NODE_ENV === 'testing'
 
-// Allow mutation of options when not testing
-// https://immerjs.github.io/immer/docs/freezing
-!testing && setAutoFreeze(false)
-
+// Make Fluture Play nicely with Sanctuary
 const S = create({ checkTypes: true, env: env.concat(flutureEnv) })
 
-Future.debugMode(true)
+// Allow mutation of options when not testing
+// https://immerjs.github.io/immer/docs/freezing
+setAutoFreeze(testing)
 
-// interface Command {
-//     name: string
-//     isPlugin?: boolean
-//     DETAILS: {
-//         alias: string
-//         description: string
-//         commands: string
-//         options: object
-//         shorthands: object
-//     }
-//     run: () => {}
-// }
+Future.debugMode(testing)
+
+interface BaseCommandInterface {
+    name: string
+    isPlugin?: boolean
+    DETAILS: {
+        alias: string
+        description: string
+        commands: string
+        options: object
+        shorthands: object
+    }
+    run: (options?: any, done?: any) => {}
+}
+
+interface CommandInterface extends BaseCommandInterface {
+    new (any): BaseCommandInterface
+}
 
 // -- Utils ----------------------------------------------------------------------------------------
 
@@ -73,12 +79,12 @@ export function tryResolvingByHelpOrVersion({ cooked, remain }: Args = {}): Futu
 }
 
 /**
- * Builds out the absolute path
+ * Builds out the absolute path of the non plugin cmd
  */
 function buildFilePath(filename: string): string {
     const commandDir = path.join(__dirname, 'cmds')
 
-    // allows to run program as js normally or ts when debugging
+    // Allows to run program as .js normally or .ts when debugging
     const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
     const fullFileName = filename.includes('.') ? filename : `${filename}.${extension}`
     const absolutePath = path.join(commandDir, fullFileName)
@@ -86,25 +92,27 @@ function buildFilePath(filename: string): string {
     return absolutePath
 }
 
+type TryResolvingByPlugin = (a: string) => Future.FutureInstance<NodeJS.ErrnoException, string>
 /**
- * @param {string} cmdName - A string param
- * @return {Future} of string path
+ * Try to determine if cmd passed in is a plugin
  */
-export const tryResolvingByPlugin = R.pipeK(
+export const tryResolvingByPlugin: TryResolvingByPlugin = R.pipeK(
     prepend('gh-'),
     safeWhich,
     safeRealpath
 )
 
 /**
- * Function that checks if cmd is a valid alias
+ * Checks if cmd is a valid alias
  */
-export const tryResolvingByAlias: any = name => {
+export function tryResolvingByAlias(name: string): Future.FutureInstance<string, string> {
     const cmdDir = path.join(__dirname, 'cmds')
 
-    return readdirFuture(cmdDir).chain(filterFiles)
+    return safeReaddir(cmdDir)
+        .chain(filterFiles)
+        .chainRej(() => Future.reject(name))
 
-    function filterFiles(files: string[]): any {
+    function filterFiles(files: string[]): Future.FutureInstance<string, string> {
         const alias = files.filter((file: string) => {
             return file.startsWith(name[0]) && file.includes(name[1])
         })[0]
@@ -116,12 +124,17 @@ export const tryResolvingByAlias: any = name => {
 // Some plugins have the Impl prop housing the main class
 // For backwards compat, we will flatten it if it exists
 function flattenIfImpl(obj) {
-    const impl = obj.Impl
-
-    return impl ? impl : obj
+    return obj.Impl
+        ? {
+              ...obj.Impl,
+              isPlugin: true,
+          }
+        : obj
 }
 
-export function loadCommand(args: Args) {
+export function loadCommand(
+    args: Args
+): Future.FutureInstance<NodeJS.ErrnoException, CommandInterface> {
     return tryResolvingByHelpOrVersion(args)
         .chainRej(tryResolvingByAlias)
         .map(buildFilePath)
@@ -130,7 +143,9 @@ export function loadCommand(args: Args) {
         .map(flattenIfImpl)
 }
 
-function getCommand(args: string[]) {
+function getCommand(
+    args: string[]
+): Future.FutureInstance<{ value: string }, { value: CommandInterface }> {
     /**
      * nopt function returns:
      *
@@ -201,7 +216,7 @@ export async function buildOptions(args, cmdName) {
     return options
 }
 
-/* IMPURE CALLING CODE */
+/* !! IMPURE CALLING CODE !! */
 export async function run() {
     process.env.GH_PATH = path.join(__dirname, '../')
 
@@ -212,31 +227,24 @@ export async function run() {
     notifyVersion()
 
     getCommand(process.argv).fork(
-        a => console.log('ERROR --------->', a),
+        errMsg => console.log(errMsg),
         async ({ value: Command }) => {
             const args = getAvailableArgsOnCmd(Command)
+            let cmdDoneRunning = null
 
             if (testing) {
-                var { prepareTestFixtures } = await import('./utils')
+                const { prepareTestFixtures } = await import('./utils')
 
                 // Enable mock apis for e2e's
-                var cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
+                cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
             }
 
             const options = await buildOptions(args, Command.name)
 
-            if (testing) {
-                if (Command.isPlugin) {
-                    await new Command(options).run(cmdDoneRunning)
-                } else {
-                    await Command.run(options, cmdDoneRunning)
-                }
+            if (Command.isPlugin) {
+                await new Command(options).run(cmdDoneRunning)
             } else {
-                if (Command.isPlugin) {
-                    await new Command(options).run()
-                } else {
-                    await Command.run(options)
-                }
+                await Command.run(options, cmdDoneRunning)
             }
         }
     )
@@ -260,6 +268,6 @@ export async function run() {
  * and all parsed options to each cmd's payload function to figure out positional args and allow for neat shortcuts like:
  * gh is 'new issue' 'new issue description'
  */
-function getAvailableArgsOnCmd(Command) {
+function getAvailableArgsOnCmd(Command: CommandInterface) {
     return nopt(Command.DETAILS.options, Command.DETAILS.shorthands, process.argv, 2)
 }

@@ -28,7 +28,7 @@ export function safeImport(
     return Future.of(moduleObj)
 }
 
-export const readdirFuture = Future.encaseN<NodeJS.ErrnoException, string[], string>(fs.readdir)
+export const safeReaddir = Future.encaseN<any, string[], string>(fs.readdir)
 
 /* TRANSFORMATIONS */
 // Allows you to take a Maybe returning function and make it an Either returning function
