@@ -42,7 +42,9 @@ export async function run(options, done) {
     }
 
     if (login) {
-        if (tokenExists()) {
+        const { github_token: token, github_user: user } = configs.getConfig()
+
+        if (tokenExists({ token, user })) {
             logger.log(`You're logged in as ${logger.colors.green(options.user)}`)
         } else {
             done && done()
