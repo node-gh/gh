@@ -8,7 +8,8 @@ import * as truncate from 'truncate'
 import * as configs from './configs'
 import * as exec from './exec'
 import * as logger from './logger'
-
+import { tryResolvingByPlugin } from './cmd'
+import { safeImport } from './fp'
 const testing = process.env.NODE_ENV === 'testing'
 
 export function createContext(scope) {
@@ -84,28 +85,27 @@ export async function beforeHooks(path, scope) {
 async function setupPlugins_(context, setupFn): Promise<object> {
     const plugins = configs.getPlugins()
 
-    const contextArr = await Promise.all(
+    return Promise.all(
         plugins.map(async pluginName => {
+            // Slice off extra 'gh-' so it isn't 'gh-gh-'
+            const name = pluginName.slice(3)
+
             try {
-                var pluginFile = await configs.getPlugin(pluginName)
+                var pluginFile = await tryResolvingByPlugin(name)
+                    .chain(safeImport)
+                    .promise()
             } catch (e) {
-                logger.warn(`Can't get ${pluginName} plugin.`)
+                logger.warn(`Can't get ${name} plugin.`)
             }
 
             if (pluginFile && configs.pluginHasConfig(pluginName) && pluginFile[setupFn]) {
-                const newContext = pluginFile[setupFn](context)
-                return newContext
+                // TODO: find a better state sharing mechanism than mutation
+                // Currently our approach is to give each plugin a chance to
+                // update the main options object for the before & after hooks
+                pluginFile[setupFn](context)
             }
         })
     )
-
-    return contextArr.filter(plugin => plugin !== undefined).reduce(mergeArrayOfObjects, false)
-}
-
-function mergeArrayOfObjects(accumulatedObject, currentObject): object | boolean {
-    if (!currentObject) return accumulatedObject
-
-    return { ...accumulatedObject, ...currentObject }
 }
 
 export function wrapCommand_(cmd, context, when) {
