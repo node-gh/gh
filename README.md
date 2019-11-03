@@ -1,18 +1,30 @@
+<h1 align="center">Node GH</h1>
+
 <p align="center">
-
-# Node GH
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-88-orange.svg?style=flat-square)](#contributors-)
-[![NPM version](http://img.shields.io/npm/v/gh.svg?style=flat)](http://npmjs.org/gh)
-[![Build Status](http://img.shields.io/travis/node-gh/gh/master.svg?style=flat)](https://travis-ci.org/node-gh/gh)
-[![Known Vulnerabilities](https://snyk.io/test/github/node-gh/gh/badge.svg)](https://snyk.io/test/github/node-gh/gh)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/context:javascript)
-[![Total Alerts](https://img.shields.io/lgtm/alerts/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/alerts)
-
+    <a href="#contributors" alt="All Contributors Badge">
+      <img src="https://img.shields.io/badge/all_contributors-88-orange.svg?style=flat-square" />
+    </a>
+    <a href="http://npmjs.org/gh" alt="NPM version Badge">
+      <img src="http://img.shields.io/npm/v/gh.svg?style=flat" />
+    </a>
+    <a href="https://travis-ci.org/node-gh/gh" alt="Build Status Badge">
+      <img src="http://img.shields.io/travis/node-gh/gh/master.svg?style=flat" />
+    </a>
+    <a href="https://snyk.io/test/github/node-gh/gh" alt="Known Vulnerabilities Badge">
+      <img src="https://snyk.io/test/github/node-gh/gh/badge.svg" />
+    </a>
+    <a href="https://github.com/semantic-release/semantic-release" alt="Semantic Release Badge">
+      <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" />
+    </a>
+    <a href="https://lgtm.com/projects/g/node-gh/gh/context:javascript" alt="LGTM Grade Badge">
+      <img src="https://img.shields.io/lgtm/grade/javascript/g/node-gh/gh.svg?logo=lgtm&logoWidth=18" />
+    </a>
+    <a href="https://lgtm.com/projects/g/node-gh/gh/alerts" alt="LGTM Total Alerts Badge">
+      <img src="https://img.shields.io/lgtm/alerts/g/node-gh/gh.svg?logo=lgtm&logoWidth=18" />
+    </a>
 </p>
 
-> Increase your productivity & improve automation when working with GitHub, all from the comfort of your command line.
+> Boost your productivity & automation tasks when working with GitHub, all from the comfort of your CLI.
 
 ## Table of contents
 
