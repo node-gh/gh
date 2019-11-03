@@ -51,7 +51,7 @@ export function spawnSyncStream(cmd, args, options?: any) {
     return proc
 }
 
-export function execSync(cmd, options) {
+export function execSync(cmd, options?) {
     if (!options) {
         options = {}
     }
@@ -63,7 +63,7 @@ export function execSync(cmd, options) {
     return child_process.execSync(cmd, options)
 }
 
-export function execSyncInteractiveStream(cmd, options) {
+export function execSyncInteractiveStream(cmd, options?) {
     if (!options) {
         options = {}
     }
