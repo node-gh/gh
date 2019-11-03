@@ -830,14 +830,15 @@ async function submit(options, user) {
     git.push(options.config.default_remote, pullBranch)
 
     var payload: any = {
+        mediaType: {
+            previews: ['shadow-cat'],
+        },
         owner: user,
         base: options.branch,
         head: `${options.user}:${pullBranch}`,
         repo: options.repo,
-        mediaType: {
-            previews: ['shadow-cat'],
-        },
         ...(options.draft ? { draft: options.draft } : {}),
+        ...(options.description ? { body: options.description } : {}),
     }
 
     try {
@@ -845,7 +846,6 @@ async function submit(options, user) {
             payload.issue = options.issue
             var { data } = await options.GitHub.pulls.createFromIssue(payload)
         } else {
-            payload.body = options.description
             payload.title = options.title || git.getLastCommitMessage(pullBranch)
 
             var { data } = await options.GitHub.pulls.create(payload)
