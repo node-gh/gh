@@ -1,6 +1,8 @@
+<p align="center">
+
 # Node GH
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-85-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-88-orange.svg?style=flat-square)](#contributors-)
 [![NPM version](http://img.shields.io/npm/v/gh.svg?style=flat)](http://npmjs.org/gh)
 [![Build Status](http://img.shields.io/travis/node-gh/gh/master.svg?style=flat)](https://travis-ci.org/node-gh/gh)
 [![Known Vulnerabilities](https://snyk.io/test/github/node-gh/gh/badge.svg)](https://snyk.io/test/github/node-gh/gh)
@@ -8,41 +10,128 @@
 [![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/context:javascript)
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/node-gh/gh.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/node-gh/gh/alerts)
 
-> All the power of GitHub in your terminal.
+</p>
+
+> Increase your productivity & improve automation when working with GitHub, all from the comfort of your command line.
 
 ## Table of contents
 
+[Contributors](#contributors)
+
+<details><summary>Getting Started</summary>
+
 -   [Install](#install)
 -   [Usage](#usage)
--   [Contributors](#contributors)
+-   [Config](#config)
+-   [Plugins](#plugins)
 -   [Contributing](#contributing)
+    </details>
+
+<details><summary>Available Commands</summary>
+
+<details><summary>Pull Requests `pr`</summary>
+
+-   [`--info` - Get information about a pull request](#pr-info)
+-   [`--list` - List pull requests](#pr-list)
+-   [`--fetch` - Rebase or Merge pull request into new branch](#pr-merge-or-rebase)
+-   [`--comment` - Comment on a pull request](#pr-comment)
+-   [`--fwd` - Forward a pull request to another reviewer](#pr-forward)
+-   [`--open` | `--close` - Open or Close a pull request](#pr-open-or-close)
+-   [`--submit` - Open or Close a pull request](#pr-submit)
+-   [`--browser` - Open GitHub pull request page in the browser](#pr-open-in-browser)
+    </details>
+
+<details><summary>Issues `is`</summary>
+
+-   [`--new` - Create new issues](#issue-create)
+-   [`--comment` - Comment on an issue of a repository](#issue-comment)
+-   [`--open` | `--close` - Open or Close an issue](#issue-open-or-close)
+-   [`--list` - List issues on a repository](#issue-list)
+-   [`--browser` - Open GitHub issue page in the browser](#issue-open-in-browser)
+-   [`--search` - Search issues in current repository](#issue-search)
+-   [`--assign` - Assign an issue on a repository to a user](#issue-assign)
+    </details>
+
+<details><summary>Repos `re`</summary>
+
+-   [`--browser` - Open the GitHub repository page in the browser](#repo-open-in-browser)
+-   [`--list` - List repos](#repo-list)
+-   [`--create` - Create a new GitHub repository and clone on the current directory](#repo-create)
+-   [`--fork` - Fork a GitHub repository](#repo-fork)
+-   [`--delete` - Delete a repository of specified user](#repo-delete)
+-   [`--clone` - Clone a repository](#repo-clone)
+-   [`--label --new` - Create or delete a label for a repository](#repo-create-label)
+-   [`--label --delete` - Delete a label for a repository](#repo-delete-label)
+-   [`--label --list` - List labels for a repository](#repo-list-label)
+-   [`--label --update` - Update a label for a repository](#repo-list-labels)
+-   [`--search` - Find repositories via various criteria](#repo-search)
+    </details>
+
+<details><summary>Gists `gi`</summary>
+
+-   [`--browser` - Open a Gist in the browser](#gist-open-in-browser)
+-   [`--list` - List user's gists](#gist-list)
+-   [`--create` - Create new gists](#gist-create)
+-   [`--fork` - Fork a gist](#gist-fork)
+-   [`--delete` - Delete a gist](#gist-delete)
+    </details>
+
+<details><summary>User `us`</summary>
+
+-   [`--login` - Automates saving user name & developer token credentials to your ~/.gh.json config](#user-login-or-logout)
+-   [`--logout` - Automates removing user name & developer token credentials from your ~/.gh.json config](#user-login-or-logout)
+-   [`--whoami` - Prints the user name from ~/.gh.json to your console](#user-whoami)
+    </details>
+
+<details><summary>Notifications `nt`</summary>
+
+-   [`--latest` - Display the latest activities on a repository](#notifications-latest)
+-   [`--list` - Watch for any activity on repository](#notifications-watch)
+    </details>
+
+<details><summary>Milestones `ms`</summary>
+
+-   [`--list` - List milestones for a specific repo](#milestone-list)
+    </details>
+
+<details><summary>Alias `al`</summary>
+
+-   [`--add` - Add a shell-like alias for users](#alias-add)
+-   [`--remove` - Remove alias](#alias-remove)
+-   [`--list` - List aliases for a specific repo](#alias-list)
+    </details>
+
+</details>
+
+<details><summary>General</summary>
+
 -   [History](#history)
 -   [License](#license)
 -   [Demonstration](#demonstration)
 -   [Supported Node Versions](#supported-node-versions)
--   [Available commands](#available-commands)
-    -   [Pull requests](#pull-requests)
-    -   [Notifications](#notifications)
-    -   [Issues](#issues)
-    -   [Repo](#repo)
-    -   [Gists](#gists)
-    -   [User](#user)
-    -   [Milestone](#milestone)
-    -   [Alias](#alias)
--   [Config](#config)
--   [Plugins](#plugins)
+    </details>
 
 ## Install
 
-    [sudo] npm install -g gh
+```
+npm install -g gh
+```
 
 ## Usage
 
-    gh [command] [--flags]
+-   Most commands require you to use a developer key
+-   We automate the process for you the first time you run a command
+-   [Instructions](#user-login-or-logout) on manually adding a developer key for extra security
+
+Simple example: _list prs for current repo_
+
+```
+gh pr
+```
 
 ## Contributors
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Huge thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
@@ -190,19 +279,15 @@ For detailed changelog, check [Releases](https://github.com/node-gh/gh/releases)
 
 ## Supported Node Versions:
 
--   We support the node versions that the Node.js organization supports which as of now is Node v6 & up.
+We support the node versions that the Node.js organization supports which as of now is Node v6 & up.
 
 <p><img src="https://github.com/nodejs/Release/blob/master/schedule.svg" alt="LTS Schedule"/></p>
 
 ## Authentication
 
--   Under the hood, we are using [@octokit/rest](https://github.com/octokit/rest.js) to work with the GitHub API
--   The method of authentication that we use with octokit, is a personal access token
--   You have two options here:
-    1. Run `gh` which will start the authentication process & generate the token for you automatically
-        - Though they are hidden, the downside of this is having to type your user & pass
-        - Supports 2fa
-    2. [Manually generate your personal token](https://github.com/node-gh/gh/issues/450#issuecomment-490530739) & add it to your `~/.gh.json`
+Under the hood, we are using [@octokit/rest](https://github.com/octokit/rest.js) to work with the GitHub API
+The method of authentication that we use with octokit, is a personal access token
+You have two options here: 1. Run `gh` which will start the authentication process & generate the token for you automatically - Though they are hidden, the downside of this is having to type your user & pass - Supports 2fa 2. [Manually generate your personal token](https://github.com/node-gh/gh/issues/450#issuecomment-490530739) & add it to your `~/.gh.json`
 
 ## Available commands
 
@@ -210,13 +295,13 @@ For detailed changelog, check [Releases](https://github.com/node-gh/gh/releases)
 gh help
 ```
 
--   List all comands options.
+List all comands options.
 
 ```
 gh help --all
 ```
 
--   List specific command options.
+List specific command options.
 
 ```
 gh help <command>
@@ -242,7 +327,7 @@ gh pull-request
 
 > **Alias:** `gh pr`
 
-### 1. Info
+### PR: Info
 
 | Option           | Usage      | Type      |
 | ---------------- | ---------- | --------- |
@@ -256,13 +341,13 @@ gh pull-request
 gh pr
 ```
 
--   Get information about a pull request.
+Get information about a pull request.
 
 ```
 gh pr --info number
 ```
 
-### 2. List
+### PR: List
 
 | Option             | Usage        | Type                                                               |
 | ------------------ | ------------ | ------------------------------------------------------------------ |
@@ -281,114 +366,86 @@ gh pr --info number
 | `-u`, `--user`     | _Optional_   | `String`                                                           |
 | `--link`           | _Optional_   | `Boolean`                                                          |
 
-`user` is owner of the repository, it is the authenticated user by default.
-`remote` is the name of the remote configuration in a git directory, i.e. origin, upstream. Therefore, it only makes sense when this command is run in a git directory.
+-   `user` is owner of the repository, it is the authenticated user by default.
+-   `remote` is the name of the remote configuration in a git directory, i.e. origin, upstream.
+-   Therefore, it only makes sense when this command is run in a git directory.
 
 #### Examples
 
--   **Shortcut** for listing open pull requests for the current repository.
--   To turn off pretty printing of output in a table add `"pretty_print": false` to your `~/.gh-json` config
+**Shortcut** for listing open pull requests for the current repository.
+To turn off pretty printing of output in a table add `"pretty_print": false` to your `~/.gh-json` config
 
--   List open pull requests for all branches from all your repositories.
+List open pull requests for all branches from all your repositories.
 
 ```
 gh pr --list --all
 ```
 
--   List open pull requests for all branches in all repositories belonging to the "github" organization.
+List open pull requests for all branches in all repositories belonging to the "github" organization.
 
 ```
 gh pr --list --all --org github
 ```
 
--   List open pull requests sent by logged user on current repository.
+List open pull requests sent by logged user on current repository.
 
 ```
 gh pr --list --me
 ```
 
--   List open pull requests in node-gh/gh repository.
+List open pull requests in node-gh/gh repository.
 
 ```
 gh pr --list --user node-gh --repo gh
 ```
 
--   List open pull requests with link and content.
+List open pull requests with link and content.
 
 ```
 gh pr --list --detailed
 ```
 
--   List open pull requests for a branch.
+List open pull requests for a branch.
 
 ```
 gh pr --list --branch master
 ```
 
--   List open pull requests and sort them by popularity _(comment count)_.
+List open pull requests and sort them by popularity _(comment count)_.
 
 ```
 gh pr --list --sort popularity
 ```
 
--   List open pull requests and sort them by asc long-running _(old but still active)_.
+List open pull requests and sort them by asc long-running _(old but still active)_.
 
 ```
 gh pr --list --sort long-running --direction asc
 ```
 
--   List open pull requests and sort them by complexity _(complexity is calculated based on number of additions, deletions, changed files, comments and review comments)_.
+List open pull requests and sort them by complexity _(complexity is calculated based on number of additions, deletions, changed files, comments and review comments)_.
 
 ```
 gh pr --list --sort complexity
 ```
 
--   List open pull requests with their link
+List open pull requests with their link
 
 ```
 gh pr --list --link
 ```
 
--   List open pull requests with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+List open pull requests with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
 
 ```
 gh pr --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
-### 3. Fetch
+### PR: Merge or Rebase
 
 | Option           | Usage        | Type      |
 | ---------------- | ------------ | --------- |
 | `-f`, `--fetch`  | **Required** | `Boolean` |
-| `-n`, `--number` | **Required** | `Number`  |
-| `-M`, `--merge`  | _Optional_   | `Boolean` |
-| `-R`, `--rebase` | _Optional_   | `Boolean` |
-| `--remote`       | _Optional_   | `String`  |
-| `-r`, `--repo`   | _Optional_   | `String`  |
-| `-u`, `--user`   | _Optional_   | `String`  |
-
-#### Examples
-
--   **Shortcut** for fetching pull request and checkout into a new branch `pr-1`.
-
-```
-gh pr 1
-```
-
--   Fech pull request rebasing or merging into the current branch.
-
-```
-gh pr 1 --fetch --rebase
-```
-
-```
-gh pr 1 --fetch --merge
-```
-
-### 4. Merge or rebase
-
-| Option           | Usage        | Type      |
-| ---------------- | ------------ | --------- |
 | `-M`, `--merge`  | **Required** | `Boolean` |
 | `-R`, `--rebase` | **Required** | `Boolean` |
 | `-n`, `--number` | _Optional_   | `Number`  |
@@ -402,7 +459,13 @@ Omitting `--number` will try to guess the pull number from branch name e.g. `pr-
 
 #### Examples
 
--   Merge or rebase pull request into a local branch.
+**Shortcut** for fetching pull request and checkout into a new branch `pr-1`.
+
+```
+gh pr 1
+```
+
+Merge or rebase pull request into a local branch.
 
 ```
 gh pr 1 --fetch --merge
@@ -412,7 +475,7 @@ gh pr 1 --fetch --merge
 gh pr 1 --fetch --rebase
 ```
 
--   Merge or rebase pull request into branch `dev`.
+Merge or rebase pull request into branch `dev`.
 
 ```
 gh pr 1 --fetch --rebase --branch dev
@@ -422,7 +485,7 @@ gh pr 1 --fetch --rebase --branch dev
 gh pr 1 --fetch --merge --branch dev
 ```
 
-### 5. Comment
+### PR: Comment
 
 | Option            | Usage        | Type     |
 | ----------------- | ------------ | -------- |
@@ -434,13 +497,13 @@ gh pr 1 --fetch --merge --branch dev
 
 #### Examples
 
--   Comment on a pull request.
+Comment on a pull request.
 
 ```
 gh pr 1 --comment "Merged, thank you!"
 ```
 
-### 6. Forward
+### PR Forward
 
 | Option           | Usage        | Type     |
 | ---------------- | ------------ | -------- |
@@ -452,13 +515,13 @@ in your [config file](#config).
 
 #### Examples
 
--   Forward a pull request to another reviewer.
+Forward a pull request to another reviewer.
 
 ```
 gh pr 1 --fwd username
 ```
 
-### 7. Open or close
+### PR: Open or Close
 
 | Option           | Usage        | Type      |
 | ---------------- | ------------ | --------- |
@@ -471,37 +534,37 @@ gh pr 1 --fwd username
 
 #### Examples
 
--   Open a pull request.
+Open a pull request.
 
 ```
 gh pr 1 --open
 ```
 
--   Close a pull request.
+Close a pull request.
 
 ```
 gh pr 1 --close
 ```
 
--   Close multiple pull requests.
+Close multiple pull requests.
 
 ```
 gh pr --close --number 1 --number 2
 ```
 
--   Open multiple pull requests.
+Open multiple pull requests.
 
 ```
 gh pr --open --number 1 --number 2
 ```
 
--   Open or close a pull request that you've sent to someone.
+Open or close a pull request that you've sent to someone.
 
 ```
 gh pr 1 --close --user eduardolundgren
 ```
 
-### 8. Submit
+### PR: Submit
 
 | Option                | Usage        | Type     |
 | --------------------- | ------------ | -------- |
@@ -518,31 +581,31 @@ using the last commit message as title.
 
 #### Examples
 
--   Submit a pull request using the current branch.
+Submit a pull request using the current branch.
 
 ```
 gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
 ```
 
--   Submit a pull request using the current branch to dev branch.
+Submit a pull request using the current branch to dev branch.
 
 ```
 gh pr --submit eduardolundgren --branch dev
 ```
 
--   Submit a pull request from a issue.
+Submit a pull request from a issue.
 
 ```
 gh pr --submit eduardolundgren --issue 150
 ```
 
--   Submit a pull request in draft state.
+Submit a pull request in draft state.
 
 ```
 gh pr --submit eduardolundgren --draft
 ```
 
-### 9. Open in Browser
+### PR: Open in Browser
 
 | Option            | Usage        | Type      |
 | ----------------- | ------------ | --------- |
@@ -553,7 +616,7 @@ gh pr --submit eduardolundgren --draft
 
 #### Examples
 
--   Open GitHub pull request page in the browser.
+Open GitHub pull request page in the browser.
 
 ```
 gh pr 100 --browser
@@ -567,7 +630,7 @@ gh notification
 
 > **Alias:** `gh nt`
 
-### 1. Latest
+### Notifications: Latest
 
 | Option           | Usage        | Type      |
 | ---------------- | ------------ | --------- |
@@ -579,25 +642,25 @@ gh notification
 
 #### Examples
 
--   **Shortcut** for displaying the latest activities on the current repository.
+**Shortcut** for displaying the latest activities on the current repository.
 
 ```
 gh nt
 ```
 
--   Display the latest activities on a certain repository.
+Display the latest activities on a certain repository.
 
 ```
 gh nt --latest --user eduardolundgren --repo node-gh
 ```
 
--   Diplay notifications with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+Diplay notifications with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
 
 ```
 gh nt --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
-### 2. Watch
+### Notifications: Watch
 
 | Option          | Usage        | Type      |
 | --------------- | ------------ | --------- |
@@ -608,13 +671,13 @@ gh nt --date "dddd, MMMM Do YYYY, h:mm:ss a"
 
 #### Examples
 
--   Watch for any activity on the current repository.
+Watch for any activity on the current repository.
 
 ```
 gh nt --watch
 ```
 
--   Watch for any activity on a certain repository.
+Watch for any activity on a certain repository.
 
 ```
 gh nt --watch --user eduardolundgren --repo node-gh
@@ -628,7 +691,7 @@ gh issue
 
 > **Alias:** `gh is`
 
-### 1. Create
+### Issue: Create
 
 | Option             | Usage        | Type      |
 | ------------------ | ------------ | --------- |
@@ -643,31 +706,31 @@ gh issue
 
 #### Examples
 
--   **Shortcut** for creating a new issue on the current repository.
+**Shortcut** for creating a new issue on the current repository.
 
 ```
 gh is 'Node GH rocks!' 'Body with **Markdown** support'
 ```
 
--   Create a new issue on a certain repository.
+Create a new issue on a certain repository.
 
 ```
 gh is --new --title 'Node GH rocks!' --message 'Body with **Markdown** support' --user eduardolundgren --repo node-gh
 ```
 
--   Create a new issue with labels.
+Create a new issue with labels.
 
 ```
 gh is --new --title 'Node GH rocks!' --labels bug,question,test
 ```
 
--   Create a new issue and assign it to someone.
+Create a new issue and assign it to someone.
 
 ```
 gh is --new --title 'Node GH rocks!' --assignee zenorocha
 ```
 
-### 2. Comment
+### Issue: Comment
 
 | Option            | Usage        | Type     |
 | ----------------- | ------------ | -------- |
@@ -679,19 +742,19 @@ gh is --new --title 'Node GH rocks!' --assignee zenorocha
 
 #### Examples
 
--   Comment on an issue of the current repository.
+Comment on an issue of the current repository.
 
 ```
 gh is 1 --comment 'Node GH rocks!'
 ```
 
--   Comment on an issue of a certain repository.
+Comment on an issue of a certain repository.
 
 ```
 gh is 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
 ```
 
-### 3. Open or close
+### Issue: Open or Close
 
 | Option           | Usage        | Type      |
 | ---------------- | ------------ | --------- |
@@ -704,37 +767,37 @@ gh is 1 --comment 'Node GH rocks!' --user eduardolundgren --repo node-gh
 
 #### Examples
 
--   Open an issue.
+Open an issue.
 
 ```
 gh is 1 --open
 ```
 
--   Close an issue.
+Close an issue.
 
 ```
 gh is 1 --close
 ```
 
--   Close multiple issues.
+Close multiple issues.
 
 ```
 gh is --close --number 1 --number 2
 ```
 
--   Open multiple issues.
+Open multiple issues.
 
 ```
 gh is --open --number 1 --number 2
 ```
 
--   Open or close an issue that you've sent to someone.
+Open or close an issue that you've sent to someone.
 
 ```
 gh is 1 --close --user eduardolundgren
 ```
 
-### 4. List
+### Issue: List
 
 | Option              | Usage        | Type                 |
 | ------------------- | ------------ | -------------------- |
@@ -752,61 +815,61 @@ gh is 1 --close --user eduardolundgren
 
 #### Examples
 
--   **Shortcut** for listing all issues on the current repository.
+**Shortcut** for listing all issues on the current repository.
 
 ```
 gh is
 ```
 
--   List all issues from all repositories.
+List all issues from all repositories.
 
 ```
 gh is --list --all
 ```
 
--   List issues assigned to someone.
+List issues assigned to someone.
 
 ```
 gh is --list --assignee zenorocha
 ```
 
--   List issues with link and content.
+List issues with link and content.
 
 ```
 gh is --list --detailed
 ```
 
--   List only closed issues on the current repository.
+List only closed issues on the current repository.
 
 ```
 gh is --list --state closed
 ```
 
--   List issues with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+List issues with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
 
 ```
 gh is --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
--   List issues filtered by milestone title.
+List issues filtered by milestone title.
 
 ```
 gh is --list --milestone "milestone title"
 ```
 
--   List issues that contains labels `todo` and `bug`.
+List issues that contains labels `todo` and `bug`.
 
 ```
 gh is --list --labels todo,bug
 ```
 
--   List all issues on a certain repository.
+List all issues on a certain repository.
 
 ```
 gh is --list --user eduardolundgren --repo node-gh
 ```
 
-### 5. Open in Browser
+### Issue: Open in Browser
 
 | Option            | Usage        | Type      |
 | ----------------- | ------------ | --------- |
@@ -817,19 +880,19 @@ gh is --list --user eduardolundgren --repo node-gh
 
 #### Examples
 
--   **Shortcut** for opening GitHub issue page in the browser.
+**Shortcut** for opening GitHub issue page in the browser.
 
 ```
 gh is 100
 ```
 
--   Open GitHub issue page in the browser.
+Open GitHub issue page in the browser.
 
 ```
 gh is 100 --browser
 ```
 
-### 6. Search
+### Issue: Search
 
 | Option             | Usage        | Type      |
 | ------------------ | ------------ | --------- |
@@ -841,37 +904,37 @@ gh is 100 --browser
 
 #### Examples
 
--   Search issues in current repository
+Search issues in current repository
 
 ```
 gh is --search 'term'
 ```
 
--   Search issues in all repositories for a user
+Search issues in all repositories for a user
 
 ```
 gh is --all --user node-gh --search 'term'
 ```
 
--   Search issues in a repository for a user
+Search issues in a repository for a user
 
 ```
 gh is  --user node-gh --repo gh --search 'term'
 ```
 
--   Search issues in a repository for a user with link and content
+Search issues in a repository for a user with link and content
 
 ```
 gh is  --user node-gh --repo gh --search 'term'
 ```
 
--   Search issues with github filters
+Search issues with github filters
 
 ```
 gh is  --user node-gh --repo gh --search 'updated:<=2013-05-24'
 ```
 
-### 7. Assign
+### Issue: Assign
 
 | Option             | Usage        | Type      |
 | ------------------ | ------------ | --------- |
@@ -883,13 +946,13 @@ gh is  --user node-gh --repo gh --search 'updated:<=2013-05-24'
 
 #### Examples
 
--   Assign an issue on the current repository to a user.
+Assign an issue on the current repository to a user.
 
 ```
 gh is --assign --assignee zenorocha --number 1
 ```
 
--   Assign an issue on a specific repository to a user.
+Assign an issue on a specific repository to a user.
 
 ```
 gh is --assign --assignee zenorocha --number 1 --user eduardolundgren --repo gh
@@ -903,7 +966,7 @@ gh repo
 
 > **Alias:** `gh re`
 
-### 1. Open in Browser
+### Repo: Open in Browser
 
 | Option            | Usage        | Type      |
 | ----------------- | ------------ | --------- |
@@ -913,19 +976,19 @@ gh repo
 
 #### Examples
 
--   **Shortcut** for opening the GitHub repository page in the browser.
+**Shortcut** for opening the GitHub repository page in the browser.
 
 ```
 gh re
 ```
 
--   Open GitHub repository page in the browser.
+Open GitHub repository page in the browser.
 
 ```
 gh re --browser --user eduardolundgren --repo node-gh
 ```
 
-### 2. List
+### Repo: List
 
 | Option             | Usage        | Type                                            |
 | ------------------ | ------------ | ----------------------------------------------- |
@@ -937,31 +1000,31 @@ gh re --browser --user eduardolundgren --repo node-gh
 
 #### Examples
 
--   List all repositories.
+List all repositories.
 
 ```
 gh re --list
 ```
 
--   List all private repositories.
+List all private repositories.
 
 ```
 gh re --list --type private
 ```
 
--   List all repositories from someone.
+List all repositories from someone.
 
 ```
 gh re --list --user zenorocha
 ```
 
--   List open repositories with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+List open repositories with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
 
 ```
 gh re --list --detailed --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
-### 3. Create
+### Repo: Create
 
 | Option                 | Usage        | Type        |
 | ---------------------- | ------------ | ----------- |
@@ -976,31 +1039,31 @@ gh re --list --detailed --date "dddd, MMMM Do YYYY, h:mm:ss a"
 
 #### Examples
 
--   Create a new GitHub repository and clone on the current directory.
+Create a new GitHub repository and clone on the current directory.
 
 ```
 gh re --new foo --clone
 ```
 
--   Create a new GitHub repository for an organization.
+Create a new GitHub repository for an organization.
 
 ```
 gh re --new foo --organization node-gh
 ```
 
--   Create a new GitHub repository using .gitignore template for Ruby.
+Create a new GitHub repository using .gitignore template for Ruby.
 
 ```
 gh re --new gemified --gitignore Ruby
 ```
 
--   Create a new private repository on GitHub, initializing it with a initial commit of the README.
+Create a new private repository on GitHub, initializing it with a initial commit of the README.
 
 ```
 gh re --new foo --init --type private
 ```
 
-### 4. Fork
+### Repo: Fork
 
 | Option                 | Usage        | Type     |
 | ---------------------- | ------------ | -------- |
@@ -1010,19 +1073,19 @@ gh re --new foo --init --type private
 
 #### Examples
 
--   Fork a GitHub repository.
+Fork a GitHub repository.
 
 ```
 gh re --fork repo --user user
 ```
 
--   Fork a GitHub repository into the node-gh organization.
+Fork a GitHub repository into the node-gh organization.
 
 ```
 gh re --fork repo --user user --organization node-gh
 ```
 
-### 5. Delete
+### Repo: Delete
 
 | Option           | Usage        | Type     |
 | ---------------- | ------------ | -------- |
@@ -1031,13 +1094,13 @@ gh re --fork repo --user user --organization node-gh
 
 #### Example
 
--   Delete a repository of the logged user.
+Delete a repository of the logged user.
 
 ```
 gh re --delete foo
 ```
 
-### 6. Clone
+### Repo: Clone
 
 | Option                 | Usage        | Type     |
 | ---------------------- | ------------ | -------- |
@@ -1051,19 +1114,19 @@ gh re --delete foo
 
 #### Examples
 
--   Clone a repository.
+Clone a repository.
 
 ```
 gh re --clone --repo gh
 ```
 
--   Clone a repository from a specific user using HTTPS protocol.
+Clone a repository from a specific user using HTTPS protocol.
 
 ```
 gh re --clone --user eduardolundgren --repo gh --protocol https
 ```
 
-### 7. Create Label
+### Repo: Create Label
 
 | Option                 | Usage        | Type      |
 | ---------------------- | ------------ | --------- |
@@ -1076,19 +1139,19 @@ gh re --clone --user eduardolundgren --repo gh --protocol https
 
 #### Examples
 
--   Create a label for a repository (_color is a hex code with or without literal hex symbol_).
+Create a label for a repository (_color is a hex code with or without literal hex symbol_).
 
 ```
 gh re --label --new bug --color '#7057ff' --repo gh
 ```
 
--   Create a label for a user's repository.
+Create a label for a user's repository.
 
 ```
 gh re --label --new bug --color '#7057ff' --user eduardolundgren --repo gh
 ```
 
-### 8. Delete Label
+### Repo: Delete Label
 
 | Option                 | Usage        | Type      |
 | ---------------------- | ------------ | --------- |
@@ -1100,19 +1163,19 @@ gh re --label --new bug --color '#7057ff' --user eduardolundgren --repo gh
 
 #### Examples
 
--   Delete a label from a repository.
+Delete a label from a repository.
 
 ```
 gh re --label --delete bug --repo gh
 ```
 
--   Delete a label from a user's repository.
+Delete a label from a user's repository.
 
 ```
 gh re --label --delete bug --user eduardolundgren --repo gh
 ```
 
-### 9. List Labels
+### Repo: List Labels
 
 | Option                 | Usage        | Type      |
 | ---------------------- | ------------ | --------- |
@@ -1124,19 +1187,19 @@ gh re --label --delete bug --user eduardolundgren --repo gh
 
 #### Examples
 
--   List labels for a repository.
+List labels for a repository.
 
 ```
 gh re --label --list --repo gh
 ```
 
--   List labels for a user's repository.
+List labels for a user's repository.
 
 ```
 gh re --label --list --user eduardolundgren --repo gh
 ```
 
-### 10. Update Label
+### Repo: Update Label
 
 | Option                 | Usage        | Type      |
 | ---------------------- | ------------ | --------- |
@@ -1149,19 +1212,19 @@ gh re --label --list --user eduardolundgren --repo gh
 
 #### Examples
 
--   Update a label for a repository (_color is a hex code with or without literal hex symbol_).
+Update a label for a repository (_color is a hex code with or without literal hex symbol_).
 
 ```
 gh re --label --update bug --color color --repo gh
 ```
 
--   Update a label for a user's repository.
+Update a label for a user's repository.
 
 ```
 gh re --label --update bug --color color --user eduardolundgren --repo gh
 ```
 
-### 11. Search
+### Repo: Search
 
 Find repositories via various criteria. Repository search looks through the projects you have access to on GitHub.
 You can filter the results using GitHub's search qualifiers.
@@ -1178,7 +1241,7 @@ You can filter the results using GitHub's search qualifiers.
 
 #### Examples
 
--   Search private repositories you have access to with the term "secret".
+Search private repositories you have access to with the term "secret".
 
 ```
 gh re --search secret --type private
@@ -1190,7 +1253,7 @@ OR
 gh re --search secret is:private
 ```
 
--   Matches repositories from GitHub org showing detailed results.
+Matches repositories from GitHub org showing detailed results.
 
 ```
 gh re --detailed -o github --search octocat
@@ -1210,7 +1273,7 @@ gh gists
 
 > **Alias:** `gh gi`
 
-### 1. Open in Browser
+### Gist: Open in Browser
 
 | Option            | Usage        | Type      |
 | ----------------- | ------------ | --------- |
@@ -1220,19 +1283,19 @@ gh gists
 
 #### Examples
 
--   **Shortcut** for opening your Gists in the browser.
+**Shortcut** for opening your Gists in the browser.
 
 ```
 gh gi
 ```
 
--   Open a Gist in the browser.
+Open a Gist in the browser.
 
 ```
 gh gi --browser --id 5991877
 ```
 
-### 2. List
+### Gist: List
 
 | Option         | Usage        | Type      |
 | -------------- | ------------ | --------- |
@@ -1242,25 +1305,25 @@ gh gi --browser --id 5991877
 
 #### Examples
 
--   List all gists.
+List all gists.
 
 ```
 gh gi --list
 ```
 
--   List all gists from someone.
+List all gists from someone.
 
 ```
 gh gi --list --user brunocoelho
 ```
 
--   List gists with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
+List gists with a formatted date (_Any string that the moment library's formatter accepts should work: https://momentjs.com/docs/#/displaying/format/_).
 
 ```
 gh gi --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 ```
 
-### 3. Create
+### Gist: Create
 
 | Option                | Usage        | Type      |
 | --------------------- | ------------ | --------- |
@@ -1271,19 +1334,19 @@ gh gi --list --date "dddd, MMMM Do YYYY, h:mm:ss a"
 
 #### Examples
 
--   Create a Gist `hello` containing "Hello World".
+Create a Gist `hello` containing "Hello World".
 
 ```
 gh gi --new hello --content "Hello World!"
 ```
 
--   Create a private Gist `hello` containing "Hello World".
+Create a private Gist `hello` containing "Hello World".
 
 ```
 gh gi --new hello --content "Hello World!" --private
 ```
 
-### 4. Fork
+### Gist: Fork
 
 | Option         | Usage        | Type     |
 | -------------- | ------------ | -------- |
@@ -1291,13 +1354,13 @@ gh gi --new hello --content "Hello World!" --private
 
 #### Examples
 
--   Fork a Gist.
+Fork a Gist.
 
 ```
 gh gi --fork 5444883
 ```
 
-### 5. Delete
+### Gist: Delete
 
 | Option           | Usage        | Type     |
 | ---------------- | ------------ | -------- |
@@ -1305,13 +1368,13 @@ gh gi --fork 5444883
 
 #### Example
 
--   Delete a Gist.
+Delete a Gist.
 
 ```
 gh gi --delete 4252323
 ```
 
--   Delete multiple Gists.
+Delete multiple Gists.
 
 ```
 gh gi --delete 4252321 --delete 4252322
@@ -1325,7 +1388,7 @@ gh user
 
 > **Alias:** `gh us`
 
-### 1. Login/Logout
+### User: Login or Logout
 
 | Option           | Usage        | Type      |
 | ---------------- | ------------ | --------- |
@@ -1334,19 +1397,28 @@ gh user
 
 #### Examples
 
--   Login or show current logged in GitHub user.
+Automates saving user name & generating developer token credentials to your ~/.gh.json config
+
+-   This is the the user that will be used if you do not manually pass in `--user username`
+-   After you are logged in, you should no longer be prompted to go through the login process again
+-   Alternatively you can create your own developer key and copy and paste it
+    -   First add a file in your home directory called `~/.gh.json`
+    -   You can use the `default.gh.json` file in our repo as a template
+    -   [Create a developer key](https://github.com/settings/tokens/new): with these scopes: `['user', 'public_repo', 'repo', 'repo:status', 'delete_repo', 'gist']`
+    -   Then copy & paste your token in the file at: `"github_token"`
+    -   Write your user name at `"github_user"`
 
 ```
 gh user --login
 ```
 
--   Logout current GitHub account.
+Automates removing user name & developer token credentials to your ~/.gh.json config
 
 ```
 gh user --logout
 ```
 
-### 2. Whoami
+### User: Whoami
 
 | Option           | Usage        | Type      |
 | ---------------- | ------------ | --------- |
@@ -1354,7 +1426,7 @@ gh user --logout
 
 #### Examples
 
--   Prints your username to stdout.
+Prints the user name from ~/.gh.json to your console.
 
 ```
 gh user --whoami
@@ -1368,7 +1440,7 @@ gh milestone
 
 > **Alias:** `gh ms`
 
-### 1. List
+### Milestone: List
 
 | Option                 | Usage        | Type      |
 | ---------------------- | ------------ | --------- |
@@ -1380,19 +1452,19 @@ gh milestone
 
 #### Examples
 
--   **Shortcut** for listing milestones for a specific repo.
+**Shortcut** for listing milestones for a specific repo.
 
 ```
 gh ms
 ```
 
--   Listing milestones for a specific repo & user.
+Listing milestones for a specific repo & user.
 
 ```
 gh ms --list --user node-gh --repo gh
 ```
 
--   Listing all milestones for a specific organization.
+Listing all milestones for a specific organization.
 
 ```
 gh ms --list --all --organization node-gh
@@ -1408,7 +1480,7 @@ gh alias
 
 > **Alias:** `gh al`
 
-### 1. List
+### Alias: List
 
 | Option         | Usage        | Type      |
 | -------------- | ------------ | --------- |
@@ -1416,19 +1488,19 @@ gh alias
 
 #### Examples
 
--   **Shortcut** for listing aliases.
+**Shortcut** for listing aliases.
 
 ```
 gh alias
 ```
 
--   List aliases.
+List aliases.
 
 ```
 gh alias --list
 ```
 
-### 2. Add
+### Alias: Add
 
 | Option         | Usage        | Type     |
 | -------------- | ------------ | -------- |
@@ -1437,13 +1509,19 @@ gh alias --list
 
 #### Examples
 
--   Create alias for username.
+Create alias for username.
 
 ```
 gh alias --add zeno --user zenorocha
 ```
 
-### 3. Remove
+And use like:
+
+```
+gh pr --submit zeno -b master -t Title
+```
+
+### Alias: Remove
 
 | Option           | Usage        | Type     |
 | ---------------- | ------------ | -------- |
@@ -1451,7 +1529,7 @@ gh alias --add zeno --user zenorocha
 
 #### Examples
 
--   Remove alias.
+Remove alias.
 
 ```
 gh alias --remove zeno
@@ -1464,7 +1542,7 @@ This file can be found under home directory _(on MacOSx: `/Users/yourName/.gh.js
 
 You can also set per-project configurations by adding a `.gh.json` file in your project's root folder and overriding existing keys.
 
--   GitHub API configurations. Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
+GitHub API configurations. Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
 
 ```javascript
 "api": {
@@ -1473,28 +1551,28 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
 }
 ```
 
--   Set default branch and remote.
+Set default branch and remote.
 
 ```javascript
 "default_branch": "master",
 "default_remote": "origin"
 ```
 
--   Set default users when [submitting](#7-submit) or [forwarding](#5-forward) pull requests.
+Set default users when [submitting](#pr-submit) or [forwarding](#pr-forward) pull requests.
 
 ```javascript
 "default_pr_forwarder": "",
 "default_pr_reviewer": ""
 ```
 
--   GitHub data filled once you log in.
+GitHub data filled once you log in.
 
 ```javascript
 "github_token": "",
 "github_user": ""
 ```
 
--   Run automated tasks before or after a certain command.
+Run automated tasks before or after a certain command.
 
 ```javascript
 "hooks": {
@@ -1509,7 +1587,7 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
 }
 ```
 
--   Run automated tasks passing arguments to the commands. Required for prompt commands.
+Run automated tasks passing arguments to the commands. Required for prompt commands.
 
 ```javascript
 "hooks": {
@@ -1521,19 +1599,19 @@ You can also set per-project configurations by adding a `.gh.json` file in your 
 }
 ```
 
--   Set default branch name prefix for PR fetching.
+Set default branch name prefix for PR fetching.
 
 ```javascript
 "pull_branch_name_prefix": "pr-"
 ```
 
--   Insert signature below issue comment.
+Insert signature below issue comment.
 
 ```javascript
 "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
 ```
 
--   Turn off ssh when pulling a repo and use https instead.
+Turn off ssh when pulling a repo and use https instead.
 
 ```javascript
 "ssh": false,
@@ -1543,8 +1621,8 @@ If you need to use a custom git command, set the environment variable `GH_GIT_CO
 
 ## Plugins
 
--   [GH Gif](https://github.com/node-gh/gh-gif) - A plugin for commenting on pull requests/issues using GIF reactions.
--   [GH Travis](https://github.com/node-gh/gh-travis) - A plugin for integrating Travis, a continous integration server.
--   [GH Jira](https://github.com/node-gh/gh-jira) - A plugin for integrating Jira, an issue management system.
+[GH Gif](https://github.com/node-gh/gh-gif) - A plugin for commenting on pull requests/issues using GIF reactions.
+[GH Travis](https://github.com/node-gh/gh-travis) - A plugin for integrating Travis, a continous integration server.
+[GH Jira](https://github.com/node-gh/gh-jira) - A plugin for integrating Jira, an issue management system.
 
 Feel free to create your own plugins by forking [GH Boilerplate](https://github.com/node-gh/gh-boilerplate).
