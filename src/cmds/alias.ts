@@ -83,7 +83,7 @@ function add(options) {
 }
 
 function list(opt_callback) {
-    opt_callback && opt_callback(null, config.alias)
+    opt_callback(null, config.alias)
 }
 
 function remove(options) {
