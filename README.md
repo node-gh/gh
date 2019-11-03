@@ -24,7 +24,7 @@
     </a>
 </p>
 
-> Boost your productivity & automation tasks when working with GitHub, all from the comfort of your CLI.
+> Boost your productivity & automate tasks when working with GitHub, all from the comfort of your CLI.
 
 ## Table of contents
 
