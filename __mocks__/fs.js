@@ -1,4 +1,4 @@
-const { files } = require('./data')
+const { files, fileContents } = require('./data')
 
 const fs = jest.genMockFromModule('fs')
 
@@ -13,5 +13,9 @@ fs.readdir = (_, done) => {
 fs.realpathSync = path => {
     return path
 }
+
+fs.writeFileSync = () => {}
+
+fs.readFileSync = () => fileContents
 
 module.exports = fs
