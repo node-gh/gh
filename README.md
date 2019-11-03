@@ -160,6 +160,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://saulovallory.com"><img src="https://avatars1.githubusercontent.com/u/117560?v=4" width="50px;" alt="Saulo Vallory"/><br /><sub><b>Saulo Vallory</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=svallory" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/hernan"><img src="https://avatars0.githubusercontent.com/u/15841?v=4" width="50px;" alt="Hernan Fernandez"/><br /><sub><b>Hernan Fernandez</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=hernan" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Aaron-K-T-Berry"><img src="https://avatars1.githubusercontent.com/u/24759009?v=4" width="50px;" alt="Aaron Berry"/><br /><sub><b>Aaron Berry</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=Aaron-K-T-Berry" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.liferay.com/web/inacio.nery/profile"><img src="https://avatars0.githubusercontent.com/u/14062516?v=4" width="50px;" alt="Inácio Nery"/><br /><sub><b>Inácio Nery</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Ainacionery" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
