@@ -4,19 +4,19 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import * as child_process from 'child_process'
+import * as childProcess from 'child_process'
 import * as logger from './logger'
 
 export function spawnSync(cmd, args, options?: object) {
-    var exec
+    let exec
 
     logger.debug(`spawnSync: ${cmd} ${args.join(' ')}`)
 
-    exec = child_process.spawnSync(cmd, args, options)
+    exec = childProcess.spawnSync(cmd, args, options)
 
     if (exec.error && exec.error.code === 'ENOENT' && process.platform === 'win32') {
         logger.debug("Invoking patched sapwnSync due to Windows' libuv bug")
-        exec = child_process.spawnSync(`${cmd}.cmd`, args, options)
+        exec = childProcess.spawnSync(`${cmd}.cmd`, args, options)
     }
 
     return {
@@ -38,7 +38,7 @@ export function spawnSyncStream(cmd, args, options?: any) {
 
     logger.debug(`spawnSyncStream: ${cmd} ${args.join(' ')}`)
 
-    proc = child_process.spawnSync(cmd, args, options)
+    proc = childProcess.spawnSync(cmd, args, options)
 
     if (proc.status !== 0) {
         err = new Error()
@@ -60,7 +60,7 @@ export function execSync(cmd, options?) {
 
     options.stdio = ['pipe', process.stdout, process.stderr]
 
-    return child_process.execSync(cmd, options)
+    return childProcess.execSync(cmd, options)
 }
 
 export function execSyncInteractiveStream(cmd, options?) {
@@ -72,5 +72,5 @@ export function execSyncInteractiveStream(cmd, options?) {
 
     options.stdio = 'inherit'
 
-    return child_process.execSync(cmd, options)
+    return childProcess.execSync(cmd, options)
 }
