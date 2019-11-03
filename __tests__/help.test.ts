@@ -8,7 +8,14 @@ import { runCmd } from './testUtils'
 
 describe('E2E: Help Module Test', () => {
     it('`gh --help`', done => {
-        expect(runCmd('gh --help')).toMatchSnapshot()
+        // Need to remove plugins because some people may have diff plugins on diff systems
+        const cmdOutput = runCmd('gh --help')
+            .split('\n')
+            .filter(function removePluginLines(line) {
+                return !line.includes('plugin')
+            })
+
+        expect(cmdOutput.join('\n')).toMatchSnapshot()
         done()
     })
 })

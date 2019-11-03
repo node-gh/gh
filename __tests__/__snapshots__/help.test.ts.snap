@@ -13,7 +13,6 @@ List of available commands:
   pr, pull-request       Provides a set of util commands to work with Pull Requests.
   re, repo               Provides a set of util commands to work with Repositories.
   us, user               Provides the ability to login and logout if needed.
-  ji, jira               NodeGH plugin for integrating Jira, an issue management system.
 
 (*) Flags that can execute an action.
 'gh help' lists available commands.
