@@ -64,6 +64,44 @@
         "trailingComma": "es5",
         "useTabs": false
     },
+    "eslintConfig": {
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+            "project": "./tsconfig.json"
+        },
+        "env": {
+            "es6": true
+        },
+        "extends": [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/eslint-recommended",
+            "plugin:@typescript-eslint/recommended"
+        ],
+        "plugins": [
+            "@typescript-eslint",
+            "fp"
+        ],
+        "rules": {
+            "@typescript-eslint/member-delimiter-style": "off",
+            "@typescript-eslint/no-use-before-define": "off",
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "require-atomic-updates": "off",
+            "fp/no-arguments": "error",
+            "fp/no-class": "error",
+            "fp/no-delete": "error",
+            "fp/no-events": "error",
+            "fp/no-get-set": "error",
+            "fp/no-loops": "error",
+            "fp/no-mutating-assign": "error",
+            "fp/no-mutating-methods": "error",
+            "fp/no-proxy": "error",
+            "fp/no-rest-parameters": "error",
+            "fp/no-this": "error",
+            "fp/no-throw": "error",
+            "fp/no-valueof-field": "error",
+            "no-var": "off"
+        }
+    },
     "jest": {
         "collectCoverageFrom": [
             "lib/**/*.ts"
