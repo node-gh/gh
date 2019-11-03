@@ -55,6 +55,15 @@
             "path": "cz-conventional-changelog"
         }
     },
+    "prettier": {
+        "printWidth": 100,
+        "endOfLine": "lf",
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 4,
+        "trailingComma": "es5",
+        "useTabs": false
+    },
     "jest": {
         "collectCoverageFrom": [
             "lib/**/*.ts"
