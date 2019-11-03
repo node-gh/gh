@@ -34,12 +34,11 @@ export const DETAILS = {
 
 // -- Commands -------------------------------------------------------------------------------------
 
-export async function run() {
+export async function run(options, done) {
     const cmdDir = path.join(__dirname, '../cmds/')
     const reg = new RegExp(`.${extension}$`)
-    const files = base.find(cmdDir, reg)
+    const files = await base.find(cmdDir, reg).promise()
     let filter
-    const options = nopt(DETAILS.options, DETAILS.shorthands, process.argv, 2)
     let plugins
 
     // Remove help from command list
@@ -109,6 +108,8 @@ export async function run() {
     }
 
     logger.log(listCommands_(commands))
+
+    done && done()
 }
 
 function listFlags_(command) {

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E: Help Module Test \`gh --help\` 1`] = `
+"usage: gh <command> [--flags] [--verbose] [--no-color] [--no-hooks]
+
+List of available commands:
+  al, alias              Create alias for a username.
+  gi, gists              Provides a set of util commands to work with Gists.
+  he, hello              Hello world example. Copy to start a new command.
+  is, issue              Provides a set of util commands to work with Issues.
+  ms, milestone          Provides a set of util commands to work with Milestones.
+  nt, notification       Provides a set of util commands to work with Notifications.
+  pr, pull-request       Provides a set of util commands to work with Pull Requests.
+  re, repo               Provides a set of util commands to work with Repositories.
+  us, user               Provides the ability to login and logout if needed.
+  ji, jira               NodeGH plugin for integrating Jira, an issue management system.
+
+(*) Flags that can execute an action.
+'gh help' lists available commands.
+'gh help -a' lists all available subcommands.
+"
+`;

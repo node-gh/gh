@@ -48,6 +48,10 @@ export function prepareTestFixtures(cmdName, argv) {
     // These should only include the flags that you need for e2e tests
     const cmds = [
         {
+            name: 'Help',
+            flags: [],
+        },
+        {
             name: 'Issue',
             flags: ['--comment', '--new', '--open', '--close', '--search', '--assign'],
         },
