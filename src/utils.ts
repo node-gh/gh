@@ -8,6 +8,9 @@ import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lo
 import * as nock from 'nock'
 import * as zlib from 'zlib'
 import * as open from 'opn'
+import { spawnSync, execSyncInteractiveStream } from './exec'
+import { readFileSync, writeFileSync } from 'fs'
+import * as userhome from 'userhome'
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -16,6 +19,32 @@ const testing = process.env.NODE_ENV === 'testing'
  */
 export function openUrl(url) {
     testing ? console.log(url) : open(url, { wait: false })
+}
+
+/**
+ * Allows users to add text from their editor of choice rather than the terminal
+ *
+ * @example
+ *   openFileInEditor('temp-gh-issue-title.txt', '# Add a pr title msg on the next line')
+ */
+export function openFileInEditor(fileName: string, msg: string) {
+    const filePath = userhome(fileName)
+
+    writeFileSync(filePath, msg)
+
+    const editor = spawnSync('git', ['config', '--global', 'core.editor']).stdout
+
+    execSyncInteractiveStream(`${editor} "${filePath}"`)
+
+    const newFileContents = readFileSync(filePath).toString()
+
+    const parsedFileContents = newFileContents
+        .split('\n')
+        .filter(line => !line.startsWith('#'))
+        .join('\n')
+        .trim()
+
+    console.log(parsedFileContents)
 }
 
 export function getCurrentFolderName(): string {
