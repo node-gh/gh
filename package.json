@@ -41,6 +41,12 @@
         "commands",
         "helpers"
     ],
+    "files": [
+        "lib",
+        "README.md",
+        "LICENSE.txt",
+        "bin"
+    ],
     "bin": {
         "gh": "bin/gh.js"
     },
