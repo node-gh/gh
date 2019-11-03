@@ -1,21 +1,19 @@
 {
     "name": "gh",
-    "description": "GitHub command line tools.",
+    "description": "Boost your productivity & automate tasks when working with GitHub, all from the comfort of your CLI.",
     "version": "2.3.3",
     "homepage": "http://nodegh.io",
+    "preferGlobal": true,
+    "contributors": [
+        ".all-contributorsrc"
+    ],
     "author": {
         "name": "Eduardo Lundgren",
         "email": "eduardolundgren@gmail.com",
         "web": "http://eduardo.io",
         "twitter": "eduardolundgren"
     },
-    "contributors": [
-        {
-            "name": "Zeno Rocha",
-            "email": "zno.rocha@gmail.com",
-            "web": "http://zenorocha.com",
-            "twitter": "zenorocha"
-        },
+    "maintainers": [
         {
             "name": "Ryan Garant",
             "email": "ryantgarant@gmail.com",
@@ -26,34 +24,20 @@
     "engines": {
         "node": ">=6"
     },
-    "preferGlobal": true,
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/node-gh/gh.git"
-    },
-    "bugs": {
-        "url": "https://github.com/node-gh/gh/issues"
-    },
-    "keywords": [
-        "git",
-        "github",
-        "external",
-        "commands",
-        "helpers"
-    ],
-    "files": [
-        "lib",
-        "README.md",
-        "LICENSE.txt",
-        "bin"
-    ],
     "bin": {
         "gh": "bin/gh.js"
     },
-    "config": {
-        "commitizen": {
-            "path": "cz-conventional-changelog"
-        }
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "commit": "git-cz",
+        "format": "prettier 'lib/**/*.js' && prettier 'bin/*.js'",
+        "env:test": "cross-env NODE_ENV=testing GH_USER=protoEvangelion GH_TOKEN=0001",
+        "test": "npm run env:test -- jest",
+        "test:watch": "npm run env:test -- jest --watch",
+        "test:ci": "npm run env:test -- jest",
+        "test:coverage": "npm run env:test -- jest --coverage",
+        "test:program": "npm run env:test -- gh "
     },
     "prettier": {
         "printWidth": 100,
@@ -157,17 +141,10 @@
             }
         ]
     },
-    "scripts": {
-        "build": "tsc",
-        "dev": "tsc --watch",
-        "commit": "git-cz",
-        "format": "prettier 'lib/**/*.js' && prettier 'bin/*.js'",
-        "env:test": "cross-env NODE_ENV=testing GH_USER=protoEvangelion GH_TOKEN=0001",
-        "test": "npm run env:test -- jest",
-        "test:watch": "npm run env:test -- jest --watch",
-        "test:ci": "npm run env:test -- jest",
-        "test:coverage": "npm run env:test -- jest --coverage",
-        "test:program": "npm run env:test -- gh "
+    "config": {
+        "commitizen": {
+            "path": "cz-conventional-changelog"
+        }
     },
     "husky": {
         "hooks": {
@@ -222,5 +199,30 @@
         "strip-ansi": "~5.0.0",
         "ts-jest": "~24.0.2",
         "typescript": "~3.2.2"
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/node-gh/gh.git"
+    },
+    "bugs": {
+        "url": "https://github.com/node-gh/gh/issues"
+    },
+    "files": [
+        "lib",
+        "README.md",
+        "LICENSE.txt",
+        "bin"
+    ],
+    "keywords": [
+        "cli",
+        "github",
+        "pull-requests",
+        "prs",
+        "issues",
+        "gists",
+        "repos",
+        "repositories",
+        "git",
+        "commands"
+    ]
 }
