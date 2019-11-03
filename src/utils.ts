@@ -10,7 +10,7 @@ import * as zlib from 'zlib'
 import * as open from 'opn'
 import { spawnSync, execSyncInteractiveStream } from './exec'
 import { readFileSync, writeFileSync } from 'fs'
-import * as userhome from 'userhome'
+import * as logger from './logger'
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -28,23 +28,25 @@ export function openUrl(url) {
  *   openFileInEditor('temp-gh-issue-title.txt', '# Add a pr title msg on the next line')
  */
 export function openFileInEditor(fileName: string, msg: string) {
-    const filePath = userhome(fileName)
+    try {
+        const filePath = `${__dirname}/${fileName}`
 
-    writeFileSync(filePath, msg)
+        writeFileSync(filePath, msg)
 
-    const editor = spawnSync('git', ['config', '--global', 'core.editor']).stdout
+        const editor = spawnSync('git', ['config', '--global', 'core.editor']).stdout
 
-    execSyncInteractiveStream(`${editor} "${filePath}"`)
+        execSyncInteractiveStream(`${editor} "${filePath}"`)
 
-    const newFileContents = readFileSync(filePath).toString()
+        const newFileContents = readFileSync(filePath).toString()
 
-    const parsedFileContents = newFileContents
-        .split('\n')
-        .filter(line => !line.startsWith('#'))
-        .join('\n')
-        .trim()
-
-    console.log(parsedFileContents)
+        return newFileContents
+            .split('\n')
+            .filter(line => !line.startsWith('#'))
+            .join('\n')
+            .trim()
+    } catch (err) {
+        logger.error('Could not use your editor to get a custom message\n', err)
+    }
 }
 
 export function getCurrentFolderName(): string {
