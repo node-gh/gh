@@ -6,7 +6,6 @@
 
 // -- Requires -------------------------------------------------------------------------------------
 
-import * as nopt from 'nopt'
 import * as path from 'path'
 import * as stream from 'stream'
 import * as url from 'url'

@@ -49,7 +49,7 @@ export function insane(...args) {
 }
 
 export const exitWithError = S.curry2((message, stack) => {
-    if (process.env.GH_VERBOSE_INSANE || process.env.GH_VERBOSE_INSANE) {
+    if (process.env.GH_VERBOSE || process.env.GH_VERBOSE_INSANE) {
         console.error(`${message}\n${stack}`)
     } else {
         console.error(message)
