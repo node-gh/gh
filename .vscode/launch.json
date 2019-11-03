@@ -27,7 +27,7 @@
                 "DEBUG": "nock.*"
             },
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["${workspaceFolder}/src/debug.ts", "user", "--login"],
+            "args": ["${workspaceFolder}/src/debug.ts", "--help"],
             "console": "integratedTerminal"
         }
     ]
