@@ -21,9 +21,6 @@ import { createGlobalConfig, getGlobalPackageJson, getUserHomePath } from './con
 import { prepend, safeReaddir, safeImport, safeRealpath, safeWhich } from './fp'
 import * as git from './git'
 import { getGitHubInstance } from './github'
-import { spawnSync, execSyncInteractiveStream } from './exec'
-import { readFileSync, writeFileSync } from 'fs'
-import * as userhome from 'userhome'
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -214,26 +211,6 @@ export async function buildOptions(args, cmdName) {
     return options
 }
 
-function openFileInEditor(fileName: string, msg: string) {
-    const filePath = userhome(fileName)
-
-    writeFileSync(filePath, msg)
-
-    const editor = spawnSync('git', ['config', '--global', 'core.editor']).stdout
-
-    execSyncInteractiveStream(`${editor} "${filePath}"`)
-
-    const newFileContents = readFileSync(filePath).toString()
-
-    const parsedFileContents = newFileContents
-        .split('\n')
-        .filter(line => !line.startsWith('#'))
-        .join('\n')
-        .trim()
-
-    console.log(parsedFileContents)
-}
-
 /* !! IMPURE CALLING CODE !! */
 export async function run() {
     process.env.GH_PATH = path.join(__dirname, '../')
@@ -243,10 +220,6 @@ export async function run() {
     }
 
     notifyVersion()
-
-    openFileInEditor('temp-gh-issue-title.txt', '# Add a pr title msg on the next line')
-
-    return
 
     getCommand(process.argv).fork(
         errMsg => console.log(errMsg),
