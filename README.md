@@ -515,6 +515,12 @@ Comment on a pull request.
 gh pr 1 --comment "Merged, thank you!"
 ```
 
+Submit a pull request using your default git editor (`git config --global core.editor`) by passing an empty `--comment`
+
+```
+gh pr 1 --comment
+```
+
 ### PR Forward
 
 | Option           | Usage        | Type     |
