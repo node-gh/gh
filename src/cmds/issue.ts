@@ -8,7 +8,7 @@
 
 import { isArray } from 'lodash'
 import { produce } from 'immer'
-import { openUrl, userRanValidFlags } from '../utils'
+import { openUrl, userRanValidFlags, openFileInEditor } from '../utils'
 import * as base from '../base'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
@@ -337,23 +337,52 @@ async function listFromAllRepositories(options) {
     }
 }
 
+/**
+ * Checks if string has been merged with a common flag or is empty
+ */
+function userLeftMsgEmpty(string: string): boolean {
+    return (
+        string === '' ||
+        string === '--title' ||
+        string === '-t' ||
+        string === '--message' ||
+        string === '-m' ||
+        string === '--comment' ||
+        string === '-c'
+    )
+}
+
 function newIssue(options) {
-    let body
-
-    if (options.message) {
-        body = logger.applyReplacements(options.message, config.replace)
-    }
-
     options = produce(options, draft => {
         if (draft.labels) {
             draft.labels = draft.labels.split(',')
         } else {
             draft.labels = []
         }
+
+        if (draft.message) {
+            draft.message = logger.applyReplacements(draft.message, config.replace)
+        }
+
+        if (userLeftMsgEmpty(draft.title)) {
+            draft.title = openFileInEditor(
+                'temp-gh-issue-title.txt',
+                '# Add a issue title message on the next line'
+            )
+        }
+
+        // If user passes an empty title and message, --message will get merged into options.title
+        // Need to reference the original title not the potentially modified one
+        if (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(draft.message)) {
+            draft.message = openFileInEditor(
+                'temp-gh-issue-body.md',
+                '<!-- Add an issue body message in markdown format below -->'
+            )
+        }
     })
 
     const payload = {
-        body,
+        body: options.message,
         assignee: options.assignee,
         repo: options.repo,
         title: options.title,
