@@ -599,6 +599,12 @@ Submit a pull request using the current branch.
 gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
 ```
 
+Submit a pull request using your default git editor (`git config --global core.editor`) by passing an empty `--title` and or `--description`
+
+```
+gh pr --submit eduardolundgren --title --description
+```
+
 Submit a pull request using the current branch to dev branch.
 
 ```
