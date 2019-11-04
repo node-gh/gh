@@ -856,7 +856,7 @@ async function submit(options, user) {
         title: title,
         ...(options.issue ? { issue: options.issue } : {}),
         ...(options.draft ? { draft: options.draft } : {}),
-        ...(options.description ? { body: options.description } : {}),
+        ...(description ? { body: description } : {}),
     }
 
     try {

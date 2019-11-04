@@ -26,7 +26,7 @@ export function openUrl(url) {
  */
 export function userLeftMsgEmpty(string: string): boolean {
     return (
-        string === '' ||
+        !string ||
         string === '--title' ||
         string === '-t' ||
         string === '--message' ||
