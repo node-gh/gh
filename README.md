@@ -724,6 +724,12 @@ gh issue
 gh is 'Node GH rocks!' 'Body with **Markdown** support'
 ```
 
+Create a new issue using your default git editor (`git config --global core.editor`) by passing an empty `--message` (_also works with an empty title_)
+
+```
+gh is --new --title 'Node GH rocks!' --message
+```
+
 Create a new issue on a certain repository.
 
 ```
