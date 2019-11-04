@@ -9,7 +9,7 @@ import * as nock from 'nock'
 import * as zlib from 'zlib'
 import * as open from 'opn'
 import { spawnSync, execSyncInteractiveStream } from './exec'
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync, unlinkSync } from 'fs'
 import * as logger from './logger'
 
 const testing = process.env.NODE_ENV === 'testing'
@@ -27,7 +27,7 @@ export function openUrl(url) {
  * @example
  *   openFileInEditor('temp-gh-issue-title.txt', '# Add a pr title msg on the next line')
  */
-export function openFileInEditor(fileName: string, msg: string) {
+export function openFileInEditor(fileName: string, msg: string): string {
     try {
         const filePath = `${__dirname}/${fileName}`
 
@@ -39,19 +39,24 @@ export function openFileInEditor(fileName: string, msg: string) {
 
         const newFileContents = readFileSync(filePath).toString()
 
-        return cleanFileContents(newFileContents)
+        const commentMark = fileName.endsWith('.md') ? '<!--' : '#'
+
+        unlinkSync(filePath)
+
+        return cleanFileContents(newFileContents, commentMark)
     } catch (err) {
-        logger.error('Could not use your editor to get a custom message\n', err)
+        logger.error('Could not use your editor to store a custom message\n', err)
     }
 }
 
 /**
  * Removes # comments and trims new lines
+ * @param {string} commentMark - refers to the comment mark which is different for each file
  */
-export function cleanFileContents(fileContents: string): string {
+export function cleanFileContents(fileContents: string, commentMark = '#'): string {
     return fileContents
         .split('\n')
-        .filter(line => !line.startsWith('#'))
+        .filter(line => !line.startsWith(commentMark))
         .join('\n')
         .trim()
 }
