@@ -11,12 +11,12 @@
             "runtimeArgs": ["-r", "ts-node/register"],
             "args": [
                 "${workspaceFolder}/src/debug.ts",
-                "is",
-                "--new",
+                "pr",
+                "-s",
+                "protoEvangleion",
                 "--title",
-                "title",
-                "--message",
-                "mess"
+                "dont ask",
+                "--description"
             ],
             // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
             "console": "integratedTerminal"
