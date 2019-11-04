@@ -182,7 +182,7 @@ export async function run(options, done) {
             }
         }
 
-        if (options.comment) {
+        if (options.comment || options.comment === '') {
             await _commentHandler(options)
         }
 
@@ -295,8 +295,15 @@ async function close(options) {
 }
 
 async function comment(options) {
-    const body =
+    let body =
         logger.applyReplacements(options.comment, options.config.replace) + options.config.signature
+
+    if (userLeftMsgEmpty(body)) {
+        body = openFileInEditor(
+            'temp-gh-pr-comment.md',
+            '<!-- Add an pr comment message in markdown format below -->'
+        )
+    }
 
     const payload = {
         body,
@@ -832,7 +839,7 @@ async function submit(options, user) {
     if (userLeftMsgEmpty(title)) {
         title = openFileInEditor(
             'temp-gh-pr-title.txt',
-            `# Add a issue title message on the next line\n${git.getLastCommitMessage(pullBranch)}`
+            `# Add a pr title message on the next line\n${git.getLastCommitMessage(pullBranch)}`
         )
     }
 
