@@ -22,8 +22,10 @@ describe('E2E: Issues Module Test', () => {
         done()
     })
 
-    it('Create a new issue `gh is -N -t "Node GH rocks!" -L bug,question,test`', done => {
-        expect(runCmd(`gh is -N -t "Node GH rocks!" -L bug,question,test`)).toMatchSnapshot()
+    it('Create a new issue `gh is -N -t "Node GH rocks!" -m "msg" -L bug,question,test`', done => {
+        expect(
+            runCmd(`gh is -N -t "Node GH rocks!" -m "msg" -L bug,question,test`)
+        ).toMatchSnapshot()
         done()
     })
 
