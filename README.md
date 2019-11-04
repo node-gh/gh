@@ -766,6 +766,12 @@ Comment on an issue of the current repository.
 gh is 1 --comment 'Node GH rocks!'
 ```
 
+Comment on an issue using your default git editor (`git config --global core.editor`) by passing an empty `--comment` (_also works with an empty title_)
+
+```
+gh is 1 --comment
+```
+
 Comment on an issue of a certain repository.
 
 ```
