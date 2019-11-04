@@ -11,7 +11,7 @@ import { startsWith } from 'lodash'
 import * as marked from 'marked'
 import { produce } from 'immer'
 import * as TerminalRenderer from 'marked-terminal'
-import { openUrl, userRanValidFlags } from '../utils'
+import { openUrl, userRanValidFlags, userLeftMsgEmpty, openFileInEditor } from '../utils'
 import * as wrap from 'wordwrap'
 import * as git from '../git'
 
@@ -821,15 +821,31 @@ function sortPullsByComplexity_(pulls, direction) {
 }
 
 async function submit(options, user) {
+    let description = options.description
+    let title = options.title
     let pullBranch = options.pullBranch || options.currentBranch
 
     if (testing) {
         pullBranch = 'test'
     }
 
-    git.push(options.config.default_remote, pullBranch)
+    if (userLeftMsgEmpty(title)) {
+        title = openFileInEditor(
+            'temp-gh-pr-title.txt',
+            `# Add a issue title message on the next line\n${git.getLastCommitMessage(pullBranch)}`
+        )
+    }
 
-    var payload: any = {
+    // If user passes an empty title and description, --description will get merged into options.title
+    // Need to reference the original title not the potentially modified one
+    if (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(description)) {
+        description = openFileInEditor(
+            'temp-gh-pr-body.md',
+            '<!-- Add an pr body message in markdown format below -->'
+        )
+    }
+
+    const payload: any = {
         mediaType: {
             previews: ['shadow-cat'],
         },
@@ -837,19 +853,18 @@ async function submit(options, user) {
         base: options.branch,
         head: `${options.user}:${pullBranch}`,
         repo: options.repo,
+        title: title,
+        ...(options.issue ? { issue: options.issue } : {}),
         ...(options.draft ? { draft: options.draft } : {}),
         ...(options.description ? { body: options.description } : {}),
     }
 
     try {
-        if (options.issue) {
-            payload.issue = options.issue
-            var { data } = await options.GitHub.pulls.createFromIssue(payload)
-        } else {
-            payload.title = options.title || git.getLastCommitMessage(pullBranch)
+        git.push(options.config.default_remote, pullBranch)
 
-            var { data } = await options.GitHub.pulls.create(payload)
-        }
+        const method = payload.issue ? 'createFromIssue' : 'create'
+
+        var { data } = await options.GitHub.pulls[method](payload)
     } catch (err) {
         var { originalError, pull } = await checkPullRequestIntegrity_(options, err)
 
