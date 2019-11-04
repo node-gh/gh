@@ -18,4 +18,6 @@ fs.writeFileSync = () => {}
 
 fs.readFileSync = () => fileContents
 
+fs.unlinkSync = () => {}
+
 module.exports = fs
