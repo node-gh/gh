@@ -39,14 +39,21 @@ export function openFileInEditor(fileName: string, msg: string) {
 
         const newFileContents = readFileSync(filePath).toString()
 
-        return newFileContents
-            .split('\n')
-            .filter(line => !line.startsWith('#'))
-            .join('\n')
-            .trim()
+        return cleanFileContents(newFileContents)
     } catch (err) {
         logger.error('Could not use your editor to get a custom message\n', err)
     }
+}
+
+/**
+ * Removes # comments and trims new lines
+ */
+export function cleanFileContents(fileContents: string): string {
+    return fileContents
+        .split('\n')
+        .filter(line => !line.startsWith('#'))
+        .join('\n')
+        .trim()
 }
 
 export function getCurrentFolderName(): string {
