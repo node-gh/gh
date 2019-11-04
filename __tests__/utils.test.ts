@@ -5,7 +5,7 @@
  */
 
 import { fileContents } from '../__mocks__/data'
-import { openFileInEditor } from '../src/utils'
+import { openFileInEditor, cleanFileContents } from '../src/utils'
 
 jest.mock('fs')
 jest.mock('child_process')
@@ -18,5 +18,13 @@ describe('Unit test for utils module', () => {
         )
 
         expect(fileContents).toContain(msg)
+    })
+
+    it('cleanFileContents cleans comments & new lines', () => {
+        const cleanedContents = cleanFileContents(fileContents)
+
+        expect(cleanedContents).toBe(`test msg
+
+some more msgs`)
     })
 })
