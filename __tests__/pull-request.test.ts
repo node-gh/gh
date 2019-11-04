@@ -87,8 +87,10 @@ describe('E2E: Pull Request Module Test', () => {
         done()
     })
 
-    it('Submit PR as a draft `gh pr -s protoEvangelion -b master -t "pr title" --draft`', done => {
-        expect(runCmd('gh pr -s protoEvangelion -b master -t "pr title" --draft')).toMatchSnapshot()
+    it('Submit PR as a draft `gh pr -s protoEvangelion --draft=true -b master -t "pr title" -D "description"`', done => {
+        expect(
+            runCmd('gh pr -s protoEvangelion --draft=true -b master -t "pr title" -D "description"')
+        ).toMatchSnapshot()
         done()
     })
 })
