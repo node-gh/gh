@@ -8,7 +8,7 @@
 
 import { isArray } from 'lodash'
 import { produce } from 'immer'
-import { openUrl, userRanValidFlags, openFileInEditor } from '../utils'
+import { openUrl, userRanValidFlags, openFileInEditor, userLeftMsgEmpty } from '../utils'
 import * as base from '../base'
 import { afterHooks, beforeHooks } from '../hooks'
 import * as logger from '../logger'
@@ -342,21 +342,6 @@ async function listFromAllRepositories(options) {
     for (const repo of repositories) {
         await list(options, repo.owner.login, repo.name)
     }
-}
-
-/**
- * Checks if string has been merged with a common flag or is empty
- */
-function userLeftMsgEmpty(string: string): boolean {
-    return (
-        string === '' ||
-        string === '--title' ||
-        string === '-t' ||
-        string === '--message' ||
-        string === '-m' ||
-        string === '--comment' ||
-        string === '-c'
-    )
 }
 
 function newIssue(options) {

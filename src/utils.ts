@@ -22,6 +22,23 @@ export function openUrl(url) {
 }
 
 /**
+ * Checks if string has been merged with a common flag or is empty
+ */
+export function userLeftMsgEmpty(string: string): boolean {
+    return (
+        string === '' ||
+        string === '--title' ||
+        string === '-t' ||
+        string === '--message' ||
+        string === '-m' ||
+        string === '--comment' ||
+        string === '-c' ||
+        string === '--description' ||
+        string === '-D'
+    )
+}
+
+/**
  * Allows users to add text from their editor of choice rather than the terminal
  *
  * @example
