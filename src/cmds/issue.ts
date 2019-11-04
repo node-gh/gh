@@ -125,7 +125,7 @@ export async function run(options, done) {
         await afterHooks('issue.assign', { options })
     } else if (options.browser) {
         browser(options.user, options.repo, options.number)
-    } else if (options.comment) {
+    } else if (options.comment || options.comment === '') {
         logger.log(`Adding comment on issue ${number} on ${getUserRepo(options)}`)
 
         try {
@@ -226,7 +226,14 @@ function browser(user, repo, number) {
 }
 
 function comment(options) {
-    const body = logger.applyReplacements(options.comment, config.replace) + config.signature
+    let body = logger.applyReplacements(options.comment, config.replace) + config.signature
+
+    if (userLeftMsgEmpty(options.comment)) {
+        body = openFileInEditor(
+            'temp-gh-issue-comment.md',
+            '<!-- Add an issue comment message in markdown format below -->'
+        )
+    }
 
     const payload = {
         body,
