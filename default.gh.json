@@ -18,6 +18,8 @@
 
     "github_user": "",
 
+    "use_editor": true,
+
     "hooks": {
         "issue": {
             "close": {
