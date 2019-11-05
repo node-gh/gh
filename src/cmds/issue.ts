@@ -226,9 +226,11 @@ function browser(user, repo, number) {
 }
 
 function comment(options) {
+    const useEditor = options.config.use_editor !== false
+
     let body = logger.applyReplacements(options.comment, config.replace) + config.signature
 
-    if (userLeftMsgEmpty(options.comment)) {
+    if (useEditor && userLeftMsgEmpty(options.comment)) {
         body = openFileInEditor(
             'temp-gh-issue-comment.md',
             '<!-- Add an issue comment message in markdown format below -->'
@@ -346,6 +348,8 @@ async function listFromAllRepositories(options) {
 
 function newIssue(options) {
     options = produce(options, draft => {
+        const useEditor = draft.config.use_editor !== false
+
         if (draft.labels) {
             draft.labels = draft.labels.split(',')
         } else {
@@ -356,7 +360,7 @@ function newIssue(options) {
             draft.message = logger.applyReplacements(draft.message, config.replace)
         }
 
-        if (userLeftMsgEmpty(draft.title)) {
+        if (useEditor && userLeftMsgEmpty(draft.title)) {
             draft.title = openFileInEditor(
                 'temp-gh-issue-title.txt',
                 '# Add a issue title message on the next line'
@@ -365,7 +369,7 @@ function newIssue(options) {
 
         // If user passes an empty title and message, --message will get merged into options.title
         // Need to reference the original title not the potentially modified one
-        if (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(draft.message)) {
+        if (useEditor && (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(draft.message))) {
             draft.message = openFileInEditor(
                 'temp-gh-issue-body.md',
                 '<!-- Add an issue body message in markdown format below -->'

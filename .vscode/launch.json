@@ -9,15 +9,7 @@
             "type": "node",
             "request": "launch",
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": [
-                "${workspaceFolder}/src/debug.ts",
-                "pr",
-                "-s",
-                "protoEvangleion",
-                "--title",
-                "dont ask",
-                "--description"
-            ],
+            "args": ["${workspaceFolder}/src/debug.ts", "is", "--new"],
             // "args": ["${workspaceFolder}/src/debug.ts", "ji", "LWM-117", "--status"],
             "console": "integratedTerminal"
         },
