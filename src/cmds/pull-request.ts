@@ -295,10 +295,12 @@ async function close(options) {
 }
 
 async function comment(options) {
+    const useEditor = options.config.use_editor !== false
+
     let body =
         logger.applyReplacements(options.comment, options.config.replace) + options.config.signature
 
-    if (userLeftMsgEmpty(body)) {
+    if (useEditor && userLeftMsgEmpty(body)) {
         body = openFileInEditor(
             'temp-gh-pr-comment.md',
             '<!-- Add an pr comment message in markdown format below -->'
@@ -828,6 +830,7 @@ function sortPullsByComplexity_(pulls, direction) {
 }
 
 async function submit(options, user) {
+    const useEditor = options.config.use_editor !== false
     let description = options.description
     let title = options.title
     let pullBranch = options.pullBranch || options.currentBranch
@@ -837,15 +840,14 @@ async function submit(options, user) {
     }
 
     if (userLeftMsgEmpty(title)) {
-        title = openFileInEditor(
-            'temp-gh-pr-title.txt',
-            `# Add a pr title message on the next line\n${git.getLastCommitMessage(pullBranch)}`
-        )
+        title = useEditor
+            ? openFileInEditor('temp-gh-pr-title.txt', `# Add a pr title message on the next line`)
+            : git.getLastCommitMessage(pullBranch)
     }
 
     // If user passes an empty title and description, --description will get merged into options.title
     // Need to reference the original title not the potentially modified one
-    if (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(description)) {
+    if (useEditor && (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(description))) {
         description = openFileInEditor(
             'temp-gh-pr-body.md',
             '<!-- Add an pr body message in markdown format below -->'
