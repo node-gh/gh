@@ -517,6 +517,8 @@ gh pr 1 --comment "Merged, thank you!"
 
 Submit a pull request using your default git editor (`git config --global core.editor`) by passing an empty `--comment`
 
+-   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
+
 ```
 gh pr 1 --comment
 ```
@@ -606,6 +608,8 @@ gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
 ```
 
 Submit a pull request using your default git editor (`git config --global core.editor`) by passing an empty `--title` and or `--description`
+
+-   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
 
 ```
 gh pr --submit eduardolundgren --title --description
@@ -738,6 +742,8 @@ gh is 'Node GH rocks!' 'Body with **Markdown** support'
 
 Create a new issue using your default git editor (`git config --global core.editor`) by passing an empty `--message` (_also works with an empty title_)
 
+-   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
+
 ```
 gh is --new --title 'Node GH rocks!' --message
 ```
@@ -779,6 +785,8 @@ gh is 1 --comment 'Node GH rocks!'
 ```
 
 Comment on an issue using your default git editor (`git config --global core.editor`) by passing an empty `--comment` (_also works with an empty title_)
+
+-   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
 
 ```
 gh is 1 --comment
