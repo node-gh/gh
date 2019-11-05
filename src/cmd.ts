@@ -17,7 +17,12 @@ import { create, env } from 'sanctuary'
 import * as updateNotifier from 'update-notifier'
 
 import { getConfig, getUser } from './base'
-import { createGlobalConfig, getGlobalPackageJson, getUserHomePath } from './configs'
+import {
+    createGlobalConfig,
+    getGlobalPackageJson,
+    getUserHomePath,
+    addPluginConfig,
+} from './configs'
 import { prepend, safeReaddir, safeImport, safeRealpath, safeWhich } from './fp'
 import * as git from './git'
 import { getGitHubInstance } from './github'
@@ -239,6 +244,9 @@ export async function run() {
             // Maintain backwards compat with plugins implemented as classes
             if (typeof Command === 'function') {
                 const Plugin: PluginInterface = Command
+
+                addPluginConfig(Plugin.name)
+
                 await new Plugin(options).run(cmdDoneRunning)
             } else {
                 await Command.run(options, cmdDoneRunning)

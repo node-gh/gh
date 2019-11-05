@@ -201,12 +201,6 @@ export function writeGlobalConfigCredentials(user, token, path): void {
 
 export function addPluginConfig(plugin) {
     try {
-        const pluginName = S.gets(S.is($.String))(['Impl', 'namez'])(plugin)
-
-        if (S.isNothing(pluginName)) {
-            return S.Left('Cannot get plugin name')
-        }
-
         const pluginConfig = require(path.join(
             getNodeModulesGlobalPath(),
             `gh-${plugin}`,
@@ -252,10 +246,10 @@ export function addPluginConfig(plugin) {
             }
         }
     } catch (e) {
-        return S.Left(`Error adding config\n${e}`)
+        if (e.code !== 'MODULE_NOT_FOUND') {
+            throw e
+        }
     }
-
-    return S.Right('Success')
 }
 
 export function getPlugins() {
