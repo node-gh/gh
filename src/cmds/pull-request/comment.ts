@@ -6,6 +6,18 @@
 import { userLeftMsgEmpty, openFileInEditor } from '../../utils'
 import * as logger from '../../logger'
 
+export async function commentHandler(options) {
+    logger.log(`Adding comment on pull request ${logger.colors.green(`#${options.number}`)}`)
+
+    try {
+        var { data } = await comment(options)
+    } catch (err) {
+        throw new Error(`Can't comment on pull request ${options.number}.\n${err}`)
+    }
+
+    logger.log(data.html_url)
+}
+
 export async function comment(options) {
     let body =
         logger.applyReplacements(options.comment, options.config.replace) + options.config.signature

@@ -12,7 +12,7 @@ import { listHandler } from './list'
 import { browser } from './browser'
 import { closeHandler } from './close'
 import { open } from './open'
-import { comment } from './comment'
+import { commentHandler } from './comment'
 import { submitHandler } from './submit'
 import { fetchHandler } from './fetch'
 import { fwdHandler } from './forward'
@@ -179,7 +179,7 @@ export async function run(options, done) {
         }
 
         if (options.comment || options.comment === '') {
-            await _commentHandler(options)
+            await commentHandler(options)
         }
 
         if (options.fetch) {
@@ -327,18 +327,6 @@ export function updatePullRequest(options, title, optBody, state) {
     }
 
     return options.GitHub.pulls.update(payload)
-}
-
-async function _commentHandler(options) {
-    logger.log(`Adding comment on pull request ${logger.colors.green(`#${options.number}`)}`)
-
-    try {
-        var { data } = await comment(options)
-    } catch (err) {
-        throw new Error(`Can't comment on pull request ${options.number}.\n${err}`)
-    }
-
-    logger.log(data.html_url)
 }
 
 async function _infoHandler(options) {
