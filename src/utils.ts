@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import * as tmp from 'tmp'
 import { isArray, isObject, isPlainObject, map, mapValues, upperFirst } from 'lodash'
 import * as nock from 'nock'
 import * as zlib from 'zlib'
 import * as open from 'opn'
 import { spawnSync, execSyncInteractiveStream } from './exec'
-import { readFileSync, writeFileSync, unlinkSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import * as logger from './logger'
 
 const testing = process.env.NODE_ENV === 'testing'
@@ -46,7 +47,7 @@ export function userLeftMsgEmpty(string: string): boolean {
  */
 export function openFileInEditor(fileName: string, msg: string): string {
     try {
-        const filePath = `${__dirname}/${fileName}`
+        var { name: filePath, removeCallback } = tmp.fileSync({ postfix: `-${fileName}` })
 
         writeFileSync(filePath, msg)
 
@@ -58,7 +59,7 @@ export function openFileInEditor(fileName: string, msg: string): string {
 
         const commentMark = fileName.endsWith('.md') ? '<!--' : '#'
 
-        unlinkSync(filePath)
+        removeCallback()
 
         return cleanFileContents(newFileContents, commentMark)
     } catch (err) {
