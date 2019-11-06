@@ -10,7 +10,7 @@ import { startsWith } from 'lodash'
 import { produce } from 'immer'
 import { listHandler } from './list'
 import { browser } from './browser'
-import { close } from './close'
+import { closeHandler } from './close'
 import { open } from './open'
 import { comment } from './comment'
 import { submitHandler } from './submit'
@@ -172,7 +172,7 @@ export async function run(options, done) {
 
         if (options.close) {
             try {
-                await _closeHandler(options)
+                await closeHandler(options)
             } catch (err) {
                 throw new Error(`Error closing PR\n${err}`)
             }
@@ -327,24 +327,6 @@ export function updatePullRequest(options, title, optBody, state) {
     }
 
     return options.GitHub.pulls.update(payload)
-}
-
-async function _closeHandler(options) {
-    await beforeHooks('pull-request.close', { options })
-
-    logger.log(`Closing pull request ${logger.colors.green(`#${options.number}`)}`)
-
-    try {
-        var { data } = await close(options)
-    } catch (err) {
-        throw new Error(`Can't close pull request ${options.number}.\n${err}`)
-    }
-
-    logger.log(data.html_url)
-
-    options = setMergeCommentRequiredOptions(options)
-
-    await afterHooks('pull-request.close', { options })
 }
 
 async function _commentHandler(options) {
