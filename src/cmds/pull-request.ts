@@ -11,7 +11,13 @@ import { startsWith } from 'lodash'
 import * as marked from 'marked'
 import { produce } from 'immer'
 import * as TerminalRenderer from 'marked-terminal'
-import { openUrl, userRanValidFlags, userLeftMsgEmpty, openFileInEditor } from '../utils'
+import {
+    openUrl,
+    userRanValidFlags,
+    userLeftMsgEmpty,
+    openFileInEditor,
+    askUserToPaginate,
+} from '../utils'
 import * as wrap from 'wordwrap'
 import * as git from '../git'
 
@@ -656,9 +662,7 @@ async function get(options, user, repo, number) {
     printPullInfo_(options, pull)
 }
 
-async function list(options, user, repo) {
-    let json
-
+async function list(options, user: string, repo: string, page = 1) {
     await beforeHooks('pull-request.list', { options })
 
     let sort = options.sort
@@ -667,32 +671,39 @@ async function list(options, user, repo) {
         sort = SORT_CREATED
     }
 
+    const pageSize = options.config.page_size
+
     const payload = {
         repo,
         sort,
         owner: user,
         direction: options.direction,
         state: options.state,
+        page,
+        ...(pageSize ? { per_page: pageSize } : {}),
     }
 
+    const listEndpoint = options.GitHub.pulls.list
+
     try {
-        var data = await options.GitHub.paginate(options.GitHub.pulls.list.endpoint(payload))
+        // If no pageSize, assume user removed limit and fetch all prs
+        var pulls = await (pageSize
+            ? listEndpoint(payload)
+            : options.GitHub.paginate(listEndpoint.endpoint.merge(payload)))
     } catch (err) {
         if (err && err.status === '404') {
-            // some times a repo is found, but you can't listen its prs
-            // due to the repo being disabled (e.g., private repo with debt)
+            // Some times a repo is found, but you can't list its prs
+            // Due to the repo being disabled (e.g., private repo with debt)
             logger.warn(`Can't list pull requests for ${user}/${payload.repo}`)
         } else {
             throw new Error(`Error listing pulls\n${err}`)
         }
     }
 
-    let pulls = []
+    const hasNextPage = pulls.headers.link.includes('rel="next"')
 
     if (options.me) {
-        pulls = filterPullsSentByMe_(options, data)
-    } else {
-        pulls = data
+        pulls = filterPullsSentByMe_(options, pulls)
     }
 
     if (options.sort && options.sort === SORT_COMPLEXITY) {
@@ -706,7 +717,7 @@ async function list(options, user, repo) {
     }
 
     pulls = await Promise.all(
-        pulls.map(async pull => {
+        pulls.data.map(async function mapStatus(pull) {
             const statusPayload = {
                 repo,
                 owner: user,
@@ -723,7 +734,7 @@ async function list(options, user, repo) {
         })
     )
 
-    json = getPullsTemplateJson_(options, pulls)
+    const json = getPullsTemplateJson_(options, pulls)
 
     if (pulls.length) {
         logger.log(logger.colors.yellow(`${user}/${repo}`))
@@ -748,6 +759,14 @@ async function list(options, user, repo) {
         if (options.all) {
             logger.log('')
         }
+    }
+
+    if (hasNextPage) {
+        const continuePaginating = await askUserToPaginate(pageSize, 'Pull Requests')
+
+        continuePaginating && list(options, user, repo, page + 1)
+
+        return
     }
 
     await afterHooks('pull-request.list', { options })
