@@ -4,9 +4,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import { produce } from 'immer'
 import * as git from '../../git'
 import { userLeftMsgEmpty, openFileInEditor } from '../../utils'
-import { testing, STATE_OPEN } from './index'
+import { testing, STATE_OPEN, setMergeCommentRequiredOptions } from './index'
+import { afterHooks, beforeHooks } from '../../hooks'
+import * as logger from '../../logger'
 
 export async function submit(options, user) {
     let description = options.description
@@ -62,6 +65,34 @@ export async function submit(options, user) {
     }
 
     return data || pull
+}
+
+export async function submitHandler(options) {
+    await beforeHooks('pull-request.submit', { options })
+
+    logger.log(`Submitting pull request to ${logger.colors.magenta(`@${options.submit}`)}`)
+
+    try {
+        var pull = await submit(options, options.submit)
+    } catch (err) {
+        throw new Error(`Can't submit pull request\n${err}`)
+    }
+
+    if (pull.draft) {
+        logger.log('Opened in draft state.')
+    }
+
+    if (pull) {
+        options = produce(options, draft => {
+            draft.submittedPull = pull.number
+        })
+    }
+
+    logger.log(pull.html_url)
+
+    options = setMergeCommentRequiredOptions(options)
+
+    await afterHooks('pull-request.submit', { options })
 }
 
 async function checkPullRequestIntegrity_(options, originalError) {

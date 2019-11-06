@@ -13,7 +13,7 @@ import { browser } from './browser'
 import { close } from './close'
 import { open } from './open'
 import { comment } from './comment'
-import { submit } from './submit'
+import { submitHandler } from './submit'
 import { fetch } from './fetch'
 import { forward } from './forward'
 import { userRanValidFlags } from '../../utils'
@@ -219,7 +219,7 @@ export async function run(options, done) {
         }
 
         if (options.submit) {
-            await _submitHandler(options)
+            await submitHandler(options)
         }
     }
 }
@@ -298,7 +298,7 @@ async function get(options, user, repo, number) {
     printPullInfo(options, pull)
 }
 
-function setMergeCommentRequiredOptions_(options) {
+export function setMergeCommentRequiredOptions(options) {
     const lastCommitSHA = git.getLastCommitSHA()
     const changes = git.countUserAdjacentCommits()
 
@@ -395,7 +395,7 @@ async function _fwdHandler(options) {
 
     logger.log(pull.html_url)
 
-    options = setMergeCommentRequiredOptions_(options)
+    options = setMergeCommentRequiredOptions(options)
 
     await afterHooks('pull-request.fwd', { options })
 }
@@ -413,7 +413,7 @@ async function _closeHandler(options) {
 
     logger.log(data.html_url)
 
-    options = setMergeCommentRequiredOptions_(options)
+    options = setMergeCommentRequiredOptions(options)
 
     await afterHooks('pull-request.close', { options })
 }
@@ -452,32 +452,4 @@ async function _openHandler(options) {
     logger.log(data.html_url)
 
     await afterHooks('pull-request.open', { options })
-}
-
-async function _submitHandler(options) {
-    await beforeHooks('pull-request.submit', { options })
-
-    logger.log(`Submitting pull request to ${logger.colors.magenta(`@${options.submit}`)}`)
-
-    try {
-        var pull = await submit(options, options.submit)
-    } catch (err) {
-        throw new Error(`Can't submit pull request\n${err}`)
-    }
-
-    if (pull.draft) {
-        logger.log('Opened in draft state.')
-    }
-
-    if (pull) {
-        options = produce(options, draft => {
-            draft.submittedPull = pull.number
-        })
-    }
-
-    logger.log(pull.html_url)
-
-    options = setMergeCommentRequiredOptions_(options)
-
-    await afterHooks('pull-request.submit', { options })
 }
