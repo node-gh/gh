@@ -144,12 +144,12 @@ export async function run(options, done) {
         options = await produce(options, async draft => {
             draft.number =
                 number ||
-                getPullRequestNumberFromBranch_(
+                getPullRequestNumberFromBranch(
                     draft.currentBranch,
                     options.config.pull_branch_name_prefix
                 )
 
-            draft.pullBranch = getBranchNameFromPullNumber_(
+            draft.pullBranch = getBranchNameFromPullNumber(
                 number,
                 options.config.pull_branch_name_prefix
             )
@@ -231,13 +231,13 @@ export function getPullRequest(options) {
     return options.GitHub.pulls.get(payload)
 }
 
-function getBranchNameFromPullNumber_(number, pullBranchNamePrefix) {
+function getBranchNameFromPullNumber(number, pullBranchNamePrefix) {
     if (number && number[0] !== undefined) {
         return pullBranchNamePrefix + number
     }
 }
 
-function getPullRequestNumberFromBranch_(currentBranch, prefix) {
+function getPullRequestNumberFromBranch(currentBranch, prefix) {
     if (currentBranch && startsWith(currentBranch, prefix)) {
         return currentBranch.replace(prefix, '')
     }
@@ -277,22 +277,6 @@ export function printPullInfo(options, pull) {
     if ((options.info || options.detailed) && pull.body) {
         logger.log(`${pull.body}\n`)
     }
-}
-
-export async function get(options, user, repo, number) {
-    const payload = {
-        repo,
-        pull_number: number,
-        owner: user,
-    }
-
-    try {
-        var { data: pull } = await options.GitHub.pulls.get(payload)
-    } catch (err) {
-        logger.warn(`Can't get pull request ${user}/${repo}/${number}`)
-    }
-
-    printPullInfo(options, pull)
 }
 
 export function setMergeCommentRequiredOptions(options) {
