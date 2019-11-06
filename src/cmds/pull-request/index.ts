@@ -14,7 +14,7 @@ import { close } from './close'
 import { open } from './open'
 import { comment } from './comment'
 import { submitHandler } from './submit'
-import { fetch } from './fetch'
+import { fetchHandler } from './fetch'
 import { fwdHandler } from './forward'
 import { userRanValidFlags } from '../../utils'
 import * as git from '../../git'
@@ -109,9 +109,6 @@ export const DETAILS = {
     },
 }
 
-const FETCH_TYPE_CHECKOUT = 'checkout'
-const FETCH_TYPE_MERGE = 'merge'
-const FETCH_TYPE_REBASE = 'rebase'
 export const FETCH_TYPE_SILENT = 'silent'
 export const STATE_OPEN = 'open'
 
@@ -186,7 +183,7 @@ export async function run(options, done) {
         }
 
         if (options.fetch) {
-            await _fetchHandler(options)
+            await fetchHandler(options)
         }
 
         if (options.fwd === '') {
@@ -330,45 +327,6 @@ export function updatePullRequest(options, title, optBody, state) {
     }
 
     return options.GitHub.pulls.update(payload)
-}
-
-async function _fetchHandler(options) {
-    let fetchType = FETCH_TYPE_CHECKOUT
-
-    if (options.merge) {
-        fetchType = FETCH_TYPE_MERGE
-    } else if (options.rebase) {
-        fetchType = FETCH_TYPE_REBASE
-    }
-
-    await beforeHooks('pull-request.fetch', { options })
-
-    let operation = ''
-    let branch = options.pullBranch
-
-    if (options.merge) {
-        operation = ' and merging'
-        branch = options.currentBranch
-    }
-
-    if (options.rebase) {
-        operation = ' and rebasing'
-        branch = options.currentBranch
-    }
-
-    logger.log(
-        `Fetching pull request ${logger.colors.green(
-            `#${options.number}`
-        )}${operation} into branch ${logger.colors.green(branch)}`
-    )
-
-    try {
-        await fetch(options, fetchType)
-    } catch (err) {
-        throw new Error(`Can't fetch pull request ${options.number}.\n${err}`)
-    }
-
-    await afterHooks('pull-request.fetch', { options })
 }
 
 async function _closeHandler(options) {
