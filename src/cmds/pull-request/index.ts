@@ -9,7 +9,8 @@
 import { startsWith } from 'lodash'
 import { produce } from 'immer'
 import { listHandler } from './list'
-import { openUrl, userRanValidFlags, userLeftMsgEmpty, openFileInEditor } from '../../utils'
+import { browser } from './browser'
+import { userRanValidFlags, userLeftMsgEmpty, openFileInEditor } from '../../utils'
 import * as git from '../../git'
 
 import { afterHooks, beforeHooks } from '../../hooks'
@@ -215,14 +216,6 @@ export async function run(options, done) {
         if (options.submit) {
             await _submitHandler(options)
         }
-    }
-}
-
-function browser(user, repo, number, githubHost) {
-    if (number) {
-        openUrl(`${githubHost}/${user}/${repo}/pull/${number}`)
-    } else {
-        openUrl(`${githubHost}/${user}/${repo}/pulls`)
     }
 }
 
