@@ -11,6 +11,7 @@ import { produce } from 'immer'
 import { listHandler } from './list'
 import { browser } from './browser'
 import { close } from './close'
+import { open } from './open'
 import { userRanValidFlags, userLeftMsgEmpty, openFileInEditor } from '../../utils'
 import * as git from '../../git'
 
@@ -108,7 +109,7 @@ const FETCH_TYPE_CHECKOUT = 'checkout'
 const FETCH_TYPE_MERGE = 'merge'
 const FETCH_TYPE_REBASE = 'rebase'
 const FETCH_TYPE_SILENT = 'silent'
-const STATE_OPEN = 'open'
+export const STATE_OPEN = 'open'
 
 // -- Commands -------------------------------------------------------------------------------------
 
@@ -386,12 +387,6 @@ async function get(options, user, repo, number) {
     }
 
     printPullInfo(options, pull)
-}
-
-async function open(options) {
-    const { data: pull } = await getPullRequest(options)
-
-    return updatePullRequest(options, pull.title, pull.body, STATE_OPEN)
 }
 
 function setMergeCommentRequiredOptions_(options) {
