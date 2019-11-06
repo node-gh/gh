@@ -10,6 +10,7 @@ import { startsWith } from 'lodash'
 import { produce } from 'immer'
 import { listHandler } from './list'
 import { browser } from './browser'
+import { close } from './close'
 import { userRanValidFlags, userLeftMsgEmpty, openFileInEditor } from '../../utils'
 import * as git from '../../git'
 
@@ -107,7 +108,6 @@ const FETCH_TYPE_CHECKOUT = 'checkout'
 const FETCH_TYPE_MERGE = 'merge'
 const FETCH_TYPE_REBASE = 'rebase'
 const FETCH_TYPE_SILENT = 'silent'
-const STATE_CLOSED = 'closed'
 const STATE_OPEN = 'open'
 
 // -- Commands -------------------------------------------------------------------------------------
@@ -217,22 +217,6 @@ export async function run(options, done) {
             await _submitHandler(options)
         }
     }
-}
-
-async function close(options) {
-    const { data: pull } = await getPullRequest(options)
-
-    const data = await updatePullRequest_(options, pull.title, pull.body, STATE_CLOSED)
-
-    if (options.pullBranch === options.currentBranch) {
-        git.checkout(pull.base.ref)
-    }
-
-    if (options.pullBranch) {
-        git.deleteBranch(options.pullBranch)
-    }
-
-    return data
 }
 
 async function comment(options) {
@@ -407,7 +391,7 @@ async function get(options, user, repo, number) {
 async function open(options) {
     const { data: pull } = await getPullRequest(options)
 
-    return updatePullRequest_(options, pull.title, pull.body, STATE_OPEN)
+    return updatePullRequest(options, pull.title, pull.body, STATE_OPEN)
 }
 
 function setMergeCommentRequiredOptions_(options) {
@@ -483,7 +467,7 @@ async function submit(options, user) {
     return data || pull
 }
 
-function updatePullRequest_(options, title, optBody, state) {
+export function updatePullRequest(options, title, optBody, state) {
     if (optBody) {
         optBody = logger.applyReplacements(optBody, options.config.replace)
     }
