@@ -15,7 +15,7 @@ import { open } from './open'
 import { comment } from './comment'
 import { submitHandler } from './submit'
 import { fetch } from './fetch'
-import { forward } from './forward'
+import { fwdHandler } from './forward'
 import { userRanValidFlags } from '../../utils'
 import * as git from '../../git'
 
@@ -196,7 +196,7 @@ export async function run(options, done) {
         }
 
         if (options.fwd) {
-            await _fwdHandler(options)
+            await fwdHandler(options)
             return
         }
 
@@ -369,35 +369,6 @@ async function _fetchHandler(options) {
     }
 
     await afterHooks('pull-request.fetch', { options })
-}
-
-async function _fwdHandler(options) {
-    await beforeHooks('pull-request.fwd', { options })
-
-    logger.log(
-        `Forwarding pull request ${logger.colors.green(
-            `#${options.number}`
-        )} to ${logger.colors.magenta(`@${options.fwd}`)}`
-    )
-
-    try {
-        var { options: updatedOptions, data: pull } = await forward(options)
-    } catch (err) {
-        throw new Error(`Can't forward pull request ${options.number} to ${options.fwd}.\n${err}`)
-    }
-
-    if (pull) {
-        options = produce(updatedOptions, draft => {
-            draft.submittedPullNumber = pull.number
-            draft.forwardedPull = pull.number
-        })
-    }
-
-    logger.log(pull.html_url)
-
-    options = setMergeCommentRequiredOptions(options)
-
-    await afterHooks('pull-request.fwd', { options })
 }
 
 async function _closeHandler(options) {
