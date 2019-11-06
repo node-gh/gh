@@ -277,8 +277,10 @@ export function prepareTestFixtures(cmdName, argv) {
         return normalizedFixtures
     }
 
-    function stripAccessToken(path) {
-        return path.replace(/access_token(.*?)(&|$)/gi, '')
+    function stripAccessToken(header) {
+        return header.includes('access_token')
+            ? header.replace(/access_token(.*?)(&|$)/gi, '')
+            : header
     }
 
     function before(scope) {

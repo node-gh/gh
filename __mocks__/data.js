@@ -1,4 +1,4 @@
-const files = ['alias.ts', 'gists.ts', 'pull-request.ts']
+const files = ['alias.ts', 'gists.ts', 'pull-request']
 
 const fileContents = `# file contents
 test msg
