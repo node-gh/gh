@@ -12,6 +12,7 @@ import { listHandler } from './list'
 import { browser } from './browser'
 import { close } from './close'
 import { open } from './open'
+import { comment } from './comment'
 import { userRanValidFlags, userLeftMsgEmpty, openFileInEditor } from '../../utils'
 import * as git from '../../git'
 
@@ -218,29 +219,6 @@ export async function run(options, done) {
             await _submitHandler(options)
         }
     }
-}
-
-async function comment(options) {
-    const useEditor = options.config.use_editor !== false
-
-    let body =
-        logger.applyReplacements(options.comment, options.config.replace) + options.config.signature
-
-    if (useEditor && userLeftMsgEmpty(body)) {
-        body = openFileInEditor(
-            'temp-gh-pr-comment.md',
-            '<!-- Add an pr comment message in markdown format below -->'
-        )
-    }
-
-    const payload = {
-        body,
-        issue_number: options.number,
-        repo: options.repo,
-        owner: options.user,
-    }
-
-    return options.GitHub.issues.createComment(payload)
 }
 
 async function checkPullRequestIntegrity_(options, originalError) {
