@@ -15,6 +15,7 @@ import { open } from './open'
 import { comment } from './comment'
 import { submit } from './submit'
 import { fetch } from './fetch'
+import { forward } from './forward'
 import { userRanValidFlags } from '../../utils'
 import * as git from '../../git'
 
@@ -221,24 +222,6 @@ export async function run(options, done) {
             await _submitHandler(options)
         }
     }
-}
-
-async function forward(options) {
-    try {
-        var pull = await fetch(options, FETCH_TYPE_SILENT)
-    } catch (err) {
-        throw new Error(`Error fetching PR\${err}`)
-    }
-
-    options = produce(options, draft => {
-        draft.title = pull.title
-        draft.description = pull.body
-        draft.submittedUser = pull.user.login
-    })
-
-    const data = await submit(options, options.fwd)
-
-    return { data, options }
 }
 
 export function getPullRequest(options) {
