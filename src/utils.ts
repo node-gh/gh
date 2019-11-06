@@ -12,6 +12,7 @@ import * as open from 'opn'
 import { spawnSync, execSyncInteractiveStream } from './exec'
 import { readFileSync, writeFileSync } from 'fs'
 import * as logger from './logger'
+import * as inquirer from 'inquirer'
 
 const testing = process.env.NODE_ENV === 'testing'
 
@@ -313,4 +314,16 @@ function formatCmdName(cmd, argv) {
 
 function concatUpper(one, two) {
     return `${one}${upperFirst(two)}`
+}
+
+export async function askUserToPaginate(pageSize: number, type: string): Promise<boolean> {
+    const answers = await inquirer.prompt([
+        {
+            type: 'confirm',
+            message: `Would you like to see the next ${pageSize} ${type}`,
+            name: 'paginate',
+        },
+    ])
+
+    return answers.paginate
 }

@@ -448,7 +448,6 @@ function list(options, user): Promise<Octokit.AnyResponse | Octokit.ReposListFor
 
     const payload: any = {
         type: options.type,
-        per_page: 100,
     }
 
     if (options.organization) {

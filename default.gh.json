@@ -20,6 +20,8 @@
 
     "use_editor": true,
 
+    "page_size": 30,
+
     "hooks": {
         "issue": {
             "close": {
