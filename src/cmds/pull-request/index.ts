@@ -16,6 +16,7 @@ import { commentHandler } from './comment'
 import { submitHandler } from './submit'
 import { fetchHandler } from './fetch'
 import { fwdHandler } from './forward'
+import { infoHandler } from './info'
 import { userRanValidFlags } from '../../utils'
 import * as git from '../../git'
 
@@ -197,7 +198,7 @@ export async function run(options, done) {
         }
 
         if (options.info) {
-            await _infoHandler(options)
+            await infoHandler(options)
         }
 
         if (options.list) {
@@ -278,7 +279,7 @@ export function printPullInfo(options, pull) {
     }
 }
 
-async function get(options, user, repo, number) {
+export async function get(options, user, repo, number) {
     const payload = {
         repo,
         pull_number: number,
@@ -326,12 +327,4 @@ export function updatePullRequest(options, title, optBody, state) {
     }
 
     return options.GitHub.pulls.update(payload)
-}
-
-async function _infoHandler(options) {
-    try {
-        await get(options, options.user, options.repo, options.number)
-    } catch (err) {
-        throw new Error(`Can't get pull requests.\n${err}`)
-    }
 }
