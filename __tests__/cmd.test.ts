@@ -85,7 +85,7 @@ describe('tryResolvingByPlugin function', () => {
 })
 
 describe('loadCommand function', () => {
-    it('finds hello cmd', done => {
+    it.only('finds pr cmd', done => {
         loadCommand({
             cooked: ['pr'],
             remain: ['pr'],

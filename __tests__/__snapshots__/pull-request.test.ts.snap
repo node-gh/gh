@@ -113,11 +113,13 @@ Branch: master (1)
 exports[`E2E: Pull Request Module Test List PRs \`gh pr\` 1`] = `
 "Listing open pull requests on protoEvangelion/gh
 protoEvangelion/gh
-Branch: master (1)
+Branch: master (2)
 ┌─────────┬───────────────────────────────────────────────┬─────────────────────┬───────────────┬────────┐
 │    #    │ Title                                         │ Author              │ Opened        │ Status │
 ├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
-│   #55   │ pr title                                      │ @protoEvangelion    │ in 4 years    │   ✓    │
+│  #133   │ title                                         │ @protoEvangelion    │ in 4 years    │   -    │
+├─────────┼───────────────────────────────────────────────┼─────────────────────┼───────────────┼────────┤
+│   #50   │ pr2                                           │ @protoEvangelion    │ in 4 years    │   ✓    │
 └─────────┴───────────────────────────────────────────────┴─────────────────────┴───────────────┴────────┘
 "
 `;

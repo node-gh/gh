@@ -15,9 +15,6 @@ import * as logger from '../logger'
 
 // -- Constants ------------------------------------------------------------------------------------
 
-// allows to run program as js or ts
-const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
-
 export const name = 'Help'
 export const DETAILS = {
     description: 'List all commands and options available.',
@@ -35,17 +32,12 @@ export const DETAILS = {
 
 export async function run(options, done) {
     const cmdDir = path.join(__dirname, '../cmds/')
-    const reg = new RegExp(`.${extension}$`)
-    const files = await base.find(cmdDir, reg).promise()
-    let filter
-    let plugins
-
-    // Remove help from command list
-    files.splice(files.indexOf(`help.${extension}`), 1)
-    files.splice(files.indexOf(`version.${extension}`), 1)
+    const files = (await base.find(cmdDir).promise()).filter(
+        name => !name.includes('help') && !name.includes('version') && !name.includes('.map')
+    )
 
     // Get external plugins
-    plugins = configs.getPlugins()
+    const plugins = configs.getPlugins()
 
     plugins.forEach(plugin => {
         try {
@@ -55,15 +47,15 @@ export async function run(options, done) {
         }
     })
 
-    filter = options.argv.remain[0]
+    let filter = options.argv.remain[0]
 
     if (filter === 'help') {
         filter = options.argv.remain[1]
     }
 
     const commands = await Promise.all(
-        files.map(async dir => {
-            let cmd = await import(path.resolve(cmdDir, dir))
+        files.map(async fileName => {
+            let cmd = await import(path.resolve(cmdDir, fileName))
 
             let flags = []
 
@@ -72,7 +64,11 @@ export async function run(options, done) {
             }
 
             const alias = cmd.DETAILS.alias || ''
-            const name = path.basename(dir, `.${extension}`).replace(/^gh-/, '')
+            const name = path
+                .basename(fileName)
+                .replace(/^gh-/, '')
+                .replace(/\..*/, '')
+
             let offset = 20 - alias.length - name.length
 
             if (offset < 1) {

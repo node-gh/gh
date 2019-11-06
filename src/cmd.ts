@@ -89,9 +89,7 @@ export function tryResolvingByHelpOrVersion({ cooked, remain }: Args = {}): Futu
 function buildFilePath(filename: string): string {
     const commandDir = path.join(__dirname, 'cmds')
 
-    // Allows to run program as .js normally or .ts when debugging
-    const extension = __filename.slice(__filename.lastIndexOf('.') + 1)
-    const fullFileName = filename.includes('.') ? filename : `${filename}.${extension}`
+    const fullFileName = filename.includes('.') ? filename : `${filename}`
     const absolutePath = path.join(commandDir, fullFileName)
 
     return absolutePath
@@ -118,11 +116,11 @@ export function tryResolvingByAlias(name: string): Future.FutureInstance<string,
         .chainRej(() => Future.reject(name))
 
     function filterFiles(files: string[]): Future.FutureInstance<string, string> {
-        const alias = files.filter((file: string) => {
+        const cmdFileName = files.filter((file: string) => {
             return file.startsWith(name[0]) && file.includes(name[1])
         })[0]
 
-        return alias ? Future.of(alias) : Future.reject(name)
+        return cmdFileName ? Future.of(cmdFileName) : Future.reject(name)
     }
 }
 

@@ -21,11 +21,11 @@ export function clone(o) {
  */
 export function find(
     dirPath: string,
-    optPattern?
+    optPattern = /.*/
 ): Future.FutureInstance<NodeJS.ErrnoException, string[]> {
     return safeReaddir(dirPath).map(dirs => {
         return dirs.filter(file => {
-            return (optPattern || /.*/).test(file)
+            return optPattern.test(file)
         })
     })
 }
