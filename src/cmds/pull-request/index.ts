@@ -11,7 +11,7 @@ import { produce } from 'immer'
 import { listHandler } from './list'
 import { browser } from './browser'
 import { closeHandler } from './close'
-import { open } from './open'
+import { openHandler } from './open'
 import { commentHandler } from './comment'
 import { submitHandler } from './submit'
 import { fetchHandler } from './fetch'
@@ -19,7 +19,6 @@ import { fwdHandler } from './forward'
 import { userRanValidFlags } from '../../utils'
 import * as git from '../../git'
 
-import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
 
 export const testing = process.env.NODE_ENV === 'testing'
@@ -206,7 +205,7 @@ export async function run(options, done) {
         }
 
         if (options.open) {
-            await _openHandler(options)
+            await openHandler(options)
         }
 
         if (options.submit === '') {
@@ -335,20 +334,4 @@ async function _infoHandler(options) {
     } catch (err) {
         throw new Error(`Can't get pull requests.\n${err}`)
     }
-}
-
-async function _openHandler(options) {
-    await beforeHooks('pull-request.open', { options })
-
-    logger.log(`Opening pull request ${logger.colors.green(`#${options.number}`)}`)
-
-    try {
-        var { data } = await open(options)
-    } catch (err) {
-        logger.error(`Can't open pull request ${options.number}.`)
-    }
-
-    logger.log(data.html_url)
-
-    await afterHooks('pull-request.open', { options })
 }
