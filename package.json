@@ -160,7 +160,7 @@
         "fluture-sanctuary-types": "~4.1.1",
         "handlebars": "~4.3.5",
         "immer": "~4.0.0",
-        "inquirer": "~6.2.1",
+        "inquirer": "~6.5.2",
         "lodash": "~4.17.15",
         "marked": "~0.7.0",
         "marked-terminal": "~3.2.0",
