@@ -182,6 +182,9 @@ export async function buildOptions(args, cmdName) {
             draft.GitHub = await getGitHubInstance()
         }
 
+        // default the page size to 30
+        draft.allPages = config.all_pages || false
+        draft.pageSize = config.page_size || 30
         draft.config = config
         draft.remote = remote
         draft.number = draft.number || secondArg

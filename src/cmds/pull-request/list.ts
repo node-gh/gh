@@ -81,16 +81,23 @@ async function list(options, user: string, repo: string, page = 1) {
         direction: options.direction,
         state: options.state,
         page,
-        ...(pageSize ? { per_page: pageSize } : {}),
+        per_page: options.pageSize,
     }
 
     const listEndpoint = options.GitHub.pulls.list
 
+    let hasNextPage = false
+
     try {
         // If no pageSize, assume user removed limit and fetch all prs
-        var pulls = await (pageSize
-            ? listEndpoint(payload)
-            : options.GitHub.paginate(listEndpoint.endpoint.merge(payload)))
+        var pulls = await (options.allPages
+            ? options.GitHub.paginate(listEndpoint.endpoint.merge(payload))
+            : listEndpoint(payload))
+
+        hasNextPage =
+            pulls.headers && pulls.headers.link && pulls.headers.link.includes('rel="next"')
+
+        pulls = pulls.data ? pulls.data : pulls
     } catch (err) {
         if (err && err.status === '404') {
             // Some times a repo is found, but you can't list its prs
@@ -100,8 +107,6 @@ async function list(options, user: string, repo: string, page = 1) {
             throw new Error(`Error listing pulls\n${err}`)
         }
     }
-
-    const hasNextPage = pulls.headers.link && pulls.headers.link.includes('rel="next"')
 
     if (options.me) {
         pulls = filterPullsSentByMe_(options, pulls)
@@ -118,7 +123,7 @@ async function list(options, user: string, repo: string, page = 1) {
     }
 
     pulls = await Promise.all(
-        pulls.data.map(async function mapStatus(pull) {
+        pulls.map(async function mapStatus(pull) {
             const statusPayload = {
                 repo,
                 owner: user,
