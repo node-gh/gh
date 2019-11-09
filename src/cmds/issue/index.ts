@@ -8,10 +8,10 @@
 
 import { isArray } from 'lodash'
 import { produce } from 'immer'
-import { openUrl, userRanValidFlags, openFileInEditor, userLeftMsgEmpty } from '../utils'
-import * as base from '../base'
-import { afterHooks, beforeHooks } from '../hooks'
-import * as logger from '../logger'
+import { openUrl, userRanValidFlags, openFileInEditor, userLeftMsgEmpty } from '../../utils'
+import * as base from '../../base'
+import { afterHooks, beforeHooks } from '../../hooks'
+import * as logger from '../../logger'
 
 const config = base.getConfig()
 
