@@ -18,6 +18,7 @@ import { list, listFromAllRepositories } from './list'
 import { assign } from './assign'
 import { closeHandler } from './close'
 import { openHandler } from './open'
+import { search } from './search'
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -77,7 +78,7 @@ export const DETAILS = {
 export const STATE_CLOSED = 'closed'
 export const STATE_OPEN = 'open'
 
-// -- Commands -------------------------------------------------------------------------------------
+// -- Command-------------------------------------------------------------------------------------
 
 export const name = 'Issue'
 
@@ -205,6 +206,8 @@ export async function run(options, done) {
     done && done()
 }
 
+// -- HELPERS -------------------------------------------------------------------------------------
+
 export function editIssue(options, title, state, number?: number) {
     let payload
 
@@ -230,35 +233,6 @@ export function getIssue(options, number?: number) {
     }
 
     return options.GitHub.issues.get(payload)
-}
-
-async function search(options, user, repo) {
-    let query = ['type:issue']
-    let payload
-
-    if (!options.all && repo) {
-        query.push(`repo:${repo}`)
-    }
-
-    if (user) {
-        query.push(`user:${user}`)
-    }
-
-    query.push(options.search)
-
-    payload = {
-        q: query.join(' '),
-    }
-
-    const { data } = await options.GitHub.search.issuesAndPullRequests(payload)
-
-    if (data.items && data.items.length > 0) {
-        const formattedIssues = formatIssues(data.items, options.detailed)
-
-        logger.log(formattedIssues)
-    } else {
-        logger.log('Could not find any issues matching your query.')
-    }
 }
 
 export function formatIssues(issues, showDetailed, dateFormatter?: string) {
