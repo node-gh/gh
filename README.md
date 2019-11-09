@@ -349,14 +349,10 @@ gh pull-request
 | `-r`, `--repo`   | _Optional_ | `String`  |
 | `-u`, `--user`   | _Optional_ | `String`  |
 
-```
-gh pr
-```
-
 Get information about a pull request.
 
 ```
-gh pr --info number
+gh pr --info 1
 ```
 
 ### PR: List
@@ -381,11 +377,15 @@ gh pr --info number
 -   `user` is owner of the repository, it is the authenticated user by default.
 -   `remote` is the name of the remote configuration in a git directory, i.e. origin, upstream.
 -   Therefore, it only makes sense when this command is run in a git directory.
+-   To turn off pretty printing of output in a table add `"pretty_print": false` to your `~/.gh-json` config
 
 #### Examples
 
-**Shortcut** for listing open pull requests for the current repository.
-To turn off pretty printing of output in a table add `"pretty_print": false` to your `~/.gh-json` config
+**Shortcut** for listing open pull requests for the current repository
+
+```
+gh pr
+```
 
 List open pull requests for all branches from all your repositories.
 

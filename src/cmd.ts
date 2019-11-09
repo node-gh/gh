@@ -15,7 +15,6 @@ import * as path from 'path'
 import * as R from 'ramda'
 import { create, env } from 'sanctuary'
 import * as updateNotifier from 'update-notifier'
-
 import { getConfig, getUser } from './base'
 import {
     createGlobalConfig,
@@ -183,7 +182,7 @@ export async function buildOptions(args, cmdName) {
         }
 
         // default the page size to 30
-        draft.allPages = config.all_pages || false
+        draft.allPages = config.page_size === ''
         draft.pageSize = config.page_size || 30
         draft.config = config
         draft.remote = remote
