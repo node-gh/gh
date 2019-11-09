@@ -16,6 +16,7 @@ import { newIssue } from './new'
 import { comment } from './comment'
 import { list, listFromAllRepositories } from './list'
 import { assign } from './assign'
+import { closeHandler } from './close'
 import { openHandler } from './open'
 
 // -- Constants ------------------------------------------------------------------------------------
@@ -73,7 +74,7 @@ export const DETAILS = {
     },
 }
 
-const STATE_CLOSED = 'closed'
+export const STATE_CLOSED = 'closed'
 export const STATE_OPEN = 'open'
 
 // -- Commands -------------------------------------------------------------------------------------
@@ -181,11 +182,7 @@ export async function run(options, done) {
     } else if (options.open) {
         await openHandler(options)
     } else if (options.close) {
-        await beforeHooks('issue.close', { options })
-
         await closeHandler(options)
-
-        await afterHooks('issue.close', { options })
     } else if (options.search) {
         let { repo, user } = options
         const query = logger.colors.green(options.search)
@@ -235,12 +232,6 @@ export function getIssue(options, number?: number) {
     return options.GitHub.issues.get(payload)
 }
 
-async function close(options, number) {
-    const issue = await getIssue(options, number)
-
-    return editIssue(options, issue.title, STATE_CLOSED, number)
-}
-
 async function search(options, user, repo) {
     let query = ['type:issue']
     let payload
@@ -267,20 +258,6 @@ async function search(options, user, repo) {
         logger.log(formattedIssues)
     } else {
         logger.log('Could not find any issues matching your query.')
-    }
-}
-
-async function closeHandler(options) {
-    for (const number of options.number) {
-        logger.log(`Closing issue ${number} on ${options.userRepo}`)
-
-        try {
-            var { data } = await close(options, number)
-        } catch (err) {
-            throw new Error(`Can't close issue.\n${err}`)
-        }
-
-        logger.log(logger.colors.cyan(data.html_url))
     }
 }
 
