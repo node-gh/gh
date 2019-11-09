@@ -14,6 +14,7 @@ import * as logger from '../../logger'
 import { browser } from './browser'
 import { newIssue } from './new'
 import { comment } from './comment'
+import { list, listFromAllRepositories } from './list'
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -109,7 +110,7 @@ export async function run(options, done) {
         await beforeHooks('issue.assign', { options })
 
         logger.log(
-            `Assigning issue ${number} on ${getUserRepo(options)} to ${logger.colors.magenta(
+            `Assigning issue ${number} on ${options.userRepo} to ${logger.colors.magenta(
                 options.assignee
             )}`
         )
@@ -126,7 +127,7 @@ export async function run(options, done) {
     } else if (options.browser) {
         browser(options)
     } else if (options.comment || options.comment === '') {
-        logger.log(`Adding comment on issue ${number} on ${getUserRepo(options)}`)
+        logger.log(`Adding comment on issue ${number} on ${options.userRepo}`)
 
         try {
             var { data } = await comment(options)
@@ -147,9 +148,7 @@ export async function run(options, done) {
                 await listFromAllRepositories(options)
             } else {
                 logger.log(
-                    `Listing ${logger.colors.green(options.state)} issues on ${getUserRepo(
-                        options
-                    )}`
+                    `Listing ${logger.colors.green(options.state)} issues on ${options.userRepo}`
                 )
 
                 await list(options, options.user, options.repo)
@@ -160,7 +159,7 @@ export async function run(options, done) {
     } else if (options.new) {
         await beforeHooks('issue.new', { options })
 
-        logger.log(`Creating a new issue on ${getUserRepo(options)}`)
+        logger.log(`Creating a new issue on ${options.userRepo}`)
 
         try {
             var { data } = await newIssue(options)
@@ -198,13 +197,13 @@ export async function run(options, done) {
 
             logger.log(`Searching for ${query} in issues for ${logger.colors.green(user)}\n`)
         } else {
-            logger.log(`Searching for ${query} in issues for ${getUserRepo(options)}\n`)
+            logger.log(`Searching for ${query} in issues for ${options.userRepo}\n`)
         }
 
         try {
             await search(options, user, repo)
         } catch (err) {
-            throw new Error(`Can't search issues for ${getUserRepo(options)}: \n${err}`)
+            throw new Error(`Can't search issues for ${options.userRepo}: \n${err}`)
         }
     }
 
@@ -242,78 +241,6 @@ function getIssue_(options, number?: number) {
     }
 
     return options.GitHub.issues.get(payload)
-}
-
-async function list(options, user, repo) {
-    let payload
-
-    payload = {
-        repo,
-        owner: user,
-        state: options.state,
-    }
-
-    if (options.labels) {
-        payload.labels = options.labels
-    }
-
-    if (options['no-milestone']) {
-        payload.milestone = 'none'
-    }
-
-    if (options.milestone) {
-        const data = await options.GitHub.paginate(
-            options.GitHub.issues.listMilestonesForRepo.endpoint({
-                repo,
-                owner: user,
-            })
-        )
-
-        const milestoneNumber = data
-            .filter(milestone => options.milestone === milestone.title)
-            .map(milestone => milestone.number)[0]
-
-        if (!milestoneNumber) {
-            logger.log(
-                `No issues found with milestone title: ${logger.colors.red(options.milestone)}`
-            )
-            return
-        }
-
-        payload.milestone = `${milestoneNumber}`
-    }
-
-    if (options.assignee) {
-        payload.assignee = options.assignee
-    }
-
-    const data = await options.GitHub.paginate(options.GitHub.issues.listForRepo.endpoint(payload))
-
-    const issues = data.filter(result => Boolean(result))
-
-    if (issues && issues.length > 0) {
-        const formattedIssues = formatIssues(issues, options.detailed)
-        options.all
-            ? logger.log(`\n${getUserRepo(options)}:\n${formattedIssues}`)
-            : logger.log(formattedIssues)
-    } else {
-        logger.log(`\nNo issues on ${getUserRepo(options)}`)
-    }
-}
-
-async function listFromAllRepositories(options) {
-    const payload = {
-        type: 'all',
-        username: options.user,
-    }
-
-    const repositories: any = await options.GitHub.paginate(
-        options.GitHub.repos.listForUser.endpoint(payload)
-    )
-
-    for (const repo of repositories) {
-        await list(options, repo.owner.login, repo.name)
-    }
 }
 
 async function close(options, number) {
@@ -359,7 +286,7 @@ async function search(options, user, repo) {
 
 async function closeHandler(options) {
     for (const number of options.number) {
-        logger.log(`Closing issue ${number} on ${getUserRepo(options)}`)
+        logger.log(`Closing issue ${number} on ${options.userRepo}`)
 
         try {
             var { data } = await close(options, number)
@@ -373,7 +300,7 @@ async function closeHandler(options) {
 
 async function openHandler(options) {
     for (const number of options.number) {
-        logger.log(`Opening issue ${number} on ${getUserRepo(options)}`)
+        logger.log(`Opening issue ${number} on ${options.userRepo}`)
 
         try {
             var { data } = await open(options, number)
@@ -385,7 +312,7 @@ async function openHandler(options) {
     }
 }
 
-function formatIssues(issues, showDetailed, dateFormatter?: string) {
+export function formatIssues(issues, showDetailed, dateFormatter?: string) {
     issues.sort((a, b) => {
         return a.number > b.number ? -1 : 1
     })
@@ -445,8 +372,4 @@ function trim(str) {
         .replace(/^[ ]+/gm, '')
         .replace(/[\r\n]+/g, '\n')
         .trim()
-}
-
-function getUserRepo(options) {
-    return logger.colors.green(`${options.user}/${options.repo}`)
 }
