@@ -16,6 +16,7 @@ import * as R from 'ramda'
 import { create, env } from 'sanctuary'
 import * as updateNotifier from 'update-notifier'
 import { getConfig, getUser } from './base'
+import * as logger from './logger'
 import {
     createGlobalConfig,
     getGlobalPackageJson,
@@ -211,6 +212,8 @@ export async function buildOptions(args, cmdName) {
             draft.submit = config.alias[draft.submit] || draft.submit
             draft.user = config.alias[draft.user] || draft.user
         }
+
+        draft.userRepo = logger.colors.green(`${draft.user}/${draft.repo}`)
     })
 
     return options
