@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { runCmd } from './testUtils'
+import { runCmd } from '../src/test-utils'
 
 describe('E2E: Help Module Test', () => {
     it('`gh --help`', done => {

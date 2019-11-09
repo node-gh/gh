@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { runCmd } from './testUtils'
+import { runCmd } from '../src/test-utils'
+import {} from '../src/test-utils'
 
 describe('E2E: Alias Module Test', () => {
     it('User alias is expanded `gh user --user=zeno`', done => {

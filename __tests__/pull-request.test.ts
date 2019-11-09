@@ -5,7 +5,7 @@
  */
 
 import * as stripAnsi from 'strip-ansi'
-import { runCmd } from './testUtils'
+import { runCmd } from '../src/test-utils'
 
 describe('E2E: Pull Request Module Test', () => {
     it('List PRs `gh pr`', done => {
