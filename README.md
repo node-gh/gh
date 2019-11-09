@@ -39,7 +39,7 @@
 -   [Contributing](#contributing)
     </details>
 
-<details><summary>Available Commands</summary>
+<details><summary>Available Commands</summary><br/>
 
 <details><summary>Pull Requests `pr`</summary>
 
@@ -113,6 +113,7 @@
 -   [`--list` - List aliases for a specific repo](#alias-list)
     </details>
 
+<br/>
 </details>
 
 <details><summary>General</summary>
@@ -378,6 +379,7 @@ gh pr --info 1
 -   `remote` is the name of the remote configuration in a git directory, i.e. origin, upstream.
 -   Therefore, it only makes sense when this command is run in a git directory.
 -   To turn off pretty printing of output in a table add `"pretty_print": false` to your `~/.gh-json` config
+-   To adjust [pagination rules](#set-pagination-rules)
 
 #### Examples
 
@@ -857,6 +859,8 @@ gh is 1 --close --user eduardolundgren
 | `-S`, `--state`     | _Optional_   | [`open`, `closed`]   |
 | `-u`, `--user`      | _Optional_   | `String`             |
 
+-   To adjust [pagination rules](#set-pagination-rules)
+
 #### Examples
 
 **Shortcut** for listing all issues on the current repository.
@@ -1041,6 +1045,8 @@ gh re --browser --user eduardolundgren --repo node-gh
 | `-u`, `--user`     | _Optional_   | `String`                                        |
 | `-t`, `--type`     | _Optional_   | [`all`, `owner`, `public`, `private`, `member`] |
 | `--date`           | _Optional_   | `String`                                        |
+
+-   To adjust [pagination rules](#set-pagination-rules)
 
 #### Examples
 
@@ -1586,7 +1592,9 @@ This file can be found under home directory _(on MacOSx: `/Users/yourName/.gh.js
 
 You can also set per-project configurations by adding a `.gh.json` file in your project's root folder and overriding existing keys.
 
-GitHub API configurations. Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
+### GitHub API configurations.
+
+Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
 
 ```javascript
 "api": {
@@ -1595,28 +1603,47 @@ GitHub API configurations. Change it if you're a [GitHub Enterprise](https://ent
 }
 ```
 
-Set default branch and remote.
+### Set Pagination Rules
+
+-   For list based commands (_like listing prs, issues, or repos_) we **default to 30**
+-   That means if you ran `gh pr` you would see a max of 30 pull requests
+-   If you would like to see more, we will prompt your in your terminal to see the next batch
+-   You can set your page size up from `1` to `100`
+
+```json
+"page_size": 77
+```
+
+-   If you want to remove the limit & set it to the maximum, use an empty string
+
+```json
+"page_size": ""
+```
+
+### Set default branch and remote.
 
 ```javascript
 "default_branch": "master",
 "default_remote": "origin"
 ```
 
-Set default users when [submitting](#pr-submit) or [forwarding](#pr-forward) pull requests.
+### Set default users
+
+For [submitting](#pr-submit) or [forwarding](#pr-forward) pull requests.
 
 ```javascript
 "default_pr_forwarder": "",
 "default_pr_reviewer": ""
 ```
 
-GitHub data filled once you log in.
+### Update GitHub credentials manually
 
 ```javascript
-"github_token": "",
-"github_user": ""
+"github_token": "your_dev_token",
+"github_user": "username"
 ```
 
-Run automated tasks before or after a certain command.
+### Run automated tasks before or after a certain command.
 
 ```javascript
 "hooks": {
@@ -1631,7 +1658,9 @@ Run automated tasks before or after a certain command.
 }
 ```
 
-Run automated tasks passing arguments to the commands. Required for prompt commands.
+### Run automated tasks passing arguments to the commands.
+
+Required for prompt commands.
 
 ```javascript
 "hooks": {
@@ -1643,19 +1672,19 @@ Run automated tasks passing arguments to the commands. Required for prompt comma
 }
 ```
 
-Set default branch name prefix for PR fetching.
+### Set default branch name prefix for PR fetching.
 
 ```javascript
 "pull_branch_name_prefix": "pr-"
 ```
 
-Insert signature below issue comment.
+### Insert signature below issue comment.
 
 ```javascript
 "signature": "<br><br>:octocat: *Sent from [GH](http://nodegh.io).*"
 ```
 
-Turn off ssh when pulling a repo and use https instead.
+### Turn off ssh when pulling a repo and use https instead.
 
 ```javascript
 "ssh": false,
