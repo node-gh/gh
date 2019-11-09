@@ -155,7 +155,7 @@ export async function run(options, done) {
                     `Listing ${logger.colors.green(options.state)} issues on ${options.userRepo}`
                 )
 
-                await list(options, options.user, options.repo)
+                await list(options)
             }
         } catch (err) {
             throw new Error(`Error listing issues\n${err}`)

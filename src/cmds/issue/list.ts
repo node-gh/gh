@@ -6,14 +6,24 @@
 
 import * as logger from '../../logger'
 import { formatIssues } from './index'
+import { handlePagination, askUserToPaginate } from '../../utils'
+import * as ora from 'ora'
 
-export async function list(options, user, repo) {
+const spinner = ora({ text: 'Fetching Issues', discardStdin: false })
+
+export async function list(options) {
+    const { user, repo, page = 1, pageSize } = options
+
+    spinner.start()
+
     let payload
 
     payload = {
         repo,
         owner: user,
         state: options.state,
+        page,
+        per_page: pageSize,
     }
 
     if (options.labels) {
@@ -50,17 +60,32 @@ export async function list(options, user, repo) {
         payload.assignee = options.assignee
     }
 
-    const data = await options.GitHub.paginate(options.GitHub.issues.listForRepo.endpoint(payload))
+    const { data, hasNextPage } = await handlePagination({
+        options,
+        listEndpoint: options.GitHub.issues.listForRepo,
+        payload,
+    })
 
     const issues = data.filter(result => Boolean(result))
 
+    spinner.stop()
+
     if (issues && issues.length > 0) {
         const formattedIssues = formatIssues(issues, options.detailed)
+
         options.all
-            ? logger.log(`\n${options.userRepo}:\n${formattedIssues}`)
+            ? logger.log(`\n${options.user}/${options.repo}:\n${formattedIssues}`)
             : logger.log(formattedIssues)
     } else {
-        logger.log(`\nNo issues on ${options.userRepo}`)
+        logger.log(`\nNo issues on ${options.user}/${options.repo}`)
+    }
+
+    if (hasNextPage) {
+        const continuePaginating = await askUserToPaginate(
+            `Pull Requests for ${options.user}/${options.repo}`
+        )
+
+        continuePaginating && (await list({ ...options, page: page + 1 }))
     }
 }
 
@@ -75,6 +100,6 @@ export async function listFromAllRepositories(options) {
     )
 
     for (const repo of repositories) {
-        await list(options, repo.owner.login, repo.name)
+        await list({ ...options, user: repo.owner.login, repo: repo.name })
     }
 }
