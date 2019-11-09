@@ -236,7 +236,7 @@ export async function run() {
             let cmdDoneRunning = null
 
             if (testing) {
-                const { prepareTestFixtures } = await import('./utils')
+                const { prepareTestFixtures } = await import('./test-utils')
 
                 // Enable mock apis for e2e's
                 cmdDoneRunning = prepareTestFixtures(Command.name, args.argv.cooked)
