@@ -6,7 +6,6 @@ exports[`E2E: Help Module Test \`gh --help\` 1`] = `
 List of available commands:
   al, alias              Create alias for a username.
   gi, gists              Provides a set of util commands to work with Gists.
-  he, hello              Hello world example. Copy to start a new command.
   is, issue              Provides a set of util commands to work with Issues.
   ms, milestone          Provides a set of util commands to work with Milestones.
   nt, notification       Provides a set of util commands to work with Notifications.
