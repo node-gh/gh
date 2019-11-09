@@ -13,6 +13,34 @@ import * as inquirer from 'inquirer'
 
 const testing = process.env.NODE_ENV === 'testing'
 
+export async function handlePagination({ options, listEndpoint, payload }) {
+    let hasNextPage = false
+
+    try {
+        // If no pageSize, assume user removed limit and fetch all prs
+        var data = await (options.allPages
+            ? options.GitHub.paginate(listEndpoint.endpoint.merge(payload))
+            : listEndpoint(payload))
+
+        hasNextPage = data.headers && data.headers.link && data.headers.link.includes('rel="next"')
+
+        data = data.data || data
+    } catch (err) {
+        if (err && err.status === '404') {
+            // Some times a repo is found, but you can't list its prs
+            // Due to the repo being disabled (e.g., private repo with debt)
+            logger.warn(`Can't list pull requests for ${options.user}/${options.repo}`)
+        } else {
+            throw new Error(`Error listing data\n${err}`)
+        }
+    }
+
+    return {
+        data,
+        hasNextPage,
+    }
+}
+
 /**
  * Opens url in browser
  */

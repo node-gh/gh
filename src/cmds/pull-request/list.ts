@@ -5,19 +5,23 @@
  */
 
 import * as Table from 'cli-table3'
+import { produce } from 'immer'
 import * as ora from 'ora'
 import * as marked from 'marked'
 import * as TerminalRenderer from 'marked-terminal'
 import * as wrap from 'wordwrap'
+
 import * as logger from '../../logger'
 import { afterHooks, beforeHooks } from '../../hooks'
-import { produce } from 'immer'
-import { askUserToPaginate } from '../../utils'
+import { askUserToPaginate, handlePagination } from '../../utils'
 import { printPullInfo, STATUSES, testing, getPullRequest } from './index'
+
 const SORT_COMPLEXITY = 'complexity'
 const DIRECTION_DESC = 'desc'
 const DIRECTION_ASC = 'asc'
 const SORT_CREATED = 'created'
+
+const spinner = ora({ text: 'Fetching PRs', discardStdin: false })
 
 export async function listHandler(options) {
     await beforeHooks('pull-request.list', { options })
@@ -59,7 +63,7 @@ export async function listHandler(options) {
         }
 
         try {
-            await list(options, options.user, options.repo)
+            await list(options)
         } catch (err) {
             throw new Error(`Can't list pull requests.\n${err}`)
         }
@@ -68,54 +72,40 @@ export async function listHandler(options) {
     await afterHooks('pull-request.list', { options })
 }
 
-async function list(options, user: string, repo: string, page = 1) {
-    const spinner = ora('Fetching PRs').start()
+async function list(options, page = 1) {
+    spinner.start()
 
-    let sort = options.sort
+    const { user, repo, all, sort, direction, state, pageSize, GitHub, me, config } = options
 
-    if (options.sort === SORT_COMPLEXITY) {
-        sort = SORT_CREATED
+    let sortType = sort
+
+    if (sort === SORT_COMPLEXITY) {
+        sortType = SORT_CREATED
     }
 
     const payload = {
         repo,
-        sort,
+        sort: sortType,
         owner: user,
-        direction: options.direction,
-        state: options.state,
+        direction: direction,
+        state: state,
         page,
-        per_page: options.pageSize,
+        per_page: pageSize,
     }
 
-    const listEndpoint = options.GitHub.pulls.list
+    const { data, hasNextPage } = await handlePagination({
+        options,
+        listEndpoint: GitHub.pulls.list,
+        payload,
+    })
 
-    let hasNextPage = false
+    let pulls = data
 
-    try {
-        // If no pageSize, assume user removed limit and fetch all prs
-        var pulls = await (options.allPages
-            ? options.GitHub.paginate(listEndpoint.endpoint.merge(payload))
-            : listEndpoint(payload))
-
-        hasNextPage =
-            pulls.headers && pulls.headers.link && pulls.headers.link.includes('rel="next"')
-
-        pulls = pulls.data ? pulls.data : pulls
-    } catch (err) {
-        if (err && err.status === '404') {
-            // Some times a repo is found, but you can't list its prs
-            // Due to the repo being disabled (e.g., private repo with debt)
-            logger.warn(`Can't list pull requests for ${user}/${payload.repo}`)
-        } else {
-            throw new Error(`Error listing pulls\n${err}`)
-        }
-    }
-
-    if (options.me) {
+    if (me) {
         pulls = filterPullsSentByMe_(options, pulls)
     }
 
-    if (options.sort && options.sort === SORT_COMPLEXITY) {
+    if (sort && sort === SORT_COMPLEXITY) {
         try {
             pulls = await addComplexityParamToPulls_(options, pulls)
         } catch (err) {
@@ -147,16 +137,15 @@ async function list(options, user: string, repo: string, page = 1) {
 
     const currentUserRepo = logger.colors.yellow(`${user}/${repo}`)
 
-    if (pulls.length) {
-        spinner.stop()
+    spinner.stop()
 
+    if (pulls.length) {
         logger.log(currentUserRepo)
 
         json.branches.forEach((branch, index, arr) => {
             logger.log(`${logger.colors.blue('Branch:')} ${branch.name} (${branch.total})`)
 
-            const printTableView =
-                options.config.pretty_print === undefined || Boolean(options.config.pretty_print)
+            const printTableView = config.pretty_print === undefined || Boolean(config.pretty_print)
 
             if (printTableView) {
                 printPullsInfoTable_(options, branch.pulls)
@@ -169,7 +158,7 @@ async function list(options, user: string, repo: string, page = 1) {
             }
         })
 
-        if (options.all) {
+        if (all) {
             logger.log('')
         }
     }
@@ -177,10 +166,8 @@ async function list(options, user: string, repo: string, page = 1) {
     if (hasNextPage) {
         const continuePaginating = await askUserToPaginate(`Pull Requests for ${currentUserRepo}`)
 
-        continuePaginating && list(options, user, repo, page + 1)
+        continuePaginating && (await list({ ...options, user, repo }, page + 1))
     }
-
-    spinner.stop()
 
     return
 }
@@ -210,7 +197,7 @@ async function listFromAllRepositories(options) {
     }
 
     for (const repo of repositories) {
-        await list(options, repo.owner.login, repo.name)
+        await list({ ...options, user: repo.owner.login, repo: repo.name })
     }
 }
 
