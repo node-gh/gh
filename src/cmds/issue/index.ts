@@ -15,6 +15,7 @@ import { browser } from './browser'
 import { newIssue } from './new'
 import { comment } from './comment'
 import { list, listFromAllRepositories } from './list'
+import { assign } from './assign'
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -72,7 +73,7 @@ export const DETAILS = {
 }
 
 const STATE_CLOSED = 'closed'
-const STATE_OPEN = 'open'
+export const STATE_OPEN = 'open'
 
 // -- Commands -------------------------------------------------------------------------------------
 
@@ -210,13 +211,7 @@ export async function run(options, done) {
     done && done()
 }
 
-async function assign(options) {
-    const issue = await getIssue_(options)
-
-    return editIssue_(options, issue.title, STATE_OPEN)
-}
-
-function editIssue_(options, title, state, number?: number) {
+export function editIssue(options, title, state, number?: number) {
     let payload
 
     payload = {
@@ -233,7 +228,7 @@ function editIssue_(options, title, state, number?: number) {
     return options.GitHub.issues.update(payload)
 }
 
-function getIssue_(options, number?: number) {
+export function getIssue(options, number?: number) {
     const payload = {
         issue_number: number || options.number,
         repo: options.repo,
@@ -244,15 +239,15 @@ function getIssue_(options, number?: number) {
 }
 
 async function close(options, number) {
-    const issue = await getIssue_(options, number)
+    const issue = await getIssue(options, number)
 
-    return editIssue_(options, issue.title, STATE_CLOSED, number)
+    return editIssue(options, issue.title, STATE_CLOSED, number)
 }
 
 async function open(options, number) {
-    const issue = await getIssue_(options, number)
+    const issue = await getIssue(options, number)
 
-    return editIssue_(options, issue.title, STATE_OPEN, number)
+    return editIssue(options, issue.title, STATE_OPEN, number)
 }
 
 async function search(options, user, repo) {
