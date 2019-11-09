@@ -12,6 +12,7 @@ import { openUrl, userRanValidFlags, openFileInEditor, userLeftMsgEmpty } from '
 import * as base from '../../base'
 import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
+import { browser } from './browser'
 
 const config = base.getConfig()
 
@@ -124,7 +125,7 @@ export async function run(options, done) {
 
         await afterHooks('issue.assign', { options })
     } else if (options.browser) {
-        browser(options.user, options.repo, options.number)
+        browser(options)
     } else if (options.comment || options.comment === '') {
         logger.log(`Adding comment on issue ${number} on ${getUserRepo(options)}`)
 
@@ -215,14 +216,6 @@ async function assign(options) {
     const issue = await getIssue_(options)
 
     return editIssue_(options, issue.title, STATE_OPEN)
-}
-
-function browser(user, repo, number) {
-    if (!number) {
-        number = ''
-    }
-
-    openUrl(`${config.github_host}/${user}/${repo}/issues/${number}`)
 }
 
 function comment(options) {
