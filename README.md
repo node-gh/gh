@@ -1046,8 +1046,6 @@ gh re --browser --user eduardolundgren --repo node-gh
 | `-t`, `--type`     | _Optional_   | [`all`, `owner`, `public`, `private`, `member`] |
 | `--date`           | _Optional_   | `String`                                        |
 
--   To adjust [pagination rules](#set-pagination-rules)
-
 #### Examples
 
 List all repositories.
@@ -1607,7 +1605,7 @@ Change it if you're a [GitHub Enterprise](https://enterprise.github.com/) user.
 
 -   For list based commands (_like listing prs, issues, or repos_) we **default to 30**
 -   That means if you ran `gh pr` you would see a max of 30 pull requests
--   If you would like to see more, we will prompt your in your terminal to see the next batch
+-   If you would like to see more, we will prompt you in your terminal to see the next batch
 -   You can set your page size up from `1` to `100`
 
 ```json
