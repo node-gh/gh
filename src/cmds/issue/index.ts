@@ -8,11 +8,12 @@
 
 import { isArray } from 'lodash'
 import { produce } from 'immer'
-import { openUrl, userRanValidFlags, openFileInEditor, userLeftMsgEmpty } from '../../utils'
+import { userRanValidFlags, openFileInEditor, userLeftMsgEmpty } from '../../utils'
 import * as base from '../../base'
 import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
 import { browser } from './browser'
+import { newIssue } from './new'
 
 const config = base.getConfig()
 
@@ -337,49 +338,6 @@ async function listFromAllRepositories(options) {
     for (const repo of repositories) {
         await list(options, repo.owner.login, repo.name)
     }
-}
-
-function newIssue(options) {
-    options = produce(options, draft => {
-        const useEditor = draft.config.use_editor !== false
-
-        if (draft.labels) {
-            draft.labels = draft.labels.split(',')
-        } else {
-            draft.labels = []
-        }
-
-        if (draft.message) {
-            draft.message = logger.applyReplacements(draft.message, config.replace)
-        }
-
-        if (useEditor && userLeftMsgEmpty(draft.title)) {
-            draft.title = openFileInEditor(
-                'temp-gh-issue-title.txt',
-                '# Add a issue title message on the next line'
-            )
-        }
-
-        // If user passes an empty title and message, --message will get merged into options.title
-        // Need to reference the original title not the potentially modified one
-        if (useEditor && (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(draft.message))) {
-            draft.message = openFileInEditor(
-                'temp-gh-issue-body.md',
-                '<!-- Add an issue body message in markdown format below -->'
-            )
-        }
-    })
-
-    const payload = {
-        body: options.message,
-        assignee: options.assignee,
-        repo: options.repo,
-        title: options.title,
-        owner: options.user,
-        labels: options.labels,
-    }
-
-    return options.GitHub.issues.create(payload)
 }
 
 async function close(options, number) {
