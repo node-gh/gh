@@ -5,6 +5,7 @@
  */
 
 import * as Table from 'cli-table3'
+import * as ora from 'ora'
 import * as marked from 'marked'
 import * as TerminalRenderer from 'marked-terminal'
 import * as wrap from 'wordwrap'
@@ -68,6 +69,8 @@ export async function listHandler(options) {
 }
 
 async function list(options, user: string, repo: string, page = 1) {
+    const spinner = ora('Fetching PRs').start()
+
     let sort = options.sort
 
     if (options.sort === SORT_COMPLEXITY) {
@@ -145,6 +148,8 @@ async function list(options, user: string, repo: string, page = 1) {
     const currentUserRepo = logger.colors.yellow(`${user}/${repo}`)
 
     if (pulls.length) {
+        spinner.stop()
+
         logger.log(currentUserRepo)
 
         json.branches.forEach((branch, index, arr) => {
@@ -174,6 +179,8 @@ async function list(options, user: string, repo: string, page = 1) {
 
         continuePaginating && list(options, user, repo, page + 1)
     }
+
+    spinner.stop()
 
     return
 }
