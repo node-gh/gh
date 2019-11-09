@@ -19,6 +19,8 @@ const DIRECTION_ASC = 'asc'
 const SORT_CREATED = 'created'
 
 export async function listHandler(options) {
+    await beforeHooks('pull-request.list', { options })
+
     let who
 
     options = produce(options, draft => {
@@ -61,18 +63,16 @@ export async function listHandler(options) {
             throw new Error(`Can't list pull requests.\n${err}`)
         }
     }
+
+    await afterHooks('pull-request.list', { options })
 }
 
 async function list(options, user: string, repo: string, page = 1) {
-    await beforeHooks('pull-request.list', { options })
-
     let sort = options.sort
 
     if (options.sort === SORT_COMPLEXITY) {
         sort = SORT_CREATED
     }
-
-    const pageSize = options.config.page_size
 
     const payload = {
         repo,
@@ -142,8 +142,10 @@ async function list(options, user: string, repo: string, page = 1) {
 
     const json = getPullsTemplateJson_(options, pulls)
 
+    const currentUserRepo = logger.colors.yellow(`${user}/${repo}`)
+
     if (pulls.length) {
-        logger.log(logger.colors.yellow(`${user}/${repo}`))
+        logger.log(currentUserRepo)
 
         json.branches.forEach((branch, index, arr) => {
             logger.log(`${logger.colors.blue('Branch:')} ${branch.name} (${branch.total})`)
@@ -168,24 +170,20 @@ async function list(options, user: string, repo: string, page = 1) {
     }
 
     if (hasNextPage) {
-        const continuePaginating = await askUserToPaginate(pageSize, 'Pull Requests')
+        const continuePaginating = await askUserToPaginate(`Pull Requests for ${currentUserRepo}`)
 
         continuePaginating && list(options, user, repo, page + 1)
-
-        return
     }
 
-    await afterHooks('pull-request.list', { options })
+    return
 }
 
 async function listFromAllRepositories(options) {
-    let payload
     let apiMethod
 
-    payload = {
+    const payload: any = {
         type: 'all',
         owner: options.user,
-        per_page: 100,
     }
 
     if (options.org) {
@@ -204,11 +202,9 @@ async function listFromAllRepositories(options) {
         throw new Error(`Error listing repos`)
     }
 
-    return Promise.all(
-        repositories.map(repository => {
-            list(options, repository.owner.login, repository.name)
-        })
-    )
+    for (const repo of repositories) {
+        await list(options, repo.owner.login, repo.name)
+    }
 }
 
 async function addComplexityParamToPulls_(options, pulls) {
