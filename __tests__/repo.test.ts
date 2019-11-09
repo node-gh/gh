@@ -5,7 +5,7 @@
  */
 
 import * as stripAnsi from 'strip-ansi'
-import { runCmd } from './testUtils'
+import { runCmd } from '../src/test-utils'
 import { getCloneUrl } from '../src/cmds/repo'
 
 describe('E2E: Repo Module Test', () => {
