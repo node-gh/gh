@@ -159,7 +159,7 @@
         "fluture": "~11.0.3",
         "fluture-sanctuary-types": "~4.1.1",
         "handlebars": "~4.3.5",
-        "immer": "~4.0.0",
+        "immer": "~4.0.2",
         "inquirer": "~6.2.1",
         "lodash": "~4.17.15",
         "marked": "~0.7.0",
