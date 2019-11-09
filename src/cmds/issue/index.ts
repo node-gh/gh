@@ -16,6 +16,7 @@ import { newIssue } from './new'
 import { comment } from './comment'
 import { list, listFromAllRepositories } from './list'
 import { assign } from './assign'
+import { openHandler } from './open'
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -178,11 +179,7 @@ export async function run(options, done) {
 
         await afterHooks('issue.new', { options })
     } else if (options.open) {
-        await beforeHooks('issue.open', { options })
-
         await openHandler(options)
-
-        await afterHooks('issue.open', { options })
     } else if (options.close) {
         await beforeHooks('issue.close', { options })
 
@@ -244,12 +241,6 @@ async function close(options, number) {
     return editIssue(options, issue.title, STATE_CLOSED, number)
 }
 
-async function open(options, number) {
-    const issue = await getIssue(options, number)
-
-    return editIssue(options, issue.title, STATE_OPEN, number)
-}
-
 async function search(options, user, repo) {
     let query = ['type:issue']
     let payload
@@ -285,20 +276,6 @@ async function closeHandler(options) {
 
         try {
             var { data } = await close(options, number)
-        } catch (err) {
-            throw new Error(`Can't close issue.\n${err}`)
-        }
-
-        logger.log(logger.colors.cyan(data.html_url))
-    }
-}
-
-async function openHandler(options) {
-    for (const number of options.number) {
-        logger.log(`Opening issue ${number} on ${options.userRepo}`)
-
-        try {
-            var { data } = await open(options, number)
         } catch (err) {
             throw new Error(`Can't close issue.\n${err}`)
         }
