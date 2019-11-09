@@ -128,6 +128,8 @@ export function userRanValidFlags(commands, options) {
 }
 
 export async function askUserToPaginate(type: string): Promise<boolean> {
+    logger.log('\n')
+
     const answers = await inquirer.prompt([
         {
             type: 'confirm',
@@ -135,6 +137,8 @@ export async function askUserToPaginate(type: string): Promise<boolean> {
             name: 'paginate',
         },
     ])
+
+    logger.log('\n')
 
     return answers.paginate
 }

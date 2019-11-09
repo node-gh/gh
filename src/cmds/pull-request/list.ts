@@ -21,7 +21,7 @@ const DIRECTION_DESC = 'desc'
 const DIRECTION_ASC = 'asc'
 const SORT_CREATED = 'created'
 
-const spinner = ora({ text: 'Fetching PRs', discardStdin: false })
+const spinner = ora({ text: 'Fetching Pull Requests', discardStdin: false })
 
 export async function listHandler(options) {
     await beforeHooks('pull-request.list', { options })
@@ -72,14 +72,14 @@ export async function listHandler(options) {
     await afterHooks('pull-request.list', { options })
 }
 
-async function list(options, page = 1) {
+async function list(options) {
     spinner.start()
 
-    const { user, repo, all, sort, direction, state, pageSize, GitHub, me, config } = options
+    const { user, repo, page = 1, pageSize, config } = options
 
-    let sortType = sort
+    let sortType = options.sort
 
-    if (sort === SORT_COMPLEXITY) {
+    if (sortType === SORT_COMPLEXITY) {
         sortType = SORT_CREATED
     }
 
@@ -87,25 +87,25 @@ async function list(options, page = 1) {
         repo,
         sort: sortType,
         owner: user,
-        direction: direction,
-        state: state,
+        direction: options.direction,
+        state: options.state,
         page,
         per_page: pageSize,
     }
 
     const { data, hasNextPage } = await handlePagination({
         options,
-        listEndpoint: GitHub.pulls.list,
+        listEndpoint: options.GitHub.pulls.list,
         payload,
     })
 
     let pulls = data
 
-    if (me) {
+    if (options.me) {
         pulls = filterPullsSentByMe_(options, pulls)
     }
 
-    if (sort && sort === SORT_COMPLEXITY) {
+    if (sortType && sortType === SORT_COMPLEXITY) {
         try {
             pulls = await addComplexityParamToPulls_(options, pulls)
         } catch (err) {
@@ -158,7 +158,7 @@ async function list(options, page = 1) {
             }
         })
 
-        if (all) {
+        if (options.all) {
             logger.log('')
         }
     }
@@ -166,7 +166,7 @@ async function list(options, page = 1) {
     if (hasNextPage) {
         const continuePaginating = await askUserToPaginate(`Pull Requests for ${currentUserRepo}`)
 
-        continuePaginating && (await list({ ...options, user, repo }, page + 1))
+        continuePaginating && (await list({ ...options, user, repo, page: page + 1 }))
     }
 
     return
