@@ -8,14 +8,12 @@
 
 import { isArray } from 'lodash'
 import { produce } from 'immer'
-import { userRanValidFlags, openFileInEditor, userLeftMsgEmpty } from '../../utils'
-import * as base from '../../base'
+import { userRanValidFlags } from '../../utils'
 import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
 import { browser } from './browser'
 import { newIssue } from './new'
-
-const config = base.getConfig()
+import { comment } from './comment'
 
 // -- Constants ------------------------------------------------------------------------------------
 
@@ -217,28 +215,6 @@ async function assign(options) {
     const issue = await getIssue_(options)
 
     return editIssue_(options, issue.title, STATE_OPEN)
-}
-
-function comment(options) {
-    const useEditor = options.config.use_editor !== false
-
-    let body = logger.applyReplacements(options.comment, config.replace) + config.signature
-
-    if (useEditor && userLeftMsgEmpty(options.comment)) {
-        body = openFileInEditor(
-            'temp-gh-issue-comment.md',
-            '<!-- Add an issue comment message in markdown format below -->'
-        )
-    }
-
-    const payload = {
-        body,
-        issue_number: options.number,
-        repo: options.repo,
-        owner: options.user,
-    }
-
-    return options.GitHub.issues.createComment(payload)
 }
 
 function editIssue_(options, title, state, number?: number) {
