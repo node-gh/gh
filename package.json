@@ -1,7 +1,7 @@
 {
     "name": "gh",
     "description": "Boost your productivity & automate tasks when working with GitHub, all from the comfort of your CLI.",
-    "version": "2.5.1",
+    "version": "2.6.0",
     "homepage": "http://nodegh.io",
     "preferGlobal": true,
     "contributors": [
