@@ -95,39 +95,6 @@ export async function run(options, done) {
 
     if (options.browser) {
         browser(options.user, options.repo)
-    } else if (options.clone && !options.new) {
-        await beforeHooks('repo.get', { options })
-
-        if (options.organization) {
-            user = options.organization
-        } else if (options.user) {
-            user = options.user
-        }
-
-        if (fs.existsSync(`${process.cwd()}/${options.repo}`)) {
-            logger.error(
-                `Can't clone ${logger.colors.green(
-                    `${user}/${options.repo}`
-                )}. ${logger.colors.green(options.repo)} already exists in this directory.`
-            )
-            return
-        }
-
-        try {
-            var { data } = await getRepo(options)
-        } catch (err) {
-            throw new Error(
-                `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}.\n${err}`
-            )
-        }
-
-        logger.log(data.html_url)
-
-        if (data) {
-            clone_(user, options.repo, getCloneUrl(options, config.api.ssh_host))
-        }
-
-        await afterHooks('repo.get', { options })
     } else if (options.delete && !options.label) {
         await beforeHooks('repo.delete', { options })
 
@@ -330,7 +297,40 @@ export async function run(options, done) {
         }
 
         await afterHooks('repo.search', { options })
-    } else if (options.new && !options.label) {
+    } else if (options.clone && !options.new && options.new !== '') {
+        await beforeHooks('repo.get', { options })
+
+        if (options.organization) {
+            user = options.organization
+        } else if (options.user) {
+            user = options.user
+        }
+
+        if (fs.existsSync(`${process.cwd()}/${options.repo}`)) {
+            logger.error(
+                `Can't clone ${logger.colors.green(
+                    `${user}/${options.repo}`
+                )}. ${logger.colors.green(options.repo)} already exists in this directory.`
+            )
+            return
+        }
+
+        try {
+            var { data } = await getRepo(options)
+        } catch (err) {
+            throw new Error(
+                `Can't clone ${logger.colors.green(`${user}/${options.repo}`)}.\n${err}`
+            )
+        }
+
+        logger.log(data.html_url)
+
+        if (data) {
+            clone_(user, options.repo, getCloneUrl(options, config.api.ssh_host))
+        }
+
+        await afterHooks('repo.get', { options })
+    } else if ((options.new || options.new === '') && !options.label) {
         if (!options.new.trim()) {
             options = produce(options, draft => {
                 draft.new = getCurrentFolderName()
@@ -373,9 +373,20 @@ function browser(user, repo) {
     openUrl(`${config.github_host}/${user}/${repo}`)
 }
 
-function clone_(user, repo, repo_url) {
+/**
+ * If the current directory where gh was run from matches the repo name
+ * we will clone into the current directory
+ * otherwise we will clone into a new directory
+ */
+function clone_(user: string, repo: string, repoUrl: string): void {
+    const currentDir = process.cwd()
+    const currentDirName = currentDir.slice(currentDir.lastIndexOf('/') + 1)
+
+    const cloneUrl = url.parse(repoUrl).href
+
     logger.log(`Cloning ${logger.colors.green(`${user}/${repo}`)}`)
-    git.clone(url.parse(repo_url).href, repo)
+
+    git.clone(cloneUrl, currentDirName === repo ? '.' : repo)
 }
 
 function createLabel(options, user): Promise<Octokit.IssuesCreateLabelResponse> {
