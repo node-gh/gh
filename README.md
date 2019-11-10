@@ -1093,6 +1093,12 @@ Create a new GitHub repository and clone on the current directory.
 gh re --new foo --clone
 ```
 
+Create a new GitHub repository based on the name of the current directory & init with a README
+
+```
+gh re --new --clone --init
+```
+
 Create a new GitHub repository for an organization.
 
 ```
