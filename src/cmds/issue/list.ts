@@ -5,7 +5,7 @@
  */
 
 import * as logger from '../../logger'
-import { formatIssues } from './index'
+import { formatIssues, testing } from './index'
 import { handlePagination, askUserToPaginate } from '../../utils'
 import * as ora from 'ora'
 
@@ -80,9 +80,9 @@ export async function list(options) {
         logger.log(`\nNo issues on ${options.user}/${options.repo}`)
     }
 
-    if (hasNextPage) {
+    if (hasNextPage && !testing) {
         const continuePaginating = await askUserToPaginate(
-            `Pull Requests for ${options.user}/${options.repo}`
+            `Issues for ${options.user}/${options.repo}`
         )
 
         continuePaginating && (await list({ ...options, page: page + 1 }))

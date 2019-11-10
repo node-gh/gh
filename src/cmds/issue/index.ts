@@ -21,6 +21,7 @@ import { openHandler } from './open'
 import { search } from './search'
 
 // -- Constants ------------------------------------------------------------------------------------
+export const testing = process.env.NODE_ENV === 'testing'
 
 export const DETAILS = {
     alias: 'is',
