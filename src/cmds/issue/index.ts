@@ -19,6 +19,7 @@ import { assign } from './assign'
 import { closeHandler } from './close'
 import { openHandler } from './open'
 import { search } from './search'
+import { lockHandler } from './lock'
 
 // -- Constants ------------------------------------------------------------------------------------
 export const testing = process.env.NODE_ENV === 'testing'
@@ -40,6 +41,8 @@ export const DETAILS = {
         labels: [String],
         list: Boolean,
         link: Boolean,
+        lock: Boolean,
+        'lock-reason': ['off-topic', 'too heated', 'resolved', 'spam'],
         message: String,
         milestone: [Number, String],
         'no-milestone': Boolean,
@@ -97,7 +100,7 @@ export async function run(options, done) {
             const payload = draft.argv.remain && draft.argv.remain.slice(1)
 
             if (payload && payload[0]) {
-                if (/^\d+$/.test(payload[0])) {
+                if (options.argv.original.length === 2) {
                     draft.browser = true
                     draft.number = payload[0]
                 } else {
@@ -160,6 +163,14 @@ export async function run(options, done) {
             }
         } catch (err) {
             throw new Error(`Error listing issues\n${err}`)
+        }
+    } else if (options.lock) {
+        logger.log(`Locking issue ${options.number} on ${options.userRepo}`)
+
+        try {
+            await lockHandler(options)
+        } catch (err) {
+            throw new Error(`Error locking issue\n${err}`)
         }
     } else if (options.new) {
         await beforeHooks('issue.new', { options })
