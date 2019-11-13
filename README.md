@@ -57,9 +57,10 @@
 
 -   [`--new` - Create new issues](#issue-create)
 -   [`--comment` - Comment on an issue of a repository](#issue-comment)
--   [`--open` | `--close` - Open or Close an issue](#issue-open-or-close)
 -   [`--list` - List issues on a repository](#issue-list)
+-   [`--open` | `--close` - Open or Close an issue](#issue-open-or-close)
 -   [`--browser` - Open GitHub issue page in the browser](#issue-open-in-browser)
+-   [`--lock` - Lock GitHub issue](#issue-lock)
 -   [`--search` - Search issues in current repository](#issue-search)
 -   [`--assign` - Assign an issue on a repository to a user](#issue-assign)
     </details>
@@ -939,6 +940,31 @@ Open GitHub issue page in the browser.
 
 ```
 gh is 100 --browser
+```
+
+### Issue: Lock
+
+| Option           | Usage        | Type                                            |
+| ---------------- | ------------ | ----------------------------------------------- |
+| `--lock`         | **Required** | `Boolean`                                       |
+| `--lock-reason`  | _Optional_   | [`off-topic`, `too heated`, `resolved`, `spam`] |
+| `-n`, `--number` | **Required** | `Number`                                        |
+| `--remote`       | _Optional_   | `String`                                        |
+| `-r`, `--repo`   | _Optional_   | `String`                                        |
+| `-u`, `--user`   | _Optional_   | `String`                                        |
+
+#### Examples
+
+Lock issue on the current repository.
+
+```
+gh is 1 --lock
+```
+
+Lock issue on the current repository with a reason.
+
+```
+gh is 1 --lock --lock-reason resolved
 ```
 
 ### Issue: Search
