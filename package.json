@@ -212,6 +212,7 @@
         "lib",
         "README.md",
         "LICENSE.txt",
+        "default.gh.json",
         "bin"
     ],
     "keywords": [
