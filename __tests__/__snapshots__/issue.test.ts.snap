@@ -37,6 +37,12 @@ exports[`E2E: Issues Module Test List Issues \`gh is\` 1`] = `
 "
 `;
 
+exports[`E2E: Issues Module Test Lock issue in browser \`gh is 138 --lock --lock-reason off-topic\` 1`] = `
+"Locking issue 138 on protoEvangelion/gh
+Success locking issue.
+"
+`;
+
 exports[`E2E: Issues Module Test Open Issue \`gh is --open --number 7 --number 10\` 1`] = `
 "Opening issue 7 on protoEvangelion/gh
 https://github.com/protoEvangelion/gh/issues/7

@@ -48,4 +48,9 @@ describe('E2E: Issues Module Test', () => {
         expect(runCmd(`gh is -s 'hi'`)).toMatchSnapshot()
         done()
     })
+
+    it('Lock issue in browser `gh is 138 --lock --lock-reason off-topic`', done => {
+        expect(runCmd('gh is 138 --lock --lock-reason off-topic')).toMatchSnapshot()
+        done()
+    })
 })

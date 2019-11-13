@@ -34,7 +34,7 @@ export function prepareTestFixtures(cmdName, argv) {
         },
         {
             name: 'Issue',
-            flags: ['--comment', '--new', '--open', '--close', '--search', '--assign'],
+            flags: ['--comment', '--lock', '--new', '--open', '--close', '--search', '--assign'],
         },
         {
             name: 'PullRequest',
