@@ -77,7 +77,15 @@ export function openFileInEditor(fileName: string, msg: string): string {
 
         writeFileSync(filePath, msg)
 
-        const editor = spawnSync('git', ['config', '--global', 'core.editor']).stdout
+        const editor = process.env.EDITOR
+            ? process.env.EDITOR
+            : process.env.VISUAL
+            ? process.env.VISUAL
+            : spawnSync('git', ['config', '--global', 'core.editor']).stdout
+
+        if (!editor) {
+            throw new Error('Could not determine which editor to use')
+        }
 
         execSyncInteractiveStream(`${editor} "${filePath}"`)
 
