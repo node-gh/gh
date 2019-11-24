@@ -82,11 +82,9 @@ export function openFileInEditor(fileName: string, msg: string): string {
             process.env.VISUAL ||
             spawnSync('git', ['config', '--global', 'core.editor']).stdout
 
-        if (!editor) {
-            return 'Could not determine which editor to use'
+        if (editor) {
+            execSyncInteractiveStream(`${editor} "${filePath}"`)
         }
-
-        execSyncInteractiveStream(`${editor} "${filePath}"`)
 
         const newFileContents = readFileSync(filePath).toString()
 
