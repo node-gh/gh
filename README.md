@@ -519,9 +519,7 @@ Comment on a pull request.
 gh pr 1 --comment "Merged, thank you!"
 ```
 
-Submit a pull request using your default git editor (`git config --global core.editor`) by passing an empty `--comment`
-
--   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
+Submit a pull request using your [default editor](#set-default-editor-to-use-when-creating-a-new-message) by passing an empty `--comment`
 
 ```
 gh pr 1 --comment
@@ -611,9 +609,7 @@ Submit a pull request using the current branch.
 gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
 ```
 
-Submit a pull request using your default git editor (`git config --global core.editor`) by passing an empty `--title` and or `--description`
-
--   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
+Submit a pull request using your [default editor](#set-default-editor-to-use-when-creating-a-new-message) by passing an empty `--title` and or `--description`
 
 ```
 gh pr --submit eduardolundgren --title --description
@@ -744,9 +740,7 @@ gh issue
 gh is 'Node GH rocks!' 'Body with **Markdown** support'
 ```
 
-Create a new issue using your default git editor (`git config --global core.editor`) by passing an empty `--message` (_also works with an empty title_)
-
--   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
+Create a new issue using your [default editor](#set-default-editor-to-use-when-creating-a-new-message) by passing an empty `--message` (_also works with an empty title_)
 
 ```
 gh is --new --title 'Node GH rocks!' --message
@@ -788,9 +782,7 @@ Comment on an issue of the current repository.
 gh is 1 --comment 'Node GH rocks!'
 ```
 
-Comment on an issue using your default git editor (`git config --global core.editor`) by passing an empty `--comment` (_also works with an empty title_)
-
--   To disable this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
+Comment on an issue using your [default editor](#set-default-editor-to-use-when-creating-a-new-message) by passing an empty `--comment` (_also works with an empty title_)
 
 ```
 gh is 1 --comment
@@ -1708,6 +1700,12 @@ Required for prompt commands.
 ```javascript
 "pull_branch_name_prefix": "pr-"
 ```
+
+### Set default editor to use when creating a new message
+
+-   For certain tasks like opening a pull request when you omit the title or description, we will open a new file for you to create the message in.
+-   We first check enviroment variables for the default editor: `$EDITOR` or `$VISUAL` and fallback to the default git editor `git config --global core.editor`
+-   To **disable** this functionality of opening your editor add `"use_editor": false` to `~/.gh.json`
 
 ### Insert signature below issue comment.
 
