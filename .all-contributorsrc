@@ -859,6 +859,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "julien",
+      "name": "Julien Castelain",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5572?v=4",
+      "profile": "http://julien.github.io",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
