@@ -265,6 +265,7 @@ Huge thanks goes to these wonderful people ([emoji key](https://allcontributors.
     <td align="center"><a href="https://github.com/Aaron-K-T-Berry"><img src="https://avatars1.githubusercontent.com/u/24759009?v=4" width="50px;" alt="Aaron Berry"/><br /><sub><b>Aaron Berry</b></sub></a><br /><a href="https://github.com/node-gh/gh/commits?author=Aaron-K-T-Berry" title="Code">💻</a></td>
     <td align="center"><a href="http://www.liferay.com/web/inacio.nery/profile"><img src="https://avatars0.githubusercontent.com/u/14062516?v=4" width="50px;" alt="Inácio Nery"/><br /><sub><b>Inácio Nery</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Ainacionery" title="Bug reports">🐛</a></td>
     <td align="center"><a href="http://marcbizal.com"><img src="https://avatars1.githubusercontent.com/u/1304994?v=4" width="50px;" alt="Marcus Bizal"/><br /><sub><b>Marcus Bizal</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Amarcbizal" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://julien.github.io"><img src="https://avatars2.githubusercontent.com/u/5572?v=4" width="50px;" alt="Julien Castelain"/><br /><sub><b>Julien Castelain</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Ajulien" title="Bug reports">🐛</a> <a href="https://github.com/node-gh/gh/commits?author=julien" title="Code">💻</a></td>
   </tr>
 </table>
 
