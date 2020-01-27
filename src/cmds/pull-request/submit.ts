@@ -12,6 +12,8 @@ import { afterHooks, beforeHooks } from '../../hooks'
 import * as logger from '../../logger'
 
 export async function submit(options, user) {
+    const useEditor = options.config.use_editor !== false
+
     let description = options.description
     let title = options.title
     let pullBranch = options.pullBranch || options.currentBranch
@@ -21,15 +23,14 @@ export async function submit(options, user) {
     }
 
     if (userLeftMsgEmpty(title)) {
-        title = openFileInEditor(
-            'temp-gh-pr-title.txt',
-            `# Add a pr title message on the next line\n${git.getLastCommitMessage(pullBranch)}`
-        )
+        title = useEditor ?
+            openFileInEditor('temp-gh-pr-title.txt', `# Add a pr title message on the next line\n`)
+            : git.getLastCommitMessage(pullBranch)
     }
 
     // If user passes an empty title and description, --description will get merged into options.title
     // Need to reference the original title not the potentially modified one
-    if (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(description)) {
+    if (useEditor && (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(description))) {
         description = openFileInEditor(
             'temp-gh-pr-body.md',
             '<!-- Add an pr body message in markdown format below -->'
