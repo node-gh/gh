@@ -848,7 +848,8 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/14062516?v=4",
       "profile": "http://www.liferay.com/web/inacio.nery/profile",
       "contributions": [
-        "bug"
+        "bug",
+        "code"
       ]
     },
     {
@@ -871,5 +872,6 @@
       ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
