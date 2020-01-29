@@ -23,13 +23,19 @@ export async function submit(options, user) {
     }
 
     if (userLeftMsgEmpty(title)) {
-        title = useEditor ?
-            openFileInEditor('temp-gh-pr-title.txt', `# Add a pr title message on the next line\n`)
+        title = useEditor
+            ? openFileInEditor(
+                  'temp-gh-pr-title.txt',
+                  `# Add a pr title message on the next line\n`
+              )
             : git.getLastCommitMessage(pullBranch)
     }
 
-    // If user passes an empty title and description, --description will get merged into options.title
-    // Need to reference the original title not the potentially modified one
+    /*
+     * If user passes an empty title and description, --description will get merged into options.title
+     * Need to reference the original title not the potentially modified one
+     * Also check if user wants to user their editor to add a description
+     */
     if (useEditor && (userLeftMsgEmpty(options.title) || userLeftMsgEmpty(description))) {
         description = openFileInEditor(
             'temp-gh-pr-body.md',
