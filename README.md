@@ -268,11 +268,13 @@ Huge thanks goes to these wonderful people ([emoji key](https://allcontributors.
     <td align="center"><a href="http://marcbizal.com"><img src="https://avatars1.githubusercontent.com/u/1304994?v=4" width="50px;" alt=""/><br /><sub><b>Marcus Bizal</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Amarcbizal" title="Bug reports">🐛</a></td>
     <td align="center"><a href="http://julien.github.io"><img src="https://avatars2.githubusercontent.com/u/5572?v=4" width="50px;" alt=""/><br /><sub><b>Julien Castelain</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Ajulien" title="Bug reports">🐛</a> <a href="https://github.com/node-gh/gh/commits?author=julien" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/cspotcode"><img src="https://avatars1.githubusercontent.com/u/376504?v=4" width="50px;" alt=""/><br /><sub><b>Andrew Bradley</b></sub></a><br /><a href="https://github.com/node-gh/gh/issues?q=author%3Acspotcode" title="Bug reports">🐛</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
