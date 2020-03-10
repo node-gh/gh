@@ -21,20 +21,18 @@ script:
 jobs:
     include:
         - stage: test
-          node_js: '8'
+          node_js: '10'
           os: linux
+        - os: linux
+          node_js: '12'
+        - os: linux
+          node_js: '13'
         - os: osx
           node_js: 'lts/*'
-        # uncomment in the future when this is fixed: https://travis-ci.community/t/node-js-build-fails-with-no-obvious-error/961/8
-        #- os: windows
-        #  node_js: 'lts/*'
-        - os: linux
-          node_js: 'lts/*'
-        # latest version of node
-        - node_js: 'node'
-          os: linux
+          # uncomment in the future when this is fixed: https://travis-ci.community/t/node-js-build-fails-with-no-obvious-error/961/8
+          #- os: windows
         - stage: release
-          node_js: lts/*
+          node_js: 'lts/*'
           script:
               - npm run-script build
               - npx semantic-release
