@@ -171,7 +171,7 @@
         "ramda": "~0.26.1",
         "request": "~2.88.0",
         "sanctuary": "~2.0.0",
-        "sanctuary-def": "^0.21.1",
+        "sanctuary-def": "0.20.0",
         "tmp": "~0.1.0",
         "truncate": "~2.0.1",
         "update-notifier": "~4.0.0",
