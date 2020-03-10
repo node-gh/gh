@@ -272,6 +272,7 @@ Huge thanks goes to these wonderful people ([emoji key](https://allcontributors.
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
@@ -607,7 +608,7 @@ using the last commit message as title.
 
 #### Examples
 
-Submit a pull request using the current branch.
+Submit a pull request using the current branch to the repository owner or organization.
 
 ```
 gh pr --submit eduardolundgren --title 'Fix #32' --description 'Awesome fix'
