@@ -15,7 +15,7 @@ describe('E2E: User Module Test', () => {
         done()
     })
 
-    it('Generates token end to end without 2fa', done => {
+    it.skip('Generates token end to end without 2fa', done => {
         process.env.GENERATE_NEW_TOKEN = 'true'
 
         // when first generating this you need to add real GitHub
