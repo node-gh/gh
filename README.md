@@ -1,3 +1,7 @@
+# DEPRECATED
+
+---
+
 <h1 align="center">Node GH</h1>
 
 <p align="center">
@@ -275,6 +279,7 @@ Huge thanks goes to these wonderful people ([emoji key](https://allcontributors.
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
