@@ -197,7 +197,7 @@
         "jest": "~24.7.1",
         "prettier": "~1.15.3",
         "pretty-quick": "~1.8.0",
-        "semantic-release": "~15.13.24",
+        "semantic-release": "~17.2.3",
         "strip-ansi": "~5.0.0",
         "ts-jest": "~24.0.2",
         "typescript": "~3.9.5"
